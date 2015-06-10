@@ -7,7 +7,7 @@ LaTeX files for the article itself are in the
 
 For questions, comments, or suggestions please [submit an issue][].
 
-Authors can also use the [issue tracker][] to keep track of TODO items.
+Authors can also use the [issue tracker][] to keep track of todo items.
 
 Thanks for your interest in this work!
 
@@ -15,4 +15,5 @@ Thanks for your interest in this work!
 [@ralphfreese](https://github.com/ralphfreese)  
 [@peterjipsen](https://github.com/jipsen)  
 [submit an issue]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
+[issue tracker]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 
