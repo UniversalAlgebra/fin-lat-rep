@@ -3,10 +3,10 @@
 %% DATE: 10 June 2015
 %% COPYRIGHT: (C) 2015 William DeMeo, Ralph Freese, Peter Jipsen
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% I. Generation of Bibliography File
-%% ----------------------------------
-%% The filecontents command will crete a file in the inputs directory called 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                         BIBLIOGRAPHY FILE                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The `filecontents` command will crete a file in the inputs directory called 
 %% refs.bib containing the references in the document, in case this file does 
 %% not exist already.
 %% If you want to add a BibTeX entry, please don't add it directly to the
@@ -14,7 +14,6 @@
 %% \begin{filecontents*}{refs.bib} and \end{filecontents*} lines
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
-
 \begin{filecontents*}{inputs/refs.bib}
   @PhdThesis{Berman:1970,
     author = 	 {Joel Berman},
@@ -183,7 +182,7 @@
     MRREVIEWER = {B. Chang}
   }
   @article {Tuma:1986,
-    AUTHOR = {T{\ocirc{u}}ma, Ji{\v{r}}{\'{\i}}},
+    AUTHOR = {\Tuma, \Jiri},
     TITLE = {Some finite congruence lattices. {I}},
     JOURNAL = {Czechoslovak Math. J.},
     FJOURNAL = {Czechoslovak Mathematical Journal},
@@ -202,41 +201,43 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% II. Preamble
-%% ------------
-\documentclass[final,3p,12pt]{au}
-\usepackage{enumerate,amsmath,amssymb,fancyhdr,mathrsfs,amsthm,url,stmaryrd,scalefnt,color,xspace}
-\usepackage{tikz}
-% \usetikzlibrary{calc}
-\usepackage{ifthen}
+%%                                     PREAMBLE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{au}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% For completion by editorial office:
+ \presentedby{\dots}
+ \received{\dots}{\dots}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%///////////////////////////////////////////////////////////////////////////////////
+%% PACKAGES
+\usepackage{amsmath,amssymb,url,mathrsfs,enumerate,ifthen,xspace}
+\usepackage{latexsym,amscd,amsthm,stmaryrd,scalefnt,color}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+%% The following will probably be removed by the journal editors:
+\usepackage[colorlinks=true,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
+%% ...but it's handy to have hyperrefs when browsing the electronic draft.
+
+
+%%////////////////////////////////////////////////////////////////////////////////
+%% Theorem styles
+\numberwithin{equation}{section}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{prop}[theorem]{Proposition}
-\newtheorem{assumption}[theorem]{Assumption}
-
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
-\newtheorem{question}[theorem]{Question}
-\newcounter{claim}
-\newtheorem{claim}[claim]{Claim}
-\newcounter{conjecture}
-\newtheorem{conjecture}[conjecture]{Conjecture}
-\newtheorem*{Lemma}{Lemma}
-\newtheorem*{Prop}{Proposition}
-
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
 \newtheorem*{remarks}{Remarks}
-\newtheorem*{notation}{Notation}
-
-\numberwithin{theorem}{section}
-\numberwithin{claim}{section}
-\numberwithin{equation}{section}
-\numberwithin{conjecture}{section}
 
 
 %%///////////////////////////////////////////////////////////////////////////////////
@@ -287,12 +288,12 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TODO items
-%% ----------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                      TODO items                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Use the \todo command to make notes of things to fix, e.g.,
 %%   \todo{(wjd) something I have to address in the next draft}
-   \newcommand{\todo}[1]{~\\{\bf TODO:} \emph{#1}\\}
+   \newcommand{\todo}[1]{\vskip2mm{\bf TODO:} \emph{#1}\vskip2mm}
 %%
 %% That way we can easily omit todo items by setting the following variable to false:
    \newboolean{todos}
@@ -302,21 +303,79 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%\journal{}
 \begin{document}
-
-
-\begin{frontmatter}
-  \input{inputs/frontmatter.tex}
-\end{frontmatter}
-
-
 
 %% \linenumbers
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                        FRONT MATTER                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% IV. MAIN CONTENT
+\title[Representing a Finite Lattice]{Representing a Finite Lattice as the\\Congruence
+  Lattice of a Finite Algebra} 
+
+
+%///////////////////////////////////////////////////////////////////////////////////////
+%% AUTHORS
+\author[W. DeMeo]{William DeMeo}
+\email{williamdemeo@gmail.com}
+\urladdr{http://williamdemeo.github.io}
+\address{Department of Mathematics\\Iowa State University\\Ames 50010\\USA}
+\author[R. Freese]{Ralph Freese}
+\email{ralph@math.hawaii.edu}
+\urladdr{http://www.math.sc.edu/~demeow}
+\address{Department of Mathematics\\University of Hawaii\\Honolulu 96822\\USA}
+\author[P. Jipsen]{Peter Jipsen}
+\email{jipsen@chapman.edu}
+\urladdr{http://www1.chapman.edu/~jipsen/}
+\address{Department of Mathematics\\Chapman University\\Orange 92866\\USA}
+
+
+%///////////////////////////////////////////////////////////////////////////////////////
+%% Date
+\date{10 June 2015 (draft 1)}
+
+%///////////////////////////////////////////////////////////////////////////////////////
+%% AMS SUBJECT CLASSIFICATION
+%% see http://www.ams.org/msc Only one Primary. Possibly several Secondary. 
+\subjclass[2010]{%
+  Primary:       %
+    08A30;       % Subalgebras, congruence relations
+  Secondary:     %
+    06B15,       % Lattices: representation theory
+    08A60,       %
+    06B10,       %
+    20D30.       % Abstract finite groups: series and lattices of subgroups
+}
+
+%///////////////////////////////////////////////////////////////////////////////////////
+%% KEYWORDS
+\keywords{%
+  congruence lattice, 
+  subgroup lattice, 
+  finite algebra, 
+  finite lattice representations
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Main Matter                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%/////////////////////////////////////////////////////////
+\begin{abstract}
+  This article provides an overview of various known methods for representing a
+  finite lattice as the congruence lattice of a finite algebra or proving that
+  such a representation exists. Using these and a recently discovered method, we
+  show, for all but one lattice, that every lattice with at most seven elements
+  is isomorphic to the congruence lattice of a finite algebra.  
+\end{abstract}
+
+
+\maketitle
+
 
 %/////////////////////////////////////////////////////////
 \section{Introduction}
