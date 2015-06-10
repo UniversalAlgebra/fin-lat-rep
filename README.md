@@ -13,9 +13,6 @@ or [submit an issue][].
 Authors: to keep track of todo items use the [issue tracker][], or post
 comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
 
-
-Thanks for your interest in this work!
-
 [@williamdemeo](https://github.com/williamdemeo)  
 [@ralphfreese](https://github.com/ralphfreese)  
 [@peterjipsen](https://github.com/jipsen)  
