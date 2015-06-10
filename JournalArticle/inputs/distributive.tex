@@ -1,0 +1,50 @@
+
+\todo{Cite Birkhoff result about every finite distributive lattice being the
+  congruence lattice of a finite lattice.}
+
+A lattice $\bL$ is called 
+\defn{strongly representable} 
+if whenever $\bL \cong \bL_0 \leq \bEqX$ for some $X$ then there is an algebra based on $X$
+whose congruence lattice is $\bL_0$.  In other words, \emph{every} 
+distributive spanning sublattice of the lattice of equivalence relations on a finite set
+$X$ is equal to the congruence lattice of an algebra $\<X, F\>$, for some
+collection $F$ of operations on $X$.
+
+\index{Berman, Joel} \index{Quackenbush, R.} \index{Wolk, B.}
+\begin{theorem}[Berman~\cite{Berman:1970}, Quackenbush and Wolk~\cite{Quack:1971}]
+  Every finite distributive lattice is strongly representable.
+\end{theorem}
+
+\begin{remarks}
+  By Theorem \ref{Concrete-thm-3} above, the result of Berman, Quackenbush and
+  Wolk says, if $\bL$ is a finite distributive lattice then every embedding
+  $\bL\cong \bL_0\leq \bEqX$ is closed. The following proof is only slightly
+  shorter than to the original in~\cite{Quack:1971}, and the methods are similar. 
+\end{remarks}
+
+\begin{proof}
+  Without loss of generality, suppose $\bL\leq \bEqX$. 
+  Fix $\theta\in \EqX \setminus L$ and define 
+  $\theta^* = \Meet \{ \gamma \in L \mid \gamma \geq \theta \}$ and 
+  $\theta_* = \Join \{ \gamma \in L \mid \gamma \leq \theta \}$.
+  Let $\alpha$ be a join irreducible in $L$ below $\theta^*$ and not below
+  $\theta_*$. 
+  Note that $\alpha$ is not below $\theta$.
+  Let $\beta = \Join \{ \gamma \in L \mid \gamma \ngeq \alpha \}$.
+  If $\beta$ were above $\theta$, then $\beta$ would be above $\theta^*$,
+  and so $\beta$ would be above $\alpha$. But $\alpha$ is join prime, so $\beta$ is not
+  above $\theta$. 
+
+  Choose $(u, v) \in \alpha \setminus \theta$ and note that $u \neq v$.
+  Choose $(x, y) \in \theta \setminus \beta$ and note that $x \neq y$.
+  Let $B$ be the $\beta$ block of $y$ and define $h\in X^X$ as in~(\ref{eq:h}). Then it
+  is clear that $h$ violates $\theta$, $h$ respects all elements in the sets
+  $\upalpha = \{\gamma \in L: \alpha \leq \gamma\}$ and 
+  $\downbeta = \{\gamma \in L: \gamma \leq \beta\}$, and $L = \upalpha \cup
+  \downbeta$. Since $\theta$ was an arbitrary element of $\EqX \setminus L$, we can
+  construct such an $h = h_\theta$ for each $\theta \in \EqX \setminus L$.  Let $\sH = \{h_\theta:
+  \theta \in \EqX \setminus L\}$ and let $\mathbf{A}$ be the algebra 
+  $\langle X, \sH\rangle$.  Then, $\bL =\bCon(\mathbf{A})$. % \rho(\sH)
+\end{proof}
+
+
