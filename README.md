@@ -5,13 +5,14 @@ representing small lattices as congruence lattices of finite algebras.  The
 LaTeX files for the article itself are in the
 [article directory](https://github.com/UniversalAlgebra/fin-lat-rep/tree/master/article).
 
-Authors, to keep track of todo items use the [issue tracker][], or post
-comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
-
-For questions, comments, or suggestions please contact the authors listed below,
+Visitors: for questions, comments, or suggestions please contact the authors listed below,
 or post a message on the
 [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki),
 or [submit an issue][].
+
+Authors: to keep track of todo items use the [issue tracker][], or post
+comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
+
 
 Thanks for your interest in this work!
 
