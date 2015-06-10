@@ -1,8 +1,9 @@
 # fin-lat-rep
 
-This repository collects some resources that might be useful for producing the
-article on representing small lattices as congruence lattices of finite
-algebras.  The LaTeX files for the article itself are in the article directory.
+This repository collects some resources for preparing the article on
+representing small lattices as congruence lattices of finite algebras.  The
+LaTeX files for the article itself are in the
+[article directory](https://github.com/UniversalAlgebra/fin-lat-rep/tree/master/article).
 
 For questions, comments, or suggestions please [submit an issue][].
 
@@ -12,6 +13,6 @@ Thanks for your interest in this work!
 
 [@williamdemeo](https://github.com/williamdemeo)  
 [@ralphfreese](https://github.com/ralphfreese)  
-[@jipsen](https://github.com/jipsen)  
+[@peterjipsen](https://github.com/jipsen)  
 [submit an issue]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 
