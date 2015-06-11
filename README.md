@@ -11,7 +11,7 @@ or post a message on the
 or [submit an issue][].
 
 Authors, to keep track of todo items use the [issue tracker][], or post
-comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
+your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
 
 [submit an issue]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 [issue tracker]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
