@@ -291,14 +291,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                      TODO items                              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Use the \todo command to make notes of things to fix, e.g.,
-%%   \todo{(wjd) something I have to address in the next draft}
-   \newcommand{\todo}[1]{\vskip2mm{\bf TODO:} \emph{#1}\vskip2mm}
+%% Use the \todo command to make notes of things to fix. 
+%% Apply italics or bold or caps for emphasis as needed, e.g.,
 %%
-%% That way we can easily omit todo items by setting the following variable to false:
+%%     \todo{(wjd) FIX THE NEXT LINE!}
+%%     \todo{(wjd) \emph{Revise the paragraph above}}
+%%
    \newboolean{todos}
    \setboolean{todos}{true}  % set to true to include TODO statements
-%% \setboolean{todos}{false}  % set to false to use input statements
+%%
+%% INCLUDE TODO ITEMS by commenting out `\setboolean{todos}{false}`
+%% OMIT TODO ITEMS by uncommenting `\setboolean{todos}{false}`:
+%%   \setboolean{todos}{false}
+%%
+   \newcommand{\todo}[1]{\ifthenelse{\boolean{todos}}{%
+       \vskip2mm{\bf TODO:} #1\vskip2mm}{}}
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
