@@ -1,0 +1,20 @@
+% a disjoint principal filter and ideal inside a potato
+\node (c) at (.5,.75)   {};
+\node (d) at (-1.5,4.5)   {};
+\node (e) at (1,2)   {};
+\node (f) at (-.75,6)   {};
+\node (bottom) at (0,0)  [fill, circle, inner sep=.8pt] {};
+\node (top) at (0,8)  [fill, circle, inner sep=.8pt] {};
+\node (alpha) at (-1.8,3)  [fill, circle, inner sep=.8pt] {};
+\node (beta) at (1.5,4)  [fill, circle, inner sep=.8pt] {};
+\node (theta) at (-.5,3)  [fill, circle, inner sep=.8pt] {};
+\draw[semithick] 
+(bottom) to [out=15, in=-15] (top) 
+(top) to [out=195, in=165] (bottom);
+\draw[dotted] (c) to (d) (e) to (f);
+\draw[dotted] (bottom) to (alpha)  (beta) to (top);
+\draw[semithick] 
+(alpha) to [out=30, in=-80] (top)
+(top) to [out=205, in=105] (alpha)
+(bottom) to [out=30, in=-80] (beta)
+(beta) to [out=205, in=110] (bottom);
