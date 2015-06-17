@@ -248,7 +248,11 @@
 %% For Hasse diagrams, instead of hard-coding the size of the circle representing
 %% points in a lattice, please use \dotsize.  For example,
 %%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
-\newcommand{\dotsize}{1pt}
+\newcommand{\dotsize}{0.8pt}
+%% (we could probably make the creation of diagrams simpler with some macros like:
+%% \newcommand\nodedef[3]{\node (#1) at (#2,#3) [draw,circle,inner sep=\dotsize]{};}
+%% ...maybe try that later)
+
 
 %%///////////////////////////////////////////////////////////////////////////////////
 %% How should we typeset definitions?
@@ -464,8 +468,8 @@ algebras is closed under
       \draw (beta) node [right] {$\beta$};
     \end{tikzpicture}
     \caption{The ordinal (left) and parallel (middle) sum of the lattices
-      $L_1$ and $L_2$; a sublattice obtained as a union of a filter $\alpha^\uparrow $ and an ideal
-      $\beta^\downarrow$ (right).}
+      $L_1$ and $L_2$; a sublattice obtained as a union of a filter
+      $\alpha^\uparrow $ and an ideal $\beta^\downarrow$ (right).}
   \end{figure}
 \end{center}
 
@@ -677,13 +681,14 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 \begin{center}
   \begin{tikzpicture}[scale=.4]
     \input{inputs/tikz/filter-ideal.tex}
-    \draw (-.3,3.5) node {$\theta$};
     \draw (0,-1.5) node {$L_0 \leq  L$};
-    \draw (alpha) node [left] {$\alpha$};
-    \draw (beta) node [right] {$\beta$};
-    %\draw[semithick] (bottom) to [out=15, in=-15] (top) to [out=195, in=165] (bottom);
-%% \draw[semithick] 
-%% \node (theta) at (-.5,3)  [fill, circle, inner sep=.8pt] {};
+    \draw (alpha) node [left]{$\alpha$};
+    \draw (beta) node [right]{$\beta$};
+    %% Put it inside a potato (since its a sublattice)
+    %\draw[dotted] (bottom) to [out=12.5, in=-12.5] (top) to [out=192.5, in=162.5] (bottom);
+    \node (theta) at (0,3.5)  [draw,circle,inner sep=\dotsize] {};
+    %\draw (-.3,3.5) node {$\theta$};
+    \draw (theta) node [left]{$\theta$};
   \end{tikzpicture}
 \end{center}
 
