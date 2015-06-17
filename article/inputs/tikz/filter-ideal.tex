@@ -1,20 +1,23 @@
-% a disjoint principal filter and ideal inside a potato
-\node (c) at (.5,.75)   {};
-\node (d) at (-1.5,4.5)   {};
-\node (e) at (1,2)   {};
-\node (f) at (-.75,6)   {};
-\node (bottom) at (0,0)  [fill, circle, inner sep=.8pt] {};
-\node (top) at (0,8)  [fill, circle, inner sep=.8pt] {};
-\node (alpha) at (-1.8,3)  [fill, circle, inner sep=.8pt] {};
-\node (beta) at (1.5,4)  [fill, circle, inner sep=.8pt] {};
-\node (theta) at (-.5,3)  [fill, circle, inner sep=.8pt] {};
+%% file: filter-ideal.tex
+%% author: williamdemeo@gmail.com
+%% To insert this in a document, put it inside a tikzpicture block. 
+
+%% Disjoint union of a principal filter and a principle ideal.
+\node (bottom) at (0,0)  [draw, circle, inner sep=\dotsize] {};
+\node (top) at (0,8)  [draw, circle, inner sep=\dotsize] {};
+\node (alpha) at (-2,3)  [draw, circle, inner sep=\dotsize] {};
+\node (beta) at (2,5)  [draw, circle, inner sep=\dotsize] {};
 \draw[semithick] 
-(bottom) to [out=15, in=-15] (top) 
-(top) to [out=195, in=165] (bottom);
-\draw[dotted] (c) to (d) (e) to (f);
+% filter:
+(alpha) to [out=30, in=-80] (top) to [out=205, in=105] (alpha)
+% ideal: 
+(bottom) to [out=30, in=-80] (beta) to [out=205, in=110] (bottom);
+
+%% dotted lines suggest ordering of elements in distinct potatoes
+%% To remove the dotted lines, comment the next two lines:
+\draw[dotted] 
+(-1.5,4.25) to (.5,1.25) 
+(1.25,3) to (-1,6);
 \draw[dotted] (bottom) to (alpha)  (beta) to (top);
-\draw[semithick] 
-(alpha) to [out=30, in=-80] (top)
-(top) to [out=205, in=105] (alpha)
-(bottom) to [out=30, in=-80] (beta)
-(beta) to [out=205, in=110] (bottom);
+
+

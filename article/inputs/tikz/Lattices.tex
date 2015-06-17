@@ -1,0 +1,76 @@
+%% This file is here to make it convenient to view various diagrams in this directory.
+\documentclass{amsart}
+\usepackage{amsmath}%
+\usepackage{amsfonts}%
+\usepackage{amssymb}%
+\usepackage{mathrsfs}
+\usepackage{stmaryrd,enumerate}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{tikz}
+\usepackage{xspace}
+
+\begin{document}
+
+% To scale, use:
+%  \begin{tikzpicture}[scale=.7]
+
+\newcommand\dotsize{1pt}
+
+  \begin{tikzpicture}[scale=.5]
+    % input the figure here:
+    \input{L3.tex}
+    % optional label:
+    \draw (0,-1) node {$L_3$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{M4.tex}
+    \draw (1,-1) node {$M_4$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{L10.tex}
+     \draw (0,-1) node {$L_{10}$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{L13.tex}
+    \draw (0,-1) node {$L_{13}$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{L17.tex}
+    \draw (0,-1) node {$L_{17}$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{L19.tex}
+    \draw (0,-1) node {$L_{19}$};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=.7]
+    \input{L20.tex}
+    \draw (0,-1) node {$L_{20}$};
+  \end{tikzpicture}
+
+\newpage
+
+  \begin{tikzpicture}[scale=1]
+    \input{N54W.tex}
+    \draw (0,-1) node {N54W.tex};
+  \end{tikzpicture}
+%
+  \begin{tikzpicture}[scale=1]
+    \input{wheatstone_bridge.tex}
+    \draw (0,-1) node {wheatstone\_bridge.tex};
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[scale=1]
+    \input{wheatstone_bridge_2.tex}
+    \draw (0,-1) node {wheatstone\_bridge\_2.tex};
+  \end{tikzpicture}
+
+
+
+\end{document}
