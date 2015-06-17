@@ -1,5 +1,6 @@
 # fin-lat-rep
 
+RF test.
 This repository collects some resources for preparing the article on
 representing small lattices as congruence lattices of finite algebras.  The
 LaTeX files for the article itself are in the
