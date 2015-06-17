@@ -473,7 +473,7 @@ algebras is closed under
       \draw (alpha) node [left] {$\alpha$};
       \draw (beta) node [right] {$\beta$};
     \end{tikzpicture}
-    \caption{The ordinal (left) and parallel (middle) sum of the lattices
+    \caption{The adjoined ordinal (left) and parallel (middle) sum of the lattices
       $L_1$ and $L_2$; a sublattice obtained as a union of a filter
       $\alpha^\uparrow $ and an ideal $\beta^\downarrow$ (right).}
   \end{figure}
@@ -765,48 +765,18 @@ obviously representable.
     \label{fig:adjordinal}
     \centering
         {\scalefont{.8}
-          \begin{tikzpicture}[scale=0.3]
-            \node (botL1) at (8,-4) [fill, circle,inner sep=.6pt] {};
-            \node (00) at (8,0) [fill, circle,inner sep=.6pt] {};
-            \node (topL2) at (8,4) [fill,circle,inner sep=.6pt] {};
-            \node (topLn) at (8,10) [fill, circle,inner sep=.6pt] {};
-            \node (botLn) at (8,6) [fill, circle,inner sep=.6pt] {};
-
-            \draw (8,-2) node {$L_1$};
-            \draw (8,8) node {$L_n$};
-            \draw (8,2) node {$L_2$};
-            \draw (8,5.5) node {$\vdots$};
-
-            \draw 
-            (botL1) to [out=50,in=-50] (00)
-            (botL1) to [out=130,in=-130] (00)
-            (00) to [out=50,in=-50] (topL2)
-            (00) to [out=130,in=-130] (topL2)
-            (botLn) to [out=50,in=-50] (topLn)
-            (botLn) to [out=130,in=-130] (topLn);
-
-            \node (botL1) at (0,-6) [fill, circle,inner sep=.6pt] {};
-            \node (topL1) at (0,-2) [fill, circle,inner sep=.6pt] {};
-            \node (botL2) at (0,-1) [fill, circle,inner sep=.6pt] {};
-            \node (topL2) at (0,3) [fill,circle,inner sep=.6pt] {};
-            \node (04) at (0,4) [fill, circle,inner sep=.6pt] {};
-            \node (06) at (0,6) [fill, circle,inner sep=.6pt] {};
-            \node (botLn) at (0,7) [fill, circle,inner sep=.6pt] {};
-            \node (topLn) at (0,11) [fill, circle,inner sep=.6pt] {};
-
+          \begin{tikzpicture}[scale=0.4]
+            \input{inputs/tikz/general-ordinal-sum.tex}
             \draw (0,-4) node {$L_1$};
             \draw (0,9) node {$L_n$};
             \draw (0,1) node {$L_2$};
-            \draw (0,5.5) node {$\vdots$};
-
-            \draw 
-            (botL1) to [out=50,in=-50] (topL1)
-            (botL1) to [out=130,in=-130] (topL1) 
-            to (botL2) to [out=50,in=-50] (topL2)
-            (botL2) to [out=130,in=-130] (topL2)
-            (topL2) to (04)
-            (06) to (botLn) to [out=50,in=-50] (topLn)
-            (botLn) to [out=130,in=-130] (topLn);
+          \end{tikzpicture}
+          \hskip1cm
+          \begin{tikzpicture}[scale=0.4]
+            \input{inputs/tikz/adjoined-ordinal-sum.tex}
+            \draw (0,-2) node {$L_1$};
+            \draw (0,8) node {$L_n$};
+            \draw (0,2) node {$L_2$};
           \end{tikzpicture}
         }
         \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of the lattices
