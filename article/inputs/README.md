@@ -13,7 +13,7 @@ The most basic way to insert a file from inputs/tikz into the main LaTeX
 source file is by enclosing it in a tikzpicture block, as follows:
 
     \begin{tikzpicture}
-	\input{name-of-tikz-file.tex}
+	\input{inputs/tikz/name-of-tikz-file.tex}
     \end{tikzpicture}
 
 ### Diagram resizing and multiple diagrams in one figure.
