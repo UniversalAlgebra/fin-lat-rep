@@ -1,15 +1,15 @@
-# fin-lat-rep/inputs/tikz
+# fin-lat-rep/inputs
 
-This directory contains tikz code that can be used to produces diagrams when
+The **tikz** directory contains code that can be used to produces diagrams when
 inserted in the main document.
 
-**NOTE:** I have only check a couple of these files to make sure they are really
-  ready to be inserted into the document (namely, I checked and fixed
-  filter-ideal.tex, parallel-sum.tex, ordinal-sum.tex).
+**NOTE:** I have only check a couple of the files in inputs/tikz to make sure
+  they are really ready to be inserted into the document (namely, I checked and
+  fixed filter-ideal.tex, parallel-sum.tex, ordinal-sum.tex).
   I will check the others soon and tweak them as necessary. (wjd)  
 
 ## Instructions
-The most basic way to insert these files into the main LaTeX
+The most basic way to insert a file from inputs/tikz into the main LaTeX
 source file is by enclosing it in a tikzpicture block, as follows:
 
     \begin{tikzpicture}
@@ -18,7 +18,17 @@ source file is by enclosing it in a tikzpicture block, as follows:
 
 ### Diagram resizing and multiple diagrams in one figure.
 
-To get the sizes right, play around with the scale parameter.
+To get the sizes right, play around with the scale parameter. Using
+
+    \begin{tikzpicture}[scale=1]
+
+is the same as not using a scale parameter.  It seems to me
+`scale=0.4` works well for the paper.
+
+To increase the font size of the labels without changing the overall diagram
+size, try the scalefont command, e.g., `\scalefont{.8}`.  (This command goes
+inside the `\begin{figure}` block but *outside* the `\begin{tikzpicture}` block.)
+
 To get the spacing between multiple figures right, use the `\hskip` command.
 For example, the ordinal sum, parallel sum, and filter+ideal diagrams are all
 displayed in the same figure (on page 2 of a recent draft of the paper)
