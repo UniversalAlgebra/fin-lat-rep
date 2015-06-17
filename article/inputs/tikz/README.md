@@ -1,9 +1,15 @@
-## fin-lat-rep/inputs/tikz
+# fin-lat-rep/inputs/tikz
 
-This directory contains tikz code that produces diagrams when
+This directory contains tikz code that can be used to produces diagrams when
 inserted in the main document.
 
-The most basic way to insert figures from the files below into the main LaTeX
+**NOTE:** I have only check a couple of these files to make sure they are really
+  ready to be inserted into the document (namely, I checked and fixed
+  filter-ideal.tex, parallel-sum.tex, ordinal-sum.tex).
+  I will check the others soon and tweak them as necessary. (wjd)  
+
+## Instructions
+The most basic way to insert these files into the main LaTeX
 source file is by enclosing it in a tikzpicture block, as follows:
 
     \begin{tikzpicture}
