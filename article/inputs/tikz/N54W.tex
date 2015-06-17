@@ -1,20 +1,23 @@
+%% N54W.tex
+%% four-winged pentagon
+\node[lat] (bot) at (0,0) {};
+\node[lat] (top) at (0,3) {};
+\node[lat] (a1) at (-2,1.5) {};
+\node[lat] (a2) at (-1,1.5) {};
+\node[lat] (a3) at (0,1.5) {};
+\node[lat] (b) at (0,1) {};
+\node[lat] (a4) at (1,1.5) {};
+\node[lat] (a5) at (2,1.5) {};
 
-      \node (x) at (-1,1)  [draw, circle, inner sep=\dotsize] {};
-      \node (y) at (1,1)  [draw, circle, inner sep=\dotsize] {};
-      \node (a) at (0,2)  [draw, circle, inner sep=\dotsize] {};
-      \node (b) at (0,0)  [draw, circle, inner sep=\dotsize] {};
-      \draw (x) node [left] {$x$};
-      \draw (a) node [above] {$a$};
-      \draw (b) node [below] {$b$};
-      \draw (y) node [right] {$y$};
-      \draw[semithick] (b)-- (a) node[pos=.5,right] {$\beta$};
-      \draw[semithick] (x)-- (a) node[pos=.5,left] {$\alpha_1$};
-      \draw[semithick] (x)-- (b) node[pos=.5,left] {$\alpha_2$};
-      \draw[semithick] (b)-- (y) node[pos=.5,right] {$\alpha_1$};
-      \draw[semithick] (a)-- (y) node[pos=.5,right] {$\alpha_2$};
-%%   \caption{The Wheatstone Bridge which defines the relation 
-%%     $\tau(\alpha_1, \alpha_2, \beta)$ as follows: 
-%%     $(x,y) \in \tau(\alpha_1, \alpha_2, \beta)$ if and only if there 
-%%     exist $a, b \in X$ satisfying the relations in the diagram.}
-%%   \label{fig:rhoagain}
-%% \end{figure}
+\draw (top) node [above] {$1_X$};
+\draw (a1) node [left] {$\alpha_1$};
+\draw (a2) node [left] {$\alpha_2$};
+\draw (a3) node [right] {$\alpha_3$};
+\draw (b) node [right] {$\beta$};
+\draw (a4) node [right] {$\alpha_4$};
+\draw (a5) node [right] {$\alpha_5$};
+\draw (bot) node [below] {$0_X$};
+\draw[semithick] 
+(bot) -- (a1) -- (top) -- (a2) --
+(bot) -- (b) -- (a3) -- (top) -- (a4) --
+(bot) -- (a5) -- (top);

@@ -3,7 +3,7 @@
 The **tikz** directory contains code that can be used to produces diagrams when
 inserted in the main document.
 
-**NOTE:** I have only check a couple of the files in inputs/tikz to make sure
+**NOTE:** I have only checked a couple of the files in inputs/tikz to make sure
   they are really ready to be inserted into the document (namely, I checked and
   fixed filter-ideal.tex, parallel-sum.tex, ordinal-sum.tex).
   I will check the others soon and tweak them as necessary. (wjd)  
@@ -74,3 +74,16 @@ Note also the way in which multiple diagrams are included in the same figure.
 We must make sure there are no blank lines between \input commands, otherwise
 the diagrams will appear one atop another instead of next to each other.  Also,
 we can use the hskip command to insert appropriate spacing between diagrams.
+
+
+### Other Notes
+1. If you get `undefined control sequence \dotsize` when you compile, put
+the following command in the preamble of your document:
+
+        \newcommand{\dotsize}{1pt}
+
+2. The `\node[lat]` syntax requires that we've defined a tikzstyle, like
+
+        \tikzstyle{lat} = [circle,draw,inner sep=\dotsize]
+
+

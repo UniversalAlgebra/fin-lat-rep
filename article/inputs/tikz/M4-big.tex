@@ -1,12 +1,13 @@
-%% M4.tex
+%% M4-big.tex
 \node[lat] (bot) at (0,0) {};
-\node[lat] (top) at (0,2) {};
-\node[lat] (a) at (-1,1) {};
-\node[lat] (b) at (-.5,1) {};
-\node[lat] (c) at (.5,1) {};
-\node[lat] (d) at (1,1) {};
+\node[lat] (top) at (0,3) {};
+\node[lat] (a) at (-1.5,1.5) {};
+\node[lat] (b) at (-.75,1.5) {};
+\node[lat] (c) at (.75,1.5) {};
+\node[lat] (d) at (1.5,1.5) {};
 \draw[semithick] (bot) -- (a) -- (top) -- (b) -- (bot) -- (c) -- (top) -- (d) -- (bot);
 
+%% the old way (too complicated):
         %% \node (250) at (2.5,0)  [draw, circle, inner sep=\dotsize] {};
         %% \node (253) at (2.5,3)  [draw, circle, inner sep=\dotsize] {};
         %% \foreach \i in {1,...,4} 

@@ -12,65 +12,90 @@
 
 \begin{document}
 
-% To scale, use:
-%  \begin{tikzpicture}[scale=.7]
+%%///////////////////////////////////////////////////////////////////////////////////
+%% tikz notes:
+%% For Hasse diagrams, instead of hard-coding the size of the circle representing
+%% points in a lattice, please use \dotsize.  For example,
+%%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
+%% or
+%%     \node[lat] (bottom) at (0,0) {};  (see comment on the "lat" style below)
+\newcommand{\dotsize}{0.8pt}
+%%
+%% To create nodes of lattices in a uniform and consistent way, we define
+\tikzstyle{lat} = [circle,draw,inner sep=\dotsize]
+%% To put a lattice node named "mynode" at the point (x,y)=(1,2) in the figure,
+%% put the following inside your tikzpicture block:
+%%     \node[lat] (mynode) at (1,2) {};
 
-\newcommand\dotsize{1pt}
+% To scale all diagrams uniformly, change this setting:
+\newcommand{\figscale}{1}
 
-  \begin{tikzpicture}[scale=.5]
-    % input the figure here:
-    \input{L3.tex}
-    % optional label:
-    \draw (0,-1) node {$L_3$};
-  \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{M4.tex}
-    \draw (1,-1) node {$M_4$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: M4.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
+    \input{M4-big.tex}
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: M4-big.tex}};
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[scale=\figscale]
+    \input{L3.tex}
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L3.tex}};
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[scale=\figscale]
+    \input{L3-big.tex}
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L3-big.tex}};
+  \end{tikzpicture}
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{L10.tex}
-     \draw (0,-1) node {$L_{10}$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L10.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{L13.tex}
-    \draw (0,-1) node {$L_{13}$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L13.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{L17.tex}
-    \draw (0,-1) node {$L_{17}$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L17.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{L19.tex}
-    \draw (0,-1) node {$L_{19}$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L19.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=.7]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{L20.tex}
-    \draw (0,-1) node {$L_{20}$};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: L20.tex}};
   \end{tikzpicture}
 
-\newpage
-
-  \begin{tikzpicture}[scale=1]
+  \begin{tikzpicture}[scale=\figscale]
     \input{N54W.tex}
-    \draw (0,-1) node {N54W.tex};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: N54W.tex}};
   \end{tikzpicture}
-%
-  \begin{tikzpicture}[scale=1]
+
+  \begin{tikzpicture}[scale=\figscale]
     \input{wheatstone_bridge.tex}
-    \draw (0,-1) node {wheatstone\_bridge.tex};
+    \draw (0,0) node {$(0,0)$};
+    \draw (0,-1) node {{\tt file: weatstone\_bridge.tex}};
   \end{tikzpicture}
-
-  \begin{tikzpicture}[scale=1]
-    \input{wheatstone_bridge_2.tex}
-    \draw (0,-1) node {wheatstone\_bridge\_2.tex};
-  \end{tikzpicture}
-
 
 
 \end{document}

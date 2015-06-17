@@ -3,12 +3,14 @@
 %% To insert this in a document, put it inside a tikzpicture block. 
 
 %% notes: Two potatoes side-by-side with new common top and bottom
-\node (bot) at (0,-3.7) [draw,circle,inner sep=\dotsize] {};
-\node (top) at (0,3.7) [draw,circle,inner sep=\dotsize] {};
-\node (botL1) at (-2,-2) [draw,circle,inner sep=\dotsize] {};
-\node (topL1) at (-2,2) [draw,circle,inner sep=\dotsize] {};
-\node (botL2) at (2,-2) [draw,circle,inner sep=\dotsize] {};
-\node (topL2) at (2,2) [draw,circle,inner sep=\dotsize] {};
+\node[lat] (bot) at (0,-3.7) {};
+\node[lat] (top) at (0,3.7) {};
+%% left potato:
+\node[lat] (botL1) at (-2,-2) {};
+\node[lat] (topL1) at (-2,2) {};
+%% right potato:
+\node[lat] (botL2) at (2,-2) {};
+\node[lat] (topL2) at (2,2) {};
 
 %% lines connecting potatoes to new top and bottom
 \draw[semithick] 
@@ -16,10 +18,10 @@
 (bot) to (botL2) (topL2) to (top);
 
 \draw [semithick]  
-%% L1: left potato
+%% left potato:
 (botL1) to [out=50,in=-50] (topL1)
 (botL1) to [out=130,in=-130] (topL1)
-%% L2: right potato
+%% right potato:
 (botL2) to [out=50,in=-50] (topL2)
 (botL2) to [out=130,in=-130] (topL2);
 

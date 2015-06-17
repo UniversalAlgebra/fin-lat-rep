@@ -245,13 +245,19 @@
 \input{inputs/macros.sty}
 
 %%///////////////////////////////////////////////////////////////////////////////////
+%% tikz notes:
 %% For Hasse diagrams, instead of hard-coding the size of the circle representing
 %% points in a lattice, please use \dotsize.  For example,
 %%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
+%% or
+%%     \node[lat] (bottom) at (0,0) {};  (see comment on the "lat" style below)
 \newcommand{\dotsize}{0.8pt}
-%% (we could probably make the creation of diagrams simpler with some macros like:
-%% \newcommand\nodedef[3]{\node (#1) at (#2,#3) [draw,circle,inner sep=\dotsize]{};}
-%% ...maybe try that later)
+%%
+%% To create nodes of lattices in a uniform and consistent way, we define
+\tikzstyle{lat} = [circle,draw,inner sep=\dotsize]
+%% To put a lattice node named "mynode" at the point (x,y)=(1,2) in the figure,
+%% put the following inside your tikzpicture block:
+%%     \node[lat] (mynode) at (1,2) {};
 
 
 %%///////////////////////////////////////////////////////////////////////////////////
