@@ -244,6 +244,11 @@
 %% Extra macros
 \input{inputs/macros.sty}
 
+%%///////////////////////////////////////////////////////////////////////////////////
+%% For Hasse diagrams, instead of hard-coding the size of the circle representing
+%% points in a lattice, please use \dotsize.  For example,
+%%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
+\newcommand{\dotsize}{1pt}
 
 %%///////////////////////////////////////////////////////////////////////////////////
 %% How should we typeset definitions?
@@ -442,60 +447,21 @@ algebras is closed under
     \label{fig:ordinal-and-parallel}
     \centering
     \begin{tikzpicture}[scale=0.4]
-
-      %%% first (unlabelled) parachute %%%
-      \node (botL1) at (-8,-4) [draw, circle,inner sep=1pt] {};
-      \node (m80) at (-8,0) [draw, circle,inner sep=1pt] {};
-      \node (topL2) at (-8,4) [draw,circle,inner sep=1pt] {};
-      \node (bot) at (0,-3.7) [draw, circle,inner sep=1pt] {};
-      \node (top) at (0,3.7) [draw,circle,inner sep=1pt] {};
-      \node (botL) at (-2,-2) [draw,circle,inner sep=1pt] {};
-      \node (topL) at (-2,2) [draw,circle,inner sep=1pt] {};
-      \node (botN) at (2,-2) [draw,circle,inner sep=1pt] {};
-      \node (topN) at (2,2) [draw,circle,inner sep=1pt] {};
-
-      \draw (-8,-2) node {$L_1$};
-      \draw (-8,2) node {$L_2$};
+      \input{inputs/tikz/ordinal-sum.tex}
+      \draw (0,-2) node {$L_1$};
+      \draw (0,2) node {$L_2$};
+    \end{tikzpicture}
+    \hskip5mm
+    \begin{tikzpicture}[scale=0.4]
+      \input{inputs/tikz/parallel-sum.tex}
       \draw (-2,0) node {$L_1$};
       \draw (2,0) node {$L_2$};
-
-      \draw[semithick] 
-      (bot) to (botL)
-      (bot) to (botN)
-      (top) to (topL)
-      (top) to (topN);
-
-      \draw [semithick]  
-      (botL) to [out=50,in=-50] (topL)
-      (botL) to [out=130,in=-130] (topL)
-      (botN) to [out=50,in=-50] (topN)
-      (botN) to [out=130,in=-130] (topN);
-
-      \draw [semithick]  
-      (botL1) to [out=50,in=-50] (m80)
-      (botL1) to [out=130,in=-130] (m80)
-      (m80) to [out=50,in=-50] (topL2)
-      (m80) to [out=130,in=-130] (topL2);
-
-      % lat5
-      \node (c) at (9.5,-3.25)   {};
-      \node (d) at (7.5,0.5)   {};
-      \node (e) at (10,-2)   {};
-      \node (f) at (8.25,2)   {};
-      \node (bottom) at (9,-4)  [draw, circle, inner sep=1pt] {};
-      \node (topfi) at (9,4)  [draw, circle, inner sep=1pt] {};
-      \node (alpha) at (7.2,-1)  [draw, circle, inner sep=1pt] {};
-      \node (beta) at (10.5,0)  [draw, circle, inner sep=1pt] {};
-      \draw[semithick, dotted] (c) to (d) (e) to (f);
-      \draw[semithick] (bottom) to (alpha)  (beta) to (topfi);
-      \draw[semithick] 
-      (alpha) to [out=30, in=-80] (topfi)
-      (topfi) to [out=205, in=105] (alpha)
-      (bottom) to [out=30, in=-80] (beta)
-      (beta) to [out=205, in=110] (bottom);
-      \draw (6.8,-1.5) node {$\alpha$};
-      \draw (11,0.4) node {$\beta$};
-
+    \end{tikzpicture}
+    \hskip5mm
+    \begin{tikzpicture}[scale=0.4]
+      \input{inputs/tikz/filter-ideal.tex}
+      \draw (alpha) node [left] {$\alpha$};
+      \draw (beta) node [right] {$\beta$};
     \end{tikzpicture}
     \caption{The ordinal (left) and parallel (middle) sum of the lattices
       $L_1$ and $L_2$; a sublattice obtained as a union of a filter $\alpha^\uparrow $ and an ideal
@@ -713,8 +679,11 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
     \input{inputs/tikz/filter-ideal.tex}
     \draw (-.3,3.5) node {$\theta$};
     \draw (0,-1.5) node {$L_0 \leq  L$};
-    \draw (-1.8,2.5) node {$\alpha$};
-    \draw (1.5,4.5) node {$\beta$};
+    \draw (alpha) node [left] {$\alpha$};
+    \draw (beta) node [right] {$\beta$};
+    %\draw[semithick] (bottom) to [out=15, in=-15] (top) to [out=195, in=165] (bottom);
+%% \draw[semithick] 
+%% \node (theta) at (-.5,3)  [fill, circle, inner sep=.8pt] {};
   \end{tikzpicture}
 \end{center}
 

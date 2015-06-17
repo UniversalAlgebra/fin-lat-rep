@@ -1,0 +1,23 @@
+
+      \node (bot) at (0,0)  [draw, circle, inner sep=\dotsize] {};
+      \node (top) at (0,3)  [draw, circle, inner sep=\dotsize] {};
+
+      \node (a1) at (-2,1.5)  [draw, circle, inner sep=\dotsize] {};
+      \node (a2) at (-1,1.5)  [draw, circle, inner sep=\dotsize] {};
+      \node (a3) at (0,1.5)  [draw, circle, inner sep=\dotsize] {};
+      \node (b) at (0,1)  [draw, circle, inner sep=\dotsize] {};
+      \node (a4) at (1,1.5)  [draw, circle, inner sep=\dotsize] {};
+      \node (a5) at (2,1.5)  [draw, circle, inner sep=\dotsize] {};
+
+      \draw (top) node [above] {$1_X$};
+      \draw (a1) node [left] {$\alpha_1$};
+      \draw (a2) node [left] {$\alpha_2$};
+      \draw (a3) node [right] {$\alpha_3$};
+      \draw (b) node [right] {$\beta$};
+      \draw (a4) node [right] {$\alpha_4$};
+      \draw (a5) node [right] {$\alpha_5$};
+      \draw (bot) node [below] {$0_X$};
+      \draw[semithick] 
+      (bot) -- (a1) -- (top) -- (a2) --
+      (bot) -- (b) -- (a3) -- (top) -- (a4) --
+      (bot) -- (a5) -- (top);
