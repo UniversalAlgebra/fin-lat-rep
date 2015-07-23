@@ -41,11 +41,9 @@ directly from Emacs using magit.
 
 ### use magit
 
-1. Activate the magit status buffer
+1. Activate the magit status buffer with `M-x g m`.
 
-        M-x g m
-
-2. Move the point down to appropriate line in the Unstanged changes section and
+2. Move the point down to appropriate line in the `Unstanged changes` section and
    hit the `s` key.
 
 3. Type `c` `c`.
