@@ -432,7 +432,7 @@ By closure properties, we mean the following: if $\sansO$ is an operation that c
 be applied to a lattice or collection of lattices, we say that $\sL$ is
 \emph{closed under $\sansO$} provided $\sansO(\sK) \subseteq \sL$ for all 
 $\sK\subseteq \sL$. For example, if 
-$\sansS(\sK) = \{\text{all sublattices of lattices in $\sK$}\}$, 
+$\sansS(\sK)$ is all sublattices of lattices in $\sK$, 
 it is unknown whether $\sL$ is closed under $\sansS$.  
 If this were known to be true, then the 
 \emph{finite lattice representation problem} would be solved.
@@ -498,21 +498,22 @@ algebras is closed under
   It follows from this that any interval sublattice of a representable lattice is
   representable.  For, let $[\alpha, \beta] := \{\theta \in L \mid \alpha \leq
   \theta \leq \beta\}$ be an interval in the representable lattice $L= \Con\bA$.
-  Then $[\alpha, 1_A] \cong \Con \bA/\alpha$. By 1, the dual of $\ell := [\alpha, 1_A]$ is
+  Then $[\alpha, 1_A] \cong \Con \bA/\alpha$. By~(1), the dual of $[\alpha, 1_A]$ is
   representable. %say, $\ell' = \Con \bB$. 
-  Now take the filter above $\beta'$ in $\ell'$ (where $\beta'$ is the
+  Now take the filter above $\beta'$ in the dual of  $[\alpha, 1_A]$
+  (where $\beta'$ is the
   image of $\beta$ under dualization) and we obtain a representation of a
-  lattice isomorphic to the dual of $[\alpha, \beta]$.  Apply 1
+  lattice isomorphic to the dual of $[\alpha, \beta]$.  Apply~(1)
   again and we have the desired representation of $[\alpha, \beta]$.  Thus
-  2 follows from 1.
-  By the ordinal sum of two lattices $L_1, L_2$, we mean the lattice
+  (2) follows from~(1).
+  By the ordinal sum of two lattices $L_1$, $L_2$, we mean the lattice
   on the left of Figure~\ref{fig:ordinal-and-parallel}.
-  By the parallel sum of two lattices $L_1, L_2$, we mean the lattice
+  By the parallel sum of two lattices $L_1$, $L_2$, we mean the lattice
   in the middle of Figure~\ref{fig:ordinal-and-parallel}.
   %% \item[4.-5.] By the
   %%   ordinal (parallel) sum of two lattices $L_1, L_2$, we mean the lattice
   %%   on the left (middle) of Figure~\ref{fig:ordinal-and-parallel}.
-  Item 6 above is a very useful result which we will discuss it further in
+  Item (6) above is a very useful result which we will discuss it further in
   Section~\ref{sec:union-filter-ideal} below, where we present a short proof of
   this result. 
   Whether the class $\sL$ is closed under homomorphic images
@@ -529,7 +530,9 @@ dualization.
 That is, if $L$ is representable, then so is the dual of $L$. This was proved in
 1986 by Raimund Netter~\cite{Netter:1986}, generalizing the idea of his advisor,
 Hans Kurzweil~\cite{Kurzweil:1985}. 
-Though Kurzweil's article did appear (in German), it is unclear whether Netter's
+Though Kurzweil's article did appear,
+%(in German), 
+it is unclear whether Netter's
 article was ever published.
 In this section we present a proof of their result.
 The argument requires a fair bit of machinery, but it is a nice idea and
@@ -548,8 +551,9 @@ in the group $G$.  The identity of the group $G^X$ is of course the constant map
 Let $X$ be a finite totally ordered set, with order relation $\leq$,
 and consider the set $X^X$ of functions mapping $X$ into itself.  
 The subset of $X^X$ consisting of functions that are both idempotent and
-decreasing\footnote{When we say that the map $f$ is ``decreasing'' we mean
-  $f(x)\leq x$ for all $x$. (We do not mean $x\leq y$ implies $f(y) \leq f(x)$.)}
+decreasing in the sense $f(x) \leq x$
+%\footnote{When we say that the map $f$ is ``decreasing'' we mean
+%  $f(x)\leq x$ for all $x$. (We do not mean $x\leq y$ implies $f(y) \leq f(x)$.)}
 will be denoted by $\ID{X}$.  That is,
 \[
 \ID{X} = \{f\in X^X \mid f^2 = f \text{ and }\; \forall x\; f(x) \leq x\}.
@@ -559,7 +563,7 @@ Define a partial order $\sqsubseteq$ on the set $\ID{X}$ by
   \label{eq:MID111}
   f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g,
 \end{equation}
-where $\ker f = \{(x,y) \mid f(x) = f(y)\}$.
+where of course $\ker f = \{(x,y) \mid f(x) = f(y)\}$.
 It is easy to see that $f\sqsubseteq g$ holds if and only if $gf = g$.  
 Moreover, under this partial ordering $\ID{X}$ is a lattice which is 
 isomorphic to $\bEqX$ (viz.~the map $\Theta : \EqX \rightarrow
@@ -927,7 +931,7 @@ representation problems for congruence lattices, the concrete and the
 abstract.  The \emph{concrete representation problem} asks whether a specific family of
 equivalence relations on a set $A$ is equal to $\Con \bA$ for some
 algebra $\bA$ with universe $A$.  The \defn{abstract representation problem}
-asks whether a given lattice is isomorphic to $\Con \bA$ for some algebra $\bA$.
+asks whether a given lattice is isomorphic to $\Con \bA$ for some algebra~$\bA$.
 
 These two problems are closely related, and have become even more so since the
 publication in 1980 
@@ -1090,6 +1094,8 @@ $F$ is closed if and only if $F = \rho(H)$ for some $H\in \sH$.
 
 \todo{Cite Birkhoff result about every finite distributive lattice being the
   congruence lattice of a finite lattice.}
+
+\todo{We may want to omit the proof of Theorem 4.1}
 
 A lattice $\bL$ is called 
 \defn{strongly representable} 
