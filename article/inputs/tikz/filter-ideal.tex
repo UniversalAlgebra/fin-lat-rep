@@ -3,20 +3,25 @@
 %% To insert this in a document, put it inside a tikzpicture block. 
 
 %% Disjoint union of a principal filter and a principle ideal.
-\node[lat] (bottom) at (0,0) {};
-\node[lat] (top) at (0,8) {};
-\node[lat] (alpha) at (-2,3) {};
-\node[lat] (beta) at (2,5) {};
+\node[lat] (bot) at (0,0) {};
+\node[lat] (top) at (2,10) {};
+\node[lat] (alpha) at (-2,4) {};
+\node[lat] (beta) at (4,6) {};
 \draw[semithick] 
 % filter:
-(alpha) to [out=30, in=-80] (top) to [out=205, in=105] (alpha)
+(alpha) to [out=20, in=-90] (top)
+(alpha) to [out=90, in=200] (top)
 % ideal: 
-(bottom) to [out=30, in=-80] (beta) to [out=205, in=110] (bottom);
+(bot) to [out=20, in=-90] (beta)
+(bot) to [out=90, in=200] (beta);
+
 
 %% dotted lines suggest ordering of elements in distinct potatoes
 %% To remove the dotted lines, comment the next two lines:
 \draw[dotted] 
-(-1.5,4.25) to (.5,1.25) 
-(1.25,3) to (-1,6);
-\draw[dotted] (bottom) to (alpha)  (beta) to (top);
+(0.5,1) to (alpha)
+(1.5,2.5) to (-1,5.5)
+(3,4.5) to (0.5,7.5)
+(beta) to (1.5,9);
+
 
