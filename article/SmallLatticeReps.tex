@@ -468,13 +468,10 @@ The following is a list of operations under which $\sL$ is known to be closed,
 along with the names of those who first (or independently) proved them.  We
 discuss some of these results in greater detail later in this section.
 The class $\sL$ of lattices isomorphic to congruence lattices of finite
-algebras is closed under 
+algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
-\item lattice duals\footnote{Recall, the \defn{dual of a lattice} is simply the
-  lattice turned on its head, that is, the lattice obtained by
-  reversing the partial order of the original lattice.}  (Hans
-  Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
-\item interval sublattices (follows from Kurzweil-Netter),
+\item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
+\item interval sublattices (follows from~(\ref{item:1})),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
@@ -485,7 +482,6 @@ algebras is closed under
 \end{enumerate}
 \begin{center}
   \begin{figure}[h!]
-    \label{fig:ordinal-and-parallel}
     \centering
     \begin{tikzpicture}[scale=0.4]
       \input{inputs/tikz/ordinal-sum.tex}
@@ -504,16 +500,14 @@ algebras is closed under
       \draw (alpha) node [left] {$\alpha$};
       \draw (beta) node [right] {$\beta$};
     \end{tikzpicture}
-    \caption{The adjoined ordinal (left) and parallel (middle) sum of the lattices
-      $L_1$ and $L_2$; a sublattice obtained as a union of a filter
-      $\alpha^\uparrow$ and an ideal $\beta^\downarrow$ (right).}
+    \caption{The adjoined ordinal sum (left) and parallel sum (middle) 
+      of the lattices $L_1$ and $L_2$; a union of an order filter
+      $\alpha^\uparrow$ and order ideal $\beta^\downarrow$ (right).}
+    \label{fig:ord_par_fil-uni}
   \end{figure}
 \end{center}
 
 \begin{remarks}
-  %%   ~
-  %% \begin{enumerate} %[label=$\circ$]
-  %% \item  The first result says that if $L$ is representable then so is the
   \begin{enumerate}[a.]
   \item 
   The first item in the list above says that if $L$ is representable then so is
@@ -538,12 +532,9 @@ algebras is closed under
   $\lb \alpha, \beta\rb$.  Thus~(2) follows from~(1).
 
   \item By the ordinal sum of two lattices $L_1$, $L_2$, we mean the lattice
-  on the left of Figure~\ref{fig:ordinal-and-parallel}.
+  on the left of Figure~\ref{fig:ord_par_fil-uni}.
   By the parallel sum of two lattices $L_1$, $L_2$, we mean the lattice
-  in the middle of Figure~\ref{fig:ordinal-and-parallel}.
-  %% \item[4.-5.] By the
-  %%   ordinal (parallel) sum of two lattices $L_1, L_2$, we mean the lattice
-  %%   on the left (middle) of Figure~\ref{fig:ordinal-and-parallel}.
+  in the middle of Figure~\ref{fig:ord_par_fil-uni}.
 
 \item Item~(6) above is a very useful result which we will discuss further in
   Section~\ref{sec:union-filter-ideal} below, where we present a short proof of
@@ -734,13 +725,11 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 \vskip3mm
 
 \begin{center}
-  \begin{tikzpicture}[scale=.4]
+  \begin{tikzpicture}[scale=.35]
     \input{inputs/tikz/filter-ideal.tex}
     \draw (0,-1.5) node {$L_0 \leq  L$};
     \draw (alpha) node [left]{$\alpha$};
     \draw (beta) node [right]{$\beta$};
-    %% Put it inside a potato (since its a sublattice)
-    %\draw[dotted] (bottom) to [out=12.5, in=-12.5] (top) to [out=192.5, in=162.5] (bottom);
     \node (theta) at (1.6,5)  [draw,circle,inner sep=\dotsize] {};
     %\draw (-.3,3.5) node {$\theta$};
     \draw (theta) node [left]{$\theta$};
@@ -791,7 +780,7 @@ McKenzie's shift product construction~\cite{McKenzie:1984}. %, which we describe
   \label{thm:ordinal-sums}
   If $L_1, \dots, L_n \in \sL$ is a collection of representable lattices, then
   the ordinal sum and the adjoined ordinal sum, shown in
-  Figure~\ref{fig:adjordinal}, are representable.
+  Figure~\ref{fig:ord_adjord}, are representable.
 \end{theorem}
 A more direct proof of Theorem~\ref{thm:ordinal-sums} follows the argument given
 by John Snow in~\cite{Snow:2000}.  As noted above, 
@@ -806,12 +795,12 @@ $\alpha = \beta = 1_{L_1} \times 0_{L_2}$.
 Therefore, by Lemma~\ref{lemma:union-filter-ideal},
 the adjoined ordinal sum is representable.  A trivial induction argument proves the
 result for adjoined ordinal sums of $n$ lattices.  The same result for ordinal
-sums (Figure~\ref{fig:adjordinal} left) follows since the two element lattice is
+sums (Figure~\ref{fig:ord_adjord} left) follows since the two element lattice is
 obviously representable. 
 
 \begin{center}
   \begin{figure}[h!]
-    \label{fig:adjordinal}
+    \label{fig:ord_adjord}
     \centering
         {\scalefont{.8}
           \begin{tikzpicture}[scale=0.4]
@@ -828,8 +817,8 @@ obviously representable.
             \draw (0,2) node {$L_2$};
           \end{tikzpicture}
         }
-        \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of the lattices
-          $L_1, \dots, L_n$.}
+        \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of
+          the lattices $L_1, \dots, L_n$.}
   \end{figure}
 \end{center}
 
