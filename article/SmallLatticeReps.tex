@@ -15,6 +15,39 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+  @article{Aschbacher2008,
+    AUTHOR = {Aschbacher, Michael},
+     TITLE = {On intervals in subgroup lattices of finite groups},
+   JOURNAL = {J. Amer. Math. Soc.},
+  FJOURNAL = {Journal of the American Mathematical Society},
+    VOLUME = {21},
+      YEAR = {2008},
+    NUMBER = {3},
+     PAGES = {809--830},
+      ISSN = {0894-0347},
+   MRCLASS = {20D30 (06B05 46L37)},
+  MRNUMBER = {2393428 (2008m:20036)},
+MRREVIEWER = {Andrea Lucchini},
+       DOI = {10.1090/S0894-0347-08-00602-4},
+       URL = {http://dx.doi.org/10.1090/S0894-0347-08-00602-4},
+  }
+  @article{Aschbacher2013,
+    AUTHOR = {Aschbacher, Michael},
+     TITLE = {Overgroup lattices in finite groups of {L}ie type containing a
+              parabolic},
+   JOURNAL = {J. Algebra},
+  FJOURNAL = {Journal of Algebra},
+    VOLUME = {382},
+      YEAR = {2013},
+     PAGES = {71--99},
+      ISSN = {0021-8693},
+     CODEN = {JALGA4},
+   MRCLASS = {20D06 (20D30)},
+  MRNUMBER = {3034474},
+MRREVIEWER = {Nadia P. Mazza},
+       DOI = {10.1016/j.jalgebra.2013.01.034},
+       URL = {http://dx.doi.org/10.1016/j.jalgebra.2013.01.034},
+  }
   @PhdThesis{Berman:1970,
     author = 	 {Joel Berman},
     title = 	 {Congruence lattices of finite universal algebras},
@@ -22,7 +55,23 @@
     year = 	 {1970},
     url={http://db.tt/mXUVTzSr}
   }
-  @book {Dixon:1996,
+  @article{DeMeo2013},
+    AUTHOR = {DeMeo, William},
+     TITLE = {Expansions of finite algebras and their congruence lattices},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {69},
+      YEAR = {2013},
+    NUMBER = {3},
+     PAGES = {257--278},
+      ISSN = {0002-5240},
+   MRCLASS = {08A30 (06B10 08A60)},
+  MRNUMBER = {3041715},
+MRREVIEWER = {E. W. Kiss},
+       DOI = {10.1007/s00012-013-0226-3},
+       URL = {http://dx.doi.org/10.1007/s00012-013-0226-3},
+  }
+  @book{Dixon:1996,
     AUTHOR = {Dixon, John D. and Mortimer, Brian},
     TITLE = {Permutation groups},
     SERIES = {Graduate Texts in Mathematics},
@@ -65,6 +114,19 @@
   }
   @COMMENT url={http://bit.ly/HZhGWU}
   @COMMENT DOI = {10.1515/crll.1985.356.140},
+
+  @INCOLLECTION{McKenzie1983,
+    AUTHOR = 	{R. McKenzie},
+    KEY =      	{Ralph McKenzie},
+    TITLE = 	{Finite forbidden lattices},
+    EDITOR = 	{R. Freese and O. Garcia},
+    PAGES = 	{176--205},
+    BOOKTITLE = 	{Universal Algebra and Lattice Theory},
+    PUBLISHER = 	{Springer-Ver\-lag},
+    ADDRESS = 	{New York},
+    YEAR = 	{1983},
+    NOTE = 	{Lecture notes in Mathematics, vol. {\bf 1004}},
+  }
 
   @article {McKenzie:1984,
     AUTHOR = {McKenzie, Ralph},
@@ -115,6 +177,15 @@
     url={http://db.tt/DydVmisY}
   }
   @COMMENT url={http://db.tt/TjlPzYqu,http://db.tt/JMa1iksw,http://db.tt/DydVmisY}
+  @article {PalfyPudlak1980,
+    AUTHOR = 	{P. P. P\'alfy and P. Pudl\'ak},
+    TITLE = 	{Congruence lattices of finite algebras and
+  intervals in subgroup lattices of finite groups},
+    JOURNAL = 	{Algebra Universalis},
+    VOLUME = 	{11},
+    YEAR = 	{1980},
+    PAGES = 	{22--27},
+  }
   @article {Pudlak:1980,
     AUTHOR = {Pudl{\'a}k, Pavel and T{\.u}ma, Ji{\v{r}}{\'{\i}}},
     TITLE = {Every finite lattice can be embedded in a finite partition
@@ -145,6 +216,23 @@
     MRNUMBER = {0295980 (45 \#5041)},
     MRREVIEWER = {R. Balbes},
   }
+  @article{Shareshian2003,
+    AUTHOR = {Shareshian, John},
+     TITLE = {Topology of order complexes of intervals in subgroup lattices},
+   JOURNAL = {J. Algebra},
+  FJOURNAL = {Journal of Algebra},
+    VOLUME = {268},
+      YEAR = {2003},
+    NUMBER = {2},
+     PAGES = {677--686},
+      ISSN = {0021-8693},
+     CODEN = {JALGA4},
+   MRCLASS = {20D30},
+  MRNUMBER = {2009327 (2004h:20032)},
+MRREVIEWER = {Andrea Lucchini},
+       DOI = {10.1016/S0021-8693(03)00274-6},
+       URL = {http://dx.doi.org/10.1016/S0021-8693(03)00274-6},
+}
   @article {Snow:2000,
     AUTHOR = {Snow, John W.},
     TITLE = {A constructive approach to the finite congruence lattice
@@ -217,12 +305,15 @@
 %% PACKAGES
 \usepackage{amsmath,amssymb,url,mathrsfs,enumerate,ifthen,xspace}
 \usepackage{latexsym,amscd,amsthm,stmaryrd,scalefnt,color}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 %% The following will probably be removed by the journal editors:
 \usepackage[colorlinks=true,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
 %% ...but it's handy to have hyperrefs when browsing the electronic draft.
 
+%% showkeys: just comment out in the final version
+\usepackage[notref,notcite]{showkeys}
 
 %%////////////////////////////////////////////////////////////////////////////////
 %% Theorem styles
@@ -251,7 +342,7 @@
 %%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
 %% or
 %%     \node[lat] (bottom) at (0,0) {};  (see comment on the "lat" style below)
-\newcommand{\dotsize}{0.8pt}
+\newcommand{\dotsize}{1.4pt}
 %%
 %% To create nodes of lattices in a uniform and consistent way, we define
 \tikzstyle{lat} = [circle,draw,inner sep=\dotsize]
@@ -350,7 +441,7 @@
 \address{Department of Mathematics\\Iowa State University\\Ames 50010\\USA}
 \author[R. Freese]{Ralph Freese}
 \email{ralph@math.hawaii.edu}
-\urladdr{http://www.math.sc.edu/~demeow}
+\urladdr{http://www.math.hawaii.edu/~ralph/}
 \address{Department of Mathematics\\University of Hawaii\\Honolulu 96822\\USA}
 \author[P. Jipsen]{Peter Jipsen}
 \email{jipsen@chapman.edu}
@@ -360,7 +451,7 @@
 
 %///////////////////////////////////////////////////////////////////////////////////////
 %% Date
-\date{10 June 2015 (draft 1)}
+\date{10 Aug 2015 (draft 2)}
 
 %///////////////////////////////////////////////////////////////////////////////////////
 %% AMS SUBJECT CLASSIFICATION
@@ -699,10 +790,11 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 
 \vskip3mm
 
+\begin{figure}[htp]
 \begin{center}
   \begin{tikzpicture}[scale=.4]
     \input{inputs/tikz/filter-ideal.tex}
-    \draw (0,-1.5) node {$L_0 \leq  L$};
+    %\draw (0,-1.5) node {$L_0 \leq  L$};
     \draw (alpha) node [left]{$\alpha$};
     \draw (beta) node [right]{$\beta$};
     %% Put it inside a potato (since its a sublattice)
@@ -712,6 +804,8 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
     \draw (theta) node [left]{$\theta$};
   \end{tikzpicture}
 \end{center}
+\caption{$L_0 \le L_1$}
+\end{figure}
 
 \vskip3mm
 
@@ -1172,6 +1266,7 @@ and a subgroup of $S_X$.  These four fundamental monoids associated with the
 algebra $\bX$, and their relative ordering under inclusion, are shown in the diagram
 below. 
 
+\begin{figure}
 \begin{center}
   \begin{tikzpicture}[scale=.7]
     \node (Aut) at (0,0.2) [draw,circle,inner sep=1pt] {};
@@ -1188,6 +1283,8 @@ below.
     \draw[semithick,dotted]    (Aut) to (End) to (XX) to (Sx) to (Aut);
   \end{tikzpicture}
 \end{center}
+\caption{ \ }
+\end{figure}
 
 
 
@@ -1456,19 +1553,357 @@ conjugacy classes of subgroups of $G$.
 
 %% -- End groupactions.tex file insertion -------------------------------
 
-%% -- New section on representing some specific examples
+\todo{rewrite this section up to this point}
+
+%% -- New section on extending P^4
+\subsection{Extensions of the \Palfy \Pudlak Theorem}
+In \cite{PalfyPudlak1980} P.~P. \Palfy and P.~\Pudlak showed the
+following statements are equivalent:
+\begin{itemize}
+\item
+every finite lattice is representable, that is $\sL$ is all
+finite lattices;
+\item
+every finite lattice is isomorphic to an 
+interval in the subgroup lattice of some finite group.
+\end{itemize}
+They did this by giving lattice conditions which force the
+nonconstant operations of a minimal
+representation to be permutations which generate a transitive
+group $\bG$.
+By Theorem~\ref{thm:g-set-isomorphism2}
+the congruence lattice of such an algebra is isomorphic to 
+the interval $\lb G_a,G \rb$. 
+Then they showed every finite lattice could be embedded 
+as an interval into a finite lattice satisfying these conditions.
+\marginpar{is mim rep defined?}
+However their equivalence is not global: it is possible that there 
+is a representable lattice which is not isomorphic to an interval
+of the subgroup lattice of a finite group. So there are several 
+interesting questions we can ask about a finite lattice
+$\bL$:
+\begin{enumerate}
+\item\label{question1}
+Is $\bL$ representable (isomorphic to $\Con \bA$ for some finite algebra $\bA$)?
+\item\label{question2}
+If $\bL$ is representable, what is the minimum size of $\bA$ with $\bL \cong\Con \bA$?
+\item\label{question3}
+Is there a group $\bG$ of permutations on $A$ such that $\bL \cong \< A,G\>$?
+\item\label{question4}
+Is there a transitive group $\bG$ of permutations on $A$ such that $\bL \cong \< A,G\>$?
+Equivalently is $\bL$ isomorphic an interval in the subgroup lattice of a finite group
+(by Theorem~\ref{thm:g-set-isomorphism2}).
+\item\label{question5}
+If $\bL \cong \<A,G\>$ for a group $\bG$ what is the smallest such $\bG$?
+\end{enumerate}
+As we mentioned, it is possible that \eqref{question1} does not imply \eqref{question4} 
+but certainly \eqref{question4} implies \eqref{question1}. Obviously we don't have 
+an example of an $\bL$ satisfying \eqref{question1} but not~\eqref{question4}, but 
+in general representing $\bL$ 
+in the form of~\eqref{question4}
+is more difficult. For example,
+the lattices $\bL_6$ and $\bL_7$ diagrammed in Figure~\ref{fig:L6and7}
+can be represented on algebras of size~6 (and no fewer)
+but representing them with permutation groups is much harder; 
+see Aschbacher~\cite{Aschbacher2008}.
+
+\begin{figure}[htb]
+%\renewcommand{\dotsize}{1.5pt}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L6.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+  \hskip15mm
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L7.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+\end{center}
+\caption{$\bL_{6}$ and $\bL_7$}\label{fig:L6and7}
+\end{figure}
+
+
+
+Below we try to answer at least
+some of these questions for small lattices. 
+As mentioned above \Palfy and \Pudlak gave conditions on a lattice $\bL$ 
+such that if $\bL \cong \Con \<A,F\>$ then the nonconstant elements of $F$ are 
+permutations and the group they generate acts transitively on $A$. 
+These conditions are
+\begin{enumerate}[(A)]
+\item $\bL$ is simple.
+\item For each $x \ne 0$ in $L$, there are elements $y$ and $z$
+such that $x \join y = x \join z = 1$ and $y\meet z = 0$.
+\item $|L|\ne 2$ and each element of $L$ that is not an atom or $0$ contains at
+least four atoms.
+\end{enumerate}
+If (A) and (B) hold then all nonconstant elements of $F$ are permutations.
+
+Let (B$'$) and (B$''$) be the conditions related to (B) found in McKenzie's
+paper~\cite{McKenzie1983}:
+\begin{enumerate}
+\item[(B$'$)]
+If $\varphi: L \to L$ is meet-preserving and $\varphi(x) > x$ for
+$x\ne 1$, then $\varphi(x) = 1$ for all~$x$.
+\item[(B$''$)]
+The coatoms of $\bL$ meet to $0$.
+\end{enumerate}
+Note that
+\[
+\text{(B)} \implies \text{(B$''$)}  \implies \text{(B$'$)}.
+\]
+Clearly (B$''$) implies (B$'$). To see that (B) implies (B$''$),
+let $x$ be the meet of all the coatoms of $\bL$. If $x > 0$
+then applying (B) gives $y$ and $z$ each joining with $x$ to $1$.
+But $x\join y = 1$ implies $y = 1$. Similarly $z = 1$. But then
+$0 = y \meet z = 1$.
+
+
+McKenzie proves in~\cite{McKenzie1983} that, just like (A) and (B),
+(A) and (B$'$) imply that all nonconstant members of $F$ are
+permutation. We record this as a theorem.
+
+\begin{theorem}[P\'alfy-Pudl\'ak \cite{PalfyPudlak1980}, McKenzie
+\cite{McKenzie1983}]
+Let $\bL$ be finite lattice and suppose $\bL \cong \Con \<A,F\>$
+is a minimal representation. If $\bL$ satisfies \textup{(A)} and
+\textup{(B$'$)} then
+all the nonconstant members of $F$ are permutations. 
+The same conclusion obtains if 
+$\bL$ satisfies \textup{(A)} and either \textup{(B)} or
+\textup{(B$''$)}.
+\end{theorem}
+
+As we mentioned, if condition (C) is also assumed to hold then
+$F$ generates a transitive permutation group on $A$. 
+This served well for the proof of the P\'alfy-Pud\'lak Theorem. 
+But few lattices satisfy (C) so we seek something more general
+that guarentees the action is transitive. To do this we investigate 
+properites of $\Con \<A,G\>$ where $G$ is a group that acts
+intransitively on~$A$. It turns out such lattices are rather rare.
+
+\subsection{Intransitive group actions} 
+Suppose $\bA = \< A,G\>$ is a $G$-set and let $\bA_i = \<A_i, G\>$, $i < k$,
+be the minimal subalgebras of $\bA$; i.e.~each set $A_i$ is an orbit, or
+one-generated subuniverse, of $\bA$. Define congruences on $A$ by the 
+partitions
+\begin{alignat*}{2}
+\tau &= |A_0|A_1|\cdots|A_{k-1}| &&\quad\text{ (the blocks are the orbits)} \\
+\tau_i &= |A_i| &&\quad\text{ (at most one nontrivial block) }\\
+\gamma_i &= |A_i|A - A_i| &&\quad\text{ (exactly two blocks unless
+$A_i = A$) }
+\end{alignat*}
+So $(a,b) \in \tau$ if and only if they both lie in the same orbit;
+$(a,b) \in \tau_i$ if and only if $a = b$ or both lie in $A_i$;
+$(a,b) \in \gamma_i$ if and only if both lie in $A_i$ or both don't.
+We call $\tau$ the \defn{intransitivity congruence}; $G$ acts transitively
+if and only if $\tau = 1$. 
+
+\begin{theorem}\label{thm:intrans}
+Let $\bA = \<A,G\>$, where $G$ is a group, be a finite algebra. 
+Let $\tau$, $\tau_i$ and $\gamma_i$
+be the congruences defined above and let $\theta \in \Con \bA$.
+\begin{enumerate}
+\item\label{item1}
+$G$ acts transitively if and only if $\tau = 1_{\bA}$.
+\item \label{item2}
+The interval $\lb\tau,1_\bA\rb$ is isomorphic to $\operatorname{Eq}(k)$.
+\item \label{item3}
+The interval $\lb 0_\bA,\tau\rb$ is isomorphic to $\prod_{i=0}^{k-1} \Con(A_i)$.
+\item\label{item4}
+If, for some $i$, $\theta \ge \Join_{j \ne i} \tau_j$ then $\theta \ge \tau$
+or $\theta \le \gamma_i$.
+\item\label{item5}
+If $\theta\meet \tau \prec \tau$  then $\theta \le \gamma_i$ for some~$i$.
+\item\label{item6}
+If $k>1$ and $|A_i| = 1$ for all $i$ except $0$ then every coatom of $\Con \bA$
+lies above~$\tau$.
+\item\label{item7}
+If $k>1$ and $\lb 0_\bA,\tau\rb$ is directly indecomposable 
+then every coatom of $\Con \bA$ lies above~$\tau$.
+\item\label{item8}
+If $k = 2$ and $|A_1| = 1$ then $\tau$ is a coatom and 
+everything is comparable with it.
+\item\label{item9}
+If $\tau$ is a coatom and $\lb 0_\bA,\tau\rb$ is directly indecomposable
+then everything is comparable with it.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\eqref{item1} is obvious. Since $G$ acts trivially on $\bA/\tau$,
+$\Con (\bA/\tau)$ is the lattice of all partitions; that is, 
+$\operatorname{Eq}(k)$. So~\eqref{item2} holds. For~\eqref{item3},
+we map
+$(\theta_0, \ldots, \theta_{k-1}) \in \prod_{i=0}^{k-1} \Con(A_i)$
+to $\theta_0 \cup \cdots \cup \theta_{k-1}$. It is straightforward to
+to verify that this is an isomorphism into $\lb 0_\bA,\tau\rb$. The inverse
+map sends $\theta \in \lb 0_\bA,\tau\rb$ to $(\theta_0, \ldots, \theta_{k-1})$,
+where $\theta_i = \theta \cap (A_i \times A_i)$. The details are left to the reader.
+
+For~\eqref{item4} note that if 
+$\theta \not\le \gamma_i$, then
+there are elements $a \in A_i$ and $b \notin A_i$ with
+$(a,b) \in \theta$. Let $b \in A_j$. Of course $j \ne i$.
+Let $a'$ be any other element in $A_i$. Then,
+since $G$ acts transitively on $A_i$,
+there is a  $\sigma \in G$ with $\sigma(a)  = a'$. Let $b' = \sigma(b)$
+and note $b' \in A_j$ so $(b,b') \in \theta$ because $\theta \ge
+\Join_{r\ne i} \tau_r \ge \tau_j$.
+Now
+$(a',b') = (\sigma a,\sigma b) \in \theta.$
+So $(a,b)$, $(b,b')$ and $(a',b')$ are all in $\theta$. Hence
+$(a,a') \in \theta$. Since $a'$ was arbitrary, we see
+$\theta \ge \tau_i$. So $\theta \ge \tau$, as desired.
+
+\eqref{item5} follows from~\eqref{item4}. If
+$|A_i| = 1$ for $i> 0$ then $\tau_i = 0_\bA$ for these $i$'s. Hence
+$\Join_{i\ne 0} \tau_i = 0_\bA$ and the result follows
+from~\eqref{item4} again. If $\lb 0_\bA,\tau\rb$ is directly indecomposable, then,
+by~\eqref{item3}, $|A_i| = 1$ for all but at most one~$i$. So~\eqref{item7}
+follows from~\eqref{item6}.
+
+For~\eqref{item8}, that $\tau$ is a coatom follows from~\eqref{item2}. 
+By~\eqref{item6}, $\tau$ is the only coatom. The result follows from this.
+\eqref{item9} follows from~\eqref{item8}.
+\end{proof}
+
 \subsection{Examples}
 
-\subsubsection{$L_{11}$}
-\label{sec:l11}
-In this subsection, we prove that the lattice shown in the diagram below is the congruence lattice of a finite algebra.
+We give some examples showing the uses of Theorem~\ref{thm:intrans}. 
+In deciding if a lattice has a representation using an intransitive
+permutation group, we consider the possibilities for~$\tau$. 
+By \eqref{item2} of Theorem~\ref{thm:intrans} the filter above
+$\tau$ must be isomorphic to a partition lattice. In particular,
+if the lattice has no filter isomorphic to $\bM_3 \cong \operatorname{Eq}(3)$, then the 
+only candidates for $\tau$ are the coatoms. When $\tau$ is a coatom, $k = 2$
+by~\eqref{item2} and $\gamma_0 = \gamma_1 = \tau$
 
+\begin{figure}[htb]
+%\renewcommand{\dotsize}{1.5pt}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L14.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+  \hskip15mm
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L15.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+\end{center}
+\caption{$\bL_{14}$ (on the left) and $\bL_{15}$}\label{fig:L14and15}
+\end{figure}
+
+
+Consider the lattices $\bL_{14}$ and its dual $\bL_{15}$ 
+of Figure~\ref{fig:L14and15}. Since neither
+has $\bM_3$ as a filter, the only possibilities for $\tau$ are cotatoms. 
+For $\bL_{14}$ the ideals below each of the coatoms is directly 
+indecomposable so, by Theorem~\ref{thm:intrans}\eqref{item9}, 
+it cannot be represented with a nontransitive permutation group. Conditions
+(A) and (B$''$) do hold and hence a minimal representation of 
+$\bL_{14}$ must be by a transitive group. (More precisely, if
+$\bL_{14} \cong \Con \<A,F\>$ then the nonconstant members of $F$ generate 
+a transitive permutation group.) In fact the first author has shown there is a 
+subgroup $H$ of $A_6$ of index 90 so that the interval of subgroups of
+$A_6$ containing $H$ (the lattice of overgroups of $H$ in $A_6$) is $\bL_{14}$.
+Of course in this example the algebra has size 90; we do not
+know if this is the smallest example.
+
+On the other hand the leftmost coatom of $\bL_{15}$ is a candidate for 
+$\tau$ and in fact $\bL_{15}$ is the congruence of
+$\<A,F\>$ where $A = \{0,1,2,3\}$ and $F = \{f\}$ where $f$ is the double
+transposition interchanging $0$ and $1$ and also $2$ and~$3$. 
+Conditions (A) and (B$''$) hold here too so the nonconstant operations of a 
+minimal representation must be permutation. Clearly $\<A,F\>$ is the minimal
+representation.
+
+As we shall outline below, we have shown every lattice of size at most~$7$
+elements
+is representable with only one possible exception: $\bL_{10}$ diagrammed 
+in Figure~\ref{fig:L10}.
+
+\begin{figure}[htb]
+%\renewcommand{\dotsize}{1.5pt}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L10.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+\end{center}
+\caption{$\bL_{10}$}\label{fig:L10}
+\end{figure}
+
+This lattice cannot be represented using an intransitive permutation group. 
+By Theorem~\ref{thm:intrans}\eqref{item9}, $\tau$ cannot be the leftmost or rightmost
+coatom. Suppose $\tau$ is the middle coatom.  
+As mentioned above this implies
+$\gamma_0 = \gamma_1 = \tau$. Letting $\theta$ be the rightmost coatom we 
+see that \eqref{item5} is violated. 
+$\bL_{10}$ satisfies (A) and (B$''$) and thus a minimal representation, if one 
+exists, must be by a transitive permutation group.
+
+Using techniques similar to those above, one can show that,
+except for $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
+$\bL_{19}$, and $\bL_{34}$,  none of the lattices 
+$\bL_i$, $i = 1,\ldots, 35$, diagrammed  below can be 
+represented with an intransitive permutation group. 
+We do not know if $\bL_{19}$ has an intransitive representation but each of the 
+other exceptions do. 
+The four element algebra given for $\bL_5$ in the diagram 
+is minimal but not a group action. Nevertheless,
+for $A$ of size six the operations $(1,2,0,4,5,3)$ and $(0,1,2,3,5,4)$ do give
+a represntation by an intransitive group.
+\marginpar{Figure out if $\bL_{19}$ has an intransitive rep!} 
+
+In \cite{Shareshian2003} John Shareshian gave a class of finite lattices that
+he conjectured could not be represented as intervals in subgroup lattices.
+They are easy to describe. Let $m_1 \ge \cdots \ge m_t \ge 3$ with $t> 1$.
+Take the $t$ lattices of subsets of sets of sizes $m_i$, $i=1,\ldots,t$, remove
+the least and greatest element of each, line them up side by side, and add
+a new least and greatest element. While this conjecture is still open, much
+progress has been made, primarily by Aschbacher; see~\cite{Aschbacher2013}.
+For example, the problem has been reduced to almost simple groups.
+
+
+Arguments similar to those for $\bL_{10}$
+show that none of these lattices can be represented with an intransitive
+permutation group. They also satisfy (A) and (B$''$) so a minimal representation,
+if it exists, must be with a transitive group. Hence if any of
+Shareshian's lattices cannot be represented as an interval in a finite group,
+then that lattice has no (finite) representation at all.
+
+
+
+
+
+%% -- New section on representing some specific examples
+
+
+%\subsubsection{$L_{11}$}
+%\label{sec:l11}
+
+Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11}. Again we
+can use Theorem~\ref{thm:intrans}\eqref{item9} to show that it cannot
+be represented using an intransitive permutation group. However (A) and
+(B$'$) do not hold so we cannot conclude that a minimal representation
+is by a transitive permutation group. Nevertheless, with some help from
+\gap, we are able to show that it can be represented as an interval
+in the lattice of subgroups of a group. We do not know if this is the
+smallest representation.
+
+
+\begin{figure}[htb]
 \begin{center}
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L3.tex}
     %    \draw (bottom) node [right]{$L_{11}$};
   \end{tikzpicture}
 \end{center}
+\caption{$\bL_{11}$}\label{fig:L11}
+\end{figure}
 
 %% \begin{tikzpicture}
 %% [scale=2, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
@@ -1480,7 +1915,7 @@ In this subsection, we prove that the lattice shown in the diagram below is the 
 %% \node(1) at (0.33,-0.33)[e]{};
 %% \node(0) at (-0.33,-1)[e]{};
 %% \node at (0,1.5){};
-%% \draw(5)--(6)--(4)--(1)--(3)--(5)--(2)--(0)--(1);
+%% \draw(5)--(6)--(4)--(1)--(3)--(5)--(2)--(0)--(1;)
 %% \end{tikzpicture}
 
 We start with the group representation of the pentagon as the upper
@@ -1506,8 +1941,9 @@ $\Sub[G]$ is the congruence lattice of an algebra. Therefore, if there is a mini
 subgroup $K$ ($1 \prec K \leq G$) that is below $\beta$, but not below 
 $\alpha$ or $\gamma$, then lattice $L_{11}$ is the 
 union of the ideal $\lb 1, K\rb$ and the filter $\lb H, G\rb$.
-This portion of $\Sub[G]$ is shown here:
+This portion of $\Sub[G]$ is shown here: 
 
+\begin{figure}
 \begin{center}
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L3.tex}
@@ -1521,6 +1957,8 @@ This portion of $\Sub[G]$ is shown here:
     \draw (bottom) node [right]{$1_G$};
   \end{tikzpicture}
 \end{center}
+\caption{ \ }
+\end{figure}
 
 Luckily, there is
 such a subgroup $K$. We can check this fact using \gap, as we now describe.
