@@ -1868,18 +1868,55 @@ see that \eqref{item5} is violated.
 $\bL_{10}$ satisfies (A) and (B$''$) and thus a minimal representation, if one 
 exists, must be by a transitive permutation group.
 
-Using techniques similar to those above, one can show that,
-except for $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
-$\bL_{19}$, and $\bL_{34}$,  none of the lattices 
-$\bL_i$, $i = 1,\ldots, 35$, diagrammed  below can be 
-represented with an intransitive permutation group. 
-We do not know if $\bL_{19}$ has an intransitive representation but each of the 
-other exceptions do. 
-The four element algebra given for $\bL_5$ in the diagram 
-is minimal but not a group action. Nevertheless,
-for $A$ of size six the operations $(1,2,0,4,5,3)$ and $(0,1,2,3,5,4)$ do give
-a represntation by an intransitive group.
-\marginpar{Figure out if $\bL_{19}$ has an intransitive rep!} 
+In Figure~XXXX below all nondistributive lattices
+of size 7 or less which are not an ordinal sum are diagrammed. 
+Very few of these can have a representation using a nontransitive
+group. The lattices $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
+and $\bL_{34}$ can be represented with an intransitive group. 
+The algebra given in the figure for $\bL_5$ is a minimal 
+representation and does not generate a group. But it does 
+have an intranstive representation on a six element set with
+the operations $(1,2,0,4,5,3)$ and $(0,1,2,3,5,4)$. 
+
+Using techniques similar to those above, one
+can prove that all of the remaining lattices cannot
+have a represnetation with an intransitive group.
+The one difficult case is $\bL_{19}$ of Figure~\ref{fig:L19}.
+Lemma~\ref{lemma:complements} below covers this case.
+
+\begin{figure}[htb]
+%\renewcommand{\dotsize}{1.5pt}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L19.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+\end{center}
+\caption{$\bL_{19}$}\label{fig:L19}
+\end{figure}
+
+\begin{lemma}\label{lemma:complements}
+Let $\bA = \<A,G\>$ be a finite algebra, where
+$G$ is an instransitive group of permutations on $A$.
+Suppose the intransitivity congruence $\tau$ is a coatom.
+Then there do not exist congruences
+$0_\bA < \psi < \theta$ in $\Con \bA$
+with $\theta \meet \tau = 0_\bA$. 
+\end{lemma}
+
+\begin{proof}
+Since $\tau$ is a coatom, there are exactly two orbits; call
+them $B$ and $C$. Since $\theta \meet \tau = 0_\bA$, if
+$(x,y) \in \theta$ then $x=y$ or one is in $B$ and the other
+is in $C$. So $\theta$ defines a bipartite graph between
+$B$ and $C$. Since $G$ acts transitively on both $B$ and $C$,
+this graph corresponds to a bijection between $B$ and $C$. 
+The same applies to $\psi$. But equivalence relations
+corresponding to such graphs cannot be comparable.
+\end{proof}
+
+
+
 
 In \cite{Shareshian2003} John Shareshian gave a class of finite lattices that
 he conjectured could not be represented as intervals in subgroup lattices.
