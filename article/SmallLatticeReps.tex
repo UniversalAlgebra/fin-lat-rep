@@ -446,7 +446,7 @@ MRREVIEWER = {Andrea Lucchini},
 \author[P. Jipsen]{Peter Jipsen}
 \email{jipsen@chapman.edu}
 \urladdr{http://www1.chapman.edu/~jipsen/}
-\address{School of Comutational Sciences\\Chapman University\\Orange 92866\\USA}
+\address{School of Computational Sciences\\Chapman University\\Orange 92866\\USA}
 
 
 %///////////////////////////////////////////////////////////////////////////////////////
@@ -512,6 +512,26 @@ Throughout this paper, we use $\sL$ to denote the class of finite lattices that
 are isomorphic to congruence lattices of finite algebras. 
 We call the lattices that belong to $\sL$ \emph{representable} lattices. 
 
+Let $L$ be a lattice and suppose $\alpha$ and $\beta$ belong to $L$.  
+We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all elements in $L$
+that lie above $\alpha$ and below $\beta$.  
+That is, 
+$\lb \alpha, \beta \rb = 
+\{\theta \in L \mid \alpha \leq \theta \text{ and } \theta \leq \beta\}$.
+(If $\alpha \nleq \beta$, then $\lb \alpha, \beta \rb = \emptyset$.)
+
+For a lattice (or, more generally, a partially ordered set) 
+$L$, the \emph{dual} of $L$, denoted
+$L'$, is the lattice (poset) with the inverse order. That is, 
+$x \leq y$ holds in $L$ if and only if $y \leq x$ holds in $L'$. 
+The dual of $L$ can be depicted by flipping the Hasse diagram
+for $L$ upside down. 
+In a broader sense, two lattices (posets) are also said to be duals if they are
+dually isomorphic.
+Although we often denote the dual of $L$ by $L'$, on some occasions it is more
+convenient to use an operator notation, such as $\partial L$, to denote the dual of
+$L$. 
+
 %%%%%%%%%%%%%%%%%  METHODSOVERVIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Closure properties of the class of representable lattices}
@@ -539,13 +559,10 @@ The following is a list of operations under which $\sL$ is known to be closed,
 along with the names of those who first (or independently) proved them.  We
 discuss some of these results in greater detail later in this section.
 The class $\sL$ of lattices isomorphic to congruence lattices of finite
-algebras is closed under 
+algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
-\item lattice duals\footnote{Recall, the \defn{dual of a lattice} is simply the
-  lattice turned on its head, that is, the lattice obtained by
-  reversing the partial order of the original lattice.}  (Hans
-  Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
-\item interval sublattices (follows from Kurzweil-Netter),
+\item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
+\item interval sublattices (follows from~(\ref{item:1})),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
@@ -556,7 +573,6 @@ algebras is closed under
 \end{enumerate}
 \begin{center}
   \begin{figure}[h!]
-    \label{fig:ordinal-and-parallel}
     \centering
     \begin{tikzpicture}[scale=0.4]
       \input{inputs/tikz/ordinal-sum.tex}
@@ -575,40 +591,49 @@ algebras is closed under
       \draw (alpha) node [left] {$\alpha$};
       \draw (beta) node [right] {$\beta$};
     \end{tikzpicture}
-    \caption{The adjoined ordinal (left) and parallel (middle) sum of the lattices
-      $L_1$ and $L_2$; a sublattice obtained as a union of a filter
-      $\alpha^\uparrow $ and an ideal $\beta^\downarrow$ (right).}
+    \caption{The adjoined ordinal sum (left) and parallel sum (middle) 
+      of the lattices $L_1$ and $L_2$; a union of an order filter
+      $\alpha^\uparrow$ and order ideal $\beta^\downarrow$ (right).}
+    \label{fig:ord_par_fil-uni}
   \end{figure}
 \end{center}
 
 \begin{remarks}
-  %%   ~
-  %% \begin{enumerate} %[label=$\circ$]
-  %% \item  The first result says that if $L$ is representable then so is the
-  The first item in the list above says that if $L$ is representable then so is the dual of $L$. 
-  It follows from this that any interval sublattice of a representable lattice is
-  representable.  For, let $[\alpha, \beta] := \{\theta \in L \mid \alpha \leq
-  \theta \leq \beta\}$ be an interval in the representable lattice $L= \Con\bA$.
-  Then $[\alpha, 1_A] \cong \Con \bA/\alpha$. By~(1), the dual of $[\alpha, 1_A]$ is
-  representable. %say, $\ell' = \Con \bB$. 
-  Now take the filter above $\beta'$ in the dual of  $[\alpha, 1_A]$
-  (where $\beta'$ is the
-  image of $\beta$ under dualization) and we obtain a representation of a
-  lattice isomorphic to the dual of $[\alpha, \beta]$.  Apply~(1)
-  again and we have the desired representation of $[\alpha, \beta]$.  Thus
-  (2) follows from~(1).
-  By the ordinal sum of two lattices $L_1$, $L_2$, we mean the lattice
-  on the left of Figure~\ref{fig:ordinal-and-parallel}.
+  \begin{enumerate}[a.]
+  \item 
+  The first item in the list above says that if $L$ is representable then so is
+  the dual of $L$. It follows from this that every interval sublattice of a
+  representable lattice is also representable.  
+  Indeed, suppose $L$ is representable, say, $L\cong \bar{L} =\Con\bA$.
+  Let $\lb \alpha, \beta \rb$ be an interval sublattice of $L$,
+  and $\lb \bar{\alpha}, \bar{\beta} \rb$ the corresponding  
+  interval of $\bar{L}$.
+  For ease of notation, let's rename $\bar{\alpha}$ and $\bar{\beta}$, dropping
+  the bars.  Thus $\lb \alpha, \beta \rb$ is the interval of interest and we
+  assume $\lb \alpha, \beta \rb\leq \Con \bA$.
+  The filter $\alpha^\uparrow =\lb \alpha, 1_A \rb$ 
+  is isomorphic to $\Con (\bA/\alpha)$, hence representable, so
+  by~(1) the dual $\partial (\alpha^\uparrow)=\lb 1_A', \alpha'\rb$ is also
+  representable. (Here $x'$ denotes the image of $x$ under dualization.)
+  Another quotient (this time by $\beta'$) gives a representation of
+  the interval $\lb \beta', \alpha'\rb$ above $\beta'$ in 
+  $\partial (\alpha^\uparrow)$. 
+  Since $\lb \beta', \alpha' \rb$  is the dual of $\lb \alpha, \beta \rb$, 
+  we apply~(1) once more to obtain the desired representation of 
+  $\lb \alpha, \beta\rb$.  Thus~(2) follows from~(1).
+
+  \item By the ordinal sum of two lattices $L_1$, $L_2$, we mean the lattice
+  on the left of Figure~\ref{fig:ord_par_fil-uni}.
   By the parallel sum of two lattices $L_1$, $L_2$, we mean the lattice
-  in the middle of Figure~\ref{fig:ordinal-and-parallel}.
-  %% \item[4.-5.] By the
-  %%   ordinal (parallel) sum of two lattices $L_1, L_2$, we mean the lattice
-  %%   on the left (middle) of Figure~\ref{fig:ordinal-and-parallel}.
-  Item (6) above is a very useful result which we will discuss it further in
+  in the middle of Figure~\ref{fig:ord_par_fil-uni}.
+
+\item Item~(6) above is a very useful result which we will discuss further in
   Section~\ref{sec:union-filter-ideal} below, where we present a short proof of
-  this result. 
-  Whether the class $\sL$ is closed under homomorphic images
+  this fact.
+
+\item Whether the class $\sL$ is closed under homomorphic images
   seems to be an open question. 
+  \end{enumerate}
 \end{remarks}
 
 %%%%%%%%%%%%%%%%%%  METHODSINDETAIL  %%%%%%%%%%%%%%%%%%%%%%%
@@ -691,7 +716,7 @@ $K_f = \{(x_{0}, x_{0}, x_2, x_3, x_2) \mid x\in S^5\}$.
 \begin{lemma}
   \label{lem:latt-duals}
   The map $f \mapsto K_f$ is a dual lattice isomorphism from $\bEq(n)$ onto the
-  interval sublattice $[D, S^n] \leq \Sub(S^n)$.
+  interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
 \end{lemma}
 \begin{proof}
   This is clear since $\ID{n}$ is ordered by (\ref{eq:MID111}), and 
@@ -715,7 +740,7 @@ $K_f = \{(x_{0}, x_{0}, x_2, x_3, x_2) \mid x\in S^5\}$.
   and let $D$ be the diagonal subgroup of $S^n$.
   Then the unary algebra $\<S^n/D, S^n\>$  is a transitive $S^n$-set which (by
   Theorem~\ref{thm:g-set-isomorphism2} below) has congruence lattice isomorphic
-  to the interval $[D, S^n]$.  By Lemma~\ref{lem:latt-duals}, this is the dual
+  to the interval $\lb D, S^n\rb$.  By Lemma~\ref{lem:latt-duals}, this is the dual
   of the lattice $\bEq(n)$.  That is, 
   $\Con \<S^n/D, S^n\> \cong (\bEq(n))'$.
 
@@ -738,7 +763,7 @@ $K_f = \{(x_{0}, x_{0}, x_2, x_3, x_2) \mid x\in S^5\}$.
   $\hat{F} = \{\hat{\phi} \mid \phi \in F\}$ to $\<S^n/D, S^n\>$, yielding the
   new algebra  $\<S^n/D, S^n \cup \hat{F}\>$, and observe
   that a congruence $\theta \in \Con\<S^n/D, S^n\>$ remains a congruence of
-  $\<S^n/D, S^n \cup \hat{F}\>$ if and only if it correponds to a partition on
+  $\<S^n/D, S^n \cup \hat{F}\>$ if and only if it corresponds to a partition on
   $n$ that is invariant under $F$.
 \end{proof}
 
@@ -792,13 +817,11 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 
 \begin{figure}[htp]
 \begin{center}
-  \begin{tikzpicture}[scale=.4]
+  \begin{tikzpicture}[scale=.35]
     \input{inputs/tikz/filter-ideal.tex}
     %\draw (0,-1.5) node {$L_0 \leq  L$};
     \draw (alpha) node [left]{$\alpha$};
     \draw (beta) node [right]{$\beta$};
-    %% Put it inside a potato (since its a sublattice)
-    %\draw[dotted] (bottom) to [out=12.5, in=-12.5] (top) to [out=192.5, in=162.5] (bottom);
     \node (theta) at (1.6,5)  [draw,circle,inner sep=\dotsize] {};
     %\draw (-.3,3.5) node {$\theta$};
     \draw (theta) node [left]{$\theta$};
@@ -851,7 +874,7 @@ McKenzie's shift product construction~\cite{McKenzie:1984}. %, which we describe
   \label{thm:ordinal-sums}
   If $L_1, \dots, L_n \in \sL$ is a collection of representable lattices, then
   the ordinal sum and the adjoined ordinal sum, shown in
-  Figure~\ref{fig:adjordinal}, are representable.
+  Figure~\ref{fig:ord_adjord}, are representable.
 \end{theorem}
 A more direct proof of Theorem~\ref{thm:ordinal-sums} follows the argument given
 by John Snow in~\cite{Snow:2000}.  As noted above, 
@@ -866,12 +889,12 @@ $\alpha = \beta = 1_{L_1} \times 0_{L_2}$.
 Therefore, by Lemma~\ref{lemma:union-filter-ideal},
 the adjoined ordinal sum is representable.  A trivial induction argument proves the
 result for adjoined ordinal sums of $n$ lattices.  The same result for ordinal
-sums (Figure~\ref{fig:adjordinal} left) follows since the two element lattice is
+sums (Figure~\ref{fig:ord_adjord} left) follows since the two element lattice is
 obviously representable. 
 
 \begin{center}
   \begin{figure}[h!]
-    \label{fig:adjordinal}
+    \label{fig:ord_adjord}
     \centering
         {\scalefont{.8}
           \begin{tikzpicture}[scale=0.4]
@@ -888,8 +911,8 @@ obviously representable.
             \draw (0,2) node {$L_2$};
           \end{tikzpicture}
         }
-        \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of the lattices
-          $L_1, \dots, L_n$.}
+        \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of
+          the lattices $L_1, \dots, L_n$.}
   \end{figure}
 \end{center}
 
@@ -2687,7 +2710,7 @@ algebra of size 180 (W. DeMeo)\end{tabular}};
 (1,0,3,2,5,4,7,6,9,8,11,10)\\
 (4,7,5,6,8,11,9,10,0,3,1,2)\\
 (0,0,0,0,5,5,5,5,10,10,10,10)\\
-(W. Demeo, filter-ideal in Sub$(A_4)$)\end{tabular}};
+(W. DeMeo, filter-ideal in Sub$(A_4)$)\end{tabular}};
 \node at (0,1.5){};
 \draw(5)--(6);
 \draw(4)--(6);
