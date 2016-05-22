@@ -1141,7 +1141,7 @@ For $H\subseteq X^X$ define
 \[
 \rho(H) = \{\theta \in \Eq X \mid   (\forall h\in H) \; h(\theta) \subseteq \theta\}.
 \]
-The map $\rho \lambda$ is a \defn{closure operator} on $\Sub[\Eq X]$.
+The map $\rho \lambda$ is a \defn{closure operator} on $\Sub(\Eq X)$.
 That is, $\rho \lambda$ is
 \begin{itemize}
 \item \emph{idempotent:}\footnote{In fact, $\rho \lambda \rho = \rho$ and 
@@ -1953,28 +1953,26 @@ progress has been made, primarily by Aschbacher; see~\cite{Aschbacher2013}.
 For example, the problem has been reduced to almost simple groups.
 
 
-Arguments similar to those for $\bL_{10}$
-show that none of these lattices can be represented with an intransitive
-permutation group. They also satisfy (A) and (B$''$) so a minimal representation,
-if it exists, must be with a transitive group. Hence if any of
-Shareshian's lattices cannot be represented as an interval in a finite group,
-then that lattice has no (finite) representation at all.
-
-
-
-
+Arguments similar to those used above to analyze $\bL_{10}$
+also show that a minimal representation of one of Shareshian's
+lattices could not come from an \emph{intransitive} permutation group.
+This is because such lattices satisfy conditions (A) and (B$''$),
+so a minimal representation, if it exists, would have to be
+the congruence lattice of a transitive $G$-set.
+Hence, if one of Shareshian's lattices does not occur as an
+interval in the subgroup lattice of a finite group, then that lattice has
+no finite representation at all.
 
 %% -- New section on representing some specific examples
-
 
 %\subsubsection{$L_{11}$}
 %\label{sec:l11}
 
-Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11}. Again we
-can use Theorem~\ref{thm:intrans}\eqref{item9} to show that it cannot
-be represented using an intransitive permutation group. However (A) and
-(B$'$) do not hold so we cannot conclude that a minimal representation
-is by a transitive permutation group. Nevertheless, with some help from
+Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11}. Again, we
+can use Theorem~\ref{thm:intrans}\eqref{item9} to show that it's not possible to
+represent $\bL_{11}$ using be represented using an intransitive permutation group. However (A) and
+(B$'$) do not hold in this case, so we cannot conclude that a minimal representation
+must come from a transitive permutation group. Nevertheless, with some help from
 \gap, we are able to show that it can be represented as an interval
 in the lattice of subgroups of a group. We do not know if this is the
 smallest representation.
@@ -1986,22 +1984,20 @@ smallest representation.
     \input{inputs/tikz/L3.tex}
     %    \draw (bottom) node [right]{$L_{11}$};
   \end{tikzpicture}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L3.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+    \draw (mp) node [left]{$\alpha$};
+    \draw (02) node [left]{$\beta$};
+    \draw (22) node [right]{$\gamma$};
+    \draw (11) node [right]{$H$};
+    \draw (n11) node [left]{$K$};
+    \draw (top) node [right]{$G$};
+    \draw (bottom) node [right]{$1_G$};
+  \end{tikzpicture}
 \end{center}
 \caption{$\bL_{11}$}\label{fig:L11}
 \end{figure}
-
-%% \begin{tikzpicture}
-%% [scale=2, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-%% \node(6) at (0.33,1)[e]{};
-%% \node(5) at (-0.33,0.33)[e]{};
-%% \node(4) at (1,0.33)[e]{};
-%% \node(3) at (0,0)[e]{};
-%% \node(2) at (-1,-0.33)[e]{};
-%% \node(1) at (0.33,-0.33)[e]{};
-%% \node(0) at (-0.33,-1)[e]{};
-%% \node at (0,1.5){};
-%% \draw(5)--(6)--(4)--(1)--(3)--(5)--(2)--(0)--(1;)
-%% \end{tikzpicture}
 
 We start with the group representation of the pentagon as the upper
 interval $\lb H, G\rb$ 
@@ -2011,39 +2007,23 @@ quaternion group of order 8, and {\tt :} denotes the usual semidirect product.
 We let $\alpha \prec \beta$ and $\gamma$ denote the three
 subgroups inside the pentagon $\lb H, G \rb$, as shown in the diagram below.  
 
-%% \begin{center}
-%%   \begin{tikzpicture}[scale=1]
-%%     \input{inputs/tikz/PentagonForL11.tex}
-%%     \draw (mp) node [right]{$\alpha$};
-%%     \draw (02) node [left]{$\beta$};
-%%     \draw (22) node [right]{$\gamma$};
-%%     \draw (11) node [below]{$H$};
-%%     \draw (top) node [above]{$G$};
-%%   \end{tikzpicture}
-%% \end{center}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/PentagonForL11.tex}
+    \draw (mp) node [left]{$\alpha$};
+    \draw (02) node [left]{$\beta$};
+    \draw (22) node [right]{$\gamma$};
+    \draw (11) node [below]{$H$};
+    \draw (top) node [above]{$G$};
+  \end{tikzpicture}
+\end{center}
 The entire subgroup lattice
-$\Sub[G]$ is the congruence lattice of an algebra. Therefore, if there is a minimal
+$\Sub(G)$ is the congruence lattice of an algebra. Therefore, if there is a minimal
 subgroup $K$ ($1 \prec K \leq G$) that is below $\beta$, but not below 
 $\alpha$ or $\gamma$, then lattice $L_{11}$ is the 
 union of the ideal $\lb 1, K\rb$ and the filter $\lb H, G\rb$.
-This portion of $\Sub[G]$ is shown here: 
+%% This portion of $\Sub(G)$ is shown here: 
 
-\begin{figure}
-\begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L3.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-    \draw (mp) node [right]{$\alpha$};
-    \draw (02) node [left]{$\beta$};
-    \draw (22) node [right]{$\gamma$};
-    \draw (11) node [right]{$H$};
-    \draw (n11) node [left]{$K$};
-    \draw (top) node [above]{$G$};
-    \draw (bottom) node [right]{$1_G$};
-  \end{tikzpicture}
-\end{center}
-\caption{ \ }
-\end{figure}
 
 Luckily, there is
 such a subgroup $K$. We can check this fact using \gap, as we now describe.
@@ -2117,6 +2097,60 @@ Next, we make the following definitions
 A:=intHG.subgroups[1];  B:=intHG.subgroups[3];  C:=intHG.subgroups[2];
 \end{verbatim}
 }
+
+\subsection{Minimal Representations}
+In this section we consider what it means to say that
+a congruence lattice representation of a finite lattice is in some sense
+\emph{minimal}.
+It seems most natural to say that a representation $\Con \bA \cong \bL$
+is a \defn{minimal representation of} $\bL$ if the size
+$|A|$ of the universe of $\bA$ as small as possible. That is, we have a proof
+that no representation on a smaller algebra is possible.
+
+There is, however, a separate notion of smallness of a representation that might
+be worth considering.  Suppose we know that a lattice $\bL$ is representable as
+an upper interval in the subgroup lattice of a finite.  We could ask, ``what is
+the smallest group $G$ such that $\bL \cong \lb H, G \rb$ for some $H\leq G$?''
+However, a more relevant question might be, ``what is the smallest number $n$
+such that there are finite groups $H\leq G$ with index $n = [G:H]$ and 
+satisfying $\bL \cong \lb H, G \rb$?''  The reason this question seems more
+natural is obvious. The resulting algebra that represents $\bL$ is the group
+$G$ acting on the set of cosets of $H$, and this algebra has $n = [G:H]$
+elements.  In this context, the index seems more relevant that the size of the
+group $G$.
+
+Now suppose we find that $G$ is the smallest group in whose subgroup lattice
+$\bL$ appears as an upper interval. It is possible that there is a larger group
+in whose subgroup lattice $\bL$ appears, but with a smaller index.
+Here is an example of this phenomenon.
+
+\begin{figure}
+\caption{Transitive G-set congruence lattices in Eq(10)}
+\label{fig:10}
+\begin{center}
+\begin{tikzpicture}[scale=.5]
+\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
+\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\draw[font=\scriptsize] (0,-.5) node {[C2, C3 x S3]};
+\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(9,4) };
+\draw[semithick]
+(0) to (1)
+(0) to (2)
+(1) to (3)
+(2) to (3);
+\end{tikzpicture}
+\begin{tikzpicture}[scale=.5]
+\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
+\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\draw[font=\scriptsize] (0,-.5) node {[1, C10]};
+\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(10,1) };
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 \todo{complete this section}
 
