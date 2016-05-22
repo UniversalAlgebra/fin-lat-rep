@@ -390,10 +390,12 @@ MRREVIEWER = {Andrea Lucchini},
 %% Define some acronyms
 \acrodef{flrp}[FLRP]{finite lattice representation problem}
 \acrodef{gap}[GAP]{GAP}
+\acrodef{xgap}[XGAP]{XGAP}
 
 %% To make frequently used acronyms easier to type:
 \newcommand{\flrp}{\ac{flrp}\xspace}
 \newcommand{\gap}{\acs{gap}\xspace}
+\newcommand{\xgap}{\acs{xgap}\xspace}
 
 
 
@@ -2029,7 +2031,7 @@ Luckily, there is
 such a subgroup $K$. We can check this fact using \gap, as we now describe.
 A search of the \gap Library of Small Groups finds that the 153rd
 isomorphism class of groups of order 216---that is, the group 
-returned by the function call {\tt SmallGroup( 216, 153 )}---has 
+returned by the function call {\tt SmallGroup( 216, 153 )}, which happens to have
 structure description $((C_3 \times C_3) : Q_8) : C_3$.
 Upon inspection of the conjugacy classes of subgroups of this group, we 
 find that the representative of the 8th class is a suitable candidate for 
@@ -2065,26 +2067,25 @@ the subgroups $K$ that lie strictly between $H$ and $G$, that is, $H < K < G$,
 and the {\tt inclusions} field indicates the covering
 relations among the subgroups.
 \gap uses indices $0, 1, \dots, 4$ to label the subgroups 
-in $\lb H, G\rb$, and %% the correspondence is given in the following table:
+in $\lb H, G\rb$, and the correspondence is given in the following table:
 
-%% \begin{center}
-%% \begin{tabular}{r|l}
-%% %0 & 1 & 2 & 3 & 4\\
-%% 0 & H \\
-%% \hline
-%% 1 & Group([ f1, f4, f5*f6 ])\\
-%% \hline
-%% 2 & Group([ f1, f2, f3*f4, f4 ])\\ 
-%% \hline
-%% 3 & Group([ f1, f4, f5, f6 ]) \\ 
-%% \hline
-%% 4 & G
-%% \end{tabular}
-%% \end{center}
+\begin{center}
+\begin{tabular}{r|l}
+%0 & 1 & 2 & 3 & 4\\
+0 & H \\
+\hline
+1 & Group([ f1, f4, f5*f6 ])\\
+\hline
+2 & Group([ f1, f2, f3*f4, f4 ])\\ 
+\hline
+3 & Group([ f1, f4, f5, f6 ]) \\ 
+\hline
+4 & G
+\end{tabular}
+\end{center}
 
-%% \noindent 
-%% T
-in the {\tt inclusions} field the entry {\tt [ 1, 3 ]}, for example, indicates that 
+\noindent 
+In the {\tt inclusions} field the entry {\tt [ 1, 3 ]}, for example, indicates that 
 {\tt Group([ f1, f4, f5*f6 ])} is a maximal subgroup of 
 {\tt Group([ f1, f4, f5, f6 ])}.
 Therefore, the \gap output above shows that the interval 
@@ -2097,6 +2098,141 @@ Next, we make the following definitions
 A:=intHG.subgroups[1];  B:=intHG.subgroups[3];  C:=intHG.subgroups[2];
 \end{verbatim}
 }
+Here, {\tt A} $<$ {\tt B} are the comparable generators of the pentagon
+and {\tt C} is the incomparable generator.
+
+Next we consider the conjugacy classes of the subgroups of $B$
+(using the \gap command {\tt ccsgB:=ConjugacyClassesSubgroups(B);}).
+By looking at the subgroup lattice in \xgap, we notice that 
+there is a conjugacy class of subgroups of {\tt B} containing six
+subgroups each of index 72 in {\tt G} (order 3), and the subgroups
+in this class are not subgroups of {\tt A} or {\tt C}.
+
+{\small 
+\begin{verbatim}
+List(ccsgB, x->Size((x)));
+# returns [ 1, 9, 1, 3, 3, 6, 3, 9, 9, 1, 1, 2, 1, 3, 1, 1 ]
+List(ccsgB, x->Order(Representative(x)));
+# returns [ 1, 2, 3, 3, 3, 3, 6, 6, 6, 9, 9, 9, 18, 18, 27, 54 ]
+\end{verbatim}
+}
+Thus the only conjugacy class of size 6 whose elements 
+have order 3 is the sixth class.  So let
+{\tt K:=Representative(ccsgB[6]);}.
+Note that K is a minimal subgroup since $|K|=3$.  Finally,
+check that K is a subgroup of B, and not a subgroup of A or C:
+{\small 
+\begin{verbatim}
+IsSubgroup(A,K);  # returns false
+IsSubgroup(B,K);  # returns true
+IsSubgroup(C,K);  # returns false
+\end{verbatim}
+}
+This shows lattice PJ11 is representable on a set of size 216.
+In this example, where $\lb H,G \rb$ is the pentagon, the index is $\lb G:H \rb=36$.  
+
+Now, there might be a nontrivial subgroup $M < H$ such that in the interval
+$\lb M, G \rb$ there is a union of a filter and ideal in $\Sub(G)$ that is isomorphic to
+$\bL_{11}$. This would give us a representation of $\bL_{11}$ on smaller set than 216.
+Indeed, looking at the subgroup lattice of $G$ in \xgap, we see that, 
+$H$ has only two nontrivial proper subgroups.  These are
+
+{\small 
+\begin{verbatim}
+M1:=Representative(ccsgB[2]);
+M2:=Representative(ccsgB[4]);
+IsSubgroup(H,Representative(ccsgB[2]));  # returns true
+IsSubgroup(H,Representative(ccsgB[4]));  # returns true
+\end{verbatim}
+}
+We need to find a subgroup that covers one of these two subgroups
+and is not below $A$ or $C$.
+{\small 
+\begin{verbatim}
+intM1B:=IntermediateSubgroups(B,M1);
+# returns 
+#  rec( 
+#    subgroups := [ 
+#      Group([ f4, f5 ]), 
+#      Group([ f4, f6 ]), 
+#      Group([ f1^2, f4 ]), 
+#      Group([ f4, f5*f6 ]), 
+#      Group([ f4, f5^2*f6 ]), 
+#      Group([ f4, f5, f6 ]), 
+#      Group([ f1^2, f4, f5*f6 ]) ], 
+#    inclusions := [ 
+#      [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], 
+#      [ 0, 5 ], [ 1, 6 ], [ 2, 6 ], [ 3, 7 ], 
+#      [ 4, 6 ], [ 4, 7 ], [ 5, 6 ], [ 6, 8 ], [ 7, 8 ] ] 
+#     )
+\end{verbatim}
+}
+$M_1$ is maximal in the intermediate subgroups 1, 2, 3, 4, and 5.
+We now check whether these are subgroups of $A$ or $C$.
+
+{\small 
+\begin{verbatim}
+IsSubgroup(A,intM1B.subgroups[1]);   # returns false
+IsSubgroup(B,intM1B.subgroups[1]);   # returns true (of course)
+IsSubgroup(C,intM1B.subgroups[1]);   # returns false
+\end{verbatim}
+}
+So $\bL_{11}$ is the union of $\lb${\tt M1, intM1B.subgroups[1]}$\rb$
+and $\lb H, G \rb$, and the command {\tt Index(G,M1);} returns 108,
+so we have a representation of $\bL_{11}$ on 108 elements.
+
+Next consider M2.
+
+{\small 
+\begin{verbatim}
+Index(G,M2);  # returns 72
+intM2B:=IntermediateSubgroups(B,M2);
+# returns 
+#  rec( 
+#     subgroups := [ 
+#        Group([ f1, f4 ]), 
+#        Group([ f1, f4*f5*f6 ]), 
+#        Group([ f1, f4*f5^2*f6^2 ]), 
+#        Group([ f1, f5*f6 ]), 
+#        Group([ f1, f4, f5*f6 ]), 
+#        Group([ f1, f4*f5, f5^2*f6^2 ]), 
+#        Group([ f1, f4*f6, f5*f6 ]), 
+#        Group([ f1, f5, f6 ]) ], 
+#    inclusions := [ 
+#        [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], 
+#        [ 1, 5 ], [ 2, 5 ], [ 3, 5 ], [ 4, 5 ], 
+#        [ 4, 6 ], [ 4, 7 ], [ 4, 8 ], [ 5, 9 ], 
+#        [ 6, 9 ], [ 7, 9 ], [ 8, 9 ] 
+#       ] 
+#     )
+\end{verbatim}
+}
+So $M_2$ is maximal in the intermediate subgroups 1, 2, 3, and 4.
+We can check whether one of these is not a subgroup of $A$ or $C$:
+
+{\small 
+\begin{verbatim}
+IsSubgroup(A,intM2B.subgroups[1]);   # returns true
+IsSubgroup(C,intM2B.subgroups[1]);   # returns true
+
+IsSubgroup(A,intM2B.subgroups[2]);   # returns true
+IsSubgroup(C,intM2B.subgroups[2]);   # returns false
+
+IsSubgroup(A,intM2B.subgroups[3]);   # returns true
+IsSubgroup(C,intM2B.subgroups[3]);   # returns false
+
+IsSubgroup(A,intM2B.subgroups[3]);   # returns true
+IsSubgroup(C,intM2B.subgroups[3]);   # returns false
+\end{verbatim}
+}
+So, using this method and this group, the smallest set on 
+which we can represent $\bL_{11}$ is 108.
+
+
+\todo{complete this section: perhaps we should actually perform the closure, get
+  the operations and produce the algebra that has $\bL_{11}$ as a
+  representation (although, this is not absolutely necessary since the above
+  suffices to prove that $\bL_{11}$ is, in indeed, representable).}
 
 \subsection{Minimal Representations}
 In this section we consider what it means to say that
