@@ -2118,7 +2118,7 @@ List(ccsgB, x->Order(Representative(x)));
 }
 Thus the only conjugacy class of size 6 whose elements 
 have order 3 is the sixth class.  So let
-{\tt K:=Representative(ccsgB[6]);}.
+{\small {\tt K:=Representative(ccsgB[6]);}}.
 Note that K is a minimal subgroup since $|K|=3$.  Finally,
 check that K is a subgroup of B, and not a subgroup of A or C:
 {\small 
@@ -2128,7 +2128,7 @@ IsSubgroup(B,K);  # returns true
 IsSubgroup(C,K);  # returns false
 \end{verbatim}
 }
-This shows lattice PJ11 is representable on a set of size 216.
+This shows lattice $\bL_{11}$ is representable on a set of size 216.
 In this example, where $\lb H,G \rb$ is the pentagon, the index is $\lb G:H \rb=36$.  
 
 Now, there might be a nontrivial subgroup $M < H$ such that in the interval
@@ -2178,7 +2178,7 @@ IsSubgroup(C,intM1B.subgroups[1]);   # returns false
 \end{verbatim}
 }
 So $\bL_{11}$ is the union of $\lb${\tt M1, intM1B.subgroups[1]}$\rb$
-and $\lb H, G \rb$, and the command {\tt Index(G,M1);} returns 108,
+and $\lb H, G \rb$, and the command {\small{\tt Index(G,M1);}} returns 108,
 so we have a representation of $\bL_{11}$ on 108 elements.
 
 Next consider M2.
