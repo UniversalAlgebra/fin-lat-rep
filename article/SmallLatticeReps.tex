@@ -561,13 +561,16 @@ discuss some of these results in greater detail later in this section.
 The class $\sL$ of lattices isomorphic to congruence lattices of finite
 algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
+\setcounter{enumi}{-1}
+\item\label{item:0} principal filters: all elements above a given element (a 
+standard isomorphism theorem),
 \item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
-\item interval sublattices (follows from~(\ref{item:1})),
+\item\label{item:2} interval sublattices (follows from~(\ref{item:1})),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
 \item  parallel sums (John Snow~\cite{Snow:2000}, 2000), 
-\item certain sublattices of lattices in $\sL$ -- namely, those which
+\item\label{item:6} certain sublattices of lattices in $\sL$ -- namely, those which
   are obtained as a union of a filter and an ideal of a lattice in
   $\sL$ (John Snow~\cite{Snow:2000}, 2000). 
 \end{enumerate}
@@ -601,38 +604,42 @@ algebras is closed under the following operations:
 \begin{remarks}\
   \begin{enumerate}[a.]
   \item 
-  The first item in the list above says that if $L$ is representable then so is
-  the dual of $L$. It follows from this that every interval sublattice of a
-  representable lattice is also representable.  
-  Indeed, suppose $L$ is representable, say, $L\cong \bar{L} =\Con\bA$.
-  Let $\lb \alpha, \beta \rb$ be an interval sublattice of $L$,
-  and $\lb \bar{\alpha}, \bar{\beta} \rb$ the corresponding  
-  interval of $\bar{L}$.
-  For ease of notation, let's rename $\bar{\alpha}$ and $\bar{\beta}$, dropping
-  the bars.  Thus $\lb \alpha, \beta \rb$ is the interval of interest and we
-  assume $\lb \alpha, \beta \rb\leq \Con \bA$.
-  The filter $\alpha^\uparrow =\lb \alpha, 1_A \rb$ 
-  is isomorphic to $\Con (\bA/\alpha)$, hence representable, so
-  by~(1) the dual $\partial (\alpha^\uparrow)=\lb 1_A', \alpha'\rb$ is also
-  representable. (Here $x'$ denotes the image of $x$ under dualization.)
-  Another quotient (this time by $\beta'$) gives a representation of
-  the interval $\lb \beta', \alpha'\rb$ above $\beta'$ in 
-  $\partial (\alpha^\uparrow)$. 
-  Since $\lb \beta', \alpha' \rb$  is the dual of $\lb \alpha, \beta \rb$, 
-  we apply~(1) once more to obtain the desired representation of 
-  $\lb \alpha, \beta\rb$.  Thus~(2) follows from~(1).
+  The first two items combine to show that $\sL$ is closed under
+  principal ideals and this fact, together with~\eqref{item:1}, 
+  proves~\eqref{item:2}.
+  
+  
+  %The first item in the list above says that if $L$ is representable then so is
+  %the dual of $L$. It follows from this that every interval sublattice of a
+  %representable lattice is also representable.  
+  %Indeed, suppose $L$ is representable, say, $L\cong \bar{L} =\Con\bA$.
+  %Let $\lb \alpha, \beta \rb$ be an interval sublattice of $L$,
+  %and $\lb \bar{\alpha}, \bar{\beta} \rb$ the corresponding  
+ % interval of $\bar{L}$.
+  %For ease of notation, let's rename $\bar{\alpha}$ and $\bar{\beta}$, dropping
+  %the bars.  Thus $\lb \alpha, \beta \rb$ is the interval of interest and we
+  %assume $\lb \alpha, \beta \rb\leq \Con \bA$.
+  %The filter $\alpha^\uparrow =\lb \alpha, 1_A \rb$ 
+  %s isomorphic to $\Con (\bA/\alpha)$, hence representable, so
+  %by~(1) the dual $\partial (\alpha^\uparrow)=\lb 1_A', \alpha'\rb$ is also
+  %representable. (Here $x'$ denotes the image of $x$ under dualization.)
+ % Another quotient (this time by $\beta'$) gives a representation of
+  %the interval $\lb \beta', \alpha'\rb$ above $\beta'$ in 
+  %$\partial (\alpha^\uparrow)$. 
+  %Since $\lb \beta', \alpha' \rb$  is the dual of $\lb \alpha, \beta \rb$, 
+ % we apply~(1) once more to obtain the desired representation of 
+ % $\lb \alpha, \beta\rb$.  Thus~(2) follows from~(1).
 
   \item By the ordinal sum of two lattices $L_1$, $L_2$, we mean the lattice
   on the left of Figure~\ref{fig:ord_par_fil-uni}.
   By the parallel sum of two lattices $L_1$, $L_2$, we mean the lattice
   in the middle of Figure~\ref{fig:ord_par_fil-uni}.
 
-\item Item~(6) above is a very useful result which we will discuss further in
+\item Item~\eqref{item:6} above is a very useful result which we will discuss further in
   Section~\ref{sec:union-filter-ideal} below, where we present a short proof of
   this fact.
 
-\item Whether the class $\sL$ is closed under homomorphic images
-  seems to be an open question. 
+\item Whether the class $\sL$ is closed under homomorphic images is open. 
   \end{enumerate}
 \end{remarks}
 
