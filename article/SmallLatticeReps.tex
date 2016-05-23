@@ -15,6 +15,41 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+@article {MR2026829,
+    AUTHOR = {Snow, John W.},
+     TITLE = {Every finite lattice in {$\mathcal{V}(\bold M_3)$} is
+              representable},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {50},
+      YEAR = {2003},
+    NUMBER = {1},
+     PAGES = {75--81},
+      ISSN = {0002-5240},
+     CODEN = {AGUVA3},
+   MRCLASS = {08A30 (06B20)},
+  MRNUMBER = {2026829},
+       DOI = {10.1007/s00012-003-1821-5},
+       URL = {http://dx.doi.org/10.1007/s00012-003-1821-5},
+}
+@article {MR1774743,
+    AUTHOR = {Snow, John W.},
+     TITLE = {A constructive approach to the finite congruence lattice
+              representation problem},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {43},
+      YEAR = {2000},
+    NUMBER = {2-3},
+     PAGES = {279--293},
+      ISSN = {0002-5240},
+     CODEN = {AGUVA3},
+   MRCLASS = {06B15 (08A30)},
+  MRNUMBER = {1774743},
+MRREVIEWER = {Clifford H. Bergman},
+       DOI = {10.1007/s000120050159},
+       URL = {http://dx.doi.org/10.1007/s000120050159},
+}
   @article{Aschbacher2008,
     AUTHOR = {Aschbacher, Michael},
      TITLE = {On intervals in subgroup lattices of finite groups},
@@ -823,7 +858,9 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
 
 \subsection{Union of a filter and ideal}
 \label{sec:union-filter-ideal}
-The lemma in this section was originally proved by John Snow using primitive positive
+The lemma in this section (Lemma~\ref{lemma:union-filter-ideal})
+was originally proved by John Snow (see \cite{MR1774743} and \cite{MR2026829}),
+using primitive positive
 formulas.  Since it provides such a useful tool for proving that certain finite lattices 
 are representable as congruence lattices, we give our own direct
 proof of the result below. 
@@ -2259,10 +2296,10 @@ Here is an example of this phenomenon.
 An example is shown in Figure~\ref{fig:10} which shows
 the $\two\times \two$ lattice as the upper interval
 $\lb C_2, C_3 \times S_3\rb$, as well as the upper interval
-$\lb (e), C_{10}\rb$. Of course, the groups $C_{10}$ and
+$\lb \<e\>, C_{10}\rb$. Of course, the groups $C_{10}$ and
 $C_3 \times S_3$ have orders 10 and 18, respectively, but
 the respective indices are
-$|C_{10}:(e)| = 10$ and $|C_3 \times S_3:C_2|=9$.
+$|C_{10}:\<e\>| = 10$ and $|C_3 \times S_3:C_2|=9$.
 This example shows that we can sometimes represent the same lattice
 with a smaller algebra by using a group of larger order.
 
