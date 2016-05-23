@@ -15,26 +15,39 @@ your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-re
 
 ## git at the command line
 
-To stage a file you have changed for commit:
+First, stage your latest changes for commit.
 
     git add SmallLatticeReps.tex
 	
-To commit your changes locally:
+Then, commit your changes locally.
 
     git commit -m "change this part because..."
 
-To push your changes to the remote repository:
-
-    git push origin master
-	
-To get the latest changes from the remote repo:
+Next, pull down the latest remote changes.
 
 	git pull
 	
-If that doesn't work, you probably need to commit your local changes first, and
-then try `pull` again. It might merge.  If it doesn't, you need to do a manual
-merge.  A merge tool like meld might be helpful.  You could also try `git diff`
+This might ask you to commit a merge message.  Do it!
+If git isn't able to do the merge automatically, it will give you a message
+indicating that and then you'll need to do a manual merge, which is a giant pain
+in the ass.  A merge tool like meld might be helpful.  You could also try `git diff`
 to see differences between local and remote versions.
+
+Finally, push your merged local repo to the remote repo.
+
+    git push origin master
+	
+## compiling the document
+
+In case there were additional references added since last time you
+compiled, you should first delete the file inputs/refs.bib. Then do
+
+    pdflatex SmallLatticeReps.tex
+    bibtex SmallLatticeReps.aux
+	pdflatex SmallLatticeReps.tex
+	pdflatex SmallLatticeReps.tex
+	
+You could also try typing `make` at the command line. It might work. It might not work.
 
 
 ## Emacs/Magit workflow
