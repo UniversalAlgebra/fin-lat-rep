@@ -561,11 +561,15 @@ MRREVIEWER = {Andrea Lucchini},
 
 Throughout this paper, we use $\sL$ to denote the class of finite lattices that
 are isomorphic to congruence lattices of finite algebras. 
-We call the lattices that belong to $\sL$ \emph{representable} lattices. 
+We call the lattices that belong to $\sL$ \emph{representable} lattices.
+A lattice is denoted by $\bL = \<L, \meet, \join\>$, where $L$
+is the universe of elements of the lattice.  However, unless the context
+calls for emphasizing that this is an algebraic structure, we often
+refer to a lattice by the name of its universe (as in the next paragraph).
 
 Let $L$ be a lattice and suppose $\alpha$ and $\beta$ are members of $L$.  
-We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all elements in $L$
-that lie above $\alpha$ and below $\beta$.  
+We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all
+elements in $L$ that lie above $\alpha$ and below $\beta$.  
 That is, 
 $\lb \alpha, \beta \rb = 
 \{\theta \in L \mid \alpha \leq \theta \leq \beta\}$.
@@ -850,25 +854,35 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
   $n$ that is invariant under $F$.
 \end{proof}
 
-\todo{Perhaps we should give more details in the last sentence of the proof.}
-%   Some notes are below, but they need to be cleaned up.}
-
-%% {\it Notes on the last sentence of the proof:}
-%% Fix 
-%% $\theta \in \Con \< S^{n}/D, S^{n}\> \cong [D, S^n]$.  Then\footnote{This,
-%%   and more generally the isomorphism $\Con \< S^{n}/D, S^{n}\> \cong [D, S^n]$
-%%   follows from Theorem~\ref{thm:g-set-isomorphism2} below.} there corresponds a
-%% subgroup $D \leq Xf \leq S^n$ such that 
-%% $(x,y)\in \theta$ iff $x^{-1}y = z\in Xf$.  Now if $\hat{\phi}\in \hat{F}$, then
-%% $(\hat{\phi}x, \hat{\phi}y) \in \theta$ iff 
-%% \[
-%% (x_{\phi(0)}^{-1}y_{\phi(0)}, \dots,  x_{\phi(n-1)}^{-1} y_{\phi(n-1)}) =
-%% (z_{\phi(0)},z_{\phi(1)},\dots, z_{\phi(n-1)})\in Xf.
-%% \]
-%% Better: Take $z\in Xf$ with $\ker z = \ker f$, so $f(i)=f(j)$ iff $z_i = z_j$.
-%% Now suppose $\phi\in F$ does not respect $\ker f$, so there exists $(i,j) \in
-%% \ker f$ such that $(\phi(i), \phi(j)) \notin \ker f$.  Then $\phi z \notin Xf$,
-%% since $z_{\phi(i)} \neq z_{\phi(j)}$.
+\begin{remarks}\
+  \begin{enumerate}
+  \item
+    %% From the proof of Theorem~\ref{thm:duals-interv-subl} we can see how
+    %% large the algebra representing the dual of a lattice with be (assuming we
+    %% use the method described in the proof).  
+    If the original lattice $L$ is representable as the congruence lattice of
+    an algebra with $n$ elements, then the method described in the proof of
+    Theorem~\ref{thm:duals-interv-subl} above gives a representation of the dual
+    $L'$ as the congruence lattice of the algebra
+    $\<S^n/D, S^n \cup \hat{F}\>$, which has $|S^n/D| = |S|^{n-1}$ elements.
+    Since the smallest simple nonabelian group is $A_5$, which has 60 elements,
+    the resulting algebra with have at least $60^{n-1}$ elements.
+  \item 
+    Elaborating on the last sentence of the proof of Theorem~\ref{thm:duals-interv-subl}, 
+    %% for each $\theta \in \Con \< S^{n}/D, S^{n}\> \cong \lb D, S^n \rb$,
+    %% there corresponds a subgroup $Xf \in \lb D, S^n\rb$ such that 
+    %% $\bx\mathrel{\theta} \by$ iff $\bx^{-1}\by = \bz\in Xf$.
+    %% Now if $\hat{\phi}\in \hat{F}$, then $(\hat{\phi}\bx, \hat{\phi}\by) \in \theta$ iff 
+    %% \[ (x({\phi(0)})^{-1}y(\phi(0)), \dots,  x(\phi(n-1))^{-1} y(\phi(n-1))) =
+    %% (z(\phi(0)),z(\phi(1)),\dots, z(\phi(n-1)))\in Xf. \]
+    %% Better:
+    take $\bz\in Xf$ with $\ker \bz = \ker f$, so $f(i)=f(j)$ iff
+    $z(i) = z(j)$.
+    Now suppose $\phi\in F$ does not respect $\ker f$, so there exists
+    $(i,j) \in \ker f$ such that $(\phi(i), \phi(j)) \notin \ker f$.
+    Then $\phi \bz \notin Xf$, since $z(\phi(i)) \neq z(\phi(j))$.
+  \end{enumerate}
+\end{remarks}
 
 \subsection{Union of a filter and ideal}
 \label{sec:union-filter-ideal}
@@ -2007,9 +2021,12 @@ corresponding to such graphs cannot be comparable.
 In \cite{Shareshian2003} John Shareshian gave a class of finite lattices that
 he conjectured could not be represented as intervals in subgroup lattices.
 They are easy to describe. Let $m_1 \ge \cdots \ge m_t \ge 3$ with $t> 1$.
-Take the $t$ lattices of subsets of sets of sizes $m_i$, $i=1,\ldots,t$, remove
-the least and greatest element of each, line them up side by side, and add
-a new least and greatest element. While this conjecture is still open, much
+Take the set $\{\two^{m_i} \mid 1\leq i \leq t\}$ of 
+lattices of subsets of sets of sizes $m_i$ for each $i\in \{1,\ldots,t\}$, remove
+the least and greatest element of each, line them up side by side, and adjoin
+them into one large lattice by giving them all a new common least element and a
+new common greatest element. While the conjecture---that this lattice is not
+representable as a congruence lattice of a finite algebra---is still open, much
 progress has been made, primarily by Aschbacher; see~\cite{Aschbacher2013}.
 For example, the problem has been reduced to almost simple groups.
 
