@@ -208,7 +208,7 @@ MRREVIEWER = {E. W. Kiss},
   }
   @Unpublished{Netter:1986,
     author = 	 {Netter, R.},
-    title = 	 {Eine Bemerkung zu Kongruenzverbanden},
+    title = 	 {Eine {B}emerkung zu {K}ongruenzverb{\"a}nden},
     note = 	 {preprint},
     OPTkey = 	 {},
     OPTmonth = 	 {},
@@ -360,6 +360,10 @@ MRREVIEWER = {Andrea Lucchini},
 %% The following will probably be removed by the journal editors:
 \usepackage[colorlinks=true,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
 %% ...but it's handy to have hyperrefs when browsing the electronic draft.
+
+%% wjd: I wanted nicer script letters, so I'm changing all \mathscr letters to
+%%      mathcal, with the following modification to mathcal fonts.
+\usepackage[mathcal]{euscript}  
 
 %% showkeys: just comment out in the final version
 \usepackage[notref,notcite]{showkeys}
@@ -595,11 +599,15 @@ group, although the opposite implication is obviously true.
 
 Throughout this paper, we use $\sL$ to denote the class of finite lattices that
 are isomorphic to congruence lattices of finite algebras. 
-We call the lattices that belong to $\sL$ \emph{representable} lattices. 
+We call the lattices that belong to $\sL$ \emph{representable} lattices.
+A lattice is denoted by $\bL = \<L, \meet, \join\>$, where $L$
+is the universe of elements of the lattice.  However, unless the context
+calls for emphasizing that this is an algebraic structure, we often
+refer to a lattice by the name of its universe (as in the next paragraph).
 
 Let $L$ be a lattice and suppose $\alpha$ and $\beta$ are members of $L$.  
-We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all elements in $L$
-that lie above $\alpha$ and below $\beta$.  
+We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all
+elements in $L$ that lie above $\alpha$ and below $\beta$.  
 That is, 
 $\lb \alpha, \beta \rb = 
 \{\theta \in L \mid \alpha \leq \theta \leq \beta\}$.
@@ -634,9 +642,9 @@ If this were known to be true, then the
 \emph{finite lattice representation problem} would be solved.
 The congruence lattice of the algebra consisting of a
 set $X$ with no operations is the lattice of all equivalence relations on $X$,
-which we denote by $\Eq X$.
+which we denote by $\EqX$.
 By a celebrated theorem of \Pudlak and \Tuma~\cite{Pudlak:1980}, for every finite
-lattice $L$ there is a finite set $X$ such that $L\leq \Eq X$.  Therefore, $\sL$
+lattice $L$ there is a finite set $X$ such that $L\leq \EqX$.  Therefore, $\sL$
 would contain all finite lattices if it were closed under $\sansS$.
 
 
@@ -758,24 +766,24 @@ in the group $G$.  The identity of the group $G^X$ is of course the constant map
 
 Let $X$ be a finite totally ordered set, with order relation $\leq$,
 and consider the set $X^X$ of functions mapping $X$ into itself.  
-The subset of $X^X$ consisting of functions that are idempotent and
-satisfy %% decreasing in the sense 
-$f(x) \leq x$ for all $x\in X$
-will be denoted by $\ID{X}$.  That is,
+The subset of $X^X$ consisting of unary
+\emph{idempotent contractions}, that is, for all $x\in X$,
+$f(f(x)) = f(x)$ and $f(x) \leq x$ for all $x\in X$. 
+We denote this set by $\IC(X)$, so
 \[
-\ID{X} = \{f\in X^X \mid f^2 = f \text{ and }\; \forall x\; f(x) \leq x\}.
+\IC(X) = \{f\in X^X \mid f^2 = f \text{ and }\; \forall x\; f(x) \leq x\}.
 \]
-Define the binary relation $\sqsubseteq$ on the set $\ID{X}$ by
+Define the binary relation $\sqsubseteq$ on the set $\IC(X)$ by
 \begin{equation}
   \label{eq:MID111}
   f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g,
 \end{equation}
 where $\ker f = \{(x,y) \in X^2 \mid f(x) = f(y)\}$.
 It is easy to see that $f\sqsubseteq g$ holds if and only if $gf = g$, and that
-$\sqsubseteq$ is a partial ordering of $\ID{X}$.  
-In fact, under this ordering, $\ID{X}$ is a lattice which is 
-isomorphic to $\bEqX$. The lattice isomorphism is the map
-$\Theta : \EqX \rightarrow \ID{X}$ given by
+$\sqsubseteq$ is a partial ordering of $\IC(X)$.  
+In fact, under this ordering, $\IC(X)$ is a lattice that is
+isomorphic to $\bEqX$. The lattice isomorphism is the function
+$\Theta : \EqX \rightarrow \IC(X)$ given by
 $\Theta(\alpha) = f_\alpha$, where
 $f_\alpha(x) = \min\{y\in X \mid x \mathrel{\alpha} y\}$.
 
@@ -800,7 +808,7 @@ The set of constant functions in $S^n$ is a subgroup $D < S^n$, sometimes called
 \[
 D = \{(s, s, \dots, s) \mid s\in S\} \leq S^n.
 \]
-For each $f \in \ID{n}$, define
+For each $f \in \IC(n)$, define
 \[
 %%
 %% K_f = \{(x_{f(0)}, x_{f(1)}, \dots, x_{f(n-1)}) \mid x_{f(i)}\in S, \; i = 0, 1,\dots, n-1\}.
@@ -814,7 +822,7 @@ That is, $Xf$ is the set of all compositions of
 $f$ followed by $\bx\in S^n$.
 Thus, $Xf = \{ \by\in S^n \mid \ker f \leq \ker \by \}$.
 For example, 
-if $f = (0, 0, 2, 3, 2)\in \ID{\underline{5}}$, then 
+if $f = (0, 0, 2, 3, 2)\in \IC(\underline{5})$, then 
 $\ker f$ is the equivalence relation corresponding to
 the partition $|0,1|2,4|3|$, and 
 $Xf$ is the subgroup of all
@@ -826,7 +834,7 @@ $y(2) = y(4)$. That is,
 %% \end{align*}
 \[Xf = \{(x(0), x(0), x(2), x(3), x(2)) \mid \bx\in S^5\}
 =\{\by\in S^5 \mid \ker f \leq \ker \by\}.\]
-It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
+It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
 
 \begin{lemma}
   \label{lem:latt-duals}
@@ -834,7 +842,7 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
   interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
 \end{lemma}
 \begin{proof}
-  This is clear since $\ID{n}$ is ordered by (\ref{eq:MID111}), and 
+  This is clear since $\IC(n)$ is ordered by (\ref{eq:MID111}), and 
   we have 
   $f\sqsubseteq h$ if and only if
   $Xh = \{\by \in S^n \mid \ker h \leq \ker \by \}
@@ -884,25 +892,35 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
   $n$ that is invariant under $F$.
 \end{proof}
 
-\todo{Perhaps we should give more details in the last sentence of the proof.}
-%   Some notes are below, but they need to be cleaned up.}
-
-%% {\it Notes on the last sentence of the proof:}
-%% Fix 
-%% $\theta \in \Con \< S^{n}/D, S^{n}\> \cong [D, S^n]$.  Then\footnote{This,
-%%   and more generally the isomorphism $\Con \< S^{n}/D, S^{n}\> \cong [D, S^n]$
-%%   follows from Theorem~\ref{thm:g-set-isomorphism2} below.} there corresponds a
-%% subgroup $D \leq Xf \leq S^n$ such that 
-%% $(x,y)\in \theta$ iff $x^{-1}y = z\in Xf$.  Now if $\hat{\phi}\in \hat{F}$, then
-%% $(\hat{\phi}x, \hat{\phi}y) \in \theta$ iff 
-%% \[
-%% (x_{\phi(0)}^{-1}y_{\phi(0)}, \dots,  x_{\phi(n-1)}^{-1} y_{\phi(n-1)}) =
-%% (z_{\phi(0)},z_{\phi(1)},\dots, z_{\phi(n-1)})\in Xf.
-%% \]
-%% Better: Take $z\in Xf$ with $\ker z = \ker f$, so $f(i)=f(j)$ iff $z_i = z_j$.
-%% Now suppose $\phi\in F$ does not respect $\ker f$, so there exists $(i,j) \in
-%% \ker f$ such that $(\phi(i), \phi(j)) \notin \ker f$.  Then $\phi z \notin Xf$,
-%% since $z_{\phi(i)} \neq z_{\phi(j)}$.
+\begin{remarks}\
+  \begin{enumerate}
+  \item
+    %% From the proof of Theorem~\ref{thm:duals-interv-subl} we can see how
+    %% large the algebra representing the dual of a lattice with be (assuming we
+    %% use the method described in the proof).  
+    If the original lattice $L$ is representable as the congruence lattice of
+    an algebra with $n$ elements, then the method described in the proof of
+    Theorem~\ref{thm:duals-interv-subl} above gives a representation of the dual
+    $L'$ as the congruence lattice of the algebra
+    $\<S^n/D, S^n \cup \hat{F}\>$, which has $|S^n/D| = |S|^{n-1}$ elements.
+    Since the smallest simple nonabelian group is $A_5$, which has 60 elements,
+    the resulting algebra with have at least $60^{n-1}$ elements.
+  \item 
+    Elaborating on the last sentence of the proof of Theorem~\ref{thm:duals-interv-subl}, 
+    %% for each $\theta \in \Con \< S^{n}/D, S^{n}\> \cong \lb D, S^n \rb$,
+    %% there corresponds a subgroup $Xf \in \lb D, S^n\rb$ such that 
+    %% $\bx\mathrel{\theta} \by$ iff $\bx^{-1}\by = \bz\in Xf$.
+    %% Now if $\hat{\phi}\in \hat{F}$, then $(\hat{\phi}\bx, \hat{\phi}\by) \in \theta$ iff 
+    %% \[ (x({\phi(0)})^{-1}y(\phi(0)), \dots,  x(\phi(n-1))^{-1} y(\phi(n-1))) =
+    %% (z(\phi(0)),z(\phi(1)),\dots, z(\phi(n-1)))\in Xf. \]
+    %% Better:
+    take $\bz\in Xf$ with $\ker \bz = \ker f$, so $f(i)=f(j)$ iff
+    $z(i) = z(j)$.
+    Now suppose $\phi\in F$ does not respect $\ker f$, so there exists
+    $(i,j) \in \ker f$ such that $(\phi(i), \phi(j)) \notin \ker f$.
+    Then $\phi \bz \notin Xf$, since $z(\phi(i)) \neq z(\phi(j))$.
+  \end{enumerate}
+\end{remarks}
 
 \subsection{Union of a filter and ideal}
 \label{sec:union-filter-ideal}
@@ -919,7 +937,7 @@ Given a relation $\theta \subseteq X\times X$, we say that the map
 $f: X^n\rightarrow X$ \emph{respects} $\theta$ and we write 
 $f(\theta) \subseteq \theta$ provided $(x_i, y_i)\in \theta$ implies
 $(f(x_1, \dots, x_n), f(y_1, \dots, y_n))\in \theta$.
-For a set $L\subseteq \Eq X$ of equivalence relations we define
+For a set $L\subseteq \EqX$ of equivalence relations we define
 \[
 \lambda(L) = \{f\in X^X: (\forall \theta \in L) \; f(\theta) \subseteq \theta \},
 \]
@@ -976,7 +994,7 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
   $\gamma \in \upalpha\cup \downbeta = L_0$, but violates $\theta$.  Finally,
   since 
   $\bL_0 \leq \bL$, we have $\lambda(L)\subseteq \lambda(L_0)$.  Combining these
-  observations, we see that every $\theta \in \Eq X \setminus L_0$ is
+  observations, we see that every $\theta \in \EqX \setminus L_0$ is
   violated by some function in $\lambda(L_0)$. Therefore, $\bL_0 = \bCon \< X, \lambda(L_0)\>$.
 \end{proof}
 
@@ -1041,7 +1059,7 @@ obviously representable.
 \newcommand{\m}{\mathbf}
 
 The lattice of equivalence relations on an $n$-element set is denoted by
-Equ$(n)$. For two lattices $\m L,\m M$ the \emph{adjoined ordinal sum}  
+$\bEq(n)$. For two lattices $\m L,\m M$ the \emph{adjoined ordinal sum}  
 is denoted by $\m L\oplus_a \m M$ and is defined on $L\uplus (M\setminus\{0\})$
 by $x\le y$ iff $x\in L,y\in M$ or ($x,y\in L$ and $x\le^\m L y$) or ($x,y\in M$
 and $x\le^\m M y$). 
@@ -1051,9 +1069,9 @@ and let $\m L=\text{Con}(\m A)$ and $\m M=\text{Con}(\m B)$.
 In \cite{Snow:2000} it is proved that $\m L\oplus_a\m M$ is isomorphic to the
 congruence lattice of some finite algebra $\m C$. Although the algebra $\m C$ is
 not explicitly constructed, it is based on the direct product of $\m A$ and $\m
-B$, hence the ordinal sum is a sublattice of Equ$(mn)$. Here we give a different
+B$, hence the ordinal sum is a sublattice of $\Eq(mn)$. Here we give a different
 construction of $\m C$ that leads to a tighter representation of Con$(\m C)$ as
-a sublattice of Equ$(m+n-1)$.  
+a sublattice of $\Eq(m+n-1)$.  
 %If $\m A$ and $\m B$ are minimal-size algebras that have congruence lattices
 %isomorphic to $\m L$ and $\m M$ respectively, then $\m C$ will also be a
 %minimal-size algebra with congruence lattice isomorphic to $\m L\oplus_a\m M$. 
@@ -1067,14 +1085,14 @@ x&\text{otherwise.}\end{cases}$$
 
 \begin{lemma}
   For $m,n\ge 1$ the lattice $\mathrm{Con}(\m A_{m,n})$ is isomorphic to
-  $\mathrm{Equ}(m)\oplus_a \mathrm{Equ}(n)$. 
+  $\Eq(m)\oplus_a \Eq(n)$. 
 \end{lemma}
 \begin{proof}
   Let $\alpha$ be the equivalence relation
   $A^2\cup\{(b_1,b_1),\dots,(b_{n-1},b_{n-1})\}$, so as a partition it is  
   $a_0,\dots,a_{m-1}|b_1|b_2|\dots|b_{n-1}$. 
-  Note that Equ$(m)\oplus_a \text{Equ}(n)$ is isomorphic to the sublattice
-  of Equ$(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
+  Note that $\Eq(m)\oplus_a \Eq(n)$ is isomorphic to the sublattice
+  of $\Eq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
   $\alpha$ has a unique non-singleton block of size $m$, and $n$ blocks
   altogether. We claim that this sublattice is the congruence lattice of $\m
   A_{m,n}$.  
@@ -1103,7 +1121,7 @@ x&\text{otherwise.}\end{cases}$$
 %\newpage
 
 \begin{theorem}
-  Suppose $\m A=(A,F)$ and $\m B=(B,G)$ are unary algebras with
+  Suppose $\m A=\<A,F\>$ and $\m B=\<B,G\>$ are unary algebras with
   $A=\{a_0,\dots,a_{m-1}\}$, $B=\{b_0,\dots,b_{n-1}\}$ and 
   $A\cap B=\{a_0\}=\{b_0\}$ $($so $a_0,b_0$ are identified$)$. Let $\m C$ be the
   algebra $\m A_{m,n}$ expanded with the operations 
@@ -1120,7 +1138,7 @@ x&\text{otherwise.}\end{cases}$$
 \begin{proof}
   Since $\m C$ is an expansion of $\m A_{m,n}$ it follows from the preceding lemma
   that Con$(\m C)$ is a sublattice of 
-  $\{\theta\in \text{Equ}(A\cup B):\theta\le\alpha$ or $\alpha\le\theta\}$ where,
+  $\{\theta\in \Eq(A\cup B):\theta\le\alpha$ or $\alpha\le\theta\}$ where,
   as before, $\alpha=A^2\cup\text{id}_B$. Note that $\alpha\in\text{Con}(\m C)$,
   so it suffices to show that $\{\theta\in\text{Con}(\m C):\theta\le\alpha\}$ is
   isomorphic to Con$(\m A)$ and $\{\theta\in\text{Con}(\m C):\theta\le\alpha\}$ 
@@ -1157,8 +1175,8 @@ In this section, we introduce a strategy that has proven very useful for showing
 that a given lattice is representable as a congruence lattice of a finite
 algebra. We call it the \defn{closure method}, and it has become especially
 useful with the advent of powerful computers which can search for such
-representations.  Here,  $\Eq X$ denotes the lattice of equivalence
-relations on $X$. Sometimes we abuse notation and take $\Eq X$ to mean the
+representations.  Recall that  $\EqX$ denotes the lattice of equivalence
+relations on $X$. Sometimes we abuse notation and take $\EqX$ to mean the
 lattice of partitions of the set $X$. This never causes problems because these
 two lattices are isomorphic.  
 
@@ -1179,10 +1197,10 @@ spanning sublattice\footnote{Recall, by a
   \defn{spanning sublattice}
   of a bounded lattice $L_0$, we mean a sublattice $L\leq L_0$ that has the same top and
   bottom as $L_0$.  That is  $1_L = 1_{L_0}$ and $0_L = 0_{L_0}$.}
-of the lattice $\Eq X$ of equivalence relations on a finite set $X$.   
+of the lattice $\EqX$ of equivalence relations on a finite set $X$.   
 Given this result, we see that even if our goal is to solve the abstract
 representation problem for some (abstract) lattice $L$, then
-we can embed $L$ into $\Eq X$ as $L\cong L_0\leq \Eq X$, for some finite set
+we can embed $L$ into $\EqX$ as $L\cong L_0\leq \EqX$, for some finite set
 $X$, and then try to solve the concrete representation problem for $L_0$.  
 
 A point of clarification is in order here.  The term 
@@ -1190,7 +1208,7 @@ A point of clarification is in order here.  The term
 has become a bit overused in the literature about the finite lattice
 representation problem.  On the one hand, given a finite lattice $L$, if there
 is a finite algebra $\bA$ such that $L \cong \Con \bA$, then $L$ is called a
-\defn{representable lattice}.  On the other hand, given a sublattice $L_0\leq \Eq X$, 
+\defn{representable lattice}.  On the other hand, given a sublattice $L_0\leq \EqX$, 
 if $L_0\cong L$, then $L_0$ is sometimes called a 
 \defn{concrete representation}
 of the lattice $L$ (whether or not it is the congruence lattice of an algebra).    
@@ -1199,14 +1217,14 @@ have this special kind of concrete representation of a give lattice, then that
 lattice is indeed representable in the first sense.
 
 As we will see below, there are many examples in which a particular concrete
-representation $L_0\leq \Eq X$ of $L$ is not a congruence lattice of a
+representation $L_0\leq \EqX$ of $L$ is not a congruence lattice of a
 finite algebra.  (In fact, we will describe general situations in which we can
 guarantee that there are no non-trivial\footnote{By a 
   \defn{non-trivial function} we mean a function that is
   not constant and not the identity.} operations which respect the equivalence
 relations of $L_0$.)  This does not imply that $L \notin \sL$.  It may
 simply mean that $L_0$ is not the ``right'' concrete representation of $L$, and
-perhaps we can find some other $L \cong L_1\leq \Eq X$ such that $L_1 = \Con
+perhaps we can find some other $L \cong L_1\leq \EqX$ such that $L_1 = \Con
 \<X, \lambda(L_1)\>$.
 
 \subsection{The closure method}
@@ -1220,37 +1238,37 @@ at the University of Waterloo, by R.~Quackenbush and B.~Wolk at the University
 of Manitoba, and by B.~J\'{o}nsson at Vanderbilt University.''
 
 Let $X^X$ denote the set of all (unary) maps from the set $X$ to itself, and let 
-$\Eq X$ denote the lattice of equivalence relations on the set $X$.  If $\theta
-\in \Eq X$ and $h\in X^X$, we write $h(\theta) \subseteq \theta$ and say
+$\EqX$ denote the lattice of equivalence relations on the set $X$.  If $\theta
+\in \EqX$ and $h\in X^X$, we write $h(\theta) \subseteq \theta$ and say
 that ``$h$ respects $\theta$'' if and only if for all $(x,y)\in X^2$ $(x,y)\in
 \theta$ implies 
 $(h(x),h(y)) \in \theta$.  If $h(\theta) \nsubseteq \theta$, we sometimes say
 that ``$h$ violates $\theta$.''
 
-For $L\subseteq \Eq X$ define
+For $L\subseteq \EqX$ define
 \[
 \lambda(L) = \{h\in X^X: (\forall \theta \in L) \; h(\theta) \subseteq \theta \}.
 \]
 
 For $H\subseteq X^X$ define
 \[
-\rho(H) = \{\theta \in \Eq X \mid   (\forall h\in H) \; h(\theta) \subseteq \theta\}.
+\rho(H) = \{\theta \in \EqX \mid   (\forall h\in H) \; h(\theta) \subseteq \theta\}.
 \]
-The map $\rho \lambda$ is a \defn{closure operator} on $\Sub(\Eq X)$.
+The map $\rho \lambda$ is a \defn{closure operator} on $\Sub(\EqX)$.
 That is, $\rho \lambda$ is
 \begin{itemize}
 \item \emph{idempotent:}\footnote{In fact, $\rho \lambda \rho = \rho$ and 
   $\lambda \rho \lambda = \lambda$.} $\rho \lambda \rho \lambda = \rho \lambda$;
-\item \emph{extensive:} $L \subseteq \rho \lambda (L)$ for every $L \leq \Eq X$;
+\item \emph{extensive:} $L \subseteq \rho \lambda (L)$ for every $L \leq \EqX$;
 \item \emph{order preserving:} $\rho \lambda (L) \leq \rho \lambda (L_0)$ if $L \leq L_0$.
 \end{itemize}
-Given $L\leq \Eq X$, if $\rho\lambda(L) = L$, then we say $L$ is a 
-%\defn{closed sublattice of $\Eq X$}, in which case we clearly have
-\emph{closed} sublattice of $\Eq X$, in which case we clearly have
+Given $L\leq \EqX$, if $\rho\lambda(L) = L$, then we say $L$ is a 
+%\defn{closed sublattice of $\EqX$}, in which case we clearly have
+\emph{closed} sublattice of $\EqX$, in which case we clearly have
 \[L = \Con \<X, \lambda(L)\>.\]
 This suggests the following strategy for solving the representation problem for a
 given abstract finite lattice $L$: search for a concrete representation $L \cong
-L_0\leq \Eq X$,
+L_0\leq \EqX$,
 compute $\lambda(L_0)$, compute $\rho\lambda(L_0)$, and determine whether 
 $\rho\lambda(L_0) = L_0$.  If so, then we have solved the abstract representation
 problem for $L$, by finding a \defn{closed concrete representation}, or simply
@@ -1276,33 +1294,33 @@ decreasing maps.  These were introduced above in
 Section~\ref{sec:duals-interv-subl-detail}, but we briefly review the definitions here
 for convenience.
 
-Given a totally ordered set $X$, 
+As above, given a totally ordered set $X$, 
 %consider the subset of the set $X^X$ of all functions that map $X$ into itself.  
-let the set $\idemdec = \{f\in X^X: f^2 = f \text{ and } f(x) \leq x\}$ be partially
-ordered by $\sqsubseteq$ as follows:
+we let $\IC(X) = \{f\in X^X: f^2 = f \text{ and } f(x) \leq x\}$, and 
+define the partial order $\sqsubseteq$ on this set as follows:
 \[
 f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g.  
 \]
 As noted above, 
-this makes \idemdec\ into a lattice that is isomorphic to $\bEqX$.   
-Define a relation $R$ on $X^X \times \idemdec$ as follows: 
+this makes \icx into a lattice that is isomorphic to $\bEqX$.   
+Define a relation $R$ on $X^X \times \icx$ as follows: 
 \[
 (h,f) \in R \quad \Leftrightarrow \quad (\forall (x,y) \in \ker f)\; (h(x),h(y))
 \in \ker f.
 \]
 If $h\, R\, f$, we say that  $h$ \emph{respects} $f$.
 
-Let $\sF = \power{\idemdec}$ and $\sH = \power{X^X}$ be partially ordered by set
+Let $\sF = \power{\icx}$ and $\sH = \power{X^X}$ be partially ordered by set
 inclusion, and define the maps 
 $\lambda: \sF \rightarrow \sH$ and $\rho: \sH \rightarrow \sF$ as follows:
 \[
 \lambda(F) = \{h\in X^X: \forall f\in F,\, h\, R \,f\} \quad (F \in \sF)
 \]
 \[
-\rho(H) = \{f\in \idemdec: \forall h\in H,\, h\, R\, f\} \quad (H \in \sH)
+\rho(H) = \{f\in \icx: \forall h\in H,\, h\, R\, f\} \quad (H \in \sH)
 \]
 The pair $(\lambda, \rho)$ defines a \defn{Galois correspondence} between
-$\idemdec$ and $X^X$.  That is, $\lambda$ and $\rho$ are 
+$\icx$ and $X^X$.  That is, $\lambda$ and $\rho$ are 
 antitone %(order-reversing) 
 maps such that $\lambda \rho \geq \id_{\sH}$ and $\rho
 \lambda \geq \id_{\sF}$.  In particular, for any set $F \in \sF$ we have 
@@ -2041,9 +2059,12 @@ corresponding to such graphs cannot be comparable.
 In \cite{Shareshian2003} John Shareshian gave a class of finite lattices that
 he conjectured could not be represented as intervals in subgroup lattices.
 They are easy to describe. Let $m_1 \ge \cdots \ge m_t \ge 3$ with $t> 1$.
-Take the $t$ lattices of subsets of sets of sizes $m_i$, $i=1,\ldots,t$, remove
-the least and greatest element of each, line them up side by side, and add
-a new least and greatest element. While this conjecture is still open, much
+Take the set $\{\two^{m_i} \mid 1\leq i \leq t\}$ of 
+lattices of subsets of sets of sizes $m_i$ for each $i\in \{1,\ldots,t\}$, remove
+the least and greatest element of each, line them up side by side, and adjoin
+them into one large lattice by giving them all a new common least element and a
+new common greatest element. While the conjecture---that this lattice is not
+representable as a congruence lattice of a finite algebra---is still open, much
 progress has been made, primarily by Aschbacher; see~\cite{Aschbacher2013}.
 For example, the problem has been reduced to almost simple groups.
 
@@ -2585,35 +2606,6 @@ $\bL_4$&
 \begin{tikzpicture}
     [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
 \node(5) at (0,1)[e]{};
-\node(4) at (0,0.33)[e]{};
-\node(3) at (0.4,0.33)[e]{};
-\node(2) at (-0.5,0)[e]{};
-\node(1) at (0.2,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
-&
-$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
-           \bB_4& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
-    f(x)& 1&  2&   3& 4& 5& 0& 7& 8& 9& 10& 11& 6\\
-   g(x)& 6& 11& 10& 9& 8& 7& 0& 5& 4& 3&   2&  1\\
-   h(x)& 0& 0& 0& 6& 0& 0& 0& 0& 6& 0& 0& 0\end{array}$
-\end{tabular}
-
-\begin{tabular}{ccc}
-$\bL_5$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
 \node(4) at (0.2,0.33)[e]{};
 \node(3) at (-0.5,0)[e]{};
 \node(2) at (0.4,-0.33)[e]{};
@@ -2631,9 +2623,38 @@ $\bL_5$&
 \end{minipage}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
-    \bB_5& 0& 1& 2& 3\\\hline
+    \bB_4& 0& 1& 2& 3\\\hline
    f(x)& 1& 0& 3& 2\\
    g(x)& 0& 0& 2& 2\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_5$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (0.4,0.33)[e]{};
+\node(2) at (-0.5,0)[e]{};
+\node(1) at (0.2,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
+           \bB_5& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
+    f(x)& 1&  2&   3& 4& 5& 0& 7& 8& 9& 10& 11& 6\\
+   g(x)& 6& 11& 10& 9& 8& 7& 0& 5& 4& 3&   2&  1\\
+   h(x)& 0& 0& 0& 6& 0& 0& 0& 0& 6& 0& 0& 0\end{array}$
 \end{tabular}
 
 \begin{tabular}{ccc}
@@ -3090,7 +3111,7 @@ $\bL_{20}$&
 \end{minipage}
 &
 \begin{tabular}{l}
-SmallGroup(216,153) in GAP\\
+$\bB_{20}=$ SmallGroup(216,153) in GAP\\
 $|\bB_{20}|=216$
 \end{tabular}
 \end{tabular}
