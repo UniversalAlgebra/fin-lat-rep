@@ -514,12 +514,12 @@ Throughout this paper, we use $\sL$ to denote the class of finite lattices that
 are isomorphic to congruence lattices of finite algebras. 
 We call the lattices that belong to $\sL$ \emph{representable} lattices. 
 
-Let $L$ be a lattice and suppose $\alpha$ and $\beta$ belong to $L$.  
+Let $L$ be a lattice and suppose $\alpha$ and $\beta$ are members of $L$.  
 We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all elements in $L$
 that lie above $\alpha$ and below $\beta$.  
 That is, 
 $\lb \alpha, \beta \rb = 
-\{\theta \in L \mid \alpha \leq \theta \text{ and } \theta \leq \beta\}$.
+\{\theta \in L \mid \alpha \leq \theta \leq \beta\}$.
 (If $\alpha \nleq \beta$, then $\lb \alpha, \beta \rb = \emptyset$.)
 
 For a lattice (or, more generally, a partially ordered set) 
@@ -567,7 +567,7 @@ algebras is closed under the following operations:
 \item\label{item:0} principal filters: all elements above a given element (a 
 standard isomorphism theorem),
 \item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
-\item\label{item:2} interval sublattices (follows from~(\ref{item:1})),
+\item\label{item:2} interval sublattices (follows from~(\ref{item:1}), see Remark a. below),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
@@ -666,7 +666,7 @@ well worth the effort.\footnote{We learned
   lectures given by P{\'e}ter \Palfy in 2009~\cite{Palfy:2009}.
   \Palfy gives credit for the argument to Kurzweil and Netter.} 
 
-If $G$ is a group and $X$ a set, then the set $\{f \mid X\rightarrow G\}$ of 
+If $G$ is a group and $X$ a set, then the set $\{f \mid f:X\rightarrow G\}$ of 
 functions from $X$ into $G$ is denoted by $G^X$.  This is a group with binary
 operation $(f,g) \mapsto f\cdot g$, where,  
 for each $x\in X$, $(f\cdot g)(x)= f(x)g(x)$ is simply multiplication
