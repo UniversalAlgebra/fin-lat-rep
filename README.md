@@ -13,9 +13,33 @@ or [submit an issue][].
 Authors, to keep track of todo items use the [issue tracker][], or post
 your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
 
-## Magit workflow
+## git at the command line
+
+To stage a file you have changed for commit:
+
+    git add SmallLatticeReps.tex
+	
+To commit your changes locally:
+
+    git commit -m "change this part because..."
+
+To push your changes to the remote repository:
+
+    git push origin master
+	
+To get the latest changes from the remote repo:
+
+	git pull
+	
+If that doesn't work, you probably need to commit your local changes first, and
+then try `pull` again. It might merge.  If it doesn't, you need to do a manual
+merge.  A merge tool like meld might be helpful.  You could also try `git diff`
+to see differences between local and remote versions.
+
+
+## Emacs/Magit workflow
 This section describes a few basic commands for committing and pushing changes
-directly from Emacs using magit.
+directly from **Emacs** using magit.
 
 ### To install magit
 
