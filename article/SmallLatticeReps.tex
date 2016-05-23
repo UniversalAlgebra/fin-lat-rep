@@ -1977,7 +1977,7 @@ no finite representation at all.
 %\subsubsection{$L_{11}$}
 %\label{sec:l11}
 
-Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11}. Again, we
+Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11} (left). Again, we
 can use Theorem~\ref{thm:intrans}\eqref{item9} to show that it's not possible to
 represent $\bL_{11}$ using be represented using an intransitive permutation group. However (A) and
 (B$'$) do not hold in this case, so we cannot conclude that a minimal representation
@@ -1989,10 +1989,9 @@ smallest representation.
 
 \begin{figure}[htb]
 \begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L3.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-  \end{tikzpicture}
+  %% \begin{tikzpicture}[scale=1]
+  %%   \input{inputs/tikz/L3.tex}
+  %% \end{tikzpicture}
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L3.tex}
     %    \draw (bottom) node [right]{$L_{11}$};
@@ -2001,24 +2000,13 @@ smallest representation.
     \draw (22) node [right]{$\gamma$};
     \draw (11) node [right]{$H$};
     \draw (n11) node [left]{$K$};
-    \draw (top) node [right]{$G$};
-    \draw (bottom) node [right]{$1_G$};
+    \draw (top) node [above]{$G$};
+    \draw (bottom) node [below]{$1_G$};
   \end{tikzpicture}
-\end{center}
-\caption{$\bL_{11}$}\label{fig:L11}
-\end{figure}
-
-We start with the group representation of the pentagon as the upper
-interval $\lb H, G\rb$ 
-where $G \cong ((C_3 \times C_3) : Q_8) : C_3$ and 
-$H \cong C_6$.  Here $C_k$ denotes the cyclic group of order $k$, $Q_8$ denotes the
-quaternion group of order 8, and {\tt :} denotes the usual semidirect product.
-We let $\alpha \prec \beta$ and $\gamma$ denote the three
-subgroups inside the pentagon $\lb H, G \rb$, as shown in the diagram below.  
-
-\begin{center}
+  \hskip1cm
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/PentagonForL11.tex}
+    \draw[semithick] (11) to (22) to (top) to (02) to (mp) to (11);
     \draw (mp) node [left]{$\alpha$};
     \draw (02) node [left]{$\beta$};
     \draw (22) node [right]{$\gamma$};
@@ -2026,19 +2014,24 @@ subgroups inside the pentagon $\lb H, G \rb$, as shown in the diagram below.
     \draw (top) node [above]{$G$};
   \end{tikzpicture}
 \end{center}
-The entire subgroup lattice
-$\Sub(G)$ is the congruence lattice of an algebra. Therefore, if there is a minimal
-subgroup $K$ ($1 \prec K \leq G$) that is below $\beta$, but not below 
-$\alpha$ or $\gamma$, then lattice $L_{11}$ is the 
+\caption{$\bL_{11}$}\label{fig:L11}
+\end{figure}
+Start with the group representation of the pentagon as the upper
+interval $\lb H, G\rb$ where $G \cong ((C_3 \times C_3) : Q_8) : C_3$ and 
+$H \cong C_6$.
+Here $C_k$ denotes the cyclic group of order $k$, $Q_8$ denotes the
+quaternion group of order 8, and {\tt :} denotes the usual semidirect product.
+We let $\alpha \prec \beta$ and $\gamma$ denote the three subgroups inside the
+pentagon $\lb H, G \rb$, as shown in Figure~\ref{fig:L11} (right).
+
+The entire subgroup lattice $\Sub(G)$ is the congruence lattice of an
+algebra. Therefore, if there is a minimal subgroup $K$ ($1 \prec K \leq G$) that
+is below $\beta$, but not below  $\alpha$ or $\gamma$, then lattice $L_{11}$ is the 
 union of the ideal $\lb 1, K\rb$ and the filter $\lb H, G\rb$.
-%% This portion of $\Sub(G)$ is shown here: 
-
-
-Luckily, there is
-such a subgroup $K$. We can check this fact using \gap, as we now describe.
+Luckily, there is such a subgroup $K$. We can check this fact using \gap, as we now describe.
 A search of the \gap Library of Small Groups finds that the 153rd
 isomorphism class of groups of order 216---that is, the group 
-returned by the function call {\tt SmallGroup( 216, 153 )}, which happens to have
+returned by the function call \code{SmallGroup( 216, 153 )}, which happens to have
 structure description $((C_3 \times C_3) : Q_8) : C_3$.
 Upon inspection of the conjugacy classes of subgroups of this group, we 
 find that the representative of the 8th class is a suitable candidate for 
@@ -2048,7 +2041,7 @@ $H$, so we define
 \begin{verbatim}
     G := SmallGroup( 216, 153 );;    
     ccsg := ConjugacyClassesSubgroups( G );;
-    H := Representative( ccsg[8] );
+    H := Representative( ccsg[8] );;
     intHG := IntermediateSubgroups( G, H );
 \end{verbatim}
 }
@@ -2059,13 +2052,14 @@ The last of these commands results in the following output:
 {\small 
 \begin{verbatim}
     rec( 
-         subgroups := [ Group([ f1, f4, f5*f6 ]), 
-                        Group([ f1, f2, f3*f4, f4 ]), 
-                        Group([ f1, f4, f5, f6 ]) ], 
-
-         inclusions := [ [ 0, 1 ], [ 0, 2 ], [ 1, 3 ], 
-                         [ 2, 4 ], [ 3, 4 ] ] 
-       )
+      subgroups := [ 
+         Group([ f1, f4, f5*f6 ]), Group([ f1, f2, f3*f4, f4 ]), 
+         Group([ f1, f4, f5, f6 ]) 
+      ], 
+      inclusions := [ 
+         [ 0, 1 ], [ 0, 2 ], [ 1, 3 ], [ 2, 4 ], [ 3, 4 ] 
+      ] 
+    )
 \end{verbatim}
 }
 
@@ -2079,41 +2073,40 @@ in $\lb H, G\rb$, and the correspondence is given in the following table:
 \begin{center}
 \begin{tabular}{r|l}
 %0 & 1 & 2 & 3 & 4\\
-0 & H \\
+4 & $G$\\
 \hline
-1 & Group([ f1, f4, f5*f6 ])\\
+3 & \code{Group([ f1, f4, f5, f6 ])} \\ 
 \hline
-2 & Group([ f1, f2, f3*f4, f4 ])\\ 
+2 & \code{Group([ f1, f2, f3*f4, f4 ])}\\ 
 \hline
-3 & Group([ f1, f4, f5, f6 ]) \\ 
+1 & \code{Group([ f1, f4, f5*f6 ])}\\
 \hline
-4 & G
+0 & $H$
 \end{tabular}
 \end{center}
 
 \noindent 
-In the {\tt inclusions} field the entry {\tt [ 1, 3 ]}, for example, indicates that 
-{\tt Group([ f1, f4, f5*f6 ])} is a maximal subgroup of 
-{\tt Group([ f1, f4, f5, f6 ])}.
-Therefore, the \gap output above shows that the interval 
+In the \code{inclusions} field the entry \code{[ 1, 3 ]}, for example,
+indicates that \code{Group([ f1, f4, f5*f6 ])} is a maximal subgroup of 
+\code{Group([ f1, f4, f5, f6 ])}.
+So, the \gap output above shows that the interval 
 $\lb H, G \rb$ is a pentagon.
 
-Next, we make the following definitions 
+Next, we define the following groups in \gap:
 
 {\small 
 \begin{verbatim}
 A:=intHG.subgroups[1];  B:=intHG.subgroups[3];  C:=intHG.subgroups[2];
 \end{verbatim}
 }
-Here, {\tt A} $<$ {\tt B} are the comparable generators of the pentagon
-and {\tt C} is the incomparable generator.
-
-Next we consider the conjugacy classes of the subgroups of $B$
-(using the \gap command {\tt ccsgB:=ConjugacyClassesSubgroups(B);}).
-By looking at the subgroup lattice in \xgap, we notice that 
-there is a conjugacy class of subgroups of {\tt B} containing six
-subgroups each of index 72 in {\tt G} (order 3), and the subgroups
-in this class are not subgroups of {\tt A} or {\tt C}.
+Here, \code{A} $<$ \code{B} are the comparable generators of the pentagon
+and \code{C} is the incomparable generator.
+We consider the conjugacy classes of the subgroups of \code{B}
+(using the \gap command \code{ccsgB:=ConjugacyClassesSubgroups(B);})
+and by looking at the subgroup lattice in \xgap, we notice that 
+there is a conjugacy class of subgroups of \code{B} containing six
+subgroups each of index 72 in \code{G} (order 3), and the subgroups
+in this class are not subgroups of \code{A} or \code{C}.
 
 {\small 
 \begin{verbatim}
@@ -2125,9 +2118,10 @@ List(ccsgB, x->Order(Representative(x)));
 }
 Thus the only conjugacy class of size 6 whose elements 
 have order 3 is the sixth class.  So let
-{\small {\tt K:=Representative(ccsgB[6]);}}.
-Note that K is a minimal subgroup since $|K|=3$.  Finally,
-check that K is a subgroup of B, and not a subgroup of A or C:
+\code{K:=Representative(ccsgB[6]);}.
+Note that \code{K} is a minimal subgroup since $|K|=3$.  Finally,
+check that \code{K} is a subgroup of \code{B}, and not a subgroup of
+\code{A} or \code{C}:
 {\small 
 \begin{verbatim}
 IsSubgroup(A,K);  # returns false
@@ -2153,29 +2147,28 @@ IsSubgroup(H,Representative(ccsgB[4]));  # returns true
 \end{verbatim}
 }
 We need to find a subgroup that covers one of these two subgroups
-and is not below $A$ or $C$.
+and is not below \code{A} or \code{C}.
 {\small 
 \begin{verbatim}
 intM1B:=IntermediateSubgroups(B,M1);
 # returns 
 #  rec( 
 #    subgroups := [ 
-#      Group([ f4, f5 ]), 
-#      Group([ f4, f6 ]), 
-#      Group([ f1^2, f4 ]), 
-#      Group([ f4, f5*f6 ]), 
-#      Group([ f4, f5^2*f6 ]), 
-#      Group([ f4, f5, f6 ]), 
-#      Group([ f1^2, f4, f5*f6 ]) ], 
+#      Group([ f4, f5 ]), Group([ f4, f6 ]), 
+#      Group([ f1^2, f4 ]), Group([ f4, f5*f6 ]), 
+#      Group([ f4, f5^2*f6 ]), Group([ f4, f5, f6 ]), 
+#      Group([ f1^2, f4, f5*f6 ]) 
+#    ], 
 #    inclusions := [ 
 #      [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], 
 #      [ 0, 5 ], [ 1, 6 ], [ 2, 6 ], [ 3, 7 ], 
-#      [ 4, 6 ], [ 4, 7 ], [ 5, 6 ], [ 6, 8 ], [ 7, 8 ] ] 
-#     )
+#      [ 4, 6 ], [ 4, 7 ], [ 5, 6 ], [ 6, 8 ], [ 7, 8 ] 
+#    ] 
+#  )
 \end{verbatim}
 }
-$M_1$ is maximal in the intermediate subgroups 1, 2, 3, 4, and 5.
-We now check whether these are subgroups of $A$ or $C$.
+\code{M1} is maximal in the intermediate subgroups 1, 2, 3, 4, and 5.
+We now check whether these are subgroups of \code{A} or \code{C}.
 
 {\small 
 \begin{verbatim}
@@ -2184,11 +2177,11 @@ IsSubgroup(B,intM1B.subgroups[1]);   # returns true (of course)
 IsSubgroup(C,intM1B.subgroups[1]);   # returns false
 \end{verbatim}
 }
-So $\bL_{11}$ is the union of $\lb${\tt M1, intM1B.subgroups[1]}$\rb$
-and $\lb H, G \rb$, and the command {\small{\tt Index(G,M1);}} returns 108,
+So $\bL_{11}$ is the union of $\lb${\code{M1, intM1B.subgroups[1]}$\rb$
+and $\lb H, G \rb$, and the command \code{Index(G,M1);} returns 108,
 so we have a representation of $\bL_{11}$ on 108 elements.
 
-Next consider M2.
+Next consider \code{M2}.
 
 {\small 
 \begin{verbatim}
@@ -2196,26 +2189,22 @@ Index(G,M2);  # returns 72
 intM2B:=IntermediateSubgroups(B,M2);
 # returns 
 #  rec( 
-#     subgroups := [ 
-#        Group([ f1, f4 ]), 
-#        Group([ f1, f4*f5*f6 ]), 
-#        Group([ f1, f4*f5^2*f6^2 ]), 
-#        Group([ f1, f5*f6 ]), 
-#        Group([ f1, f4, f5*f6 ]), 
-#        Group([ f1, f4*f5, f5^2*f6^2 ]), 
-#        Group([ f1, f4*f6, f5*f6 ]), 
-#        Group([ f1, f5, f6 ]) ], 
+#    subgroups := [ 
+#        Group([ f1, f4 ]), Group([ f1, f4*f5*f6 ]), 
+#        Group([ f1, f4*f5^2*f6^2 ]), Group([ f1, f5*f6 ]), 
+#        Group([ f1, f4, f5*f6 ]), Group([ f1, f4*f5, f5^2*f6^2 ]), 
+#        Group([ f1, f4*f6, f5*f6 ]), Group([ f1, f5, f6 ]) 
+#    ], 
 #    inclusions := [ 
-#        [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], 
-#        [ 1, 5 ], [ 2, 5 ], [ 3, 5 ], [ 4, 5 ], 
-#        [ 4, 6 ], [ 4, 7 ], [ 4, 8 ], [ 5, 9 ], 
-#        [ 6, 9 ], [ 7, 9 ], [ 8, 9 ] 
-#       ] 
-#     )
+#        [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], [ 1, 5 ], 
+#        [ 2, 5 ], [ 3, 5 ], [ 4, 5 ], [ 4, 6 ], [ 4, 7 ], 
+#        [ 4, 8 ], [ 5, 9 ], [ 6, 9 ], [ 7, 9 ], [ 8, 9 ] 
+#    ] 
+#  )
 \end{verbatim}
 }
-So $M_2$ is maximal in the intermediate subgroups 1, 2, 3, and 4.
-We can check whether one of these is not a subgroup of $A$ or $C$:
+So \code{M2} is maximal in the intermediate subgroups 1, 2, 3, and 4.
+We can check whether one of these is not a subgroup of \code{A} or \code{C}:
 
 {\small 
 \begin{verbatim}
@@ -2235,11 +2224,11 @@ IsSubgroup(C,intM2B.subgroups[3]);   # returns false
 So, using this method and this group, the smallest set on 
 which we can represent $\bL_{11}$ is 108.
 
-
 \todo{complete this section: perhaps we should actually perform the closure, get
   the operations and produce the algebra that has $\bL_{11}$ as a
   representation (although, this is not absolutely necessary since the above
   suffices to prove that $\bL_{11}$ is, in indeed, representable).}
+
 
 \subsection{Minimal Representations}
 In this section we consider what it means to say that
@@ -2267,16 +2256,26 @@ $\bL$ appears as an upper interval. It is possible that there is a larger group
 in whose subgroup lattice $\bL$ appears, but with a smaller index.
 Here is an example of this phenomenon.
 
+An example is shown in Figure~\ref{fig:10} which shows
+the $\two\times \two$ lattice as the upper interval
+$\lb C_2, C_3 \times S_3\rb$, as well as the upper interval
+$\lb (e), C_{10}\rb$. Of course, the groups $C_{10}$ and
+$C_3 \times S_3$ have orders 10 and 18, respectively, but
+the respective indices are
+$|C_{10}:(e)| = 10$ and $|C_3 \times S_3:C_2|=9$.
+This example shows that we can sometimes represent the same lattice
+with a smaller algebra by using a group of larger order.
+
 \begin{figure}
 \caption{Transitive G-set congruence lattices in Eq(10)}
 \label{fig:10}
 \begin{center}
-\begin{tikzpicture}[scale=.5]
+\begin{tikzpicture}[scale=.8]
 \node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
 \node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
 \node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
 \node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
-\draw[font=\scriptsize] (0,-.5) node {[C2, C3 x S3]};
+\draw[font=\scriptsize] (0,-.5) node {$\lb C_2, C_3 \times S_3\rb$};
 \draw[font=\scriptsize] (0,-1) node {TransitiveGroup(9,4) };
 \draw[semithick]
 (0) to (1)
@@ -2284,13 +2283,18 @@ Here is an example of this phenomenon.
 (1) to (3)
 (2) to (3);
 \end{tikzpicture}
-\begin{tikzpicture}[scale=.5]
+\begin{tikzpicture}[scale=.8]
 \node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
 \node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
 \node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
 \node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
-\draw[font=\scriptsize] (0,-.5) node {[1, C10]};
+\draw[font=\scriptsize] (0,-.5) node {$\lb 1, C_{10}\rb$};
 \draw[font=\scriptsize] (0,-1) node {TransitiveGroup(10,1) };
+\draw[semithick]
+(0) to (1)
+(0) to (2)
+(1) to (3)
+(2) to (3);
 \end{tikzpicture}
 \end{center}
 \end{figure}
