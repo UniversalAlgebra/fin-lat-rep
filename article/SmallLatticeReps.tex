@@ -960,15 +960,20 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
   violated by some function in $\lambda(L_0)$. Therefore, $\bL_0 = \bCon \< X, \lambda(L_0)\>$.
 \end{proof}
 
-\subsection{Ordinal Sums I}
+\subsection{Ordinal Sums}
 \label{sec:ordinal-sums}
-\todo{Revise this section.  Peter has written up some nice lemmas and
-  theorems on this topic which now appear below in a subsection called
-  ``Ordinal Sums II,'' but that material should be integrated with and/or
-  replace the material in this subsection.} 
+%\todo{Revise this section.  Peter has written up some nice lemmas and
+%  theorems on this topic which now appear below in a subsection called
+%  ``Ordinal Sums II,'' but that material should be integrated with and/or
+%  replace the material in this subsection.} 
+For two lattices $L,M$ the \emph{adjoined ordinal sum}  
+is denoted by $L\oplus_a M$ and is defined on $L\uplus (M\setminus\{0\})$
+by $x\le y$ iff $x\in L,y\in M$ or ($x,y\in L$ and $x\le^L y$) or ($x,y\in M$
+and $x\le^M y$). The \emph{ordinal sum} $L\oplus M$ is defined as $L\oplus_a\two\oplus_a M$.
 
 The following theorem is a consequence of 
-McKenzie's shift product construction~\cite{McKenzie:1984}. %, which we describebriefly below.
+McKenzie's shift product construction~\cite{McKenzie:1984}. 
+%, which we describebriefly below.
 % \todo{Possibly add a short description of the shift product.}
 \begin{theorem}
   \label{thm:ordinal-sums}
@@ -1016,29 +1021,23 @@ obviously representable.
   \end{figure}
 \end{center}
 
-\subsection{Ordinal Sums II}
-\todo{Merge this subsection with the subsection ``Ordinal Sums I.''}
-\newcommand{\m}{\mathbf}
+%\subsection{Ordinal Sums II}
+%\todo{Merge this subsection with the subsection ``Ordinal Sums I.''}
+%\newcommand{\m}{\mathbf}
 
-The lattice of equivalence relations on an $n$-element set is denoted by
-$\bEq(n)$. For two lattices $\m L,\m M$ the \emph{adjoined ordinal sum}  
-is denoted by $\m L\oplus_a \m M$ and is defined on $L\uplus (M\setminus\{0\})$
-by $x\le y$ iff $x\in L,y\in M$ or ($x,y\in L$ and $x\le^\m L y$) or ($x,y\in M$
-and $x\le^\m M y$). 
+Let $\bA,\bB$ be two finite algebras of cardinality $m$ and $n$ respectively,
+and let $L=\bCon(\bA)$ and $M=\bCon(\bB)$. 
+In \cite{Snow:2000} it is proved that $L\oplus_a M$ is isomorphic to the
+congruence lattice of some finite algebra $\mathbf C$. Although the algebra $\mathbf C$ is
+not explicitly constructed, it is based on the direct product of $\bA$ and $\bB$,
+hence the ordinal sum is a sublattice of $\bEq(mn)$. Here we give a different
+construction of $\mathbf C$ that leads to a tighter representation of $\bCon(\mathbf C)$ as
+a sublattice of $\bEq(m+n-1)$.  
+%If $\bA$ and $\bB$ are minimal-size algebras that have congruence lattices
+%isomorphic to $\bL$ and $\bM$ respectively, then $\mathbf C$ will also be a
+%minimal-size algebra with congruence lattice isomorphic to $\bL\oplus_a\bM$. 
 
-Let $\m A,\m B$ be two finite algebras of cardinality $m$ and $n$ respectively,
-and let $\m L=\text{Con}(\m A)$ and $\m M=\text{Con}(\m B)$. 
-In \cite{Snow:2000} it is proved that $\m L\oplus_a\m M$ is isomorphic to the
-congruence lattice of some finite algebra $\m C$. Although the algebra $\m C$ is
-not explicitly constructed, it is based on the direct product of $\m A$ and $\m
-B$, hence the ordinal sum is a sublattice of $\Eq(mn)$. Here we give a different
-construction of $\m C$ that leads to a tighter representation of Con$(\m C)$ as
-a sublattice of $\Eq(m+n-1)$.  
-%If $\m A$ and $\m B$ are minimal-size algebras that have congruence lattices
-%isomorphic to $\m L$ and $\m M$ respectively, then $\m C$ will also be a
-%minimal-size algebra with congruence lattice isomorphic to $\m L\oplus_a\m M$. 
-
-Define a unary algebra $\m A_{m,n}$ with $m+n-1$ elements as follows: 
+Define a unary algebra $\bA_{m,n}$ with $m+n-1$ elements as follows: 
 the base set is $A\uplus B_1$ where $A=\{a_0,\dots,a_{m-1}\}$,
 $B_1=\{b_1,\dots,b_{n-1}\}$ and for each function $h:B_1\to A$ define a unary
 operation 
@@ -1046,18 +1045,17 @@ $$\hat h(x)=\begin{cases}h(x)&\text{if $x\in B_1$}\\
 x&\text{otherwise.}\end{cases}$$
 
 \begin{lemma}
-  For $m,n\ge 1$ the lattice $\mathrm{Con}(\m A_{m,n})$ is isomorphic to
-  $\Eq(m)\oplus_a \Eq(n)$. 
+  For $m,n\ge 1$ the lattice $\bCon(\bA_{m,n})$ is isomorphic to
+  $\bEq(m)\oplus_a \bEq(n)$. 
 \end{lemma}
 \begin{proof}
   Let $\alpha$ be the equivalence relation
   $A^2\cup\{(b_1,b_1),\dots,(b_{n-1},b_{n-1})\}$, so as a partition it is  
   $a_0,\dots,a_{m-1}|b_1|b_2|\dots|b_{n-1}$. 
-  Note that $\Eq(m)\oplus_a \Eq(n)$ is isomorphic to the sublattice
-  of $\Eq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
+  Note that $\bEq(m)\oplus_a \bEq(n)$ is isomorphic to the sublattice
+  of $\bEq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
   $\alpha$ has a unique non-singleton block of size $m$, and $n$ blocks
-  altogether. We claim that this sublattice is the congruence lattice of $\m
-  A_{m,n}$.  
+  altogether. We claim that this sublattice is the congruence lattice of $\bA_{m,n}$.  
 
   Suppose $\theta\le\alpha$, and let $(x,y)\in\theta$. Then $x,y\in A$ or $x=y$,
   hence for any operation $\hat h$ we  have $\hat h(x)=x$ and $\hat h(y)=y$ or
@@ -1070,7 +1068,7 @@ x&\text{otherwise.}\end{cases}$$
   Now suppose $\theta$ is incomparable with $\alpha$. Then $A^2$ is not a subset
   of $\theta$, hence there exist $(x,y)\in A^2\setminus\theta$ and
   $(u,v)\in\theta\setminus\alpha$. If $u,v\in B_1$ then choose a function $h$ (as
-  in the definition of $\m A_{m,n}$) such that $h(u)=x$ and $h(v)=y$, in which
+  in the definition of $\bA_{m,n}$) such that $h(u)=x$ and $h(v)=y$, in which
   case $\hat h$ is an operation that shows $\theta$ is not a congruence. 
   If $u\in B_1$, but $v\in A$, note that we cannot have both $(x,v)$ and $(y,v)$
   in $\theta$ (else $(x,y)\in\theta$). Assume without loss of generality 
@@ -1083,29 +1081,29 @@ x&\text{otherwise.}\end{cases}$$
 %\newpage
 
 \begin{theorem}
-  Suppose $\m A=\<A,F\>$ and $\m B=\<B,G\>$ are unary algebras with
+  Suppose $\bA=\<A,F\>$ and $\bB=\<B,G\>$ are unary algebras with
   $A=\{a_0,\dots,a_{m-1}\}$, $B=\{b_0,\dots,b_{n-1}\}$ and 
-  $A\cap B=\{a_0\}=\{b_0\}$ $($so $a_0,b_0$ are identified$)$. Let $\m C$ be the
-  algebra $\m A_{m,n}$ expanded with the operations 
+  $A\cap B=\{a_0\}=\{b_0\}$ $($so $a_0,b_0$ are identified$)$. Let $\mathbf C$ be the
+  algebra $\bA_{m,n}$ expanded with the operations 
   $$
   \hat f(x)=\begin{cases}f(x)&\text{if $x\in A$}\\
   f(a_0)&\text{otherwise}\end{cases}\qquad\qquad
   \hat g(x)=\begin{cases}g(x)&\text{if $x\in B$}\\
   g(b_0)&\text{otherwise}\end{cases}
   $$
-  for $f\in F$ and $g\in G$. Then $\mathrm{Con}(\m C)$ is isomorphic to
-  $\mathrm{Con}(\m A)\oplus_a\mathrm{Con}(\m B)$. 
+  for $f\in F$ and $g\in G$. Then $\bCon(\mathbf C)$ is isomorphic to
+  $\bCon(\bA)\oplus_a\bCon(\bB)$. 
 \end{theorem}
 
 \begin{proof}
-  Since $\m C$ is an expansion of $\m A_{m,n}$ it follows from the preceding lemma
-  that Con$(\m C)$ is a sublattice of 
+  Since $\mathbf C$ is an expansion of $\bA_{m,n}$ it follows from the preceding lemma
+  that $\bCon(\mathbf C)$ is a sublattice of 
   $\{\theta\in \Eq(A\cup B):\theta\le\alpha$ or $\alpha\le\theta\}$ where,
-  as before, $\alpha=A^2\cup\text{id}_B$. Note that $\alpha\in\text{Con}(\m C)$,
-  so it suffices to show that $\{\theta\in\text{Con}(\m C):\theta\le\alpha\}$ is
-  isomorphic to Con$(\m A)$ and $\{\theta\in\text{Con}(\m C):\theta\le\alpha\}$ 
-  is isomorphic to Con$(\m B)$. The second isomorphism follows from the
-  observation that $\m C/\alpha$ is isomorphic to $\m B$ via the map 
+  as before, $\alpha=A^2\cup\text{id}_B$. Note that $\alpha\in\Con(\mathbf C)$,
+  so it suffices to show that $\{\theta\in\Con(\mathbf C):\theta\le\alpha\}$ is
+  isomorphic to $\bCon(\bA)$ and $\{\theta\in\Con(\mathbf C):\theta\le\alpha\}$ 
+  is isomorphic to $\bCon(\bB)$. The second isomorphism follows from the
+  observation that $\mathbf C/\alpha$ is isomorphic to $\bB$ via the map 
   $A\mapsto b_0$ and $\{b_i\}\mapsto b_i$ for $i\ge 1$. For the first isomorphism,
   note that the operations $\hat g$, $\hat h$ preserve all equivalence relations
   below $\alpha$. Similarly it is straight forward to check that $\hat f$
@@ -1113,16 +1111,16 @@ x&\text{otherwise.}\end{cases}$$
   Hence the map $\theta\mapsto\theta\cap A^2$ is the required isomorphism.
 \end{proof}
 
-Now assume $\m A$ and $\m B$ are minimal-size algebras with congruence lattices
-isomorphic to $\m L$ and $\m M$ respectively. Then it seems likely that the
-algebra $\m C$ above is minimal in size with respect to having a congruence
-lattice isomorphic to $\m L\oplus_a\m M$. Suppose $\m C'$ is a smaller algebra
+Now assume $\bA$ and $\bB$ are minimal-size algebras with congruence lattices
+isomorphic to $L$ and $M$ respectively. Then it seems likely that the
+algebra $\mathbf C$ above is minimal in size with respect to having a congruence
+lattice isomorphic to $L\oplus_a M$. Suppose $\mathbf C'$ is a smaller algebra
 with the same congruence lattice, and let $\alpha$ be the congruence in the
-``middle'' of the ordinal sum. Then $\m C'/\alpha$ has a congruence lattice
-isomorphic to $\m M$, hence $|\m C'/\alpha|=|\m B|=$ number of blocks in
+``middle'' of the ordinal sum. Then $\mathbf C'/\alpha$ has a congruence lattice
+isomorphic to $M$, hence $|\mathbf C'/\alpha|=|\bB|=$ number of blocks in
 $\alpha$. However, $\alpha$ does not need to have a unique nontrivial block, so
-it is not clear at the moment how to obtain a smaller algebra $\m A'$ such that
-Con$(\m A')$ is isomorphic to $\m L$. 
+it is not clear at this point how to obtain a smaller algebra $\bA'$ such that
+$\bCon(\bA')$ is isomorphic to $L$. 
 
 %% -- End intro.tex file insertion -------------------------------
 
@@ -2048,7 +2046,7 @@ no finite representation at all.
 
 Next consider $\bL_{11}$ diagrammed in Figure~\ref{fig:L11} (left). Again, we
 can use Theorem~\ref{thm:intrans}\eqref{item9} to show that it's not possible to
-represent $\bL_{11}$ using be represented using an intransitive permutation group. However (A) and
+represent $\bL_{11}$ using an intransitive permutation group. However (A) and
 (B$'$) do not hold in this case, so we cannot conclude that a minimal representation
 must come from a transitive permutation group. Nevertheless, with some help from
 \gap, we are able to show that it can be represented as an interval
@@ -2083,7 +2081,7 @@ smallest representation.
     \draw (top) node [above]{$G$};
   \end{tikzpicture}
 \end{center}
-\caption{$\bL_{11}$}\label{fig:L11}
+\caption{$\bL_{11}$ (left) and an upper interval (right)}\label{fig:L11}
 \end{figure}
 Start with the group representation of the pentagon as the upper
 interval $\lb H, G\rb$ where $G \cong ((C_3 \times C_3) : Q_8) : C_3$ and 
