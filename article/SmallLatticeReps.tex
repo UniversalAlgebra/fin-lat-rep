@@ -15,6 +15,20 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+@book{Bergman2012,
+    Author = {Bergman, Clifford},
+    Date-Modified = {2013-11-04 19:21:01 +0000},
+    Isbn = {978-1-4398-5129-6},
+    Mrclass = {08-02 (06-02 08A40 08B05 08B10 08B26)},
+    Mrnumber = {2839398 (2012k:08001)},
+    Mrreviewer = {Konrad P. Pi{\'o}ro},
+    Pages = {xii+308},
+    Publisher = {CRC Press, Boca Raton, FL},
+    Series = {Pure and Applied Mathematics},
+    Title = {Universal algebra. {F}undamentals and selected topics},
+    Volume = {301},
+    Year = {2012}
+}
 @article {MR2026829,
     AUTHOR = {Snow, John W.},
      TITLE = {Every finite lattice in {$\mathcal{V}(\bold M_3)$} is
@@ -599,8 +613,8 @@ The class $\sL$ of lattices isomorphic to congruence lattices of finite
 algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
 \setcounter{enumi}{-1}
-\item\label{item:0} principal filters: all elements above a given element (a 
-standard isomorphism theorem),
+\item\label{item:0} principal filters: all elements above a given element (the
+Correspondence Theorem~\cite{Bergman2012}),
 \item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
 \item\label{item:2} interval sublattices (follows from~(\ref{item:1}), see Remark a. below),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
