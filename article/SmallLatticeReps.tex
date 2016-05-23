@@ -2568,35 +2568,6 @@ $\bL_4$&
 \begin{tikzpicture}
     [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
 \node(5) at (0,1)[e]{};
-\node(4) at (0,0.33)[e]{};
-\node(3) at (0.4,0.33)[e]{};
-\node(2) at (-0.5,0)[e]{};
-\node(1) at (0.2,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
-&
-$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
-           \bB_4& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
-    f(x)& 1&  2&   3& 4& 5& 0& 7& 8& 9& 10& 11& 6\\
-   g(x)& 6& 11& 10& 9& 8& 7& 0& 5& 4& 3&   2&  1\\
-   h(x)& 0& 0& 0& 6& 0& 0& 0& 0& 6& 0& 0& 0\end{array}$
-\end{tabular}
-
-\begin{tabular}{ccc}
-$\bL_5$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
 \node(4) at (0.2,0.33)[e]{};
 \node(3) at (-0.5,0)[e]{};
 \node(2) at (0.4,-0.33)[e]{};
@@ -2614,9 +2585,38 @@ $\bL_5$&
 \end{minipage}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
-    \bB_5& 0& 1& 2& 3\\\hline
+    \bB_4& 0& 1& 2& 3\\\hline
    f(x)& 1& 0& 3& 2\\
    g(x)& 0& 0& 2& 2\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_5$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (0.4,0.33)[e]{};
+\node(2) at (-0.5,0)[e]{};
+\node(1) at (0.2,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
+           \bB_5& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
+    f(x)& 1&  2&   3& 4& 5& 0& 7& 8& 9& 10& 11& 6\\
+   g(x)& 6& 11& 10& 9& 8& 7& 0& 5& 4& 3&   2&  1\\
+   h(x)& 0& 0& 0& 6& 0& 0& 0& 0& 6& 0& 0& 0\end{array}$
 \end{tabular}
 
 \begin{tabular}{ccc}
@@ -3073,7 +3073,7 @@ $\bL_{20}$&
 \end{minipage}
 &
 \begin{tabular}{l}
-SmallGroup(216,153) in GAP\\
+$\bB_{20}=$ SmallGroup(216,153) in GAP\\
 $|\bB_{20}|=216$
 \end{tabular}
 \end{tabular}
