@@ -361,6 +361,10 @@ MRREVIEWER = {Andrea Lucchini},
 \usepackage[colorlinks=true,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
 %% ...but it's handy to have hyperrefs when browsing the electronic draft.
 
+%% wjd: I wanted nicer script letters, so I'm changing all \mathscr letters to
+%%      mathcal, with the following modification to mathcal fonts.
+\usepackage[mathcal]{euscript}  
+
 %% showkeys: just comment out in the final version
 \usepackage[notref,notcite]{showkeys}
 
@@ -549,6 +553,40 @@ MRREVIEWER = {Andrea Lucchini},
 %/////////////////////////////////////////////////////////
 \section{Introduction}
 \label{sec:intro}
+%the problem
+%we investigate methods of showing that certain lattices are representable
+%we show every lattice with 7 or less elements is representable with one
+%possible exception.
+%minimal, group (P^5), etc. 
+%also we have extend P^5 and McKenzie results on conditions that
+%force the min rep to be a group action. Also we have conditions
+%guaranteeing a group action represents must be transitive.
+
+By the Gratz\"er-Schmidt Theorem every algebraic, and hence
+every finite, lattice is the congruence lattice of an algebra. 
+But the algebras in this construction are always infinite
+even when the lattice is finite. This leaves the question:
+\emph{is every finite lattice isomorphic to the congruence
+lattice of a finite algebra?} In 1980 P.~P. \Palfy and P.~\Pudlak
+showed that every finite lattice is isomorphic to the congruence
+lattice of a finite algebra if and only every finite lattice is
+isomorphic to an interval in the subgroups lattice of a finite 
+group. If $L$ is isomorphic to the lattice of subgroups of $G$
+containing a subgroup $H$, then $L$ is isomorphic to the congruence
+lattice of the algebra whose elements are the let cosets of $H$
+and whose operations are the left multiplication by elements of~$G$;
+that is, the group action of $G$ on the left cosets of~$H$;
+see~\cite{alvi:1987}.
+However the \Palfy-\Pudlak theorem does not prove that if $L$
+is a congruence lattice of a finite lattice that it 
+is (isomorphic to) an interval of a subgroup lattice of finite
+group, although the opposite implication is obviously true.
+
+
+
+\todo{check the gg statement}
+
+
 \todo{Expand the introduction.}
 
 %%%% \input{inputs/intro.tex}  (include all major inputs in one file)
@@ -728,24 +766,24 @@ in the group $G$.  The identity of the group $G^X$ is of course the constant map
 
 Let $X$ be a finite totally ordered set, with order relation $\leq$,
 and consider the set $X^X$ of functions mapping $X$ into itself.  
-The subset of $X^X$ consisting of functions that are idempotent and
-satisfy %% decreasing in the sense 
-$f(x) \leq x$ for all $x\in X$
-will be denoted by $\ID{X}$.  That is,
+The subset of $X^X$ consisting of unary
+\emph{idempotent contractions}, that is, for all $x\in X$,
+$f(f(x)) = f(x)$ and $f(x) \leq x$ for all $x\in X$. 
+We denote this set by $\IC(X)$, so
 \[
-\ID{X} = \{f\in X^X \mid f^2 = f \text{ and }\; \forall x\; f(x) \leq x\}.
+\IC(X) = \{f\in X^X \mid f^2 = f \text{ and }\; \forall x\; f(x) \leq x\}.
 \]
-Define the binary relation $\sqsubseteq$ on the set $\ID{X}$ by
+Define the binary relation $\sqsubseteq$ on the set $\IC(X)$ by
 \begin{equation}
   \label{eq:MID111}
   f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g,
 \end{equation}
 where $\ker f = \{(x,y) \in X^2 \mid f(x) = f(y)\}$.
 It is easy to see that $f\sqsubseteq g$ holds if and only if $gf = g$, and that
-$\sqsubseteq$ is a partial ordering of $\ID{X}$.  
-In fact, under this ordering, $\ID{X}$ is a lattice which is 
-isomorphic to $\bEqX$. The lattice isomorphism is the map
-$\Theta : \EqX \rightarrow \ID{X}$ given by
+$\sqsubseteq$ is a partial ordering of $\IC(X)$.  
+In fact, under this ordering, $\IC(X)$ is a lattice that is
+isomorphic to $\bEqX$. The lattice isomorphism is the function
+$\Theta : \EqX \rightarrow \IC(X)$ given by
 $\Theta(\alpha) = f_\alpha$, where
 $f_\alpha(x) = \min\{y\in X \mid x \mathrel{\alpha} y\}$.
 
@@ -770,7 +808,7 @@ The set of constant functions in $S^n$ is a subgroup $D < S^n$, sometimes called
 \[
 D = \{(s, s, \dots, s) \mid s\in S\} \leq S^n.
 \]
-For each $f \in \ID{n}$, define
+For each $f \in \IC(n)$, define
 \[
 %%
 %% K_f = \{(x_{f(0)}, x_{f(1)}, \dots, x_{f(n-1)}) \mid x_{f(i)}\in S, \; i = 0, 1,\dots, n-1\}.
@@ -784,7 +822,7 @@ That is, $Xf$ is the set of all compositions of
 $f$ followed by $\bx\in S^n$.
 Thus, $Xf = \{ \by\in S^n \mid \ker f \leq \ker \by \}$.
 For example, 
-if $f = (0, 0, 2, 3, 2)\in \ID{\underline{5}}$, then 
+if $f = (0, 0, 2, 3, 2)\in \IC(\underline{5})$, then 
 $\ker f$ is the equivalence relation corresponding to
 the partition $|0,1|2,4|3|$, and 
 $Xf$ is the subgroup of all
@@ -796,7 +834,7 @@ $y(2) = y(4)$. That is,
 %% \end{align*}
 \[Xf = \{(x(0), x(0), x(2), x(3), x(2)) \mid \bx\in S^5\}
 =\{\by\in S^5 \mid \ker f \leq \ker \by\}.\]
-It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
+It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
 
 \begin{lemma}
   \label{lem:latt-duals}
@@ -804,7 +842,7 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \ID{n}$.
   interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
 \end{lemma}
 \begin{proof}
-  This is clear since $\ID{n}$ is ordered by (\ref{eq:MID111}), and 
+  This is clear since $\IC(n)$ is ordered by (\ref{eq:MID111}), and 
   we have 
   $f\sqsubseteq h$ if and only if
   $Xh = \{\by \in S^n \mid \ker h \leq \ker \by \}
@@ -1254,33 +1292,33 @@ decreasing maps.  These were introduced above in
 Section~\ref{sec:duals-interv-subl-detail}, but we briefly review the definitions here
 for convenience.
 
-Given a totally ordered set $X$, 
+As above, given a totally ordered set $X$, 
 %consider the subset of the set $X^X$ of all functions that map $X$ into itself.  
-let the set $\idemdec = \{f\in X^X: f^2 = f \text{ and } f(x) \leq x\}$ be partially
-ordered by $\sqsubseteq$ as follows:
+we let $\IC(X) = \{f\in X^X: f^2 = f \text{ and } f(x) \leq x\}$, and 
+define the partial order $\sqsubseteq$ on this set as follows:
 \[
 f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g.  
 \]
 As noted above, 
-this makes \idemdec\ into a lattice that is isomorphic to $\bEqX$.   
-Define a relation $R$ on $X^X \times \idemdec$ as follows: 
+this makes \icx into a lattice that is isomorphic to $\bEqX$.   
+Define a relation $R$ on $X^X \times \icx$ as follows: 
 \[
 (h,f) \in R \quad \Leftrightarrow \quad (\forall (x,y) \in \ker f)\; (h(x),h(y))
 \in \ker f.
 \]
 If $h\, R\, f$, we say that  $h$ \emph{respects} $f$.
 
-Let $\sF = \power{\idemdec}$ and $\sH = \power{X^X}$ be partially ordered by set
+Let $\sF = \power{\icx}$ and $\sH = \power{X^X}$ be partially ordered by set
 inclusion, and define the maps 
 $\lambda: \sF \rightarrow \sH$ and $\rho: \sH \rightarrow \sF$ as follows:
 \[
 \lambda(F) = \{h\in X^X: \forall f\in F,\, h\, R \,f\} \quad (F \in \sF)
 \]
 \[
-\rho(H) = \{f\in \idemdec: \forall h\in H,\, h\, R\, f\} \quad (H \in \sH)
+\rho(H) = \{f\in \icx: \forall h\in H,\, h\, R\, f\} \quad (H \in \sH)
 \]
 The pair $(\lambda, \rho)$ defines a \defn{Galois correspondence} between
-$\idemdec$ and $X^X$.  That is, $\lambda$ and $\rho$ are 
+$\icx$ and $X^X$.  That is, $\lambda$ and $\rho$ are 
 antitone %(order-reversing) 
 maps such that $\lambda \rho \geq \id_{\sH}$ and $\rho
 \lambda \geq \id_{\sF}$.  In particular, for any set $F \in \sF$ we have 
