@@ -9,11 +9,16 @@
 \newcommand{\bX}{\ensuremath{\mathbf{X}}}
 \newcommand{\bM}{\ensuremath{\mathbf{M}}}
 
-\newcommand{\sL}{\ensuremath{\mathscr{L}}}
-\newcommand{\sK}{\ensuremath{\mathscr{K}}}
-\newcommand{\sF}{\ensuremath{\mathscr{F}}}
-\newcommand{\sB}{\ensuremath{\mathscr{B}}}
-\newcommand{\sH}{\ensuremath{\mathscr{H}}}
+%% \newcommand{\sL}{\ensuremath{\mathscr{L}}}
+%% \newcommand{\sK}{\ensuremath{\mathscr{K}}}
+%% \newcommand{\sF}{\ensuremath{\mathscr{F}}}
+%% \newcommand{\sB}{\ensuremath{\mathscr{B}}}
+%% \newcommand{\sH}{\ensuremath{\mathscr{H}}}
+\newcommand{\sL}{\ensuremath{\mathcal{L}}}
+\newcommand{\sK}{\ensuremath{\mathcal{K}}}
+\newcommand{\sF}{\ensuremath{\mathcal{F}}}
+\newcommand{\sB}{\ensuremath{\mathcal{B}}}
+\newcommand{\sH}{\ensuremath{\mathcal{H}}}
 
 \newcommand{\sansC}{\ensuremath{\mathsf{C}}}
 \newcommand{\sansH}{\ensuremath{\mathsf{H}}}
@@ -23,7 +28,7 @@
 \newcommand{\sansS}{\ensuremath{\mathsf{S}}}
 \newcommand{\sansT}{\ensuremath{\mathsf{T}}}
 
-\newcommand{\EqX}{\ensuremath{\operatorname{Eq} X}}
+\newcommand{\EqX}{\ensuremath{\operatorname{Eq}(X)}}
 \newcommand{\Eq}{\ensuremath{\operatorname{Eq}}}
 \newcommand{\bEq}{\ensuremath{\mathbf{Eq}}}
 \newcommand{\bEqX}{\ensuremath{\mathbf{Eq}(X)}}
@@ -33,8 +38,13 @@
 \newcommand{\Sym}{\ensuremath{\operatorname{Sym}}}
 \newcommand{\End}{\ensuremath{\operatorname{End}}}
 \newcommand{\Aut}{\ensuremath{\operatorname{Aut}}}
-\newcommand{\ID}[1]{\ensuremath{\mathcal{ID}(#1)}}
-\newcommand{\power}[1]{\ensuremath{\mathscr{P}(#1)}}
+
+%% wjd: following Peter's suggestion that 
+%% \newcommand{\ID}[1]{\ensuremath{\mathcal{ID}(#1)}}
+\newcommand{\IC}{\ensuremath{\mathcal{IC}}}
+%% also removed the argument (we should insert our own parentheses, as desired)
+
+\newcommand{\power}[1]{\ensuremath{\mathcal{P}(#1)}}
 
 \newcommand{\<}{\ensuremath{\langle}}
 \renewcommand{\>}{\ensuremath{\rangle}}
@@ -56,7 +66,7 @@
 \newcommand{\Meet}{\ensuremath{\bigwedge}}
 \renewcommand{\Join}{\ensuremath{\bigvee}}
 
-\newcommand{\idemdec}{\ID{X}}
+\newcommand{\icx}{\ensuremath{\IC(X)}}
 \newcommand{\upalpha}{\ensuremath{\alpha^{\uparrow}}}
 \newcommand{\downbeta}{\ensuremath{\beta^{\downarrow}}}
 \newcommand{\two}{\ensuremath{\mathbf{2}}}
