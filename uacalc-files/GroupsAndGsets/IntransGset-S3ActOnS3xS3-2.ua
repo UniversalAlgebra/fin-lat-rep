@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<algebra>
+<basicAlgebra>
+<algName>S3ActOnS3xS3</algName>
+<desc>Intransitive G-set S3 acting on 2 copies of itself.</desc>
+<cardinality>12</cardinality>
+<operations>
+<op>
+<opSymbol><opName>op1</opName>
+<arity>1</arity>
+</opSymbol>
+<opTable>
+<intArray>
+<row>4,3,5,1,0,2,10,9,11,7,6,8</row>
+</intArray>
+</opTable>
+</op>
+<op>
+<opSymbol><opName>op2</opName>
+<arity>1</arity>
+</opSymbol>
+<opTable>
+<intArray>
+<row>1,2,0,4,5,3,7,8,6,10,11,9</row>
+</intArray>
+</opTable>
+</op>
+</operations>
+</basicAlgebra>
+</algebra>
