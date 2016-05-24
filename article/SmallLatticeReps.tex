@@ -565,7 +565,7 @@ MRREVIEWER = {Andrea Lucchini},
 By the Gratz\"er-Schmidt Theorem every algebraic, and hence
 every finite, lattice is the congruence lattice of an algebra. 
 But the algebras in this construction are always infinite
-even when the lattice is finite. This leaves the question:
+even when the lattice is finite. This leaves open the question:
 \emph{is every finite lattice isomorphic to the congruence
 lattice of a finite algebra?} In 1980 P.~P. \Palfy and P.~\Pudlak
 reduced this to a group theoretic problem by showing the following
@@ -587,13 +587,66 @@ lattice of the algebra whose elements are the left cosets of $H$
 and whose operations are left multiplication by elements of~$G$;
 that is, the group action of $G$ on the left cosets of~$H$;
 see~\cite{alvi:1987}.
-However the \Palfy-\Pudlak theorem does not prove that if 
+The \Palfy-\Pudlak theorem, however, does not prove that, if 
 a particular lattice $L$
-is a congruence lattice of a finite lattice that it 
+is a congruence lattice of a finite lattice, that it 
 is (isomorphic to) an interval of a subgroup lattice of a finite
 group (although the opposite implication is obviously true) so
 it is possible that there is a congruence lattice $L$ of a finite
 algebra that is not an interval sublattice of a finite group. 
+
+In this paper we review some of the known methods, as well as 
+some new methods, of constructing a finite
+algebra whose congruence lattice is $L$, for a given finite
+lattice $L$. Using this methods we show that with the possible
+exception of one ($L_{10}$ in the last section), every 
+lattice with at most 7 elements is the 
+congruence lattice of a finite lattice. In most but not all
+cases we are able to show that the algebra we construct is 
+of minimal size.
+
+\todo{define group representation of a lattice. Is transitivity
+required?}
+
+Not surprisingly many lattices with a group representation
+can be represented as a congruence lattice of a much smaller
+algebra. For example, the hexagon lattice, $L_6$ in the 
+last section, is the congruence lattice of an algebra 
+with 6 elements.
+Aschbacher~\cite{Aschbacher2008} has found groups
+$H < G$ such that the interval from $H$ to $G$ is $L_6$, but 
+$[G : H]$, the size of the algebra, is considerably larger.
+
+\todo{can we say that Group(216,153) is the smallest group
+with $N_5$ as an interval?} 
+
+
+But for other lattices it can be shown that in a minimal 
+representation every nonconstant operation must be a 
+permutation. Thus, for these lattices, a minimal representation
+is a group acting on a set. Naturally for these lattices 
+finding a representation is harder, and finding a minimal
+representation can be especially hard.
+
+In Section~\ref{sec:congr-latt-group} we investigate when
+a lattice can be represented by an intransitive group acting 
+instransitively on a set. We show that most lattices
+can never be so represented. For such lattices group 
+representations must use transitive groups and so the
+action is isomorphic to a group acting on the cosets
+of a subgroup by left multiplication. For example,
+$L_6$ is in this category.
+
+
+For the 7-element lattice not known to be representable, 
+$L_{10}$, we show that a minimal size representation 
+must be via a transitive permutation group action.
+ 
+%% note we could easily show there is no H < G of index 4,
+%% representing N_5
+%% even though finding the minimal such index would
+%% be hard to find. Thus the minimal representation
+%% of N_5 cannot be via a group.
 
 
 
@@ -1871,8 +1924,10 @@ $A_i = A$) }
 So $(a,b) \in \tau$ if and only if they both lie in the same orbit;
 $(a,b) \in \tau_i$ if and only if $a = b$ or both lie in $A_i$;
 $(a,b) \in \gamma_i$ if and only if both lie in $A_i$ or both don't.
-We call $\tau$ the \defn{intransitivity congruence}; $G$ acts transitively
-if and only if $\tau = 1$. 
+We call $\tau$ the \defn{intransitivity congruence}; $G$ acts transitively if and only if $\tau = 1$. 
+Of course $A_i$ is a subuniverse of $\bA$; the subalgebra
+is denoted~$\bA_i$.
+
 
 \begin{theorem}\label{thm:intrans}
 Let $\bA = \<A,G\>$, where $G$ is a group, be a finite algebra. 
@@ -1884,7 +1939,7 @@ $G$ acts transitively if and only if $\tau = 1_{\bA}$.
 \item \label{item2}
 The interval $\lb\tau,1_\bA\rb$ is isomorphic to $\operatorname{Eq}(k)$.
 \item \label{item3}
-The interval $\lb 0_\bA,\tau\rb$ is isomorphic to $\prod_{i=0}^{k-1} \Con(A_i)$.
+The interval $\lb 0_\bA,\tau\rb$ is isomorphic to $\prod_{i=0}^{k-1} \Con(\bA_i)$.
 \item\label{item4}
 If, for some $i$, $\theta \ge \Join_{j \ne i} \tau_j$ then $\theta \ge \tau$
 or $\theta \le \gamma_i$.
