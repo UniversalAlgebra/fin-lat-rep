@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<algebra>
+<basicAlgebra>
+<algName>S3</algName>
+<desc>The permutational algebra ([ 0, 1, 2, 3, 4, 5 ], S3).</desc>
+<cardinality>6</cardinality>
+<operations>
+<op>
+<opSymbol><opName>g0</opName>
+<arity>1</arity>
+</opSymbol>
+<opTable>
+<intArray>
+<row>3,2,5,4,0,1</row>
+</intArray>
+</opTable>
+</op>
+<op>
+<opSymbol><opName>g1</opName>
+<arity>1</arity>
+</opSymbol>
+<opTable>
+<intArray>
+<row>2,3,0,1,5,4</row>
+</intArray>
+</opTable>
+</op>
+</operations>
+</basicAlgebra>
+</algebra>
