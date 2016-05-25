@@ -2433,32 +2433,29 @@ $|A|$ of the universe of $\bA$ as small as possible. That is, we have a proof
 that no representation on a smaller algebra is possible.
 
 There is, however, a separate notion of smallness of a representation that might
-be worth considering.  Suppose we know that a lattice $\bL$ is representable as
+be worth considering.  Suppose we know that a lattice $L$ is representable as
 an upper interval in the subgroup lattice of a finite.  We could ask, ``what is
-the smallest group $G$ such that $\bL \cong \lb H, G \rb$ for some $H\leq G$?''
-However, a more relevant question might be, ``what is the smallest number $n$
-such that there are finite groups $H\leq G$ with index $n = [G:H]$ and 
-satisfying $\bL \cong \lb H, G \rb$?''  The reason this question seems more
-natural is obvious. The resulting algebra that represents $\bL$ is the group
+the smallest group $G$ such that $L \cong \lb H, G \rb$ for some $H\leq G$?''
+Alternatively, we could ask, ``what is the smallest number $n$ such that there are
+finite groups $H\leq G$ with index $n = [G:H]$ and satisfying
+$\bL \cong \lb H, G \rb$?''  The reason this question seems more 
+natural is because the resulting algebra representing $L$ is the group
 $G$ acting on the set of cosets of $H$, and this algebra has $n = [G:H]$
-elements.  In this context, the index seems more relevant that the size of the
-group $G$.
+elements.  In this context, the index $[G:H]$ seems more relevant than the size
+of the group $G$.
 
-Now suppose we find that $G$ is the smallest group in whose subgroup lattice
-$\bL$ appears as an upper interval. It is possible that there is a larger group
-in whose subgroup lattice $\bL$ appears, but with a smaller index.
-Here is an example of this phenomenon.
+This begs the question, if we discover that $G$ is a group of minimal order
+among those in whose subgroup lattices $L$ appears as an upper interval,
+could it be that there is another, perhaps larger group in whose subgroup
+lattice $L$ appears, but with a smaller index?  The answer to this question is
+yes, as we now show by providing an example of this phenomenon. 
 
-An example is shown in Figure~\ref{fig:10} which shows
-the $\two\times \two$ lattice as the upper interval
-$\lb C_2, C_3 \times S_3\rb$, as well as the upper interval
+In Figure~\ref{fig:10} there appears the lattice $\two\times \two$.
+On the left, this lattice is presented as the upper interval
+$\lb C_2, C_3 \times S_3\rb$. On the right, it is the upper interval 
 $\lb \<e\>, C_{10}\rb$. Of course, the groups $C_{10}$ and
-$C_3 \times S_3$ have orders 10 and 18, respectively, but
-the respective indices are
-$|C_{10}:\<e\>| = 10$ and $|C_3 \times S_3:C_2|=9$.
-This example shows that we can sometimes represent the same lattice
-with a smaller algebra by using a group of larger order.
-
+$C_3 \times S_3$ have orders 10 and 18, but the respective indices are
+$|C_{10}:\<e\>| = 10$ and $|C_3 \times S_3:C_2|=9$. 
 \begin{figure}
 \caption{Transitive G-set congruence lattices in Eq(10)}
 \label{fig:10}
