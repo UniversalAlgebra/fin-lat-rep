@@ -1436,7 +1436,6 @@ $F$ is closed if and only if $F = \rho(H)$ for some $H\in \sH$.
 \todo{Cite Birkhoff result about every finite distributive lattice being the
   congruence lattice of a finite lattice.}
 
-\todo{We may want to omit the proof of Theorem 4.1}
 
 A lattice $\bL$ is called 
 \defn{strongly representable} 
@@ -1465,22 +1464,29 @@ collection $F$ of operations on $X$.
   $\theta_* = \Join \{ \gamma \in L \mid \gamma \leq \theta \}$.
   Let $\alpha$ be a join irreducible in $L$ below $\theta^*$ and not below
   $\theta_*$. 
+  \marginpar{wjd: should we keep or delete this proof?}
   Note that $\alpha$ is not below $\theta$.
   Let $\beta = \Join \{ \gamma \in L \mid \gamma \ngeq \alpha \}$.
   If $\beta$ were above $\theta$, then $\beta$ would be above $\theta^*$,
   and so $\beta$ would be above $\alpha$. But $\alpha$ is join prime, so $\beta$ is not
-  above $\theta$. 
-
-  Choose $(u, v) \in \alpha \setminus \theta$ and note that $u \neq v$.
-  Choose $(x, y) \in \theta \setminus \beta$ and note that $x \neq y$.
-  Let $B$ be the $\beta$ block of $y$ and define $h\in X^X$ as in~(\ref{eq:h}). Then it
-  is clear that $h$ violates $\theta$, $h$ respects all elements in the sets
-  $\upalpha = \{\gamma \in L: \alpha \leq \gamma\}$ and 
-  $\downbeta = \{\gamma \in L: \gamma \leq \beta\}$, and $L = \upalpha \cup
-  \downbeta$. Since $\theta$ was an arbitrary element of $\EqX \setminus L$, we can
-  construct such an $h = h_\theta$ for each $\theta \in \EqX \setminus L$.  Let $\sH = \{h_\theta:
-  \theta \in \EqX \setminus L\}$ and let $\mathbf{A}$ be the algebra 
-  $\langle X, \sH\rangle$.  Then, $\bL =\bCon(\mathbf{A})$. % \rho(\sH)
+  above $\theta$. Therefore, there exist $(u, v) \in \alpha \setminus \theta$
+  and $(x, y) \in \theta \setminus \beta$.  
+  %% (Note that $u \neq v$ and $x \neq y$.)
+  As in~(\ref{eq:h}), define
+  \begin{equation*}
+    h_\theta(x) = \begin{cases}
+      a,& \quad x\in u/\beta,\\
+      b,& \quad \text{ otherwise.}
+    \end{cases}
+  \end{equation*}
+  It is clear that $h_\theta$ violates $\theta$ but respects all
+  relations in $\upalpha = \{\gamma \in L: \alpha \leq \gamma\}$ and 
+  $\downbeta = \{\gamma \in L: \gamma \leq \beta\}$. Also,
+  $L = \upalpha \cup \downbeta$.
+  Finally, since $\theta$ was arbitrary, such an $h_\theta$ exists
+  for each $\theta \in \EqX \setminus L$, so we have
+  $\bL =\bCon \langle X, \sH\rangle$, where
+  $\sH = \{h_\theta: \theta \in \EqX \setminus L\}$.
 \end{proof}
 
 %% -- End distributive.tex file insertion -------------------------------
@@ -1503,35 +1509,35 @@ group on $X$ by $\Sym(X)$.  When the
 underlying set isn't important, we usually write $S_n$ to denote the
 symmetric group on an $n$-element set. 
 
-If we have defined some set $F$ of basic operations on $X$, so that
-$\bX = \<X, F\>$ is an algebra, then two other important submonoids of
-$X^X$ are $\End \bX$, the set of maps in $X^X$ which respect all 
-operations in $F$, and $\Aut \bX$, the set of bijective maps in  $X^X$ which
-respect all operations in $F$.  It is apparent from the definition that
-$\Aut\bX= S_X \cap \End \bX$, and  $\Aut\bX$ is a submonoid of $\End \bX$
-and a subgroup of $S_X$.  These four fundamental monoids associated with the
-algebra $\bX$, and their relative ordering under inclusion, are shown in the diagram
-below. 
+%% If we have defined some set $F$ of basic operations on $X$, so that
+%% $\bX = \<X, F\>$ is an algebra, then two other important submonoids of
+%% $X^X$ are $\End \bX$, the set of maps in $X^X$ which respect all 
+%% operations in $F$, and $\Aut \bX$, the set of bijective maps in  $X^X$ which
+%% respect all operations in $F$.  It is apparent from the definition that
+%% $\Aut\bX= S_X \cap \End \bX$, and  $\Aut\bX$ is a submonoid of $\End \bX$
+%% and a subgroup of $S_X$.  These four fundamental monoids associated with the
+%% algebra $\bX$, and their relative ordering under inclusion, are shown in the diagram
+%% below. 
 
-\begin{figure}
-\begin{center}
-  \begin{tikzpicture}[scale=.7]
-    \node (Aut) at (0,0.2) [draw,circle,inner sep=1pt] {};
-    \draw[font=\small] (0,-.30) node {$\Aut\bX$};
+%% \begin{figure}
+%% \begin{center}
+%%   \begin{tikzpicture}[scale=.7]
+%%     \node (Aut) at (0,0.2) [draw,circle,inner sep=1pt] {};
+%%     \draw[font=\small] (0,-.30) node {$\Aut\bX$};
 
-    \node (End) at (-1.6,2) [draw,circle,inner sep=1pt] {};
-    \draw[font=\small] (-2.6,2) node {$\End \bX$};
+%%     \node (End) at (-1.6,2) [draw,circle,inner sep=1pt] {};
+%%     \draw[font=\small] (-2.6,2) node {$\End \bX$};
 
-    \node (Sx) at (1.6,2) [draw,circle,inner sep=1pt] {};
-    \draw (2.2,2) node {$S_X$};
+%%     \node (Sx) at (1.6,2) [draw,circle,inner sep=1pt] {};
+%%     \draw (2.2,2) node {$S_X$};
 
-    \node (XX) at (0,3.8) [draw,circle,inner sep=1pt] {};
-    \draw (0,4.2) node {$X^X$};
-    \draw[semithick,dotted]    (Aut) to (End) to (XX) to (Sx) to (Aut);
-  \end{tikzpicture}
-\end{center}
-\caption{ \ }
-\end{figure}
+%%     \node (XX) at (0,3.8) [draw,circle,inner sep=1pt] {};
+%%     \draw (0,4.2) node {$X^X$};
+%%     \draw[semithick,dotted]    (Aut) to (End) to (XX) to (Sx) to (Aut);
+%%   \end{tikzpicture}
+%% \end{center}
+%% \caption{ \ }
+%% \end{figure}
 
 
 
@@ -1564,8 +1570,6 @@ A group that acts transitively on some set is called a
 every group acts transitively on some sets and intransitively on others.)
 A representation $\varphi$ is called \emph{transitive} if the resulting action
 is transitive. 
-
-
 A representation  $\varphi : G \rightarrow \Aut\bX$ is called 
 \emph{faithful}
 \index{faithful!representation}%
@@ -1573,8 +1577,10 @@ if it is a monomorphism, in which case $G$ is isomorphic to its image under
 $\varphi$, which is a subgroup of $\Aut\bX$.  We also say, in this case, that
 the group $G$ acts faithfully, and call it a \defn{permutation group}.
 
-The \defn{degree} of a group action on a set $X$ is the
-cardinality of $X$.
+Suppose $G$ acts on the set $X$ and supposed $U$ is the set of ``unmoved''
+points in $X$.  That is, $u\in U$ if every element of $G$ leaves $u$ fixed.
+The \defn{degree} of such a group action is the cardinality of
+$|X\setminus U|$, that is, the cardinality of the set of moved points.
 
 For our purposes the most important representation of a group $G$ is its action 
 on the set of cosets of a subgroup.  That is, for any subgroup $H\leq G$,
@@ -1815,7 +1821,7 @@ interval in the subgroup lattice of some finite group.
 They did this by giving lattice conditions which force the
 nonconstant operations of a minimal
 representation to be permutations which generate a transitive
-group $\bG$.
+group $G$.
 By Theorem~\ref{thm:g-set-isomorphism2}
 the congruence lattice of such an algebra is isomorphic to 
 the interval $\lb G_a,G \rb$. 
