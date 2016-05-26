@@ -628,7 +628,8 @@ exception ($L_{10}$ in the last section), every
 lattice with at most 7 elements is the 
 congruence lattice of a finite lattice. In most but not all
 cases we are able to show that the algebra we construct is 
-of minimal size.
+of minimal size. (Section~\ref{sec:minim-repr} below explains what
+we mean by \emph{size} of a representation.)
 
 %% \todo{define group representation of a lattice. Is transitivity required?}
 
@@ -745,9 +746,80 @@ The dual of $L$ can be depicted by flipping the Hasse diagram
 for $L$ upside down. 
 In a broader sense, two lattices (posets) are also said to be duals if they are
 dually isomorphic.
-Although we often denote the dual of $L$ by $L'$, on some occasions it is more
-convenient to use an operator notation, such as $\partial L$, to denote the dual of
-$L$. 
+%% wjd: the next sentence isn't needed since we're not using the \partial notation anywhere.
+%% Although we often denote the dual of $L$ by $L'$, on some occasions it is more
+%% convenient to use an operator notation, such as $\partial L$, to denote the dual of
+%% $L$. 
+
+\subsection{Minimal Representations}
+\label{sec:minim-repr}
+We now define the ``size'' of a representation and explain what we mean by
+a ``minimal'' representation.
+%% In what sense is a representation of a finite lattice \emph{minimal}?
+The \defn{size} of a representation $\Con(\bA) \cong L$ is the cardinality
+$|A|$ of the universe of $\bA$.  We call such a representation
+\defn{minimal} if $\Con(\bB) \cong L$ implies $|A| \leq |B|$.
+%% Thus, $\Con(\bA) \cong \bL$ is a minimal representation of $\bL$ if and only if we can prove
+%% that $\Con(\bB) \cong \bL$ implies $|A| \leq |B|$.
+
+%% There is, however, another notion of ``size'' of a representation that might be
+%% worth considering.  
+Suppose we know that $L$ is a group representable lattice.
+We could ask, what is the smallest group $G$ such that $L \cong \lb H, G \rb$ for
+some $H\leq G$?  From our perspective, the more relevant question
+is what is the smallest number $n$ such that there are finite groups $H\leq G$ with
+index $n = [G:H]$ and satisfying $\bL \cong \lb H, G \rb$?
+The reason this question seems more natural to us is because the algebra
+representing $L$ is the group $G$ acting on the set of cosets of $H$, and this
+algebra has $n = [G:H]$ elements.  In this context, the index $[G:H]$ seems more
+relevant than the size of the group $G$.
+
+Now, suppose $G$ is a group of minimal order among those in whose
+subgroup lattices $L$ appears as an upper interval, say $L \cong \lb H, G\rb$.
+It's possible that there is a larger group $G^+$ in whose subgroup lattice $L$
+appears, but with a smaller index. That is, we may have
+\[\lb H, G \rb \cong L \cong \lb H^+, G^+\rb, \quad |G| < |G^+|,
+\quad |G^+:H^+| < |G:H|.\]
+We now give an example of this phenomenon. 
+
+In Figure~\ref{fig:10} there appears the lattice $\two\times \two$.
+On the left, this lattice is presented as the upper interval
+$\lb C_2, C_3 \times S_3\rb$. On the right, it is the upper interval 
+$\lb \<e\>, C_{10}\rb$. Of course, the groups $C_{10}$ and
+$C_3 \times S_3$ have orders 10 and 18, but the respective indices are
+$|C_{10}:\<e\>| = 10$ and $|C_3 \times S_3:C_2|=9$. 
+\begin{figure}
+\caption{Transitive G-set congruence lattices in Eq(10)}
+\label{fig:10}
+\begin{center}
+\begin{tikzpicture}[scale=.8]
+\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
+\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\draw[font=\scriptsize] (0,-.5) node {$\lb C_2, C_3 \times S_3\rb$};
+\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(9,4) };
+\draw[semithick]
+(0) to (1)
+(0) to (2)
+(1) to (3)
+(2) to (3);
+\end{tikzpicture}
+\begin{tikzpicture}[scale=.8]
+\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
+\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
+\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\draw[font=\scriptsize] (0,-.5) node {$\lb \<e\>, C_{10}\rb$};
+\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(10,1) };
+\draw[semithick]
+(0) to (1)
+(0) to (2)
+(1) to (3)
+(2) to (3);
+\end{tikzpicture}
+\end{center}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%  METHODSOVERVIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -835,7 +907,7 @@ correspondence theorem~\cite{Bergman2012}),
  % interval of $\bar{L}$.
   %For ease of notation, let's rename $\bar{\alpha}$ and $\bar{\beta}$, dropping
   %the bars.  Thus $\lb \alpha, \beta \rb$ is the interval of interest and we
-  %assume $\lb \alpha, \beta \rb\leq \Con \bA$.
+  %assume $\lb \alpha, \beta \rb\leq \Con(\bA)$.
   %The filter $\alpha^\uparrow =\lb \alpha, 1_A \rb$ 
   %s isomorphic to $\Con (\bA/\alpha)$, hence representable, so
   %by~(1) the dual $\partial (\alpha^\uparrow)=\lb 1_A', \alpha'\rb$ is also
@@ -1309,9 +1381,9 @@ two lattices are isomorphic.
 As Bjarni J\'onsson explains in~\cite{Jonsson:1972}, there are two types of
 representation problems for congruence lattices, the concrete and the
 abstract.  The \emph{concrete representation problem} asks whether a specific family of
-equivalence relations on a set $A$ is equal to $\Con \bA$ for some
+equivalence relations on a set $A$ is equal to $\Con(\bA)$ for some
 algebra $\bA$ with universe $A$.  The \defn{abstract representation problem}
-asks whether a given lattice is isomorphic to $\Con \bA$ for some algebra~$\bA$.
+asks whether a given lattice is isomorphic to $\Con(\bA)$ for some algebra~$\bA$.
 
 These two problems are closely related, and have become even more so since the
 publication in 1980 
@@ -1332,7 +1404,7 @@ A point of clarification is in order here.  The term
 \defn{representation} 
 has become a bit overused in the literature about the finite lattice
 representation problem.  On the one hand, given a finite lattice $L$, if there
-is a finite algebra $\bA$ such that $L \cong \Con \bA$, then $L$ is called a
+is a finite algebra $\bA$ such that $L \cong \Con(\bA)$, then $L$ is called a
 \defn{representable lattice}.  On the other hand, given a sublattice 
 $L_0\leq \bEqX$, if $L_0\cong L$, then $L_0$ is sometimes called a 
 \defn{concrete representation}
@@ -1750,11 +1822,11 @@ contains a core-free maximal subgroup.
 \begin{theorem}[\Gset\ Isomorphism Theorem]
   \label{thm:g-set-isomorphism2}
   Let $\bA = \<A, G\>$ be a transitive \Gset\ and fix $a\in A$.  
-  Then the lattice $\Con \bA$ is isomorphic to the
+  Then the lattice $\Con(\bA)$ is isomorphic to the
   interval $\lb G_a, G\rb$ in the subgroup lattice of $G$.
 \end{theorem}
 % \begin{proof}
-%     For each $\theta  \in \Con \bA$, let $H_\theta =\{g\in G \mid (g(a),a) \in
+%     For each $\theta  \in \Con(\bA)$, let $H_\theta =\{g\in G \mid (g(a),a) \in
 %     \theta\}$,  
 %     and for each $H \in [G_a, G]$, let 
 %     $(b, c) \in \theta_H$ mean there exist $g \in G$ and $h \in H$ 
@@ -1778,7 +1850,7 @@ contains a core-free maximal subgroup.
 %     Therefore, $\theta_{H_\theta} = \theta$. Finally, $H_\theta \leq H_\phi$ if
 %     and only if
 %     $\theta \leq \phi$, so $\theta \mapsto H_\theta$ is an isomorphism
-%     between $\Con \bA$ and $[G_a, G]$.
+%     between $\Con(\bA)$ and $[G_a, G]$.
 % \end{proof}
 
 Since the foregoing theorem is so central to our work, we provide an alternative 
@@ -1875,9 +1947,9 @@ interesting questions we can ask about a finite lattice
 $\bL$:
 \begin{enumerate}
 \item\label{question1}
-Is $\bL$ representable (isomorphic to $\Con \bA$ for some finite algebra $\bA$)?
+Is $\bL$ representable (isomorphic to $\Con(\bA)$ for some finite algebra $\bA$)?
 \item\label{question2}
-If $\bL$ is representable, what is the minimum size of $\bA$ with $\bL \cong\Con \bA$?
+If $\bL$ is representable, what is the minimum size of $\bA$ with $\bL \cong\Con(\bA)$?
 \item\label{question3}
 Is there a group $\bG$ of permutations on $A$ such that $\bL \cong \< A,G\>$?
 \item\label{question4}
@@ -1996,7 +2068,7 @@ is denoted~$\bA_i$.
 \begin{theorem}\label{thm:intrans}
 Let $\bA = \<A,G\>$, where $G$ is a group, be a finite algebra. 
 Let $\tau$, $\tau_i$ and $\gamma_i$
-be the congruences defined above and let $\theta \in \Con \bA$.
+be the congruences defined above and let $\theta \in \Con(\bA)$.
 \begin{enumerate}
 \item\label{item1}
 $G$ acts transitively if and only if $\tau = 1_{\bA}$.
@@ -2010,11 +2082,11 @@ or $\theta \le \gamma_i$.
 \item\label{item5}
 If $\theta\meet \tau \prec \tau$  then $\theta \le \gamma_i$ for some~$i$.
 \item\label{item6}
-If $k>1$ and $|A_i| = 1$ for all $i$ except $0$ then every coatom of $\Con \bA$
+If $k>1$ and $|A_i| = 1$ for all $i$ except $0$ then every coatom of $\Con(\bA)$
 lies above~$\tau$.
 \item\label{item7}
 If $k>1$ and $\lb 0_\bA,\tau\rb$ is directly indecomposable 
-then every coatom of $\Con \bA$ lies above~$\tau$.
+then every coatom of $\Con(\bA)$ lies above~$\tau$.
 \item\label{item8}
 If $k = 2$ and $|A_1| = 1$ then $\tau$ is a coatom and 
 everything is comparable with it.
@@ -2170,7 +2242,7 @@ Let $\bA = \<A,G\>$ be a finite algebra, where
 $G$ is an instransitive group of permutations on $A$.
 Suppose the intransitivity congruence $\tau$ is a coatom.
 Then there do not exist congruences
-$0_\bA < \psi < \theta$ in $\Con \bA$
+$0_\bA < \psi < \theta$ in $\Con(\bA)$
 with $\theta \meet \tau = 0_\bA$. 
 \end{lemma}
 
@@ -2469,73 +2541,6 @@ which we can represent $\bL_{11}$ is 108.
   suffices to prove that $\bL_{11}$ is, in indeed, representable).}
 
 
-\subsection{Minimal Representations}
-In this section we consider what it means to say that
-a congruence lattice representation of a finite lattice is in some sense
-\emph{minimal}.
-It seems most natural to say that a representation $\Con \bA \cong \bL$
-is a \defn{minimal representation of} $\bL$ if the size
-$|A|$ of the universe of $\bA$ as small as possible. That is, we have a proof
-that no representation on a smaller algebra is possible.
-
-There is, however, a separate notion of smallness of a representation that is
-worth considering.  Suppose we know that a lattice $L$ is representable as
-an upper interval in the subgroup lattice of a finite.  We could ask, ``what is
-the smallest group $G$ such that $L \cong \lb H, G \rb$ for some $H\leq G$?''
-Alternatively, we could ask, ``what is the smallest number $n$ such that there are
-finite groups $H\leq G$ with index $n = [G:H]$ and satisfying
-$\bL \cong \lb H, G \rb$?''  The reason this question seems more 
-natural is because the resulting algebra representing $L$ is the group
-$G$ acting on the set of cosets of $H$, and this algebra has $n = [G:H]$
-elements.  In this context, the index $[G:H]$ seems more relevant than the size
-of the group $G$.
-
-This begs the question, if we discover that $G$ is a group of minimal order
-among those in whose subgroup lattices $L$ appears as an upper interval,
-could it be that there is another, perhaps larger group in whose subgroup
-lattice $L$ appears, but with a smaller index?  The answer to this question is
-yes, as we now show by providing an example of this phenomenon. 
-
-In Figure~\ref{fig:10} there appears the lattice $\two\times \two$.
-On the left, this lattice is presented as the upper interval
-$\lb C_2, C_3 \times S_3\rb$. On the right, it is the upper interval 
-$\lb \<e\>, C_{10}\rb$. Of course, the groups $C_{10}$ and
-$C_3 \times S_3$ have orders 10 and 18, but the respective indices are
-$|C_{10}:\<e\>| = 10$ and $|C_3 \times S_3:C_2|=9$. 
-\begin{figure}
-\caption{Transitive G-set congruence lattices in Eq(10)}
-\label{fig:10}
-\begin{center}
-\begin{tikzpicture}[scale=.8]
-\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
-\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
-\draw[font=\scriptsize] (0,-.5) node {$\lb C_2, C_3 \times S_3\rb$};
-\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(9,4) };
-\draw[semithick]
-(0) to (1)
-(0) to (2)
-(1) to (3)
-(2) to (3);
-\end{tikzpicture}
-\begin{tikzpicture}[scale=.8]
-\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
-\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
-\draw[font=\scriptsize] (0,-.5) node {$\lb 1, C_{10}\rb$};
-\draw[font=\scriptsize] (0,-1) node {TransitiveGroup(10,1) };
-\draw[semithick]
-(0) to (1)
-(0) to (2)
-(1) to (3)
-(2) to (3);
-\end{tikzpicture}
-\end{center}
-\end{figure}
-
-\todo{complete this section}
 
 %% # A < B are the comparable generators of the pentagon
 %% # C is the incomparable generator
