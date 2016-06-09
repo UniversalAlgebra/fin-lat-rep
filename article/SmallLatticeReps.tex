@@ -621,11 +621,11 @@ it is possible that there is a congruence lattice $L$ of a finite
 algebra that is not an interval sublattice of a finite group. 
 
 In this paper we review some of the well known methods, as well as 
-some more recently developed methods, of constructing a finite
-algebra whose congruence lattice is $L$, for a given finite
-lattice $L$. Using these methods we show that with one possible
-exception ($L_{10}$ in the last section), every 
-lattice with at most 7 elements is the 
+some more recently developed methods, for constructing a finite
+algebra whose congruence lattice is isomorphic to a given finite
+lattice. Using these methods we show that with one possible
+exception ($L_{10}$ in the last section) every 
+lattice with at most 7 elements is (isomorphic to) the 
 congruence lattice of a finite lattice. In most but not all
 cases we are able to show that the algebra we construct is 
 of minimal size. (Section~\ref{sec:minim-repr} below explains what
@@ -637,16 +637,17 @@ We call a (finite) lattice \defn{group representable} if
 it is isomorphic to an interval in the subgroup lattice of a (finite) group.
 That is, $L$ is group representable if there exist groups $H \leq G$
 such that $L$ is isomorphic to the interval
-\[
+\begin{equation}
+  \label{eq:1}
 \lb H, G\rb := \{K \mid H \leq K \leq G\}.
-\]
+\end{equation}
 In this case, we call $\lb H, G\rb$ a \defn{group representation of} $L$.
 We take the \defn{size} of a group representation to be
 the index $[G:H]$, since this is the size of the algebra $\bA = \<G/H, G\>$ that has
 congruence lattice $\Con(\bA) \cong L$.
 
 Not surprisingly many lattices with a group representation
-can be represented as a congruence lattice of a much smaller
+can also be represented as a congruence lattice of a much smaller
 algebra. For example, the hexagon lattice, denoted $L_6$ in
 Section~\ref{sec:small-unary-algebras} below, is the congruence lattice
 of an algebra with 6 elements. Palfy~\cite{Palfy1988} and
@@ -656,7 +657,7 @@ $[G : H]$, which is the size of the algebra, is considerably larger.
 
 Another interesting example is the pentagon, which is typically denoted by
 $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
-label it $\bL_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
+label it $L_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
 reveals that the smallest group $G$ in whose subgroup lattice
 $N_5$ appears as an upper interval is \code{SmallGroup(216,153)}. It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
@@ -678,8 +679,12 @@ On the other hand, the smallest algebra that represents $N_5$ has just four elem
 
 For some lattices it can be shown that in a minimal 
 representation every nonconstant operation must be a 
-permutation.  Thus, for these lattices, a minimal representation is a
-group acting on a set. Finding a representation is typically harder in such cases,
+permutation. For such a lattice $L$, a minimal representation comes from a
+group $G$ acting on a set $X$, which is a group representation
+of the type described in~(\ref{eq:1}).
+Specifically, $L \cong \lb G_x, G\rb$, where $G_x$ denotes the
+stabilizer of an arbitrary element $x\in X$.
+Finding a representation is typically harder in such cases,
 and finding a minimal representation can be especially hard.
 
 In Section~\ref{sec:congr-latt-group} we investigate when
@@ -719,14 +724,26 @@ must be via a transitive permutation group action.
 %%%%%%%%%%%%%%%%%  NOTATION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Notation}
-
-Throughout this paper, we use $\sL$ to denote the class of finite lattices that
-are isomorphic to congruence lattices of finite algebras. 
-We call the lattices that belong to $\sL$ \emph{representable} lattices.
 A lattice is denoted by $\bL = \<L, \meet, \join\>$, where $L$
 is the universe of elements of the lattice.  However, unless the context
 calls for emphasizing that this is an algebraic structure, we often
-refer to a lattice by the name of its universe (as in the next paragraph).
+refer to a lattice by the name of its universe.
+
+We use $\sL_{fin}$ to denote the class of all finite lattices, and 
+$\sL_{con}$ to denote the class of finite lattices that are isomorphic to congruence
+lattices of finite algebras. The notation 
+$\sL_{grp}$ will stand for the class of finite lattices that
+are isomorphic to intervals in subgroup lattices of finite groups.
+A lattice that belongs to $\sL_{con}$ (resp., $\sL_{grp}$) is called \emph{representable} (resp., 
+\emph{group representable}).
+Since we use these special notations so often in the sequel, let us repeat them here for easy reference:
+\begin{align*}
+  \sL_{fin} & = \text{ all finite lattices }\\
+  \sL_{con} %& = \text{ representable lattices }\\
+  &=\{L \in \sL_{fin} \mid \exists \text{ finite algebra $\bA$ such that $L \cong \Con(\bA)$}\}\\
+  \sL_{grp} %& = \text{ all group representable lattices }\\
+  &=\{L \in \sL_{fin} \mid \exists \text{ finite groups $H \leq G$ such that $L \cong \lb H, G\rb$}\}
+\end{align*}
 
 Let $L$ be a lattice and suppose $\alpha$ and $\beta$ are members of $L$.  
 We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all
@@ -762,11 +779,12 @@ $|A|$ of the universe of $\bA$.  We call such a representation
 
 %% There is, however, another notion of ``size'' of a representation that might be
 %% worth considering.  
-Suppose we know that $L$ is a group representable lattice.
+%% Suppose we know that $L$ is a group representable lattice.
+Suppose $L\in \sL_{grp}$. 
 We could ask, what is the smallest group $G$ such that $L \cong \lb H, G \rb$ for
 some $H\leq G$?  From our perspective, the more relevant question
 is what is the smallest number $n$ such that there are finite groups $H\leq G$ with
-index $n = [G:H]$ and satisfying $\bL \cong \lb H, G \rb$?
+index $n = [G:H]$ and satisfying $L \cong \lb H, G \rb$?
 The reason this question seems more natural to us is because the algebra
 representing $L$ is the group $G$ acting on the set of cosets of $H$, and this
 algebra has $n = [G:H]$ elements.  In this context, the index $[G:H]$ seems more
@@ -825,27 +843,27 @@ $[C_{10}:\<e\>] = 10$ and $[C_3 \times S_3:C_2]=9$.
 \label{sec:clos-prop-class}
 This section describes some
 \emph{closure properties}
-of the class $\sL$. % of representable lattices. 
+of the class $\sL_{con}$ of representable lattices. 
 By closure properties, we mean the following: if $\sansO$ is an operation that can
-be applied to a lattice or collection of lattices, we say that $\sL$ is
-\emph{closed under $\sansO$} provided $\sansO(\sK) \subseteq \sL$ for all 
-$\sK\subseteq \sL$. For example, if 
+be applied to a lattice or collection of lattices, we say that $\sL_{con}$ is
+\emph{closed under $\sansO$} provided $\sansO(\sK) \subseteq \sL_{con}$ for all 
+$\sK\subseteq \sL_{con}$. For example, if 
 $\sansS(\sK)$ is all sublattices of lattices in $\sK$, 
-it is unknown whether $\sL$ is closed under $\sansS$.  
+it is unknown whether $\sL_{con}$ is closed under $\sansS$.  
 If this were known to be true, then the 
 \emph{finite lattice representation problem} would be solved.
 The congruence lattice of the algebra consisting of a
 set $X$ with no operations is the lattice of all equivalence relations on $X$,
 which we denote by $\EqX$.
 By a celebrated theorem of \Pudlak and \Tuma~\cite{Pudlak:1980}, for every finite
-lattice $L$ there is a finite set $X$ such that $L\leq \EqX$.  Therefore, $\sL$
+lattice $L$ there is a finite set $X$ such that $L\leq \EqX$.  Therefore, $\sL_{con}$
 would contain all finite lattices if it were closed under $\sansS$.
 
 
-The following is a list of operations under which $\sL$ is known to be closed,
+The following is a list of operations under which $\sL_{con}$ is known to be closed,
 along with the names of those who first (or independently) proved them.  We
 discuss some of these results in greater detail later in this section.
-The class $\sL$ of lattices isomorphic to congruence lattices of finite
+The class $\sL_{con}$ of lattices isomorphic to congruence lattices of finite
 algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
 \setcounter{enumi}{-1}
@@ -857,9 +875,9 @@ correspondence theorem~\cite{Bergman2012}),
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
 \item  parallel sums (John Snow~\cite{Snow:2000}, 2000), 
-\item\label{item:6} certain sublattices of lattices in $\sL$ -- namely, those which
+\item\label{item:6} certain sublattices of lattices in $\sL_{con}$ -- namely, those which
   are obtained as a union of a filter and an ideal of a lattice in
-  $\sL$ (John Snow~\cite{Snow:2000}, 2000). 
+  $\sL_{con}$ (John Snow~\cite{Snow:2000}, 2000). 
 \end{enumerate}
 \begin{center}
   \begin{figure}[h!]
@@ -891,7 +909,7 @@ correspondence theorem~\cite{Bergman2012}),
 \begin{remarks}\
   \begin{enumerate}[a.]
   \item 
-  The first two items combine to show that $\sL$ is closed under
+  The first two items combine to show that $\sL_{con}$ is closed under
   principal ideals and this fact, together with~\eqref{item:1}, 
   proves~\eqref{item:2}.
   
@@ -926,7 +944,7 @@ correspondence theorem~\cite{Bergman2012}),
   Section~\ref{sec:union-filter-ideal} below, where we present a short proof of
   this fact.
 
-\item Whether the class $\sL$ is closed under homomorphic images is open. 
+\item Whether the class $\sL_{con}$ is closed under homomorphic images is open. 
   \end{enumerate}
 \end{remarks}
 
@@ -934,7 +952,7 @@ correspondence theorem~\cite{Bergman2012}),
 \subsection{Lattice duals: the theorem of Kurzweil and Netter}
 \label{sec:duals-interv-subl-detail}
 As mentioned above, 
-the class $\sL$ -- the lattices isomorphic to congruence lattices of finite
+the class $\sL_{con}$ -- the lattices isomorphic to congruence lattices of finite
 algebras -- is closed under
 dualization.
 That is, if $L$ is representable, then so is the dual of $L$. This was proved in
@@ -976,7 +994,7 @@ where $\ker f = \{(x,y) \in X^2 \mid f(x) = f(y)\}$.
 It is easy to see that $f\sqsubseteq g$ holds if and only if $gf = g$, and that
 $\sqsubseteq$ is a partial ordering of $\IC(X)$.  
 In fact, under this ordering, $\IC(X)$ is a lattice that is
-isomorphic to $\bEqX$. The lattice isomorphism is the function
+isomorphic to $\EqX$. The lattice isomorphism is the function
 $\Theta : \EqX \rightarrow \IC(X)$ given by
 $\Theta(\alpha) = f_\alpha$, where
 $f_\alpha(x) = \min\{y\in X \mid x \mathrel{\alpha} y\}$.
@@ -1032,7 +1050,7 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
 
 \begin{lemma}
   \label{lem:latt-duals}
-  The map $f \mapsto Xf$ is a dual lattice isomorphism from $\bEq(n)$ onto the
+  The map $f \mapsto Xf$ is a dual lattice isomorphism from $\Eq(n)$ onto the
   interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
 \end{lemma}
 \begin{proof}
@@ -1059,8 +1077,8 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
   has congruence lattice isomorphic to the interval $\lb D, S^n\rb$.
   (See, for example,~\cite[Lemma~4.20]{alvi:1987}.)
   By Lemma~\ref{lem:latt-duals}, this is the dual
-  of the lattice $\bEq(n)$.  That is, 
-  $\Con \<S^n/D, S^n\> \cong (\bEq(n))'$.
+  of the lattice $Eq(n)$.  That is, 
+  $\Con \<S^n/D, S^n\> \cong (Eq(n))'$.
   
   Now, each operation $\phi \in F$ gives rise to an operation on $S^n$
   by composition:
@@ -1139,9 +1157,9 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 \begin{lemma} 
   \label{lemma:union-filter-ideal}
   Let $X$ be a finite set.
-  If $\bL \leq \bEqX$ is representable and $\bL_0\leq \bL$ is a sublattice with universe
+  If $L \leq \EqX$ is representable and $L_0\leq L$ is a sublattice with universe
   $\upalpha\cup \downbeta$ where $\upalpha=\{x\in L \mid \alpha \leq x\}$ and 
-  $\downbeta=\{x\in L \mid x\leq \beta\}$ for some $\alpha, \beta \in L$, then $\bL_0$ is representable.
+  $\downbeta=\{x\in L \mid x\leq \beta\}$ for some $\alpha, \beta \in L$, then $L_0$ is representable.
 \end{lemma}
 
 \vskip3mm
@@ -1164,8 +1182,8 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 \vskip3mm
 
 \begin{proof}
-  Assume $\bL_0 \ncong \two$, otherwise the result holds trivially. 
-  Since $\bL\leq \bEqX$ is representable, we have $\bL = \bCon
+  Assume $L_0 \ncong \two$, otherwise the result holds trivially. 
+  Since $L\leq \EqX$ is representable, we have $L = \Con
   \<X, \lambda(L)\>$ (cf.~Section~\ref{sec:closure-method}).  Take an arbitrary
   $\theta \in L \setminus L_0$. Since $\theta \notin \upalpha$, 
   % -- that is, $\alpha$ is not below $\theta$ --  
@@ -1187,9 +1205,9 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
   \setminus L_0$ there exists a function in $\lambda(L_0)$ which respects every
   $\gamma \in \upalpha\cup \downbeta = L_0$, but violates $\theta$.  Finally,
   since 
-  $\bL_0 \leq \bL$, we have $\lambda(L)\subseteq \lambda(L_0)$.  Combining these
+  $L_0 \leq L$, we have $\lambda(L)\subseteq \lambda(L_0)$.  Combining these
   observations, we see that every $\theta \in \EqX \setminus L_0$ is
-  violated by some function in $\lambda(L_0)$. Therefore, $\bL_0 = \bCon \< X, \lambda(L_0)\>$.
+  violated by some function in $\lambda(L_0)$. Therefore, $L_0 = \Con \< X, \lambda(L_0)\>$.
 \end{proof}
 
 \subsection{Ordinal Sums}
@@ -1209,7 +1227,7 @@ McKenzie's shift product construction~\cite{McKenzie:1984}.
 % \todo{Possibly add a short description of the shift product.}
 \begin{theorem}
   \label{thm:ordinal-sums}
-  If $L_1, \dots, L_n \in \sL$ is a collection of representable lattices, then
+  If $L_1, \dots, L_n \in \sL_{con}$ is a collection of representable lattices, then
   the ordinal sum and the adjoined ordinal sum, shown in
   Figure~\ref{fig:ord_adjord}, are representable.
 \end{theorem}
@@ -1263,7 +1281,7 @@ we now show that $L_1\oplus_aL_2$ is representable as the congruence
 lattice of an algebra of cardinality $m+n-1$.
 Let $\bA,\bB$ be two finite algebras with universes $A=\{a_0,\dots,a_{m-1}\}$ and 
 $B=\{b_0,\dots,b_{n-1}\}$ respectively,
-such that $L_1=\bCon(\bA)$ and $L_2=\bCon(\bB)$. 
+such that $L_1=\Con(\bA)$ and $L_2=\Con(\bB)$. 
 Define a unary algebra $\bA_{m,n}$ with $m+n-1$ elements as follows: 
 the universe $A_{m,n}=A\uplus B_1$ where
 $B_1=\{b_1,\dots,b_{n-1}\}\subset B$, and for each function $h:B_1\to A$ 
@@ -1272,15 +1290,15 @@ $$\hat h(x)=\begin{cases}h(x)&\text{if $x\in B_1$}\\
 x&\text{otherwise.}\end{cases}$$
 
 \begin{lemma}
-  For $m,n\ge 1$ the lattice $\bCon(\bA_{m,n})$ is isomorphic to
-  $\bEq(m)\oplus_a \bEq(n)$. 
+  For $m,n\ge 1$ the lattice $\Con(\bA_{m,n})$ is isomorphic to
+  $\Eq(m)\oplus_a \Eq(n)$. 
 \end{lemma}
 \begin{proof}
   Let $\alpha$ be the equivalence relation
   $A^2\cup\{(b_1,b_1),\dots,(b_{n-1},b_{n-1})\}$, so as a partition it is  
   $a_0,\dots,a_{m-1}|b_1|b_2|\dots|b_{n-1}$. 
-  Note that $\bEq(m)\oplus_a \bEq(n)$ is isomorphic to the sublattice
-  of $\bEq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
+  Note that $\Eq(m)\oplus_a \Eq(n)$ is isomorphic to the sublattice
+  of $\Eq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
   $\alpha$ has a unique non-singleton block of size $m$, and $n$ blocks
   altogether. We claim that this sublattice is the congruence lattice of $\bA_{m,n}$.  
 
@@ -1318,18 +1336,18 @@ x&\text{otherwise.}\end{cases}$$
   \hat g(x)=\begin{cases}g(x)&\text{if $x\in B$}\\
   g(b_0)&\text{otherwise}\end{cases}
   $$
-  for $f\in F$ and $g\in G$. Then $\bCon(\mathbf C)$ is isomorphic to
-  $\bCon(\bA)\oplus_a\bCon(\bB)$. 
+  for $f\in F$ and $g\in G$. Then $\Con(\mathbf C)$ is isomorphic to
+  $\Con(\bA)\oplus_a\Con(\bB)$. 
 \end{theorem}
 
 \begin{proof}
   Since $\mathbf C$ is an expansion of $\bA_{m,n}$ it follows from the preceding lemma
-  that $\bCon(\mathbf C)$ is a sublattice of 
+  that $\Con(\mathbf C)$ is a sublattice of 
   $\{\theta\in \Eq(A\cup B):\theta\le\alpha$ or $\alpha\le\theta\}$ where,
   as before, $\alpha=A^2\cup\text{id}_B$. Note that $\alpha\in\Con(\mathbf C)$,
   so it suffices to show that $\{\theta\in\Con(\mathbf C):\theta\le\alpha\}$ is
-  isomorphic to $\bCon(\bA)$ and $\{\theta\in\Con(\mathbf C):\alpha\le\theta\}$ 
-  is isomorphic to $\bCon(\bB)$. The second isomorphism follows from the
+  isomorphic to $\Con(\bA)$ and $\{\theta\in\Con(\mathbf C):\alpha\le\theta\}$ 
+  is isomorphic to $\Con(\bB)$. The second isomorphism follows from the
   observation that $\mathbf C/\alpha$ is isomorphic to $\bB$ via the map 
   $A\mapsto b_0$ and $\{b_i\}\mapsto b_i$ for $i\ge 1$. For the first isomorphism,
   note that the operations $\hat g$, $\hat h$ preserve all equivalence relations
@@ -1350,7 +1368,7 @@ x&\text{otherwise.}\end{cases}$$
 %isomorphic to $L_2$, hence $|\mathbf C'/\alpha|=|\bB|=$ number of blocks in
 %$\alpha$. However, $\alpha$ does not need to have a unique nontrivial block, so
 %it is not clear at this point how to obtain a smaller algebra $\bA'$ such that
-%$\bCon(\bA')$ is isomorphic to $L_1$. 
+%$\Con(\bA')$ is isomorphic to $L_1$. 
 
 %% -- End intro.tex file insertion -------------------------------
 
@@ -1392,10 +1410,10 @@ spanning sublattice\footnote{Recall, by a
   \defn{spanning sublattice}
   of a bounded lattice $L_0$, we mean a sublattice $L\leq L_0$ that has the same top and
   bottom as $L_0$.  That is  $1_L = 1_{L_0}$ and $0_L = 0_{L_0}$.}
-of the lattice $\bEqX$ of equivalence relations on a finite set $X$.   
+of the lattice $\EqX$ of equivalence relations on a finite set $X$.   
 Given this result, we see that even if our goal is to solve the abstract
 representation problem for some (abstract) lattice $L$, then
-we can embed $L$ into $\bEqX$ as $L\cong L_0\leq \bEqX$, for some finite set
+we can embed $L$ into $\EqX$ as $L\cong L_0\leq \EqX$, for some finite set
 $X$, and then try to solve the concrete representation problem for $L_0$.  
 
 A point of clarification is in order here.  The term 
@@ -1404,7 +1422,7 @@ has become a bit overused in the literature about the finite lattice
 representation problem.  On the one hand, given a finite lattice $L$, if there
 is a finite algebra $\bA$ such that $L \cong \Con(\bA)$, then $L$ is called a
 \defn{representable lattice}.  On the other hand, given a sublattice 
-$L_0\leq \bEqX$, if $L_0\cong L$, then $L_0$ is sometimes called a 
+$L_0\leq \EqX$, if $L_0\cong L$, then $L_0$ is sometimes called a 
 \defn{concrete representation}
 of the lattice $L$ (whether or not it is the congruence lattice of an algebra).    
 Below we will define the notion of a \defn{closed concrete representation}, and if we
@@ -1412,14 +1430,14 @@ have this special kind of concrete representation of a give lattice, then that
 lattice is indeed representable in the first sense.
 
 As we will see below, there are many examples in which a particular concrete
-representation $L_0\leq \bEqX$ of $L$ is not a congruence lattice of a
+representation $L_0\leq \EqX$ of $L$ is not a congruence lattice of a
 finite algebra.  (In fact, we will describe general situations in which we can
 guarantee that there are no non-trivial\footnote{By a 
   \defn{non-trivial function} we mean a function that is
   not constant and not the identity.} operations which respect the equivalence
-relations of $L_0$.)  This does not imply that $L \notin \sL$.  It may
+relations of $L_0$.)  This does not imply that $L \notin \sL_{con}$.  It may
 simply mean that $L_0$ is not the ``right'' concrete representation of $L$, and
-perhaps we can find some other $L \cong L_1\leq \bEqX$ such that $L_1 = \Con
+perhaps we can find some other $L \cong L_1\leq \EqX$ such that $L_1 = \Con
 \<X, \lambda(L_1)\>$.\marginpar{$\lambda(L_1)$ is only defined on the next page?}
 
 \subsection{The closure method}
@@ -1433,7 +1451,7 @@ at the University of Waterloo, by R.~Quackenbush and B.~Wolk at the University
 of Manitoba, and by B.~J\'{o}nsson at Vanderbilt University.''
 
 Let $X^X$ denote the set of all (unary) maps from the set $X$ to itself, and let 
-$\bEqX$ denote the lattice of equivalence relations on the set $X$.  If $\theta
+$\EqX$ denote the lattice of equivalence relations on the set $X$.  If $\theta
 \in \EqX$ and $h\in X^X$, we write $h(\theta) \subseteq \theta$ and say
 that ``$h$ respects $\theta$'' if and only if for all $(x,y)\in X^2$ $(x,y)\in
 \theta$ implies 
@@ -1457,13 +1475,13 @@ That is, $\rho \lambda$ is
 \item \emph{extensive:} $L \subseteq \rho \lambda (L)$ for every $L \leq \EqX$;
 \item \emph{order preserving:} $\rho \lambda (L) \leq \rho \lambda (L_0)$ if $L \leq L_0$.
 \end{itemize}
-Given $L\leq \bEqX$, if $\rho\lambda(L) = L$, then we say $L$ is a 
+Given $L\leq \EqX$, if $\rho\lambda(L) = L$, then we say $L$ is a 
 %\defn{closed sublattice of $\EqX$}, in which case we clearly have
-\emph{closed} sublattice of $\bEqX$, in which case we clearly have
+\emph{closed} sublattice of $\EqX$, in which case we clearly have
 \[L = \Con \<X, \lambda(L)\>.\]
 This suggests the following strategy for solving the representation problem for a
 given abstract finite lattice $L$: search for a concrete representation $L \cong
-L_0\leq \bEqX$,
+L_0\leq \EqX$,
 compute $\lambda(L_0)$, compute $\rho\lambda(L_0)$, and determine whether 
 $\rho\lambda(L_0) = L_0$.  If so, then we have solved the abstract representation
 problem for $L$, by finding a \defn{closed concrete representation}, or simply
@@ -1473,8 +1491,8 @@ We now state without proof a well known theorem which shows that the finite latt
 representation problem can be formulated in terms of closed concrete
 representations (cf.~\cite{Jonsson:1972}).
 \begin{theorem}\label{Concrete-thm-3}
-  If $\bL \leq \bEqX$, then $\bL= \bCon\bA$ for some algebra 
-  $\mathbf{A} = \langle X, F\rangle$ if and only if $\bL$ is closed.
+  If $L \leq \EqX$, then $L= \Con (\bA)$ for some algebra 
+  $\mathbf{A} = \langle X, F\rangle$ if and only if $L$ is closed.
 \end{theorem}
 
 %% In the remaining sections of this chapter, we consider various aspects of the
@@ -1497,7 +1515,7 @@ define the partial order $\sqsubseteq$ on this set as follows:
 f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g.  
 \]
 As noted above, 
-this makes \icx into a lattice that is isomorphic to $\bEqX$.   
+this makes \icx into a lattice that is isomorphic to $\EqX$.   
 Define a relation $R$ on $X^X \times \icx$ as follows: 
 \[
 (h,f) \in R \quad \Leftrightarrow \quad (\forall (x,y) \in \ker f)\; (h(x),h(y))
@@ -1547,10 +1565,10 @@ $F$ is closed if and only if $F = \rho(H)$ for some $H\in \sH$.
   congruence lattice of a finite lattice.}
 
 
-A lattice $\bL$ is called 
+A lattice $L$ is called 
 \defn{strongly representable} 
-if whenever $\bL \cong \bL_0 \leq \bEqX$ for some $X$ then there is an algebra based on $X$
-whose congruence lattice is $\bL_0$.  In other words, \emph{every} 
+if whenever $L \cong L_0 \leq \EqX$ for some $X$ then there is an algebra based on $X$
+whose congruence lattice is $L_0$.  In other words, \emph{every} 
 distributive spanning sublattice of the lattice of equivalence relations on a finite set
 $X$ is equal to the congruence lattice of an algebra $\<X, F\>$, for some
 collection $F$ of operations on $X$.
@@ -1562,13 +1580,13 @@ collection $F$ of operations on $X$.
 
 \begin{remarks}
   By Theorem \ref{Concrete-thm-3} above, the result of Berman, Quackenbush and
-  Wolk says, if $\bL$ is a finite distributive lattice then every embedding
-  $\bL\cong \bL_0\leq \bEqX$ is closed. The following proof is only slightly
+  Wolk says, if $L$ is a finite distributive lattice then every embedding
+  $L\cong L_0\leq \EqX$ is closed. The following proof is only slightly
   shorter than to the original in~\cite{Quack:1971}, and the methods are similar. 
 \end{remarks}
 
 \begin{proof}
-  Without loss of generality, suppose $\bL\leq \bEqX$. 
+  Without loss of generality, suppose $L\leq \EqX$. 
   Fix $\theta\in \EqX \setminus L$ and define 
   $\theta^* = \Meet \{ \gamma \in L \mid \gamma \geq \theta \}$ and 
   $\theta_* = \Join \{ \gamma \in L \mid \gamma \leq \theta \}$.
@@ -1595,7 +1613,7 @@ collection $F$ of operations on $X$.
   $L = \upalpha \cup \downbeta$.
   Finally, since $\theta$ was arbitrary, such an $h_\theta$ exists
   for each $\theta \in \EqX \setminus L$, so we have
-  $\bL =\bCon \langle X, \sH\rangle$, where
+  $L =\Con \langle X, \sH\rangle$, where
   $\sH = \{h_\theta: \theta \in \EqX \setminus L\}$.
 \end{proof}
 
@@ -1654,15 +1672,15 @@ symmetric group on an $n$-element set.
 Given a finite group $G$, and an algebra $\bX = \<X, F\>$, a
 \index{representation!of a finite group}%
 \emph{representation} of $G$ on $\bX$ is a group homomorphism
-from $G$ into $\Aut\bX$.  That is, a representation of $G$ is a mapping
-$\varphi : G \rightarrow \Aut\bX$ which satisfies $\varphi(g_1 g_2) =
+from $G$ into $\Aut(\bX)$.  That is, a representation of $G$ is a mapping
+$\varphi : G \rightarrow \Aut(\bX)$ which satisfies $\varphi(g_1 g_2) =
 \varphi(g_1) \circ \varphi(g_2)$, where (as above) $\circ$ denotes composition
-of maps in $\Aut\bX$.
+of maps in $\Aut(\bX)$.
 
 \subsection{Transitive $G$-sets}
-A representation $\varphi : G \rightarrow \Aut\bX$ defines an action by $G$ on the
+A representation $\varphi : G \rightarrow \Aut(\bX)$ defines an action by $G$ on the
 set $X$, as follows: $\phi(g): x \mapsto x^{\varphi(g)}$.  If $\varphi(G) \leq
-\Aut\bX$
+\Aut(\bX)$
 denotes the image of $G$ under $\varphi$, we call the algebra $\< X, \phi(G)\>$
 a \defn{G-set}.
 % \footnote{More 
@@ -1680,11 +1698,11 @@ A group that acts transitively on some set is called a
 every group acts transitively on some sets and intransitively on others.)
 A representation $\varphi$ is called \emph{transitive} if the resulting action
 is transitive. 
-A representation  $\varphi : G \rightarrow \Aut\bX$ is called 
+A representation  $\varphi : G \rightarrow \Aut(\bX)$ is called 
 \emph{faithful}
 \index{faithful!representation}%
 if it is a monomorphism, in which case $G$ is isomorphic to its image under
-$\varphi$, which is a subgroup of $\Aut\bX$.  We also say, in this case, that
+$\varphi$, which is a subgroup of $\Aut(\bX)$.  We also say, in this case, that
 the group $G$ acts faithfully, and call it a \defn{permutation group}.
 
 Suppose $G$ acts on the set $X$ and supposed $U$ is the set of ``unmoved''
@@ -1922,7 +1940,7 @@ In \cite{PalfyPudlak1980} P.~P. \Palfy and P.~\Pudlak showed the
 following statements are equivalent:
 \begin{itemize}
 \item
-every finite lattice is representable, that is $\sL$ is all
+every finite lattice is representable, that is $\sL_{con}$ is all
 finite lattices;
 \item
 every finite lattice is isomorphic to an 
@@ -1942,28 +1960,28 @@ However their equivalence is not global: it is possible that there
 is a representable lattice which is not isomorphic to an interval
 of the subgroup lattice of a finite group. So there are several 
 interesting questions we can ask about a finite lattice
-$\bL$:
+$L$:
 \begin{enumerate}
 \item\label{question1}
-Is $\bL$ representable (isomorphic to $\Con(\bA)$ for some finite algebra $\bA$)?
+Is $L$ representable (isomorphic to $\Con(\bA)$ for some finite algebra $\bA$)?
 \item\label{question2}
-If $\bL$ is representable, what is the minimum size of $\bA$ with $\bL \cong\Con(\bA)$?
+If $L$ is representable, what is the minimum size of $\bA$ with $L \cong\Con(\bA)$?
 \item\label{question3}
-Is there a group $\bG$ of permutations on $A$ such that $\bL \cong \< A,G\>$?
+Is there a group $G$ of permutations on $A$ such that $L \cong \Con \< A,G\>$?
 \item\label{question4}
-Is there a transitive group $\bG$ of permutations on $A$ such that $\bL \cong \< A,G\>$?
-Equivalently is $\bL$ isomorphic an interval in the subgroup lattice of a finite group
+Is there a transitive group $G$ of permutations on $A$ such that $L \cong \Con \< A,G\>$?
+Equivalently is $L$ isomorphic an interval in the subgroup lattice of a finite group
 (by Theorem~\ref{thm:g-set-isomorphism2}).
 \item\label{question5}
-If $\bL \cong \<A,G\>$ for a group $\bG$ what is the smallest such $\bG$?
+If $L \cong \Con \<A,G\>$ for a group $G$ what is the smallest such $G$?
 \end{enumerate}
 As we mentioned, it is possible that \eqref{question1} does not imply \eqref{question4} 
 but certainly \eqref{question4} implies \eqref{question1}. Obviously we don't have 
-an example of an $\bL$ satisfying \eqref{question1} but not~\eqref{question4}, but 
-in general representing $\bL$ 
+an example of an $L$ satisfying \eqref{question1} but not~\eqref{question4}, but 
+in general representing $L$ 
 in the form of~\eqref{question4}
 is more difficult. For example,
-the lattices $\bL_6$ and $\bL_7$ diagrammed in Figure~\ref{fig:L6and7}
+the lattices $L_6$ and $L_7$ diagrammed in Figure~\ref{fig:L6and7}
 can be represented on algebras of size~6 (and no fewer)
 but representing them with permutation groups is much harder; 
 see Aschbacher~\cite{Aschbacher2008}.
@@ -1981,7 +1999,7 @@ see Aschbacher~\cite{Aschbacher2008}.
     %    \draw (bottom) node [right]{$L_{11}$};
   \end{tikzpicture}
 \end{center}
-\caption{$\bL_{6}$ and $\bL_7$}\label{fig:L6and7}
+\caption{$L_{6}$ and $L_7$}\label{fig:L6and7}
 \end{figure}
 
 
@@ -1989,11 +2007,11 @@ see Aschbacher~\cite{Aschbacher2008}.
 Below we try to answer at least
 some of these questions for small lattices. 
 As mentioned above \Palfy and \Pudlak gave conditions on a lattice $\bL$ 
-such that if $\bL \cong \Con \<A,F\>$ then the nonconstant elements of $F$ are 
+such that if $L \cong \Con \<A,F\>$ then the nonconstant elements of $F$ are 
 permutations and the group they generate acts transitively on $A$. 
 These conditions are
 \begin{enumerate}[(A)]
-\item $\bL$ is simple.
+\item $L$ is simple.
 \item For each $x \ne 0$ in $L$, there are elements $y$ and $z$
 such that $x \join y = x \join z = 1$ and $y\meet z = 0$.
 \item $|L|\ne 2$ and each element of $L$ that is not an atom or $0$ contains at
@@ -2008,14 +2026,14 @@ paper~\cite{McKenzie1983}:
 If $\varphi: L \to L$ is any meet-preserving map such that $\varphi(x) > x$ for
 $x\ne 1$, then $\varphi(x) = 1$ for all~$x$.
 \item[(B$''$)]
-The coatoms of $\bL$ meet to $0$.
+The coatoms of $L$ meet to $0$.
 \end{enumerate}
 Note that
 \[
 \text{(B)} \implies \text{(B$''$)}  \implies \text{(B$'$)}.
 \]
 Clearly (B$''$) implies (B$'$). To see that (B) implies (B$''$),
-let $x$ be the meet of all the coatoms of $\bL$. If $x > 0$
+let $x$ be the meet of all the coatoms of $L$. If $x > 0$
 then applying (B) gives $y$ and $z$ each joining with $x$ to $1$.
 But $x\join y = 1$ implies $y = 1$. Similarly $z = 1$. But then
 $0 = y \meet z = 1$.
@@ -2027,12 +2045,12 @@ permutation. We record this as a theorem.
 
 \begin{theorem}[P\'alfy-Pudl\'ak \cite{PalfyPudlak1980}, McKenzie
 \cite{McKenzie1983}]
-Let $\bL$ be finite lattice and suppose $\bL \cong \Con \<A,F\>$
-is a minimal representation. If $\bL$ satisfies \textup{(A)} and
+Let $L$ be finite lattice and suppose $L \cong \Con \<A,F\>$
+is a minimal representation. If $L$ satisfies \textup{(A)} and
 \textup{(B$'$)} then
 all the nonconstant members of $F$ are permutations. 
 The same conclusion obtains if 
-$\bL$ satisfies \textup{(A)} and either \textup{(B)} or
+$L$ satisfies \textup{(A)} and either \textup{(B)} or
 \textup{(B$''$)}.
 \end{theorem}
 
