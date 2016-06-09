@@ -1379,19 +1379,12 @@ x&\text{otherwise.}\end{cases}$$
 %%%% \input{inputs/concrete.tex} (include all major inputs in one file)
 %% -- Begin concrete.tex file insertion -------------------------------
 
-In this section, we introduce a strategy, called the \defn{closure method}, 
-that has proven useful for showing
-that a given (small) lattice is representable as a congruence lattice of a finite
-algebra. 
+In this section, we introduce a strategy called the \defn{closure method} 
+that is sometimes useful for constructing a finite algebra with a congruence lattice
+of a given shape.
 
-%We call it the \defn{closure method}, and it is feasible for small lattices
-%has become especially
-%useful with the advent of powerful computers which can search for such
-%representations.  
-Recall that  $\EqX$ denotes the lattice of equivalence
-relations on $X$. Sometimes we abuse notation and take $\EqX$ to mean the
-lattice of partitions of the set $X$. This never causes problems because these
-two lattices are isomorphic.  
+Recall that  $\EqX$ denotes the lattice of equivalence relations on $X$.
+We often abuse notation and identify $\EqX$ with the lattice of partitions of the set $X$.
 
 \subsection{Concrete versus abstract representations}
 As Bjarni J\'onsson explains in~\cite{Jonsson:1972}, there are two types of
@@ -1403,13 +1396,13 @@ asks whether a given lattice is isomorphic to $\Con(\bA)$ for some algebra~$\bA$
 
 These two problems are closely related, and have become even more so since the
 publication in 1980 
-of~\cite{Pudlak:1980}, in which Pavel \Pudlak\ and
-\Jiri\ \Tuma\ prove that every finite
+of~\cite{Pudlak:1980}, in which Pavel \Pudlak and
+\Jiri \Tuma prove that every finite
 lattice can be embedded as a 
 spanning sublattice\footnote{Recall, by a 
   \defn{spanning sublattice}
   of a bounded lattice $L_0$, we mean a sublattice $L\leq L_0$ that has the same top and
-  bottom as $L_0$.  That is  $1_L = 1_{L_0}$ and $0_L = 0_{L_0}$.}
+  bottom as $L_0$.}
 of the lattice $\EqX$ of equivalence relations on a finite set $X$.   
 Given this result, we see that even if our goal is to solve the abstract
 representation problem for some (abstract) lattice $L$, then
@@ -1418,16 +1411,16 @@ $X$, and then try to solve the concrete representation problem for $L_0$.
 
 A point of clarification is in order here.  The term 
 \defn{representation} 
-has become a bit overused in the literature about the finite lattice
+is overused in the literature about the finite lattice
 representation problem.  On the one hand, given a finite lattice $L$, if there
 is a finite algebra $\bA$ such that $L \cong \Con(\bA)$, then $L$ is called a
-\defn{representable lattice}.  On the other hand, given a sublattice 
-$L_0\leq \EqX$, if $L_0\cong L$, then $L_0$ is sometimes called a 
-\defn{concrete representation}
-of the lattice $L$ (whether or not it is the congruence lattice of an algebra).    
+\defn{representable lattice}.  On the other hand, if $L$ is isomorphic to a sublattice 
+$L_0\leq \EqX$, then $L_0$ is sometimes called a 
+\defn{concrete representation} of $L$ (whether or not $L_0$ is the congruence lattice of an algebra).    
 Below we will define the notion of a \defn{closed concrete representation}, and if we
-have this special kind of concrete representation of a give lattice, then that
-lattice is indeed representable in the first sense.
+have this special kind of concrete representation of a give lattice $L$, then  $L$
+is indeed representable in the first sense (that is, $L$ is isomorphic to the congruence
+lattice of a finite algebra).
 
 As we will see below, there are many examples in which a particular concrete
 representation $L_0\leq \EqX$ of $L$ is not a congruence lattice of a
@@ -1435,10 +1428,11 @@ finite algebra.  (In fact, we will describe general situations in which we can
 guarantee that there are no non-trivial\footnote{By a 
   \defn{non-trivial function} we mean a function that is
   not constant and not the identity.} operations which respect the equivalence
-relations of $L_0$.)  This does not imply that $L \notin \sL_{con}$.  It may
-simply mean that $L_0$ is not the ``right'' concrete representation of $L$, and
-perhaps we can find some other $L \cong L_1\leq \EqX$ such that $L_1 = \Con
-\<X, \lambda(L_1)\>$.\marginpar{$\lambda(L_1)$ is only defined on the next page?}
+relations of $L_0$.)  This does not imply $L \notin \sL_{con}$.  It may
+be that $L_0$ is not the ``right'' concrete representation of $L$, and
+perhaps we can find some other sublattice of $\EqX$ that is both a congruence lattice
+and isomorphic to $L$. %%  = \Con \<X, \lambda(L_1)\>$.
+%% \marginpar{$\lambda(L_1)$ is only defined on the next page?}
 
 \subsection{The closure method}
 \label{sec:closure-method}
