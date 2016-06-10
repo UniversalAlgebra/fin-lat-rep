@@ -624,7 +624,7 @@ In this paper we review some of the well known methods, as well as
 some more recently developed methods, for constructing a finite
 algebra whose congruence lattice is isomorphic to a given finite
 lattice. Using these methods we show that with one possible
-exception ($L_{10}$ in the last section) every 
+exception ($\bL_{10}$ in the last section) every 
 lattice with at most 7 elements is (isomorphic to) the 
 congruence lattice of a finite lattice. In most but not all
 cases we are able to show that the algebra we construct is 
@@ -648,16 +648,16 @@ congruence lattice $\Con(\bA) \cong L$.
 
 Not surprisingly many lattices with a group representation
 can also be represented as a congruence lattice of a much smaller
-algebra. For example, the hexagon lattice, denoted $L_6$ in
+algebra. For example, the hexagon lattice, denoted $\bL_6$ in
 Section~\ref{sec:small-unary-algebras} below, is the congruence lattice
 of an algebra with 6 elements. Palfy~\cite{Palfy1988} and
 Aschbacher~\cite{Aschbacher2008} have found groups
-$H < G$ such that the interval from $H$ to $G$ is $L_6$, but 
+$H < G$ such that the interval from $H$ to $G$ is $\bL_6$, but 
 $[G : H]$, which is the size of the algebra, is considerably larger.
 
 Another interesting example is the pentagon, which is typically denoted by
 $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
-label it $L_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
+label it $\bL_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
 reveals that the smallest group $G$ in whose subgroup lattice
 $N_5$ appears as an upper interval is \code{SmallGroup(216,153)}. It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
@@ -694,11 +694,11 @@ can never be so represented. For such lattices group
 representations must use transitive groups and so the
 action is isomorphic to a group acting on the cosets
 of a subgroup by left multiplication. For example,
-$L_6$ is in this category.
+$\bL_6$ is in this category.
 
 
 For the 7-element lattice not known to be representable, 
-$L_{10}$, we show that a minimal size representation 
+$\bL_{10}$, we show that a minimal size representation 
 must be via a transitive permutation group action.
  
 %% note we could easily show there is no H < G of index 4,
@@ -727,7 +727,9 @@ must be via a transitive permutation group action.
 A lattice is denoted by $\bL = \<L, \meet, \join\>$, where $L$
 is the universe of elements of the lattice.  However, unless the context
 calls for emphasizing that this is an algebraic structure, we often
-refer to a lattice by the name of its universe.
+refer to a lattice by the name of its universe. (Notable exceptions to
+this convention are lattices with special names like those appearing in the list in
+Section~\label{sec:small-unary-algebras}. These are always typeset in bold font.)
 
 We use $\sL_{fin}$ to denote the class of all finite lattices, and 
 $\sL_{con}$ to denote the class of finite lattices that are isomorphic to congruence
@@ -1023,45 +1025,63 @@ The set of constant functions in $S^n$ is a subgroup $D < S^n$, sometimes called
 \[
 D = \{(s, s, \dots, s) \mid s\in S\} \leq S^n.
 \]
-For each $f \in \IC(n)$, define
+For each $f \in \IC(\nn)$, define $\hat{f}: S^n \to S^n$ as follows:\footnote{Here,
+  $\widehat{\phantom{X}}$ is the functor that lifts $f: \nn \to \nn$ to
+  $\hat{f} : S^n \to S^n$ by way of composition. That is, $\hat{f}\bx$ is
+  the usual function composition of $f: \nn \to \nn$ followed by $\bx: \nn \to S$.}
+for $\bx \in S^n$,
 \[
 %%
 %% K_f = \{(x_{f(0)}, x_{f(1)}, \dots, x_{f(n-1)}) \mid x_{f(i)}\in S, \; i = 0, 1,\dots, n-1\}.
 %% wjd: Why not call this S^n f?  Or simply Xf?  I don't remember my original
 %%      motivation for calling it K_f.  I'm changing it.
 %%      Complaints? (feel free to change it back or open an issue)
-Xf = \{\bx f \mid \bx \in S^n\} =
+%% wjd: I now recall my original motivation.  I was using K to denote a generic
+%%      subgroup in [D, S^n], and to each f in IC(X) there corresponds a K_f
+%%      which will be such a subgroup in [D, S^n].  Anyway, I think Xf, or even
+%%      \hat{f}[S^n] is perfectly good notation for the set of all xf with x in S^n.
+\hat{f}\bx = \bx f
+= (x(f(0)), x(f(1)), \dots, x(f(n-1))).
+\]
+Then, 
+\[
+\hat{f}[S^n] = \{\bx f \mid \bx \in S^n\} =
 \{(xf(0), xf(1), \dots, xf(n-1)) \mid \bx \in S^n\}.
 \]
-That is, $Xf$ is the set of all compositions of
+This is the set of all compositions consisting of
 $f$ followed by $\bx\in S^n$.
-Thus, $Xf = \{ \by\in S^n \mid \ker f \leq \ker \by \}$.
+\marginpar{Should we insert proof of equivalence of expression with
+$\ker f \leq \ker \by$?}
+Equivalently, $\hat{f}[S^n] = \{ \by\in S^n \mid \ker f \leq \ker \by \}$,
+which is easily verified.
+
 For example, 
 if $f = (0, 0, 2, 3, 2)\in \IC(\underline{5})$, then 
 $\ker f$ is the equivalence relation corresponding to
 the partition $|0,1|2,4|3|$, and 
-$Xf$ is the subgroup of all
+$\hat{f}[S^n]$ is the subgroup of all
 $\by = (y(0), y(1), y(2), y(3), y(4))\in S^5$ satisfying $y(0) = y(1)$ and
 $y(2) = y(4)$. That is,
-%% \begin{align*}
-%% Xf &= \{\bx f \mid \bx\in S^5\} = \{(x(0), x(0), x(2), x(3), x(2)) \mid \bx\in S^5\}\\
-%% &=\{\bx\in S^5 \mid \ker f \leq \ker \bx\}.
-%% \end{align*}
-\[Xf = \{(x(0), x(0), x(2), x(3), x(2)) \mid \bx\in S^5\}
-=\{\by\in S^5 \mid \ker f \leq \ker \by\}.\]
-It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
+%% \[\hat{f}[S^n] = \{(x(0), x(0), x(2), x(3), x(2)) \mid \bx\in S^5\}
+%% =\{\by\in S^5 \mid \ker f \leq \ker \by\}.\]
+\begin{align*}
+\hat{f}[S^n] &= \{(y(0), y(1), y(2), y(3), y(4)) \in S^5 \mid y(1) = y(0) \text{ and } y(2) = y(4)\}\\
+&=\{\by\in S^5 \mid \ker f \leq \ker \by\}.
+\end{align*}
+It's not hard to see that $D \leq \hat{f}[S^n] \leq S^n$, for all $f\in \IC(\nn)$.
+\marginpar{Should we insert proof that $\hat{f}[S^n]$ is a subgroup above $D$?}
 
 \begin{lemma}
   \label{lem:latt-duals}
-  The map $f \mapsto Xf$ is a dual lattice isomorphism from $\Eq(n)$ onto the
-  interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
+  The map $f \mapsto \hat{f}[S^n]$ is a dual lattice isomorphism from $\Eq(\nn)$
+  to the interval sublattice $\lb D, S^n\rb \leq \Sub(S^n)$.
 \end{lemma}
 \begin{proof}
-  This is clear since $\IC(n)$ is ordered by (\ref{eq:MID111}), and 
+  This is clear since $\IC(\nn)$ is ordered by (\ref{eq:MID111}), and 
   we have 
   $f\sqsubseteq h$ if and only if
-  $Xh = \{\by \in S^n \mid \ker h \leq \ker \by \}
-  \leq \{\by \in S^n \mid \ker f \leq \ker \by \} =  Xf$.
+  $\hat{h}[S^n] = \{\by \in S^n \mid \ker h \leq \ker \by \}
+  \leq \{\by \in S^n \mid \ker f \leq \ker \by \} =  \hat{f}[S^n]$.
 \end{proof}
 
 \begin{theorem}[Kurzweil~\cite{Kurzweil:1985}, Netter~\cite{Netter:1986}]\
@@ -1071,17 +1091,17 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
 \end{theorem}
 \begin{proof}
   Without loss of generality, we assume that $L$ is represented
-  as $L = \Con \<n, F\>$.
+  as $L = \Con \<\nn, F\>$.
   Also, by \cite[Theorem~4.18]{alvi:1987}, we can assume
-  that $F$ consists of unary operations: $F \subseteq n^n$.  
+  that $F$ consists of unary operations: $F \subseteq \nn^{\nn}$.  
   As above, let $S$ be a nonabelian simple group
   and let $D$ be the diagonal subgroup of $S^n$.
   Then the unary algebra $\<S^n/D, S^n\>$  is a transitive $S^n$-set which
   has congruence lattice isomorphic to the interval $\lb D, S^n\rb$.
   (See, for example,~\cite[Lemma~4.20]{alvi:1987}.)
   By Lemma~\ref{lem:latt-duals}, this is the dual
-  of the lattice $Eq(n)$.  That is, 
-  $\Con \<S^n/D, S^n\> \cong (Eq(n))'$.
+  of the lattice $\Eq(\nn)$.  That is, 
+  $\Con \<S^n/D, S^n\> \cong (\Eq(\nn))'$.
   
   Now, each operation $\phi \in F$ gives rise to an operation on $S^n$
   by composition:
@@ -1123,17 +1143,17 @@ It's not hard to see that $D \leq Xf\leq S^n$, for all $f\in \IC(n)$.
   \item 
     Elaborating on the last sentence of the proof of Theorem~\ref{thm:duals-interv-subl}, 
     %% for each $\theta \in \Con \< S^{n}/D, S^{n}\> \cong \lb D, S^n \rb$,
-    %% there corresponds a subgroup $Xf \in \lb D, S^n\rb$ such that 
-    %% $\bx\mathrel{\theta} \by$ iff $\bx^{-1}\by = \bz\in Xf$.
+    %% there corresponds a subgroup $\hat{f}[S^n] \in \lb D, S^n\rb$ such that 
+    %% $\bx\mathrel{\theta} \by$ iff $\bx^{-1}\by = \bz\in \hat{f}[S^n]$.
     %% Now if $\hat{\phi}\in \hat{F}$, then $(\hat{\phi}\bx, \hat{\phi}\by) \in \theta$ iff 
     %% \[ (x({\phi(0)})^{-1}y(\phi(0)), \dots,  x(\phi(n-1))^{-1} y(\phi(n-1))) =
-    %% (z(\phi(0)),z(\phi(1)),\dots, z(\phi(n-1)))\in Xf. \]
+    %% (z(\phi(0)),z(\phi(1)),\dots, z(\phi(n-1)))\in \hat{f}[S^n]. \]
     %% Better:
-    take $\bz\in Xf$ with $\ker \bz = \ker f$, so $f(i)=f(j)$ iff
+    take $\bz\in \hat{f}[S^n]$ with $\ker \bz = \ker f$, so $f(i)=f(j)$ iff
     $z(i) = z(j)$.
     Now suppose $\phi\in F$ does not respect $\ker f$, so there exists
     $(i,j) \in \ker f$ such that $(\phi(i), \phi(j)) \notin \ker f$.
-    Then $\phi \bz \notin Xf$, since $z(\phi(i)) \neq z(\phi(j))$.
+    Then $\phi \bz \notin \hat{f}[S^n]$, since $z(\phi(i)) \neq z(\phi(j))$.
   \end{enumerate}
 \end{remarks}
 
@@ -1255,7 +1275,6 @@ result for adjoined ordinal sums of $n$ lattices.  The same result for ordinal
 sums (Figure~\ref{fig:ord_adjord} left) follows since the two-element lattice is
 obviously representable. 
 
-\begin{center}
   \begin{figure}[h!]
     \label{fig:ord_adjord}
     \centering
@@ -1277,7 +1296,6 @@ obviously representable.
         \caption{The ordinal sum (left) and the adjoined ordinal sum (right) of
           the lattices $L_1, \dots, L_n$.}
   \end{figure}
-\end{center}
 
 %\subsection{Ordinal Sums II}
 %\todo{Merge this subsection with the subsection ``Ordinal Sums I.''}
@@ -1298,13 +1316,13 @@ x&\text{otherwise.}\end{cases}$$
 
 \begin{lemma}
   For $m,n\ge 1$ the lattice $\Con(\bA_{m,n})$ is isomorphic to
-  $\Eq(m)\oplus_a \Eq(n)$. 
+  $\Eq(\mm)\oplus_a \Eq(\nn)$. 
 \end{lemma}
 \begin{proof}
   Let $\alpha$ be the equivalence relation
   $A^2\cup\{(b_1,b_1),\dots,(b_{n-1},b_{n-1})\}$, so as a partition it is  
   $a_0,\dots,a_{m-1}|b_1|b_2|\dots|b_{n-1}$. 
-  Note that $\Eq(m)\oplus_a \Eq(n)$ is isomorphic to the sublattice
+  Note that $\Eq(\mm)\oplus_a \Eq(\nn)$ is isomorphic to the sublattice
   of $\Eq(A\uplus B_1)$ of all equivalence relations comparable to $\alpha$, since
   $\alpha$ has a unique non-singleton block of size $m$, and $n$ blocks
   altogether. We claim that this sublattice is the congruence lattice of $\bA_{m,n}$.  
@@ -1836,12 +1854,12 @@ contains a core-free maximal subgroup.
 
 % The next theorem shows why intervals of subgroup lattices are so important for
 % our work.
-\begin{theorem}[\Gset\ Isomorphism Theorem]
-  \label{thm:g-set-isomorphism2}
-  Let $\bA = \<A, G\>$ be a transitive \Gset\ and fix $a\in A$.  
-  Then the lattice $\Con(\bA)$ is isomorphic to the
-  interval $\lb G_a, G\rb$ in the subgroup lattice of $G$.
-\end{theorem}
+%% \begin{theorem}[\Gset\ Isomorphism Theorem]
+%%   \label{thm:g-set-isomorphism2}
+%%   Let $\bA = \<A, G\>$ be a transitive \Gset\ and fix $a\in A$.  
+%%   Then the lattice $\Con(\bA)$ is isomorphic to the
+%%   interval $\lb G_a, G\rb$ in the subgroup lattice of $G$.
+%% \end{theorem}
 % \begin{proof}
 %     For each $\theta  \in \Con(\bA)$, let $H_\theta =\{g\in G \mid (g(a),a) \in
 %     \theta\}$,  
@@ -1870,26 +1888,24 @@ contains a core-free maximal subgroup.
 %     between $\Con(\bA)$ and $[G_a, G]$.
 % \end{proof}
 
-Since the foregoing theorem is so central to our work, we provide an alternative 
-statement of it. This is the version typically found in group theory 
-textbooks (e.g., \cite{Dixon:1996}).  Keeping these two alternative perspectives in
-mind can be useful.
-
-\begin{theorem}[\Gset\ Isomorphism Theorem, version 2]
-  Let $\bA = \<A, \phi(G)\>$ be a transitive \Gset\
-  and fix $a \in A$. Let $\sB$ be the set of all blocks $B$ that contain $a$.
-  % Let $[\stab{a},G] \subseteq \Sub(G)$ denote the set of all subgroups of 
-  % $G$ containing $\stab{a}$. 
-  Then there is a bijection $\Psi :\sB \rightarrow \lb \stab{a},G\rb$ given by $\Psi(B)= G(B)$,
-  with inverse mapping $\Phi: \lb \stab{a},G\rb \rightarrow \sB $ 
-  given by $\Phi(H) = \{a^{\phi(h)}  \mid  h\in H\}$. 
-  The mapping $\Psi$ is order-preserving in the sense
-  that
-  $B_1\subseteq B_2 \Leftrightarrow \Psi(B_1) \leq \Psi(B_2)$.
-\end{theorem}
-
-Briefly, the poset $\<\sB, \subseteq\>$ is order-isomorphic to the 
-poset $\<[\stab{a},G], \leq\>$. 
+%% Since the foregoing theorem is so central to our work, we provide an alternative 
+%% statement of it. This is the version typically found in group theory 
+%% textbooks (e.g., \cite{Dixon:1996}).  Keeping these two alternative perspectives in
+%% mind can be useful.
+%% \begin{theorem}[\Gset\ Isomorphism Theorem, version 2]
+%%   Let $\bA = \<A, \phi(G)\>$ be a transitive \Gset\
+%%   and fix $a \in A$. Let $\sB$ be the set of all blocks $B$ that contain $a$.
+%%   % Let $[\stab{a},G] \subseteq \Sub(G)$ denote the set of all subgroups of 
+%%   % $G$ containing $\stab{a}$. 
+%%   Then there is a bijection $\Psi :\sB \rightarrow \lb \stab{a},G\rb$ given by $\Psi(B)= G(B)$,
+%%   with inverse mapping $\Phi: \lb \stab{a},G\rb \rightarrow \sB $ 
+%%   given by $\Phi(H) = \{a^{\phi(h)}  \mid  h\in H\}$. 
+%%   The mapping $\Psi$ is order-preserving in the sense
+%%   that
+%%   $B_1\subseteq B_2 \Leftrightarrow \Psi(B_1) \leq \Psi(B_2)$.
+%% \end{theorem}
+%% Briefly, the poset $\<\sB, \subseteq\>$ is order-isomorphic to the 
+%% poset $\<[\stab{a},G], \leq\>$. 
 
 \begin{corollary}
   Let $G$ act transitively on a set with at least two
@@ -1911,11 +1927,11 @@ We call two representations (or actions)
 provided the associated $G$-sets are isomorphic. 
 The foregoing implies that every transitive permutation representation of $G$ is
 equivalent to $\hlambda_H$ for some subgroup $H \leq G$.  The following
-lemma\footnote{Lemma 1.6B of \cite{Dixon:1996}.} 
+lemma
 shows that we need only consider a single representative $H$ from each of the
 conjugacy classes of subgroups.  
 
-\begin{lemma}
+\begin{lemma}[Lem.~1.6B~\cite{Dixon:1996}]
   Suppose $G$ acts transitively on two sets,
   $A$ and $B$.  Fix $a\in A$ and let $G_a$ be the stabilizer of $a$ (under the first
   action).  Then the two actions are equivalent
@@ -1951,12 +1967,16 @@ They did this by giving lattice conditions which force the
 nonconstant operations of a minimal
 representation to be permutations which generate a transitive
 group $G$.
-By Theorem~\ref{thm:g-set-isomorphism2}
-the congruence lattice of such an algebra is isomorphic to 
-the interval $\lb G_a,G \rb$. 
+By a fundamental isomorphism theorem for transitive
+%Theorem~\ref{thm:g-set-isomorphism2}
+$G$-sets---see~\cite[Lemma~4.20]{alvi:1987} (general algebra version)
+or~\cite[Theorem 1.5A]{Dixon:1996} (group-theoretic version)---the
+congruence lattice of such an algebra is isomorphic to the interval
+$\lb G_a,G \rb$. 
 Then they showed every finite lattice could be embedded 
 as an interval into a finite lattice satisfying these conditions.
-\marginpar{is mim rep defined?}
+%% \marginpar{is mim rep defined?}
+%% wjd: yes, min rep is now defined in Section~\label{sec:minim-repr}.
 However their equivalence is not global: it is possible that there 
 is a representable lattice which is not isomorphic to an interval
 of the subgroup lattice of a finite group. So there are several 
@@ -1972,7 +1992,9 @@ Is there a group $G$ of permutations on $A$ such that $L \cong \Con \< A,G\>$?
 \item\label{question4}
 Is there a transitive group $G$ of permutations on $A$ such that $L \cong \Con \< A,G\>$?
 Equivalently is $L$ isomorphic an interval in the subgroup lattice of a finite group
-(by Theorem~\ref{thm:g-set-isomorphism2}).
+(by the basic isomorphism theorem for transitive $G$-sets; 
+see~\cite[Lemma~4.20]{alvi:1987} or~\cite[Theorem 1.5A]{Dixon:1996}).
+%% Theorem~\ref{thm:g-set-isomorphism2}).
 \item\label{question5}
 If $L \cong \Con \<A,G\>$ for a group $G$ what is the smallest such $G$?
 \end{enumerate}
@@ -1982,7 +2004,7 @@ an example of an $L$ satisfying \eqref{question1} but not~\eqref{question4}, but
 in general representing $L$ 
 in the form of~\eqref{question4}
 is more difficult. For example,
-the lattices $L_6$ and $L_7$ diagrammed in Figure~\ref{fig:L6and7}
+the lattices $\bL_6$ and $\bL_7$ diagrammed in Figure~\ref{fig:L6and7}
 can be represented on algebras of size~6 (and no fewer)
 but representing them with permutation groups is much harder; 
 see Aschbacher~\cite{Aschbacher2008}.
@@ -1992,15 +2014,15 @@ see Aschbacher~\cite{Aschbacher2008}.
 \begin{center}
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L6.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
+    %    \draw (bottom) node [right]{$\bL_{11}$};
   \end{tikzpicture}
   \hskip15mm
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L7.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
+    %    \draw (bottom) node [right]{$\bL_{11}$};
   \end{tikzpicture}
 \end{center}
-\caption{$L_{6}$ and $L_7$}\label{fig:L6and7}
+\caption{$\bL_{6}$ and $\bL_7$}\label{fig:L6and7}
 \end{figure}
 
 
@@ -2363,7 +2385,7 @@ pentagon $\lb H, G \rb$, as shown in Figure~\ref{fig:L11} (right).
 
 The entire subgroup lattice $\Sub(G)$ is the congruence lattice of an
 algebra. Therefore, if there is a minimal subgroup $K$ ($1 \prec K \leq G$) that
-is below $\beta$, but not below  $\alpha$ or $\gamma$, then lattice $L_{11}$ is the 
+is below $\beta$, but not below  $\alpha$ or $\gamma$, then lattice $\bL_{11}$ is the 
 union of the ideal $\lb 1, K\rb$ and the filter $\lb H, G\rb$.
 Luckily, there is such a subgroup $K$. We can check this fact using \gap, as we now describe.
 A search of the \gap Library of Small Groups finds that the 153rd
