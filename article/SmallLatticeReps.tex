@@ -988,18 +988,21 @@ We denote this set by $\IC(X)$, so
 Define the binary relation $\sqsubseteq$ on the set $\IC(X)$ by
 \begin{equation}
   \label{eq:MID111}
-  f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g,
+   f\sqsubseteq g \quad \Leftrightarrow \quad \ker f \leq \ker g,
 \end{equation}
 where $\ker f = \{(x,y) \in X^2 \mid f(x) = f(y)\}$.
 It is easy to see that $f\sqsubseteq g$ holds if and only if $gf = g$, and that
 $\sqsubseteq$ is a partial ordering of $\IC(X)$.  
 In fact, under this ordering, $\IC(X)$ is a lattice that is
-isomorphic to $\EqX$. The lattice isomorphism is the function
-$\Theta : \EqX \rightarrow \IC(X)$ given by
-$\Theta(\alpha) = f_\alpha$, where
-$f_\alpha(x) = \min\{y\in X \mid x \mathrel{\alpha} y\}$.
-
-
+isomorphic to $\EqX$. Indeed, a lattice isomorphism from $\EqX$ to $\IC(X)$
+is given by the function $\Theta$ defined for $\alpha\in \EqX$ and
+$x\in X$ by $\Theta(\alpha)(x) = \Meet x/\alpha$; that is,
+the least element in the $\alpha$-class containing $x$.
+It is easy to check that $\Theta$ preserves all meets and joins of
+$\EqX$. The inverse isomorphism is $\ker: \IC(X) \to \EqX$.
+That is, $\ker$ preserves all meets and joins of $\IC(X)$ (with lattice order
+$\sqsubseteq$), $\ker \Theta$ is the identity on $\EqX$, and $\Theta \ker$
+is the identity on $\IC(x)$.
 
 Suppose $S$ is a finite nonabelian simple group, and consider the direct power $S^n$.
 An element of $S^n$ may be viewed either as a function, $\bx : \nn \to S$,
