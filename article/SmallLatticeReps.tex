@@ -2004,7 +2004,7 @@ see Aschbacher~\cite{Aschbacher2008}.
 
 Below we try to answer at least
 some of these questions for small lattices. 
-As mentioned above \Palfy and \Pudlak gave conditions on a lattice $\bL$ 
+As mentioned above \Palfy and \Pudlak gave conditions on a lattice $L$ 
 such that if $L \cong \Con \<A,F\>$ then the nonconstant elements of $F$ are 
 permutations and the group they generate acts transitively on $A$. 
 These conditions are
@@ -2281,7 +2281,20 @@ Take the set $\{\two^{m_i} \mid 1\leq i \leq t\}$ of
 lattices of subsets of sets of sizes $m_i$ for each $i\in \{1,\ldots,t\}$, remove
 the least and greatest element of each, line them up side by side, and adjoin
 them into one large lattice by giving them all a new common least element and a
-new common greatest element. While the conjecture---that this lattice is not
+new common greatest element.
+An example of such a lattice appears in the diagram in Figure~\ref{fig:shareshian}.
+
+\begin{figure}[htb]
+\begin{center}
+  \begin{tikzpicture}[scale=.8]
+    \input{inputs/tikz/Shareshian.tex}
+  \end{tikzpicture}
+\end{center}
+\label{fig:shareshian}
+\caption{A possibly non-representable lattice.}
+\end{figure}
+%% \includegraphics[width=4cm]{inputs/94tov.png}  
+While the conjecture---that this lattice is not
 representable as a congruence lattice of a finite algebra---is still open, much
 progress has been made, primarily by Aschbacher; see~\cite{Aschbacher2013}.
 For example, the problem has been reduced to almost simple groups.
@@ -2314,9 +2327,6 @@ smallest representation.
 
 \begin{figure}[htb]
 \begin{center}
-  %% \begin{tikzpicture}[scale=1]
-  %%   \input{inputs/tikz/L3.tex}
-  %% \end{tikzpicture}
   \begin{tikzpicture}[scale=1]
     \input{inputs/tikz/L3.tex}
     %    \draw (bottom) node [right]{$L_{11}$};

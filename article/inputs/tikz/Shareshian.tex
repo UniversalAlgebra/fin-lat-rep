@@ -1,0 +1,35 @@
+% Shareshian's proposed counter-example
+        \node (bottom) at (0,0)  [draw, circle, inner sep=\dotsize] {};
+        \node (top) at (0,3)  [draw, circle, inner sep=\dotsize] {};
+
+        \node (01) at (-3,1)  [draw, circle, inner sep=\dotsize] {};
+        \node (11) at (-2,1)  [draw, circle, inner sep=\dotsize] {};
+        \node (21) at (-1,1)  [draw, circle, inner sep=\dotsize] {};
+        \node (31) at (1,1)  [draw, circle, inner sep=\dotsize] {};
+        \node (41) at (2,1)  [draw, circle, inner sep=\dotsize] {};
+        \node (51) at (3,1)  [draw, circle, inner sep=\dotsize] {};
+
+        \node (02) at (-3,2)  [draw, circle, inner sep=\dotsize] {};
+        \node (12) at (-2,2)  [draw, circle, inner sep=\dotsize] {};
+        \node (22) at (-1,2)  [draw, circle, inner sep=\dotsize] {};
+        \node (32) at (1,2)  [draw, circle, inner sep=\dotsize] {};
+        \node (42) at (2,2)  [draw, circle, inner sep=\dotsize] {};
+        \node (52) at (3,2)  [draw, circle, inner sep=\dotsize] {};
+
+        \draw[semithick] (bottom) to (01) to (02) to (11) to (22) to (21) to (12) to (01);
+        \draw[semithick] (bottom) to (31) to (32) to (41) to (52) to (51) to (42) to (31);
+        \draw[semithick]
+        (bottom) to (11)
+        (bottom) to (21)
+        (bottom) to (41)
+        (bottom) to (51);
+        \draw[semithick]
+        (top) to (02) 
+        (top) to (12) 
+        (top) to (22) 
+        (top) to (32) 
+        (top) to (42) 
+        (top) to (52);
+
+
+
