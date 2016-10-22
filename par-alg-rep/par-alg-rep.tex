@@ -10,6 +10,23 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+@article {MR552159,
+    AUTHOR = {Pudl{\'a}k, Pavel and T{\.u}ma, Ji{\v{r}}{\'{\i}}},
+     TITLE = {Every finite lattice can be embedded in a finite partition
+              lattice},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {10},
+      YEAR = {1980},
+    NUMBER = {1},
+     PAGES = {74--95},
+      ISSN = {0002-5240},
+   MRCLASS = {06B15 (05C99)},
+  MRNUMBER = {552159},
+MRREVIEWER = {James W. Lea, Jr.},
+       DOI = {10.1007/BF02482893},
+       URL = {http://dx.doi.org/10.1007/BF02482893},
+}
 @article {MR3076179,
     AUTHOR = {Kearnes, Keith A. and Kiss, Emil W.},
      TITLE = {The shape of congruence lattices},
@@ -35,7 +52,7 @@ year = {2007, 2016},
 URL = {http://www.math.hawaii.edu/~jb/}
 }
 \end{filecontents*}
-\documentclass[11pt]{amsart}
+\documentclass[12pt]{amsart}
 % The following \documentclass options may be useful:
 % preprint      Remove this option only once the paper is in final form.
 % 10pt          To set in 10-point type instead of 9-point.
@@ -148,14 +165,20 @@ of a Finite Partial Algebra}
 
 \section{Introduction}
 \label{sec:introduction}
-This notes starts 
-with a proof in Section~\ref{sec:simple-proof-well} of the result stated in the title.
-Bill Lampe informed us that this result has been known for a long time and 
-subsequently explained to DeMeo a more general view of the result.  That view is
-developed in Section~\ref{sec:more-gener-appr} below.
+This note begins with a proof in Section~\ref{sec:simple-proof-well} of the
+result stated in the title. Bill Lampe pointed out that this result has been
+known for a long time and subsequently explained to DeMeo a more general
+viewpoint.  In Section~\ref{sec:more-gener-appr}
+we try to describe what Lampe explained, but 
+surely our presentation is imperfect.  Hopefully it will elicit comments and
+criticisms that we will use to improve it.
 
-\section{A simple proof of a well known result}
+\section{A well known result}
 \label{sec:simple-proof-well}
+In this section we give a straight-forward proof of the fact that every finite
+lattice is the congruence lattice of a finite partial algebra.
+
+
 \begin{lemma}
 Let $X$ be a finite set, and let $\Eq(X)$ denote the lattice of equivalence
 relations on $X$. If $L\leq \Eq(X)$ is a 0-1-sublattice,
@@ -205,10 +228,12 @@ $\mathbb X = \< X, F\>$ with $\Con(\mathbb X) =  L$.
   $F = \{f_\rho \mid \rho \in \mathcal{R}\}$.  Evidently, $\Con \<X, F\> = L$.
 \end{proof}
 
-\section{More general view}
+\section{Generalities}
 \label{sec:more-gener-appr}
-First we recall some standard definitions.\footnote{See J. B. Nation's notes
-  \cite{Nation-notes}, from which most of this section was directly lifted.}
+
+
+First we recall some standard definitions.
+%% \footnote{See J. B. Nation's notes~\cite{Nation-notes} for more details.}
 A \defn{closure system} on a set $X$ is a collection $\sC$
 of subsets of $X$ that is closed under arbitrary intersection (including the empty 
 intersection, so $\bigcap \emptyset = X \in \sC$). 
@@ -219,37 +244,147 @@ Since every complete meet semilattice is automatically a complete lattice
 the closed sets of a closure system form a complete lattice. 
 %% The sets in $\sC$ are called \defn{closed sets}. 
 
-For us, some key examples of closure systems are the
+For us, the key examples of closure systems are the
 \begin{itemize}
-\item the order ideals of an ordered set
-\item the subalgebras of an algebra 
-\item the equivalence relations on a set
-\item the congruence relations of an algebra
+\item order ideals of an ordered set
+\item subalgebras of an algebra 
+\item equivalence relations on a set
+\item congruence relations of an algebra
 \end{itemize}
 
-A \defn{closure operator} on a set $X$ is a map $\sansC : \sP(X) \to \sP(X)$ 
-satisfying, for all $A, B \in \sP(X)$,
-\begin{enumerate}[(a)]
-\item $A \subseteq \sansC A$ (extensivity) 
-\item $A \subseteq B$ implies $\sansC A \subseteq \sansC B$ (monotonicity) 
-\item $\sansC  \sansC A = \sansC A$ (idempotence) 
+\newcommand{\cl}{\ensuremath{\operatorname{c}}}
+
+Let $\bP = \<P, \leq \>$ be a poset.
+An function $\cl \colon P \to P$ is called a \defn{closure operator}
+if it satisfies the following axioms for all $x, y\in P$.
+\begin{enumerate}
+\item $x \leq \cl x$ (extensivity) 
+\item $x \leq y$ implies $\cl(x) \leq \cl(y)$ (monotonicity) 
+\item $\cl \cl x = \cl x$ (idempotence) 
 \end{enumerate}
-A fixed point of a closure operator is called a \defn{closed set}.
-The collection of closed sets of a closure operator is closed under arbitrary
-intersection, 
-hence forms a closure system.
-Indeed, let $\sA$ be a collection of fixed points of $\sansC$. 
+More concisely, a closure operator is an extensive idempotent poset endomorphism,
+and the definition above is equivalent to the single axiom
+\[
+(\forall x \in P)(\forall y \in P) (x \leq \cl y \quad \longleftrightarrow  \quad \cl x \leq  \cl y)
+\]
+
+\begin{example}
+Let $X$ be a set and let $Y \subseteq X$.
+Define $\cl_Y\colon \sP(X) \to \sP(X)$ by $\cl_Y (W) = W \cup Y$.
+Then $\cl_Y$ is a closure operator on the poset $\<\sP(X), \subseteq\>$.
+\end{example}
+
+\newcommand{\Luv}{\ensuremath{L_{u,v}}}
+\newcommand{\juv}{\ensuremath{\vee_{u,v}}}
+\newcommand{\suv}{\ensuremath{\sigma_{u,v}}}
+\begin{example}[Pudl{\'a}k-T{\.u}ma~\cite{MR552159}]
+  Let $L$ be a lattice, $u, v \in L$, and $u\leq v$.
+  Define a subset $\Luv$ of $L$ by
+  \[
+  \Luv =\{x\in L \mid v\leq x \text{ or } u \nleq x\}.
+  \]
+  The lattice order of $L$ induces a lattice order on $\Luv$.
+  The meet of $\Luv$ is that of $L$, whereas the join of $\Luv$ is
+  \[
+  x \juv y = 
+  \begin{cases}
+    x \join y, & \text{ if $u \nleq x \join y$,}\\
+    x \join y \join v, & \text{ if $u \leq x \join y$.}
+  \end{cases}
+  \]
+  Define a mapping $\suv \colon L \to \Luv$ as follows:
+  \[
+  \suv (x)  = 
+  \begin{cases}
+    x, & \text{ if $u \nleq x$,}\\
+    x \join v, & \text{ if $u \leq x$.}
+  \end{cases}
+  \]
+  Then $\suv$ is a surjective join-homomorphism. In fact, every
+  join-homomorphism $\phi \colon L \to K$ satisfying $\phi(u) = \phi(v)$ splits as
+  $\phi =  \psi \circ \suv$ for some $\psi \colon \Luv \to K$, as indicated
+  in the commutative diagram below.
+
+  \begin{center}
+    \begin{figure}
+      \begin{tikzpicture}[node distance=2cm, scale=3]
+        \node (10) at (1,0)  {$\Luv$};
+        \node (21) at (2,1)  {$K$};
+        \node (01) at (0,1)  {$L$};
+        \node (middle) at (1,0.6)  {$\circlearrowleft$};
+        \draw[->,thick] (01) -- (21)  node[pos=.5,above] {$\phi$};
+        \draw[->,thick] (01) -- (10)  node[pos=.5,left] {$\suv$};
+        \draw[->,dashed,thick] (10) -- (21)  node[pos=.5,right] {$\exists \,\psi$};
+      \end{tikzpicture}
+      \caption{Every join-homomorphism collapsing $u$ and $v$ is divisible by $\suv$.}
+      \label{tab:splitting}
+    \end{figure}
+  \end{center}
+
+  
+\end{example}
+
+A fixpoint of a closure operator $c$ (i.e., an element $x\in P$ satisfying
+$c x = x$) is called a \defn{closed element}.
+A closure operator on a partially ordered
+set is determined by its closed elements. If $x$ is closed, then
+$y \leq x$ iff $c y \leq x$.
+
+%% A \defn{closure operator} on a set $X$ is a map $\sansC  \colon \sP(X) \to \sP(X)$ 
+%% satisfying, for all $A, B \in \sP(X)$,
+%% \begin{enumerate}[(a)]
+%% \item $A \subseteq \sansC A$ (extensivity) 
+%% \item $A \subseteq B$ implies $\sansC A \subseteq \sansC B$ (monotonicity) 
+%% \item $\sansC  \sansC A = \sansC A$ (idempotence) 
+%% \end{enumerate}
+%% A fixpoint of a closure operator is called a \defn{closed set}.
+The collection of fixpoints of a closure operator is closed
+under arbitrary intersection, hence forms a closure system.
+Indeed, let $\sA$ be a collection of fixpoints of $\sansC$. 
 For each $A \in \sA$ we have $\bigcap \sA \subseteq A$, so
 $\sansC(\bigcap \sA) \subseteq A$ by monotonicity.
 % Therefore, $\bigcap \sA \subseteq \sansC(\bigcap \sA) \subseteq A$ for each $A \in \sA$.  
 Therefore, 
-$\bigcap \sA \subseteq \sansC(\bigcap \sA) \subseteq \bigcap \sA$, which proves
-that $\bigcap \sA$ is a fixed point of $\sansC$. 
+$\bigcap \sA \subseteq \sansC(\bigcap \sA) \subseteq \bigcap \sA$, so
+ $\sansC (\bigcap \sA) =  \bigcap \sA$; that is,  $\bigcap \sA$ is a fixpoint of $\sansC$. 
 
-A closure operator $\sansC$ is called \defn{finitary} or \defn{algebraic} iff
+Thus, if $\sC$ is the collection of closed sets of
+the closure operator $\sansC$, then $\sC$ is a closure system. Conversely, given
+a closure system $\sC$ on a set $X$, define the operator
+$\sansC \colon \sP(X) \to \sP(X)$ as follows
 \[
-\sansC (A) = \bigcup \{\sansC(F) \mid F \subseteq A, F \text{ finite } \}.
+\sansC A = \bigcap \{B \in \sC \mid A\subseteq B\}.
 \]
+It is obvious that $\sansC$ so defined satisfies conditions (a)--(c)
+above, making it a closure operator.
+
+
+A closure operator $\sansC$ is called \defn{algebraic} iff
+\[
+\sansC A = \bigcup \{\sansC F \mid F \subseteq A \text{ and } F \text{ finite } \}.
+\]
+
+
+Let $\bL = \<L, \join, \meet\>$ be a complete lattice and let $\top = \Join L$.
+A subset $M \subseteq L$ is called a \defn{Moore family} on
+$\bL$ if $\top\in M$ and every nonempty subset of $M$ is closed under meet.
+That is, if $\emptyset \neq S \subseteq M$, then $\Meet S \in S$.
+
+If $\bL = \<L, \join, \meet\>$ is a complete lattice, then a subset
+$C \subseteq L$ is the set of closed elements for some closure operator on
+$L$ if and only if $C$ is a \defn{Moore family} on $L$.
+Any such set $C$ is itself the universe of a complete lattice $\bC$
+with the order inherited from $\bL$.  However, it is important to note that
+join of $\bC$ might differ from that of $\bL$.
+When $\sL$ is the powerset Boolean algebra of
+$X$---that is, when $\sL = \<\sP(X), \subseteq\>$---then a Moore family in $\sL$ 
+is called a \defn{closure system} on $X$. 
+
+The closure operators on $\sL$ form themselves a complete lattice; the order on
+closure operators is defined by $\cl_1 \leq  \cl_2$ iff
+$\cl_1 x \leq  \cl_2 x$ for all $x \in L$. 
+
+
 
 %% \appendix
 %% \section{Appendix Title}
@@ -261,3 +396,24 @@ A closure operator $\sansC$ is called \defn{finitary} or \defn{algebraic} iff
 
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
