@@ -1,3 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                         BIBLIOGRAPHY FILE                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The `filecontents` command will crete a file in the inputs directory called 
+%% refs.bib containing the references in the document, in case this file does 
+%% not exist already.
+%% If you want to add a BibTeX entry, please don't add it directly to the
+%% refs.bib file.  Instead, add it in this file between the
+%% \begin{filecontents*}{refs.bib} and \end{filecontents*} lines
+%% then delete the existing refs.bib file so it will be automatically generated 
+%% again with your new entry the next time you run pdfaltex.
+\begin{filecontents*}{inputs/refs.bib}
+@article {MR3076179,
+    AUTHOR = {Kearnes, Keith A. and Kiss, Emil W.},
+     TITLE = {The shape of congruence lattices},
+   JOURNAL = {Mem. Amer. Math. Soc.},
+  FJOURNAL = {Memoirs of the American Mathematical Society},
+    VOLUME = {222},
+      YEAR = {2013},
+    NUMBER = {1046},
+     PAGES = {viii+169},
+      ISSN = {0065-9266},
+      ISBN = {978-0-8218-8323-5},
+   MRCLASS = {08B05 (08B10)},
+  MRNUMBER = {3076179},
+MRREVIEWER = {James B. Nation},
+       DOI = {10.1090/S0065-9266-2012-00667-8},
+       URL = {http://dx.doi.org/10.1090/S0065-9266-2012-00667-8},
+}
+@unpublished{Nation-notes,
+author = {J. B. Nation},
+title = {Notes on Lattice Theory},
+note = {Unpublished notes},
+year = {2007, 2016},
+URL = {http://www.math.hawaii.edu/~jb/}
+}
+\end{filecontents*}
 \documentclass[11pt]{amsart}
 % The following \documentclass options may be useful:
 % preprint      Remove this option only once the paper is in final form.
@@ -109,9 +146,16 @@ of a Finite Partial Algebra}
 
 %% \begin{abstract}\end{abstract}
 
-%% \section{Introduction}
-%% \label{sec:introduction}
+\section{Introduction}
+\label{sec:introduction}
+This notes starts 
+with a proof in Section~\ref{sec:simple-proof-well} of the result stated in the title.
+Bill Lampe informed us that this result has been known for a long time and 
+subsequently explained to DeMeo a more general view of the result.  That view is
+developed in Section~\ref{sec:more-gener-appr} below.
 
+\section{A simple proof of a well known result}
+\label{sec:simple-proof-well}
 \begin{lemma}
 Let $X$ be a finite set, and let $\Eq(X)$ denote the lattice of equivalence
 relations on $X$. If $L\leq \Eq(X)$ is a 0-1-sublattice,
@@ -160,6 +204,53 @@ $\mathbb X = \< X, F\>$ with $\Con(\mathbb X) =  L$.
   all equivalence relations on $X$ that do not belong to $L$.  Define,
   $F = \{f_\rho \mid \rho \in \mathcal{R}\}$.  Evidently, $\Con \<X, F\> = L$.
 \end{proof}
+
+\section{More general view}
+\label{sec:more-gener-appr}
+First we recall some standard definitions.\footnote{See J. B. Nation's notes
+  \cite{Nation-notes}, from which most of this section was directly lifted.}
+A \defn{closure system} on a set $X$ is a collection $\sC$
+of subsets of $X$ that is closed under arbitrary intersection (including the empty 
+intersection, so $\bigcap \emptyset = X \in \sC$). 
+Thus a closure system is a complete meet semilattice with respect to subset
+inclusion ordering. 
+Since every complete meet semilattice is automatically a complete lattice
+(see \cite[Theorem 2.5]{Nation-notes}), 
+the closed sets of a closure system form a complete lattice. 
+%% The sets in $\sC$ are called \defn{closed sets}. 
+
+For us, some key examples of closure systems are the
+\begin{itemize}
+\item the order ideals of an ordered set
+\item the subalgebras of an algebra 
+\item the equivalence relations on a set
+\item the congruence relations of an algebra
+\end{itemize}
+
+A \defn{closure operator} on a set $X$ is a map $\sansC : \sP(X) \to \sP(X)$ 
+satisfying, for all $A, B \in \sP(X)$,
+\begin{enumerate}[(a)]
+\item $A \subseteq \sansC A$ (extensivity) 
+\item $A \subseteq B$ implies $\sansC A \subseteq \sansC B$ (monotonicity) 
+\item $\sansC  \sansC A = \sansC A$ (idempotence) 
+\end{enumerate}
+A fixed point of a closure operator is called a \defn{closed set}.
+The collection of closed sets of a closure operator is closed under arbitrary
+intersection, 
+hence forms a closure system.
+Indeed, let $\sA$ be a collection of fixed points of $\sansC$. 
+For each $A \in \sA$ we have $\bigcap \sA \subseteq A$, so
+$\sansC(\bigcap \sA) \subseteq A$ by monotonicity.
+% Therefore, $\bigcap \sA \subseteq \sansC(\bigcap \sA) \subseteq A$ for each $A \in \sA$.  
+Therefore, 
+$\bigcap \sA \subseteq \sansC(\bigcap \sA) \subseteq \bigcap \sA$, which proves
+that $\bigcap \sA$ is a fixed point of $\sansC$. 
+
+A closure operator $\sansC$ is called \defn{finitary} or \defn{algebraic} iff
+\[
+\sansC (A) = \bigcup \{\sansC(F) \mid F \subseteq A, F \text{ finite } \}.
+\]
+
 %% \appendix
 %% \section{Appendix Title}
 %% This is the text of the appendix, if you need one.
