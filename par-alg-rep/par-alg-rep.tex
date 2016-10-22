@@ -255,7 +255,7 @@ For us, the key examples of closure systems are the
 \newcommand{\cl}{\ensuremath{\operatorname{c}}}
 
 Let $\bP = \<P, \leq \>$ be a poset.
-An function $\cl \colon P \to P$ is called a \defn{closure operator}
+An function $\cl \colon P \to P$ is called a \defn{closure operator} on $\bP$
 if it satisfies the following axioms for all $x, y\in P$.
 \begin{enumerate}
 \item $x \leq \cl x$ (extensivity) 
@@ -265,26 +265,28 @@ if it satisfies the following axioms for all $x, y\in P$.
 More concisely, a closure operator is an extensive idempotent poset endomorphism,
 and the definition above is equivalent to the single axiom
 \[
-(\forall x \in P)(\forall y \in P) (x \leq \cl y \quad \longleftrightarrow  \quad \cl x \leq  \cl y)
+(\forall\, x, y \in P) (x \leq \cl y \; \longleftrightarrow  \; \cl x \leq  \cl y)
 \]
 
 \begin{example}
 Let $X$ be a set and let $Y \subseteq X$.
 Define $\cl_Y\colon \sP(X) \to \sP(X)$ by $\cl_Y (W) = W \cup Y$.
-Then $\cl_Y$ is a closure operator on the poset $\<\sP(X), \subseteq\>$.
+Then $\cl_Y$ is a closure operator on $\<\sP(X), \subseteq\>$.
 \end{example}
 
 \newcommand{\Luv}{\ensuremath{L_{u,v}}}
+\newcommand{\bLuv}{\ensuremath{\mathbf{L}_{u,v}}}
 \newcommand{\juv}{\ensuremath{\vee_{u,v}}}
 \newcommand{\suv}{\ensuremath{\sigma_{u,v}}}
 \begin{example}[Pudl{\'a}k-T{\.u}ma~\cite{MR552159}]
-  Let $L$ be a lattice, $u, v \in L$, and $u\leq v$.
+  Let $\bL = \<L, \join, \meet\>$ be a lattice, $u, v \in L$, and $u\leq v$.
   Define a subset $\Luv$ of $L$ by
   \[
   \Luv =\{x\in L \mid v\leq x \text{ or } u \nleq x\}.
   \]
-  The lattice order of $L$ induces a lattice order on $\Luv$.
-  The meet of $\Luv$ is that of $L$, whereas the join of $\Luv$ is
+  The partial order relation of the lattice $\bL$ induces a lattice order on
+  $\Luv$. Denote the resulting lattice by $\bLuv$.
+  Then the meet of $\bLuv$ is that of $\bL$, whereas the join of $\bLuv$ is
   \[
   x \juv y = 
   \begin{cases}
@@ -304,6 +306,11 @@ Then $\cl_Y$ is a closure operator on the poset $\<\sP(X), \subseteq\>$.
   join-homomorphism $\phi \colon L \to K$ satisfying $\phi(u) = \phi(v)$ splits as
   $\phi =  \psi \circ \suv$ for some $\psi \colon \Luv \to K$, as indicated
   in the commutative diagram below.
+
+  \medskip
+
+  \noindent {\bf Questions:} Is $\suv$ a closure operator? On what set?  Is
+  $\Luv$ the subset of fixpoints of $\suv$?
 
   \begin{center}
     \begin{figure}
