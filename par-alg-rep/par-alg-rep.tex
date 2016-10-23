@@ -280,7 +280,7 @@ Then $\cl_Y$ is a closure operator on $\<\sP(X), \subseteq\>$.
 
 
 A \defn{fixpoint} of a
-function $\cl : P \to P$ is an $x\in P$ satisfying $\cl x = x$.
+function $\cl \colon  P \to P$ is an $x\in P$ satisfying $\cl x = x$.
 A fixpoint of a closure operator is called \defn{closed}.
 %% A \defn{closure operator} on a set $X$ is a map $\sansc  \colon \sP(X) \to \sP(X)$ 
 %% satisfying, for all $A, B \in \sP(X)$,
@@ -303,7 +303,8 @@ By extensivity,
 $\Meet \sA \leq \cl \bigl( \Meet \sA\bigr)$. % \subseteq \bigcap \sA$,
 Therefore, $\cl \bigl( \Meet \sA \bigr) =  \Meet \sA$.)
 %% ; that is,  $\Meet \sA$ is a fixpoint of $\cl$.)
-The set of closure operators on $\bP$ themselves form a complete lattice under the pointwise
+The set of closure operators on $\bP$
+themselves form a complete lattice under the pointwise
 order: $\cl_1 \leq  \cl_2$ iff $\cl_1 x \leq  \cl_2 x$ for all $x \in P$. 
 
 Some of these observations can be restated as follows:
@@ -337,23 +338,44 @@ in which $\bP$ happens to be the powerset Boolean
 algebra of a set $X$---that is, $\bP = \<\sP(X), \subseteq\>$; in that case, a Moore family on $\bP$ 
 is called a closure system on $X$. 
 
-
 \begin{example}
-  Let $X$ be a set, let $\Eq(X)$ denote the lattice of equivalence relations on $X$, and let
-  $\sansO(X) = \bigcup_{n< \omega} X^{X^n}$ be the set of all operations on $X$.
-  Define $F : \sP(\Eq(X)) \to \sP(\sansO(X))$
-  and $G :\sP(\sansO(X)) \to \sP(\Eq(X))$ as follows:
-  if $A \subseteq\Eq(X)$ and $B \subseteq \sansO(X)$, then
+  Let $X$ be a set,
+  let $\sansR(X) = \bigcup_{n<\omega}\sP(X^n)$ be the set of all finitary
+  relations on $X$, and let
+  %% let $\Eq(X)$ denote the lattice of equivalence relations on $X$, and let
+  $\sansO(X) = \bigcup_{n< \omega} X^{X^n}$ be the set of all finitary operations on $X$.
+  Define $F \colon  \sP(\sansR(X)) \to \sP(\sansO(X))$
+  and $G \colon \sP(\sansO(X)) \to \sP(\sansR(X))$ as follows:
+  if $A \subseteq\sansR(X)$ and $B \subseteq \sansO(X)$, then
   %% \sF_n(S) = \{f \in \sansO(X)X^{X^n} \mid f \text{ is compatible with every $s\in S$}\}
   %% \[  \sF(S) = \bigcup \sF_n(S)  \]
   \[
-  F(A) = \{f \in \sansO(X) \mid f \text{ is compatible with every relation in $A$}\}
+  F(A) = \{f \in \sansO(X) \mid f \text{ is compatible with every relation in $A$}\},
   \]
-  and
   \[
-  G(B) = \{\alpha \in \Eq(X) \mid \alpha \text{ is compatible with every operation in $B$}\}
+  G(B) = \{\rho \in \sansR(X) \mid \rho \text{ is compatible with every operation in $B$}\}.
   \]
-  Then $G \circ F$ is a closure operator.
+  Then $G \circ F$ is a closure operator on the lattice % $\<\sansR(X), \subseteq\>$
+  of all relations on $X$.
+\end{example}
+
+\begin{example}
+  Let $X$ be a set,
+  let $\Eq(X)$ denote the lattice of equivalence relations on $X$, and let
+  $X^X$ be the set of all unary operations on $X$.
+  Define $F_1 \colon  \sP(\Eq(X)) \to \sP(X^X)$
+  and $G_1 \colon \sP(X^X) \to \sP(\Eq(X))$ as follows:
+  if $A \subseteq\Eq(X)$ and $B \subseteq X^X$, then
+  %% \sF_n(S) = \{f \in \sansO(X)X^{X^n} \mid f \text{ is compatible with every $s\in S$}\}
+  %% \[  \sF(S) = \bigcup \sF_n(S)  \]
+  \[
+  F_1(A) = \{f \in X^X\mid f \text{ is compatible with every relation in $A$}\},
+  \]
+  \[
+  G_1(B) = \{\rho \in \Eq(X) \mid \rho \text{ is compatible with every operation in $B$}\}.
+  \]
+  Then $G_1 \circ F_1$ is a closure operator on the lattice $\Eq(X)$
+  of all equivalence relations on $X$.
 \end{example}
 \newcommand{\Luv}{\ensuremath{L_{u,v}}}
 \newcommand{\bLuv}{\ensuremath{\mathbf{L}_{u,v}}}
@@ -414,7 +436,7 @@ is called a closure system on $X$.
 A subset $D$ of an ordered set $P$ is called \defn{up-directed}
 if for every $x, y \in D$ there exists $z \in D$ such that
 $x \leq z$ and $y \leq z$. 
-A closure operator $\cl: \sP(X) \to \sP(X)$ is called \defn{algebraic} provided,
+A closure operator $\cl\colon \sP(X) \to \sP(X)$ is called \defn{algebraic} provided,
 for all $A\subseteq X$, 
 \[
 \cl A = \bigcup \{\cl F \mid F \subseteq A \text{ and } F \text{ finite } \}.
@@ -422,7 +444,7 @@ for all $A\subseteq X$,
 The collection $\sC$ of closed sets of an algebraic closure operator is called an
 \defn{algebraic closure system}.
 \begin{theorem}[cf.~\cite{Nation-notes} Thm 3.1]
-  Let $\sC$ be the closure system of fixed points of the closure operator $\cl: \sP(X) \to \sP(X)$.
+  Let $\sC$ be the closure system of fixed points of the closure operator $\cl\colon \sP(X) \to \sP(X)$.
   The following are equivalent:
 \begin{enumerate}
 \item $\cl$ is an algebraic closure operator
@@ -433,8 +455,22 @@ The collection $\sC$ of closed sets of an algebraic closure operator is called a
 \end{enumerate}
 \end{theorem}
 
-
-
+For an algebra $\bA$, the subalgebra generation operator $\Sg^{\bA}$ is an algebraic
+closure operator (on the poset $\<\sP(A), \subseteq\>$) whose fixpoints are subalgebras of $\bA$.
+Thus the lattice $\<\Sub(\bA), \join, \meet\>$ of subalgebras of $\bA$ is an algebraic closure
+system.
+Conversely, given an algebraic closure system $\sS$, we can construct an algebra $\bA =\<A, F\>$ so that
+$\sS = \Sub(\bA)$.
+Let $\cl_{\sS}$ denote the corresponding closure operator.
+Let $a_0, a_1, \dots, a_{n-1}, b \in A$ be such that
+$b \in \cl_{\sS} \{a_0, a_1, \dots, a_{n-1}\}$.  Define an $n$-ary operation
+$f_{\ba, b}$ so that $f_{\ba, b}(a_0, a_1, \dots, a_{n-1}) = b$ and
+for all other tuples $f_{\ba, b}(c_0, c_1, \dots, c_{n-1}) = c_0$.
+Do this for each $\ba = (a_0, a_1, \dots, a_{n-1})$. Then define
+\[
+F = \{f_{\ba, b} \mid  n< \omega, \, \ba \in A^n,  \, b \in \cl_{\sS} \ba\}.
+\]
+Every subalgebra is the union of its finitely generated subalgebras.
 %% \appendix
 %% \section{Appendix Title}
 %% This is the text of the appendix, if you need one.
