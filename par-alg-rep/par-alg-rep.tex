@@ -10,6 +10,35 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+@book {MR2455216,
+    AUTHOR = {Gr{\"a}tzer, George},
+     TITLE = {Universal algebra},
+   EDITION = {second},
+      NOTE = {With appendices by Gr{\"a}tzer, Bjarni J{\'o}nsson, Walter
+              Taylor, Robert W. Quackenbush, G{\"u}nter H. Wenzel, and
+              Gr{\"a}tzer and W. A. Lampe},
+ PUBLISHER = {Springer, New York},
+      YEAR = {2008},
+     PAGES = {xx+586},
+      ISBN = {978-0-387-77486-2},
+   MRCLASS = {08-02},
+  MRNUMBER = {2455216},
+       DOI = {10.1007/978-0-387-77487-9},
+       URL = {http://dx.doi.org/10.1007/978-0-387-77487-9},
+}
+@article {MR0237401,
+    AUTHOR = {Gr{\"a}tzer, G. and Wenzel, G. H.},
+     TITLE = {On the concept of congruence relation in partial algebras},
+   JOURNAL = {Math. Scand.},
+  FJOURNAL = {Mathematica Scandinavica},
+    VOLUME = {20},
+      YEAR = {1967},
+     PAGES = {275--280},
+      ISSN = {0025-5521},
+   MRCLASS = {08.30},
+  MRNUMBER = {0237401},
+MRREVIEWER = {B. H. Neumann},
+}
 @article {MR0309833,
     AUTHOR = {Berman, Joel},
      TITLE = {On the congruence lattices of unary algebras},
@@ -39,7 +68,7 @@ MRREVIEWER = {M. Kolibiar},
 }
 		
 @book {MR2619731,
-    AUTHOR = {Berman, Joel David},
+    AUTHOR = {Berman, Joel},
      TITLE = {{C}ongruence {L}attices of {F}inite {U}niversal {A}lgebras},
       NOTE = {Thesis (Ph.D.)--University of Washington},
  PUBLISHER = {ProQuest LLC, Ann Arbor, MI},
@@ -47,9 +76,9 @@ MRREVIEWER = {M. Kolibiar},
      PAGES = {64},
    MRCLASS = {Thesis},
   MRNUMBER = {2619731},
-       URL =
-              {http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:dissertation&res_dat=xri:pqdiss&rft_dat=xri:pqdiss:7100941},
+       URL = {https://dl.dropboxusercontent.com/u/17739547/diss/berman-phd-thesis.pdf}
 }
+@COMMENT {http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:dissertation&res_dat=xri:pqdiss&rft_dat=xri:pqdiss:7100941},
 @misc{Lampe:20161017,
   author        = "Bill Lampe",
   howpublished  = "personal communication",
@@ -194,14 +223,17 @@ URL = {http://www.math.hawaii.edu/~jb/}
 
 \begin{document}
 
-\title[Partial Algebras]{Every Finite lattice is the congruence lattice\\
-of a Finite Partial Algebra}
+%% \title[Congruences of Partial Algebras]{Congruences
+%% of Partial and Total Algebras}
+\title{Congruences of Partial and Total Algebras}
 \date{\today}
 %% \author[W.~DeMeo]{William DeMeo}
-\address{University of Hawaii}
+%% \address{University of Hawaii}
 \email{williamdemeo@gmail.com}
-\address{Chapman University}
-\email{jipsen@chapman.edu}
+%% %% \address{Chapman University}
+%% \email{jipsen@chapman.edu}
+%% %% \address{University of Hawaii}
+%% \email{bill@math.hawaii.edu}
 
 %% \thanks{The authors would like to extend special thanks to...}
 
@@ -211,13 +243,25 @@ of a Finite Partial Algebra}
 
 \section{Introduction}
 \label{sec:introduction}
-This note begins with a proof in Section~\ref{sec:simple-proof-well} of the
-result stated in the title. Bill Lampe~\cite{Lampe:20161017} pointed out that this result has been
-known for a long time and subsequently explained to DeMeo a more general
-viewpoint.  In Section~\ref{sec:more-gener-appr}
-we give some background about closure operators and then
-reiterate what Lampe explained. The presentation is imperfect, but
-hopefully it will elicit comments and criticisms that we can use to improve it.
+Section~\ref{sec:simple-proof-well} gives a straight-forward proof of the
+statement in the title. Bill Lampe~\cite{Lampe:20161017} pointed out
+that this result has been known for a long time, and in
+Section~\ref{sec:more-gener-appr}
+we give some background about closure operators and 
+begin to develop the framework in which the original result was presented.
+We also recall a theorem from Berman's thesis that relates congruence lattices of
+partial algebras with those of total algebras.
+
+This is a mashup of notations, definitions, and theorems
+for the Universal Algebra and Lattice Theory Seminar
+in Hawaii, Fall Semester 2016. 
+The notes are unfinished and far from perfect.
+Nonetheless, they might stimulate discussion
+in the seminar and elicit some criticism
+that we can use to improve them.
+So far most, if not all, of what appears below is known.
+See, for example, \cite{MR2619731, MR0308011, MR0237401, MR2455216}.
+
 
 \section{A well known result}
 \label{sec:simple-proof-well}
@@ -274,11 +318,10 @@ $\mathbb X = \< X, F\>$ with $\Con(\mathbb X) =  L$.
   $F = \{f_\rho \mid \rho \in \mathcal{R}\}$.  Evidently, $\Con \<X, F\> = L$.
 \end{proof}
 
-\section{Generalities}
+\section{Closure Systems and Moore Families}
 \label{sec:more-gener-appr}
 
-\subsection{Closure systems, closure operators, and Moore families}
-First we recall some standard definitions.
+\subsection{Closure systems and operators}
 %% \footnote{See J. B. Nation's notes~\cite{Nation-notes} for more details.}
 A \defn{closure system} on a set $X$ is a collection $\sC$
 of subsets of $X$ that is closed under arbitrary intersection (including the empty 
@@ -349,7 +392,7 @@ order: $\cl_1 \leq  \cl_2$ iff $\cl_1 x \leq  \cl_2 x$ for all $x \in P$.
 
 Some of these observations can be restated as follows:
 if $\bP = \<P, \leq\>$ is a complete lattice,
-then the set $\sC \subseteq P$ of fixedpoints of a closure operator
+then the set $\sC \subseteq P$ of fixpoints of a closure operator
 is a \defn{Moore family} on $\bP$---that is, 
 %% A subset $\sM \subseteq P$ is called a \defn{Moore family} if
 $\Join P \in \sC$ and every nonempty subset of $\sC$ is closed under arbitrary meets.
@@ -447,13 +490,12 @@ is called a closure system on $X$.
   join-homomorphism $\phi \colon L \to K$ satisfying $\phi(u) = \phi(v)$ splits as
   $\phi =  \psi \circ \suv$ for some $\psi \colon \Luv \to K$.
   (See the commutative diagram in Figure~\ref{fig:splitting}.)
-
   As a mapping from $\bL$ to itself, $\suv$ does not preserve joins. However,
   $\suv \colon L \to L$ is a closure operator and 
   $\Luv$ is the set of fixpoints of $\suv$ (the closed sets).
 
   \begin{center}
-    \begin{figure}
+    \begin{figure}[h]
       \begin{tikzpicture}[node distance=2cm, scale=3]
         \node (10) at (1,0)  {$\Luv$};
         \node (21) at (2,1)  {$K$};
@@ -472,7 +514,7 @@ is called a closure system on $X$.
 \end{example}
 
 
-\subsection{Algebraicity}
+\section{Algebraic Closure Systems}
 A subset $D$ of an ordered set $P$ is called \defn{up-directed}
 if for every $x, y \in D$ there exists $z \in D$ such that
 $x \leq z$ and $y \leq z$. 
@@ -495,33 +537,52 @@ The collection $\sC$ of closed sets of an algebraic closure operator is called a
 \end{enumerate}
 \end{theorem}
 
+\subsection{Algebraic closure systems are subalgebra lattices}
 For an algebra $\bA$, the subalgebra generation operator $\Sg^{\bA}$ is an algebraic
-closure operator (on the poset $\<\sP(A), \subseteq\>$) whose fixpoints are subalgebras of $\bA$.
+closure operator (on the poset $\<\sP(A), \subseteq\>$) whose fixpoints are the
+subalgebras of $\bA$.
 Thus the lattice $\<\Sub(\bA), \join, \meet\>$ of subalgebras of $\bA$ is an algebraic closure
 system.
-Conversely, given an algebraic closure system $\sS$, we can construct an algebra $\bA =\<A, F\>$ so that
-$\sS = \Sub(\bA)$.
+Conversely, given an algebraic closure system $\sS$, we can construct an algebra
+$\bA =\<A, F\>$ so that $\sS = \Sub(\bA)$.
 Here is how: let $\cl_{\sS}$ denote the corresponding closure operator.
-Let $a_0, a_1, \dots, a_{n-1}, b \in A$ be such that
-$b \in \cl_{\sS} \bigl(\{a_0, a_1, \dots, a_{n-1}\}\bigr)$.  Define an $n$-ary operation
+For each $a_0, a_1, \dots, a_{n-1}, b \in A$ such that
+$b \in \cl_{\sS} \bigl(\{a_0, a_1, \dots, a_{n-1}\}\bigr)$, define the $n$-ary operation
 $f_{\ba, b}$ so that $f_{\ba, b}(a_0, a_1, \dots, a_{n-1}) = b$ and
 for all other tuples $f_{\ba, b}(c_0, c_1, \dots, c_{n-1}) = c_0$.
-Do this for each $\ba = (a_0, a_1, \dots, a_{n-1})$. Then define
+%% Do this for each $\ba = (a_0, a_1, \dots, a_{n-1})$. 
+Then define
 \[
 F = \{f_{\ba, b} \mid  n< \omega, \, \ba \in A^n,  \, b \in \cl_{\sS} \ba\}.
 \]
-Every subalgebra is the union of its finitely generated subalgebras.
+Every subalgebra is the union of its finitely generated subsubalgebras...
+{\it (to be continued)}
+
+\subsection{Congruence lattices}
+Start with an algebraic closure system $\sS$ of equivalence relations on a set
+$A$ and let $\cl_{\sS}$ be the associated closure operator.
+Let $(a_0, b_0)$, $(a_1, b_1)$, $\dots$, $(a_{n-1},b_{n-1})$, and $(c_0,
+c_1)$ belong to $A\times A$,
+and suppose 
+$(c_0,c_1) \in \cl_{\sS}\bigl(\{(a_0, b_0), (a_1, b_1), \dots,
+(a_{n-1},b_{n-1})\}\bigr)$.
+Define $f_{\ba, \bb, \bc}\colon (A\times A)^n \to A\times A$ 
+so that
+$f_{\ba, \bb, \bc}\bigl((a_0, b_0), (a_1, b_1), \dots, (a_{n-1},b_{n-1})\bigr) =(c_0,c_1)$.
+Do this for each triple $\ba$, $\bb$, $\bc$...
+{\it (to be continued)}
+
 
 \section{Strong Congruence Relations}
-In this section we'll use bold letters like $\bx$ to stand for an $n$-tuple $(x_0, \dots, x_{n-1})$,
-for some $n$ whose value will always be clear from the context.
+We use bold letters like $\bx$ to denote tuples like $(x_0, \dots, x_{n-1})$,
+where the value $n$ will be clear from context.
 Let $\theta$ be an equivalence relation on a set $A$ and suppose
 $f\colon A^n \rightharpoonup A$ is a partial function.
 We call $\theta$ and $f$
 \begin{itemize}
-\item \defn{weakly compatible} provided $\forall (a_i, b_i) \in \theta$,
+\item \defn{weakly compatible} provided that, for all $(a_i, b_i) \in \theta$,
 if $f(\ba)$ and $f(\bb)$ are both defined, then $f(\ba) \mathrel{\theta} f(\bb)$.
-\item \defn{strongly compatible} provided $\forall (a_i, b_i) \in \theta$,
+\item \defn{strongly compatible} provided that, for all $(a_i, b_i) \in \theta$,
 if $f(\ba)$ is defined, then $f(\bb)$ is defined and $f(\ba) \mathrel{\theta} f(\bb)$.
 \end{itemize}
 
@@ -542,11 +603,11 @@ since there may be pairs of relations whose join in $\Eq(A)$ is strictly below
 their join in $\WCon(\A)$. We will see examples below.
 
 A \emph{total algebra}---an algebra for which all operations are defined everywhere---is
-a special case of a partial algebra, and to indicate that a partial algebra is not total,
-we may refer to it as a \emph{proper partial algebra}. This simply means that there is at least one
-operation that is not defined everywhere.
+a special case of a partial algebra. In case a partial algebra is not total,
+we may refer to it as a \emph{proper partial algebra}.
+This simply means that there is at least one operation that is not defined everywhere.
 It should be obvious that for total algebras strong and weak congruences reduce to the usual
-defintion of congruence relation on an algebra.
+definition of congruence relation on an algebra.
 In particular, if $\A$ is total, then the largest strong congruence of $\A$ is $1_A := A\times A$.
 %% Let $\theta$ be a strong congruence of the partial algebra
 
@@ -569,6 +630,25 @@ then the largest strong congruence of $\A$
 must be strictly below $1_A$.
 
 To summarize, $\A$ is a total algebra iff $\Join \SCon(\A) = 1_A$.
+
+\begin{theorem}[Berman's Thesis~\cite{MR2619731} Thm~1.18]
+  \label{thm:berman-1-18}
+  Let $\A$ be a finite partial algebra and $\SCon(\A)$ the lattice of strong
+  congruence relations of $\A$.  Then there exists a finite algebra $\bA$
+  such that $\Con(\bA) = \SCon(\A)$.
+\end{theorem}
+\begin{remarks}\
+  \begin{enumerate}
+  \item  Either one or both of the algebras in Theorem~\ref{thm:berman-1-18} can be
+    taken to be unary.
+  \item It follows easily from Theorem~\ref{thm:berman-1-18} that the class
+    $\sL_2$ of lattices isomorphic to strong congruence lattices of finite
+    partial algebras is equal to the class $\sL_3$ of lattices isomorphic to
+    congruence lattices of finite partial algebras.
+    (This is~\cite[Thm~1.19]{MR2619731}.)
+  \end{enumerate}
+\end{remarks}
+
 
 %% \appendix
 %% \section{Appendix Title}
