@@ -10,6 +10,46 @@
 %% then delete the existing refs.bib file so it will be automatically generated 
 %% again with your new entry the next time you run pdfaltex.
 \begin{filecontents*}{inputs/refs.bib}
+@article {MR0309833,
+    AUTHOR = {Berman, Joel},
+     TITLE = {On the congruence lattices of unary algebras},
+   JOURNAL = {Proc. Amer. Math. Soc.},
+  FJOURNAL = {Proceedings of the American Mathematical Society},
+    VOLUME = {36},
+      YEAR = {1972},
+     PAGES = {34--38},
+      ISSN = {0002-9939},
+   MRCLASS = {08A15},
+  MRNUMBER = {0309833},
+MRREVIEWER = {I. Petrescu},
+}
+		
+@article {MR0308011,
+    AUTHOR = {Berman, Joel},
+     TITLE = {Strong congruence lattices of finite partial algebras},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {1},
+      YEAR = {1971/72},
+     PAGES = {133--135},
+      ISSN = {0002-5240},
+   MRCLASS = {08A25},
+  MRNUMBER = {0308011},
+MRREVIEWER = {M. Kolibiar},
+}
+		
+@book {MR2619731,
+    AUTHOR = {Berman, Joel David},
+     TITLE = {C{ONGRUENCE} {LATTICES} {OF} {FINITE} {UNIVERSAL} {ALGEBRAS}},
+      NOTE = {Thesis (Ph.D.)--University of Washington},
+ PUBLISHER = {ProQuest LLC, Ann Arbor, MI},
+      YEAR = {1970},
+     PAGES = {64},
+   MRCLASS = {Thesis},
+  MRNUMBER = {2619731},
+       URL =
+              {http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:dissertation&res_dat=xri:pqdiss&rft_dat=xri:pqdiss:7100941},
+}
 @misc{Lampe:20161017,
   author        = "Bill Lampe",
   howpublished  = "personal communication",
@@ -471,6 +511,48 @@ Do this for each $\ba = (a_0, a_1, \dots, a_{n-1})$. Then define
 F = \{f_{\ba, b} \mid  n< \omega, \, \ba \in A^n,  \, b \in \cl_{\sS} \ba\}.
 \]
 Every subalgebra is the union of its finitely generated subalgebras.
+
+\section{Strong Congruence Relations}
+In this section we'll use bold letters like $\bx$ to stand for an $n$-tuple $(x_0, \dots, x_{n-1})$,
+for some $n$ whose value will always be clear from the context.
+Let $\theta$ be an equivalence relation on a set $A$ and suppose
+$f\colon A^n \rightharpoonup A$ is a partial function.
+We call $\theta$ and $f$
+\begin{itemize}
+\item \defn{weakly compatible} provided $\forall a_i \mathrel{\theta} b_i$,
+if $f(\ba)$ and $f(\bb)$ are defined, then $f(\ba) \mathrel{\theta} f(\bb)$.
+\item \defn{strongly compatible} provided $\forall a_i \mathrel{\theta} b_i$,
+if $f(\ba)$ is defined, then $f(\bb)$ is defined and $f(\ba) \mathrel{\theta} f(\bb)$.
+\end{itemize}
+
+If $\A = \<A, F\>$ is a partial algebra, then we call an equivalence relation
+on $A$ a \defn{strong (weak) congruence relation} of $\A$ if it is 
+strongly (weakly) compatible with every $f\in F$.
+%% If $\A = \<A, F\>$ is a (partial) algebra then a \defn{(strong) congruence relation} of $\A$ is
+%% an equivalence relation on $A$ that is (strongly) compatible with every $f\in F$.
+
+Here are some elementary facts about strong congruences.
+(See Berman's thesis~\cite{MR2619731} and paper~\cite{MR0308011} for more details and proofs.)
+If $\A = \<A, F\>$ is a partial algebra then the set of strong congruence relations of $\A$
+forms a sublattice of $\Eq(A)$. Let's denote this sublattice by $\SCon(\A)$.
+The set of weak congruence relations, which we will denote by $\WCon(\A)$,
+also forms a lattice, but it is not a sublattice of $\Eq(A)$
+since there may be pairs of relations whose join in $\Eq(A)$ is strictly below
+their join in $\WCon(\A)$. We will see examples below.
+
+%% Let $\theta$ be a strong congruence of the partial algebra
+Let $\A = \<A, F\>$ be a partial algebra and suppose $f \in F$ is an $n$-ary partial operation.
+Let $\ba = (a_0, a_1, \dots, a_{n-1})\in A^n$ and suppose $f$ is defined at $\ba$.
+If $\theta$ is a strong congruence of $\A$, then $f$ must be defined on 
+the whole Cartesian product 
+$[a_0]_\theta \times [a_1]_\theta \times \cdots \times [a_{n-1}]_\theta$ of $\theta$-blocks.
+In particular, if $1_A$ is a strong congruence of $\A$, then every operation of
+$\A$ must be total.
+Therefore, if $\A = \<A, F\>$ is a \emph{proper partial algebra}
+(i.e., there exists a non-total operation in $F$), then
+the top of the lattice $\SCon(\A)$ (i.e., the largest strong congruence)
+must be strictly below $1_A$.
+
 %% \appendix
 %% \section{Appendix Title}
 %% This is the text of the appendix, if you need one.
