@@ -40,7 +40,7 @@ MRREVIEWER = {M. Kolibiar},
 		
 @book {MR2619731,
     AUTHOR = {Berman, Joel David},
-     TITLE = {C{ONGRUENCE} {LATTICES} {OF} {FINITE} {UNIVERSAL} {ALGEBRAS}},
+     TITLE = {{C}ongruence {L}attices of {F}inite {U}niversal {A}lgebras},
       NOTE = {Thesis (Ph.D.)--University of Washington},
  PUBLISHER = {ProQuest LLC, Ann Arbor, MI},
       YEAR = {1970},
@@ -501,9 +501,9 @@ Thus the lattice $\<\Sub(\bA), \join, \meet\>$ of subalgebras of $\bA$ is an alg
 system.
 Conversely, given an algebraic closure system $\sS$, we can construct an algebra $\bA =\<A, F\>$ so that
 $\sS = \Sub(\bA)$.
-Let $\cl_{\sS}$ denote the corresponding closure operator.
+Here is how: let $\cl_{\sS}$ denote the corresponding closure operator.
 Let $a_0, a_1, \dots, a_{n-1}, b \in A$ be such that
-$b \in \cl_{\sS} \{a_0, a_1, \dots, a_{n-1}\}$.  Define an $n$-ary operation
+$b \in \cl_{\sS} \bigl(\{a_0, a_1, \dots, a_{n-1}\}\bigr)$.  Define an $n$-ary operation
 $f_{\ba, b}$ so that $f_{\ba, b}(a_0, a_1, \dots, a_{n-1}) = b$ and
 for all other tuples $f_{\ba, b}(c_0, c_1, \dots, c_{n-1}) = c_0$.
 Do this for each $\ba = (a_0, a_1, \dots, a_{n-1})$. Then define
@@ -519,39 +519,56 @@ Let $\theta$ be an equivalence relation on a set $A$ and suppose
 $f\colon A^n \rightharpoonup A$ is a partial function.
 We call $\theta$ and $f$
 \begin{itemize}
-\item \defn{weakly compatible} provided $\forall a_i \mathrel{\theta} b_i$,
-if $f(\ba)$ and $f(\bb)$ are defined, then $f(\ba) \mathrel{\theta} f(\bb)$.
-\item \defn{strongly compatible} provided $\forall a_i \mathrel{\theta} b_i$,
+\item \defn{weakly compatible} provided $\forall (a_i, b_i) \in \theta$,
+if $f(\ba)$ and $f(\bb)$ are both defined, then $f(\ba) \mathrel{\theta} f(\bb)$.
+\item \defn{strongly compatible} provided $\forall (a_i, b_i) \in \theta$,
 if $f(\ba)$ is defined, then $f(\bb)$ is defined and $f(\ba) \mathrel{\theta} f(\bb)$.
 \end{itemize}
 
-If $\A = \<A, F\>$ is a partial algebra, then we call an equivalence relation
-on $A$ a \defn{strong (weak) congruence relation} of $\A$ if it is 
-strongly (weakly) compatible with every $f\in F$.
+Let $\A = \<A, F\>$ be a partial algebra and $\theta$ an equivalence relation on $A$.
+We call $\theta$ a \defn{strong} (resp., \defn{weak}) \defn{congruence} of $\A$
+if $\theta$ is strongly (resp., weakly) compatible with every $f\in F$.
+Denote by $\SCon(\A)$ (resp., $\WCon(\A)$) the set of strong (resp., weak)
+congruences of $\A$.
 %% If $\A = \<A, F\>$ is a (partial) algebra then a \defn{(strong) congruence relation} of $\A$ is
 %% an equivalence relation on $A$ that is (strongly) compatible with every $f\in F$.
 
-Here are some elementary facts about strong congruences.
+Here are some elementary observations about strong and weak congruences.
 (See Berman's thesis~\cite{MR2619731} and paper~\cite{MR0308011} for more details and proofs.)
-If $\A = \<A, F\>$ is a partial algebra then the set of strong congruence relations of $\A$
-forms a sublattice of $\Eq(A)$. Let's denote this sublattice by $\SCon(\A)$.
-The set of weak congruence relations, which we will denote by $\WCon(\A)$,
-also forms a lattice, but it is not a sublattice of $\Eq(A)$
+If $\A = \<A, F\>$ is a partial algebra then the set $\SCon(\A)$ of strong congruence relations of
+$\A$ forms a sublattice of $\Eq(A)$.
+The set $\WCon(\A)$ of weak congruences also forms a lattice, but it is not a sublattice of $\Eq(A)$
 since there may be pairs of relations whose join in $\Eq(A)$ is strictly below
 their join in $\WCon(\A)$. We will see examples below.
 
+A \emph{total algebra}---an algebra for which all operations are defined everywhere---is
+a special case of a partial algebra, and to indicate that a partial algebra is not total,
+we may refer to it as a \emph{proper partial algebra}. This simply means that there is at least one
+operation that is not defined everywhere.
+It should be obvious that for total algebras strong and weak congruences reduce to the usual
+defintion of congruence relation on an algebra.
+In particular, if $\A$ is total, then the largest strong congruence of $\A$ is $1_A := A\times A$.
 %% Let $\theta$ be a strong congruence of the partial algebra
-Let $\A = \<A, F\>$ be a partial algebra and suppose $f \in F$ is an $n$-ary partial operation.
-Let $\ba = (a_0, a_1, \dots, a_{n-1})\in A^n$ and suppose $f$ is defined at $\ba$.
-If $\theta$ is a strong congruence of $\A$, then $f$ must be defined on 
-the whole Cartesian product 
-$[a_0]_\theta \times [a_1]_\theta \times \cdots \times [a_{n-1}]_\theta$ of $\theta$-blocks.
+
+The converse of the last sentence in the previous paragraph is also true.
+That is, if the largest strong congruence of $\A$ is $1_A$, then $\A$ is total.
+To see this, suppose $f \in F$ is an $n$-ary partial operation and 
+denote by $\dom(f)$ the subset of $A^n$ on which $f$ is defined.
+Let $\theta$ be a strong congruence of $\A$.
+Then the following implication holds:
+\[ (a_0, a_1, \dots, a_{n-1})\in \dom(f) \;  \Longrightarrow \;
+   [a_0]_\theta \times [a_1]_\theta \times \cdots \times [a_{n-1}]_\theta \subseteq \dom(f).
+   \]
+That is, if $f$ is defined at an $n$-tuple,
+%% $\ba = (a_0, a_1, \dots, a_{n-1})$,
+then $f$ must also be defined on the whole Cartesian product of $\theta$-blocks containing the
+coordinates of that tuple.
 In particular, if $1_A$ is a strong congruence of $\A$, then every operation of
-$\A$ must be total.
-Therefore, if $\A = \<A, F\>$ is a \emph{proper partial algebra}
-(i.e., there exists a non-total operation in $F$), then
-the top of the lattice $\SCon(\A)$ (i.e., the largest strong congruence)
+$\A$ must be total, while if $\A = \<A, F\>$ is a \emph{proper partial algebra},
+then the largest strong congruence of $\A$
 must be strictly below $1_A$.
+
+To summarize, $\A$ is a total algebra iff $\Join \SCon(\A) = 1_A$.
 
 %% \appendix
 %% \section{Appendix Title}
