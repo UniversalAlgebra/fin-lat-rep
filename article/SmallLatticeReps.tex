@@ -377,7 +377,7 @@ MRREVIEWER = {Andrea Lucchini},
 
 %///////////////////////////////////////////////////////////////////////////////////
 %% PACKAGES
-\usepackage{amsmath,amssymb,url,mathrsfs,enumerate,ifthen,xspace}
+\usepackage{amsmath,amssymb,url,mathrsfs,enumerate,ifthen,xspace,comment}
 \usepackage{latexsym,amscd,amsthm,stmaryrd,scalefnt,color}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -388,7 +388,7 @@ MRREVIEWER = {Andrea Lucchini},
 
 %% wjd: I wanted nicer script letters, so I'm changing all \mathscr letters to
 %%      mathcal, with the following modification to mathcal fonts.
-\usepackage[mathcal]{euscript}  
+%\usepackage[mathcal]{euscript}  
 
 %% showkeys: just comment out in the final version
 \usepackage[notref,notcite]{showkeys}
@@ -412,7 +412,7 @@ MRREVIEWER = {Andrea Lucchini},
 %%///////////////////////////////////////////////////////////////////////////////////
 %% Extra macros
 \usepackage{inputs/macros}
-
+\usepackage[mathcal]{euscript} 
 %%///////////////////////////////////////////////////////////////////////////////////
 %% tikz notes:
 %% For Hasse diagrams, instead of hard-coding the size of the circle representing
@@ -569,11 +569,16 @@ Foundation under Grant No. 1500235.
 
 %/////////////////////////////////////////////////////////
 \begin{abstract}
-  This article describes various methods for representing a
-  finite lattice as the congruence lattice of a finite algebra or for proving
-  that such a representation exists. Using these methods, we show that with one
-  possible exception every lattice with at most seven elements is isomorphic to
-  the congruence lattice of a finite algebra.
+This article explores various aspects of the problem of representing a finite lattice as the 
+congruence lattice of a finite algebra or an interval in the subgroup lattice of a 
+finite group. We describes various methods for representing a
+finite lattice in these ways, or for proving
+that such a representation exists.
+Minimal representations are 
+discussed including computer programs to find them. A catalog of representations 
+of small lattices is given. It is shown that every lattice with at most seven elements, 
+with only one possible exception, is isomorphic to
+the congruence lattice of a finite algebra.
 \end{abstract}
 
 
@@ -592,26 +597,63 @@ Foundation under Grant No. 1500235.
 %force the min rep to be a group action. Also we have conditions
 %guaranteeing a group action represents must be transitive.
 
+
+
+
 By the Gratz\"er-Schmidt Theorem every algebraic, and hence
 every finite, lattice is the congruence lattice of an algebra. 
 But the algebras in this construction are always infinite
-even when the lattice is finite. This leaves open the question:
-\emph{is every finite lattice isomorphic to the congruence
-lattice of a finite algebra?} In 1980 P.~P. \Palfy and P.~\Pudlak
-reduced this to a group theoretic problem by showing the following
-two statements are equivalent.
+even when the lattice is finite. This leaves open questions
+about representing finite lattices as congruence lattices of
+finite algebras.
+As is shown in most books on general algebra, 
+$\Con(\bA) = \Con(\langle A, \operatorname{Pol}_1(\bA) \rangle)$. 
+\textcolor{purple}{(ref?)}
+Consequently, unless stated otherwise, all algebras are assumed
+to be unary.
+
+
+Let $L$ be a finite lattice. We consider three representation
+properties $L$ might have
 \begin{enumerate}
 \item
-Every finite lattice is isomorphic to the congruence
-lattice of a finite algebra.
+$L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$.
 \item
-Every finite lattice is
+$L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$
+where the all nonconstant operations are permutations.
+\item
+$L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$
+where the nonconstant operations generate a transitive
+permuatation group.
+\item
+$L$ is
 isomorphic to an interval in the subgroups lattice of a finite 
 group.
 \end{enumerate}
 
+It is shown in 
+\textcolor{purple}{refsXXX, and also later in the paper,}
+that (3) and(4) are equivalent; that is, a lattices satisfies~(3)
+if and only if it satisfies~(4). Obviously, (3) implies (2) which 
+implies~(1).
 
+By the celebrated theorem of \Palfy and P.~\Pudlak \cite{PalfyPudlak1980}, (1)
+holds for \emph{all} lattices if and only if (4) holds
+for \emph{all} lattices. Nevertheless, we do not know, for example,
+if (1) and (4) are equivalent.
 
+%For a lattice $L$ that has a representation specified
+%by (1)--(4), one can ask the size of a minimal representation.
+
+ 
+ 
+\begin{comment}
+\textcolor{red}{Move the next two paragraphs further back.}
+
+\textcolor{purple}{
 If $L$ is isomorphic to the lattice of subgroups of $G$
 containing a subgroup $H$, then $L$ is isomorphic to the congruence
 lattice of the algebra whose elements are the left cosets of $H$
@@ -622,8 +664,10 @@ $\bA = \langle A,F \rangle$  is a finite algebra with each element
 of $F$ a permutation on $A$, then the congruence lattice 
 $\Con(\bA)$ of~$\bA$ is isomorphic to the lattice of all 
 subgroups of $G$ containing $H$ (the overgroups of $H$ in $G$),
-where $G$ is the group generated by $F$ and $H = G_a$ is the stabilizer of a point.
+where $G$ is the group generated by $F$ and $H = G_a$ is the stabilizer of a point.}
 
+
+\textcolor{purple}{
 On the other hand, the
 \Palfy-\Pudlak theorem does not prove that if 
 a particular lattice $L$
@@ -631,21 +675,37 @@ is a congruence lattice of a finite algebra then it
 is (isomorphic to) an interval of a subgroup lattice of a finite
 group so
 it is possible that there is a congruence lattice $L$ of a finite
-algebra that is not an interval sublattice of a finite group. 
+algebra that is not an interval sublattice of a finite group. }
+\end{comment}
 
 In this paper we review some of the well known methods, as well as 
 some more recently developed methods, for constructing a finite
 algebra whose congruence lattice is isomorphic to a given finite
-lattice. Using these methods we show that with one possible
+lattice. 
+Using these methods combined with programs we have developed using
+GAP, UACalc, \textcolor{red}{others, give refs},
+we make a catalog of representations of small
+lattices. We show that with one possible
 exception ($\bL_{10}$ in the last section) every 
 lattice with at most 7 elements is (isomorphic to) the 
-congruence lattice of a finite lattice. In most but not all
+congruence lattice of a finite lattice. 
+
+For a representation of $L = \Con(\langle A,F \rangle)$, we call
+$|A|$ the \emph{size} of the representation. In the equivalence of
+(3) and (4), the algebra constructed from $H \le G$ (subgroup) has
+as its elements, the left cosets of $H$ (its operations are
+the elements of $G$ acting by left multiplication). So in the case of~(4),
+the \emph{size} is $[G:H] = |G|/|H|$. 
+In most but not all
 cases we are able to show that the algebra we construct is 
-of minimal size. (Section~\ref{sec:minim-repr} below explains what
-we mean by \emph{size} of a representation.)
+of minimal size. 
+
+%(Section~\ref{sec:minim-repr} below explains what
+%we mean by \emph{size} of a representation.)
 
 %% \todo{define group representation of a lattice. Is transitivity required?}
 
+\begin{comment}
 We call a (finite) lattice \defn{group representable} if 
 it is isomorphic to an interval in the subgroup lattice of a (finite) group.
 That is, $L$ is group representable if there exist groups $H \leq G$
@@ -658,6 +718,7 @@ In this case, we call $\lb H, G\rb$ a \defn{group representation of} $L$.
 We take the \defn{size} of a group representation to be
 the index $[G:H]$, since this is the size of the algebra $\bA = \<G/H, G\>$ that has
 congruence lattice $\Con(\bA) \cong L$.
+\end{comment}
 
 Not surprisingly many lattices with a group representation
 can also be represented as a congruence lattice of a much smaller
@@ -666,15 +727,17 @@ Section~\ref{sec:small-unary-algebras} below, is the congruence lattice
 of an algebra with 6 elements. Palfy~\cite{Palfy1988} and
 Aschbacher~\cite{Aschbacher2008} have found groups
 $H < G$ such that the interval from $H$ to $G$ is $\bL_6$, but 
-$[G : H]$, which is the size of the algebra, is considerably larger.
+the sizes of these representations, 
+$[G : H]$, are considerably larger.
 
 Another interesting example is the pentagon, which is typically denoted by
 $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
 label it $\bL_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
 reveals that the smallest group $G$ in whose subgroup lattice
-$N_5$ appears as an upper interval is \code{SmallGroup(216,153)}. It is easy
+$N_5$ appears as an upper interval is \code{SmallGroup(216,153)}, 
+a group with 216 elements. It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
-$\lb H, G\rb \cong N_5$, so the index is $[G:H]= 36$. Therefore,
+$\lb H, G\rb \cong N_5$, so the size is $[G:H]= 36$. Therefore,
 the algebra given by this group representation has 36 elements in this case.
 (We do not know if this is the smallest possible group representation of $N_5$.)
 %% There may be a representation of $N_5$ that uses a larger group but 
@@ -692,18 +755,17 @@ On the other hand, the smallest algebra that represents $N_5$ has just four elem
 
 For some lattices it can be shown that in a minimal 
 representation every nonconstant operation must be a 
-permutation. For such a lattice $L$, a minimal representation comes from a
-group $G$ acting on a set $X$, which is a group representation
-of the type described in~(\ref{eq:1}).
-Specifically, $L \cong \lb G_x, G\rb$, where $G_x$ denotes the
-stabilizer of an arbitrary element $x\in X$.
+permutation, that is, the representation is of type~(2),
+or~(3) if the nonconstant operations generate a transitive permutation group.
 Finding a representation is typically harder in such cases,
 and finding a minimal representation can be especially hard.
 
 In Section~\ref{sec:congr-latt-group} we investigate when
-a lattice can be represented by an intransitive group acting 
-instransitively on a set. We show that most lattices
-can never be so represented. For such lattices group 
+a lattice can be represented as in (2) where the 
+nonconstant operations generate an \emph{intransitive}
+permutation group.
+We show that most lattices
+can never be so represented. For such lattices, group 
 representations must use transitive groups and so the
 action is isomorphic to a group acting on the cosets
 of a subgroup by left multiplication. For example,
@@ -728,7 +790,7 @@ must be via a transitive permutation group action.
   (wjd: I don't know what the ``gg statement'' is.)}
 
 
-\todo{Expand the introduction.}
+%\todo{Expand the introduction.}
 
 %%%% \input{inputs/intro.tex}  (include all major inputs in one file)
 %% -- Begin intro.tex file insertion -------------------------------
@@ -746,9 +808,11 @@ Section~\label{sec:small-unary-algebras}. These are always typeset in bold font.
 
 We use $\sL_{fin}$ to denote the class of all finite lattices, and 
 $\sL_{con}$ to denote the class of finite lattices that are isomorphic to congruence
-lattices of finite algebras. The notation 
+lattices of finite algebras, that is, all lattices that satisfy property~(1). 
+The notation 
 $\sL_{grp}$ will stand for the class of finite lattices that
-are isomorphic to intervals in subgroup lattices of finite groups.
+are isomorphic to intervals in subgroup lattices of finite groups, that is,
+all lattices that satisfy~(4). 
 A lattice that belongs to $\sL_{con}$ (resp., $\sL_{grp}$) is called \emph{representable} (resp., 
 \emph{group representable}).
 Since we use these special notations so often in the sequel, let us repeat them here for easy reference:
@@ -786,7 +850,8 @@ dually isomorphic.
 We now define the ``size'' of a representation and explain what we mean by
 a ``minimal'' representation.
 %% In what sense is a representation of a finite lattice \emph{minimal}?
-The \defn{size} of a representation $\Con(\bA) \cong L$ is the cardinality
+As defined above, the  \defn{size} of a representation $\Con(\bA) \cong L$ 
+is the cardinality
 $|A|$ of the universe of $\bA$.  We call such a representation
 \defn{minimal} if $\Con(\bB) \cong L$ implies $|A| \leq |B|$.
 %% Thus, $\Con(\bA) \cong \bL$ is a minimal representation of $\bL$ if and only if we can prove
@@ -795,15 +860,14 @@ $|A|$ of the universe of $\bA$.  We call such a representation
 %% There is, however, another notion of ``size'' of a representation that might be
 %% worth considering.  
 %% Suppose we know that $L$ is a group representable lattice.
-Suppose $L\in \sL_{grp}$. 
-We could ask, what is the smallest group $G$ such that $L \cong \lb H, G \rb$ for
-some $H\leq G$?  From our perspective, the more relevant question
-is what is the smallest number $n$ such that there are finite groups $H\leq G$ with
-index $n = [G:H]$ and satisfying $L \cong \lb H, G \rb$?
-The reason this question seems more natural to us is because the algebra
-representing $L$ is the group $G$ acting on the set of cosets of $H$, and this
-algebra has $n = [G:H]$ elements.  In this context, the index $[G:H]$ seems more
-relevant than the size of the group $G$.
+Suppose $L\in \sL_{grp}$. Recall that the size of this representation
+is defined as $[G : H]=|G|/|H|$, which, after all, is the size of the 
+corresponding algebra in the equivalence of properties (3) and~(4). 
+
+Besides finding what the minimal size of a representation is, we could ask
+what the minimum size of $G$ is.
+
+
 
 Now, suppose $G$ is a group of minimal order among those in whose
 subgroup lattices $L$ appears as an upper interval, say $L \cong \lb H, G\rb$.
@@ -1539,6 +1603,9 @@ decreasing maps.  These were introduced above in
 Section~\ref{sec:duals-interv-subl-detail}, but we briefly review the definitions here
 for convenience.
 
+\textcolor{red}{Note sure we use the stuff below explicitly. Might delete it and just refer
+to my (RF) paper on computing congruences.}
+
 As above, given a totally ordered set $X$, 
 %consider the subset of the set $X^X$ of all functions that map $X$ into itself.  
 we let $\IC(X) = \{f\in X^X: f^2 = f \text{ and } f(x) \leq x\}$, and 
@@ -1592,6 +1659,8 @@ $F$ is closed if and only if $F = \rho(H)$ for some $H\in \sH$.
 \label{sec:distr-latt}
 %%%% \input{inputs/distributive.tex}  (include all major inputs in one file)
 %% -- Begin distributive.tex file insertion -------------------------------
+
+\textcolor{red}{This section should go.}
 
 \todo{Cite Birkhoff result about every finite distributive lattice being the
   congruence lattice of a finite lattice.}
@@ -1997,7 +2066,8 @@ interesting questions we can ask about a finite lattice
 $L$:
 \begin{enumerate}
 \item\label{question1}
-Is $L$ representable (isomorphic to $\Con(\bA)$ for some finite algebra $\bA$)?
+Is $L$ representable (isomorphic to $\Con(\bA)$ for some 
+finite algebra $\bA$?
 \item\label{question2}
 If $L$ is representable, what is the minimum size of $\bA$ with $L \cong\Con(\bA)$?
 \item\label{question3}
