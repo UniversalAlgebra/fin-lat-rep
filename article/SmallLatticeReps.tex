@@ -358,6 +358,38 @@ MRREVIEWER = {Andrea Lucchini},
   doi          = {10.5281/zenodo.53936},
   url          = {http://dx.doi.org/10.5281/zenodo.53936}
 }
+@article {HeitzigReinhold2002,
+    AUTHOR = {Heitzig, Jobst and Reinhold, J\"urgen},
+     TITLE = {Counting finite lattices},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {48},
+      YEAR = {2002},
+    NUMBER = {1},
+     PAGES = {43--53},
+      ISSN = {0002-5240},
+   MRCLASS = {05A15 (06A07)},
+  MRNUMBER = {1930032},
+MRREVIEWER = {Mikl\~A${}^3$s B\~A${}^3$na},
+       DOI = {10.1007/PL00013837},
+       URL = {http://dx.doi.org/10.1007/PL00013837},
+}
+@article {JipsenLawless2015,
+    AUTHOR = {Jipsen, Peter and Lawless, Nathan},
+     TITLE = {Generating all finite modular lattices of a given size},
+   JOURNAL = {Algebra Universalis},
+  FJOURNAL = {Algebra Universalis},
+    VOLUME = {74},
+      YEAR = {2015},
+    NUMBER = {3-4},
+     PAGES = {253--264},
+      ISSN = {0002-5240},
+   MRCLASS = {06C05 (05A15 06C10)},
+  MRNUMBER = {3397437},
+MRREVIEWER = {Andrzej Walendziak},
+       DOI = {10.1007/s00012-015-0348-x},
+       URL = {http://dx.doi.org/10.1007/s00012-015-0348-x},
+}
 \end{filecontents*}
 
 
@@ -613,37 +645,37 @@ Consequently, unless stated otherwise, all algebras are assumed
 to be unary.
 
 
-Let $L$ be a finite lattice. We consider three representation
+Let $L$ be a finite lattice. We consider four representation
 properties $L$ might have
 \begin{enumerate}
-\item
+\item[(P1)]
 $L$ is isomorphic to the congruence
 lattice of some finite algebra $\langle A,F \rangle$.
-\item
+\item[(P2)]
 $L$ is isomorphic to the congruence
 lattice of some finite algebra $\langle A,F \rangle$
 where the all nonconstant operations are permutations.
-\item
+\item[(P3)]
 $L$ is isomorphic to the congruence
 lattice of some finite algebra $\langle A,F \rangle$
 where the nonconstant operations generate a transitive
 permuatation group.
-\item
+\item[(P4)]
 $L$ is
-isomorphic to an interval in the subgroups lattice of a finite 
+isomorphic to an interval in the lattice of subgroups of a finite 
 group.
 \end{enumerate}
 
-It is shown in 
-\textcolor{purple}{refsXXX, and also later in the paper,}
-that (3) and(4) are equivalent; that is, a lattices satisfies~(3)
-if and only if it satisfies~(4). Obviously, (3) implies (2) which 
-implies~(1).
+It is shown in~\cite[Lemma~4.20]{alvi:1987} (see 
+also~\cite[Theorem 1.5A]{Dixon:1996}) 
+that (P3) and(P4) are equivalent; that is, a lattice satisfies~(P3)
+if and only if it satisfies~(P4). Obviously, (P3) implies (P2) which 
+implies~(P1).
 
-By the celebrated theorem of \Palfy and P.~\Pudlak \cite{PalfyPudlak1980}, (1)
-holds for \emph{all} lattices if and only if (4) holds
+By the celebrated theorem of \Palfy and P.~\Pudlak \cite{PalfyPudlak1980}, (P1)
+holds for \emph{all} lattices if and only if (P4) holds
 for \emph{all} lattices. Nevertheless, we do not know, for example,
-if (1) and (4) are equivalent.
+if (P1) and (P4) are equivalent.
 
 %For a lattice $L$ that has a representation specified
 %by (1)--(4), one can ask the size of a minimal representation.
@@ -692,11 +724,11 @@ congruence lattice of a finite lattice.
 
 For a representation of $L = \Con(\langle A,F \rangle)$, we call
 $|A|$ the \emph{size} of the representation. In the equivalence of
-(3) and (4), the algebra constructed from $H \le G$ (subgroup) has
+(P3) and (P4), the algebra constructed from $H \le G$ (subgroup) has
 as its elements, the left cosets of $H$ (its operations are
-the elements of $G$ acting by left multiplication). So in the case of~(4),
+the elements of $G$ acting by left multiplication). So in the case of~(P4),
 the \emph{size} is $[G:H] = |G|/|H|$. 
-In most but not all
+In most, but not all,
 cases we are able to show that the algebra we construct is 
 of minimal size. 
 
@@ -728,7 +760,8 @@ of an algebra with 6 elements. Palfy~\cite{Palfy1988} and
 Aschbacher~\cite{Aschbacher2008} have found groups
 $H < G$ such that the interval from $H$ to $G$ is $\bL_6$, but 
 the sizes of these representations, 
-$[G : H]$, are considerably larger.
+$[G : H]$, are considerably larger. 
+Palfy's algebra has size $9! = 362880$.
 
 Another interesting example is the pentagon, which is typically denoted by
 $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
@@ -738,7 +771,7 @@ $N_5$ appears as an upper interval is \code{SmallGroup(216,153)},
 a group with 216 elements. It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
 $\lb H, G\rb \cong N_5$, so the size is $[G:H]= 36$. Therefore,
-the algebra given by this group representation has 36 elements in this case.
+the algebra given by this group representation has 36 elements.
 (We do not know if this is the smallest possible group representation of $N_5$.)
 %% There may be a representation of $N_5$ that uses a larger group but 
 %% a smaller index.
@@ -755,13 +788,13 @@ On the other hand, the smallest algebra that represents $N_5$ has just four elem
 
 For some lattices it can be shown that in a minimal 
 representation every nonconstant operation must be a 
-permutation, that is, the representation is of type~(2),
-or~(3) if the nonconstant operations generate a transitive permutation group.
-Finding a representation is typically harder in such cases,
+permutation, that is, the representation is of type~(P2),
+or~(P3) if the nonconstant operations generate a transitive permutation group.
+Finding a representation is typically harder in such lattices,
 and finding a minimal representation can be especially hard.
 
 In Section~\ref{sec:congr-latt-group} we investigate when
-a lattice can be represented as in (2) where the 
+a lattice can be represented as in (P2) where the 
 nonconstant operations generate an \emph{intransitive}
 permutation group.
 We show that most lattices
@@ -769,6 +802,7 @@ can never be so represented. For such lattices, group
 representations must use transitive groups and so the
 action is isomorphic to a group acting on the cosets
 of a subgroup by left multiplication. For example,
+we willshow that
 $\bL_6$ is in this category.
 
 
@@ -808,11 +842,11 @@ Section~\label{sec:small-unary-algebras}. These are always typeset in bold font.
 
 We use $\sL_{fin}$ to denote the class of all finite lattices, and 
 $\sL_{con}$ to denote the class of finite lattices that are isomorphic to congruence
-lattices of finite algebras, that is, all lattices that satisfy property~(1). 
+lattices of finite algebras, that is, all lattices that satisfy property~(P1). 
 The notation 
 $\sL_{grp}$ will stand for the class of finite lattices that
 are isomorphic to intervals in subgroup lattices of finite groups, that is,
-all lattices that satisfy~(4). 
+all lattices that satisfy~(P4). 
 A lattice that belongs to $\sL_{con}$ (resp., $\sL_{grp}$) is called \emph{representable} (resp., 
 \emph{group representable}).
 Since we use these special notations so often in the sequel, let us repeat them here for easy reference:
@@ -823,6 +857,8 @@ Since we use these special notations so often in the sequel, let us repeat them 
   \sL_{grp} %& = \text{ all group representable lattices }\\
   &=\{L \in \sL_{fin} \mid \exists \text{ finite groups $H \leq G$ such that $L \cong \lb H, G\rb$}\}
 \end{align*}
+
+\textcolor{purple}{Maybe add $\sL_{\text{intrans}}$ for intransitive reps.}
 
 Let $L$ be a lattice and suppose $\alpha$ and $\beta$ are members of $L$.  
 We denote by $\lb \alpha, \beta \rb$ the sublattice of $L$ consisting of all
@@ -847,22 +883,15 @@ dually isomorphic.
 
 \subsection{Minimal Representations}
 \label{sec:minim-repr}
-We now define the ``size'' of a representation and explain what we mean by
-a ``minimal'' representation.
-%% In what sense is a representation of a finite lattice \emph{minimal}?
-As defined above, the  \defn{size} of a representation $\Con(\bA) \cong L$ 
-is the cardinality
-$|A|$ of the universe of $\bA$.  We call such a representation
-\defn{minimal} if $\Con(\bB) \cong L$ implies $|A| \leq |B|$.
-%% Thus, $\Con(\bA) \cong \bL$ is a minimal representation of $\bL$ if and only if we can prove
-%% that $\Con(\bB) \cong \bL$ implies $|A| \leq |B|$.
+We defined the size of a representation above and, of course, a representation is
+\defn{minimal} if its size is.
 
 %% There is, however, another notion of ``size'' of a representation that might be
 %% worth considering.  
 %% Suppose we know that $L$ is a group representable lattice.
 Suppose $L\in \sL_{grp}$. Recall that the size of this representation
-is defined as $[G : H]=|G|/|H|$, which, after all, is the size of the 
-corresponding algebra in the equivalence of properties (3) and~(4). 
+is defined as $[G : H]=|G|/|H|$, which, as noted, is the size of the 
+corresponding algebra in the equivalence of properties (P3) and~(P4). 
 
 Besides finding what the minimal size of a representation is, we could ask
 what the minimum size of $G$ is.
@@ -872,7 +901,7 @@ what the minimum size of $G$ is.
 Now, suppose $G$ is a group of minimal order among those in whose
 subgroup lattices $L$ appears as an upper interval, say $L \cong \lb H, G\rb$.
 It's possible that there is a larger group $G^+$ in whose subgroup lattice $L$
-appears, but with a smaller index. That is, we may have
+appears as n upper interval, but with a smaller index. That is, we might have
 \[\lb H, G \rb \cong L \cong \lb H^+, G^+\rb, \quad |G| < |G^+|,
 \quad [G^+:H^+] < [G:H].\]
 We now give an example of this phenomenon. 
@@ -938,6 +967,23 @@ By a celebrated theorem of \Pudlak and \Tuma~\cite{Pudlak:1980}, for every finit
 lattice $L$ there is a finite set $X$ such that $L\leq \EqX$.  Therefore, $\sL_{con}$
 would contain all finite lattices if it were closed under $\sansS$.
 
+Before we begin, we note that every finite distributive lattice
+is representable.
+
+\begin{theorem}
+$\sL_{con}$ contains every finite distributive lattice. 
+\end{theorem}
+
+\begin{proof}
+Let $L$ be a finite distributive lattice. By the result of 
+\Pudlak and \Tuma cited above, $L \le \EqX$ for some finite~$X$.
+It is shown by Stanley Burris, Henry Crapo, Alan Day, 
+Dennis Higgs, Bjarni J\'onsson, Warren Nickols,
+R.~Quackenbush and B.~Wolk, see~\cite{Jonsson:1972}, pages 174--175, 
+that if $F$ is the set of all unary operations on $X$ which respect
+all the equivalence relations that lie in $L$, then
+$\operatorname{Con}(\langle X,F \rangle) = L$. 
+\end{proof}
 
 The following is a list of operations under which $\sL_{con}$ is known to be closed,
 along with the names of those who first (or independently) proved them.  We
@@ -1476,6 +1522,11 @@ x&\text{otherwise.}\end{cases}$$
 
 
 %/////////////////////////////////////////////////////////
+
+\textcolor{purple}{I am deleting this whole section and the next one.}
+
+\begin{comment}
+
 \section{Concrete Representations}
 \label{sec:concr-repr}
 %%%% \input{inputs/concrete.tex} (include all major inputs in one file)
@@ -1487,6 +1538,8 @@ of a given shape.
 
 Recall that  $\EqX$ denotes the lattice of equivalence relations on $X$.
 We often abuse notation and identify $\EqX$ with the lattice of partitions of the set $X$.
+
+
 
 \subsection{Concrete versus abstract representations}
 As Bjarni J\'onsson explains in~\cite{Jonsson:1972}, there are two types of
@@ -1535,6 +1588,7 @@ be that $L_0$ is not the ``right'' concrete representation of $L$, and
 perhaps we can find some other sublattice of $\EqX$ that is both a congruence lattice
 and isomorphic to $L$. %%  = \Con \<X, \lambda(L_1)\>$.
 %% \marginpar{$\lambda(L_1)$ is only defined on the next page?}
+
 
 \subsection{The closure method}
 \label{sec:closure-method}
@@ -1654,6 +1708,7 @@ $F$ is closed if and only if $F = \rho(H)$ for some $H\in \sH$.
 %% -- End concrete.tex file insertion -------------------------------
 
 
+
 %/////////////////////////////////////////////////////////
 \section{Distributive lattices}
 \label{sec:distr-latt}
@@ -1720,6 +1775,8 @@ collection $F$ of operations on $X$.
 
 %% -- End distributive.tex file insertion -------------------------------
 
+\end{comment}
+
 
 %/////////////////////////////////////////////////////////
 \section{Congruence Lattices of Group Actions}
@@ -1727,6 +1784,8 @@ collection $F$ of operations on $X$.
 %%%% \input{inputs/groupactions.tex}  (include all major inputs in one file)
 %% -- Begin groupactions.tex file insertion -------------------------------
 
+\textcolor{purple}{Delete this subsection unless William needs it when explaining
+his GAP algorithms.}
 
 %%%%%%%%%%%%%%%%%%%%% TRANSITIVEGSETS %%%%%%%%%%%%%%%%%%%%%%%%%5
 Let $X$ be a finite set and consider the set $X^X$ of all maps from $X$ to
@@ -2035,7 +2094,10 @@ conjugacy classes of subgroups of $G$.
 
 %% -- New section on extending P^4
 \subsection{Extensions of the \Palfy \Pudlak Theorem}
-In \cite{PalfyPudlak1980} P.~P. \Palfy and P.~\Pudlak showed the
+As we noted above, 
+P.~P. \Palfy and P.~\Pudlak 
+showed in \cite{PalfyPudlak1980}
+that the
 following statements are equivalent:
 \begin{itemize}
 \item
@@ -2045,10 +2107,18 @@ finite lattices;
 every finite lattice is isomorphic to an 
 interval in the subgroup lattice of some finite group.
 \end{itemize}
-They did this by giving lattice conditions which force the
+They did this by giving lattice conditions described below which force the
 nonconstant operations of a minimal
 representation to be permutations which generate a transitive
 group $G$.
+Given a lattice $L$ we can ask which, if any, of (P1)--(P4) hold and, if
+one of these holds, what is the size of a minimal representation. 
+In the case of (P4) we can also ask the size of the small group $G$ having a
+subgroup $H$ such that the $L \cong \lb H,G \rb$. 
+Below we try to answer at least
+some of these questions for small lattices. 
+
+\begin{comment}
 By a fundamental isomorphism theorem for transitive
 %Theorem~\ref{thm:g-set-isomorphism2}
 $G$-sets---see~\cite[Lemma~4.20]{alvi:1987} (general algebra version)
@@ -2108,14 +2178,16 @@ see Aschbacher~\cite{Aschbacher2008}.
 \caption{$\bL_{6}$ and $\bL_7$}\label{fig:L6and7}
 \end{figure}
 
+\end{comment}
 
 
-Below we try to answer at least
-some of these questions for small lattices. 
-As mentioned above \Palfy and \Pudlak gave conditions on a lattice $L$ 
-such that if $L \cong \Con \<A,F\>$ then the nonconstant elements of $F$ are 
-permutations and the group they generate acts transitively on $A$. 
-These conditions are
+
+
+The specific conditions on $L$ that 
+\Palfy and \Pudlak gave which guarantee 
+that, if $\cong \Con \<A,F\>$ is a minimal representation of $L$,
+then the nonconstant elements of $F$ are 
+permutations and the group they generate acts transitively on $A$ are:
 \begin{enumerate}[(A)]
 \item $L$ is simple.
 \item For each $x \ne 0$ in $L$, there are elements $y$ and $z$
@@ -2189,6 +2261,7 @@ is denoted~$\bA_i$.
 
 \begin{theorem}\label{thm:intrans}
 Let $\bA = \<A,G\>$, where $G$ is a group, be a finite algebra. 
+Let $k$ be the number of orbits of the action of $G$ on $A$.
 Let $\tau$, $\tau_i$ and $\gamma_i$
 be the congruences defined above and let $\theta \in \Con(\bA)$.
 \begin{enumerate}
@@ -2767,16 +2840,84 @@ which we can represent $\bL_{11}$ is 108.
 %%%% \input{inputs/conglattices7.tex}  (include all major inputs in one file)
 %% -- Begin conglattices7.tex file insertion -------------------------------
 
-Distributive lattices and lattices that are ordinal sums of smaller lattices are omitted. This leaves 35 lattices listed below with the names $\bL_1,\ldots,\bL_{35}$. In most cases, each lattice $\bL_i$ is followed by a
-unary algebra denoted $\bB_i$ with the property that $\bL_i=\Con(\bB_i)$.
-The base set of each algebra is $\{0,1,\dots,n-1\}$, and each unary operation $f,g,h,\ldots$ is
-specified by a vector of values of these elements.  Algebras of cardinality less than
-$11$ \marginpar{PJ: should this be less than or equal to 11???} are known to be minimal-size algebras that produce the corresponding
-congruence lattice. The algebra $\bB_{33}$ is also known to be of minimal 
-cardinality. Currently only $\bL_{10}$ is not known to be the congruence
+The algorithm developed by Heitzig and Reinhold 
+in~\cite{HeitzigReinhold2002} and refined by Jipsen
+in~\cite{JipsenLawless2015} can be used to find all lattices with
+at most 7 elements (there are 78). By the results 
+in Section~\ref{sec:clos-prop-class}
+we omit distributive lattices and lattices that are ordinal sums 
+of smaller lattices. This leaves 35 lattices listed below 
+with the names $\bL_1,\ldots,\bL_{35}$. In most cases, 
+each lattice $\bL_i$ is followed by a
+unary algebra denoted $\bB_i$ with the property 
+that $\bL_i=\Con(\bB_i)$.
+The base set of each algebra is $\{0,1,\dots,n-1\}$, 
+and each unary operation $f,g,h,\ldots$ is
+specified by a vector of values of these elements.  
+Algebras of cardinality less than
+$11$ 
+\marginpar{PJ: should this be less than or equal to 11???} 
+are known to be minimal-size algebras that produce the corresponding
+congruence lattice. The algebra $\bB_{33}$ is also known 
+to be of minimal cardinality. 
+\textcolor{red}{What (or where) is the proof of this?}
+Currently only $\bL_{10}$ is not known to be the congruence
 lattice of a finite algebra. 
 
 %Thirteen of the 35 lattices below are subdirectly reducible (specifically: 6, 7,12, 13, 26, 27, 28, 29, 30, 31, 32, 34, 35). 
+
+\subsection{Algorithms}
+In this subsection we describe the procedures we used to 
+find representations. Let $X_k = \{0, 1, \ldots, k-1\}$.
+In most cases the minimal representation was found using 
+our first algorithm, the closure algorithm.
+
+\subsubsection{Closure algorithm}
+Let $L$ be the finite lattice we are trying to represent. For this
+algorithm we do the following:
+\begin{enumerate}
+\item
+Search through $\operatorname{Eq}(X_k)$, $k = 2,3, \ldots$ finding
+sublattices isomorphic to~$L$. 
+\item
+For each sublattice $L \cong L' \le \operatorname{Eq}(X_k)$ found, 
+find the unary polymorphs of the members of $L'$; that is,
+calculate the set $F$ of all unary operations on $X_k$
+which respect all $\theta \in L'$.
+\textcolor{red}{Specify this?}
+\item
+For $F$ found in the previous step, 
+$\Con(\langle X_k,F \rangle) = L'$. 
+If so then $\bA = \langle X_k,F \rangle$ is a minimal 
+representation. Otherwise continue the search.
+\end{enumerate}
+
+\begin{remarks}
+\begin{enumerate}[i.]
+\item
+Of course if $L$ has no representation, this procedure will not converge.
+Moreover, seaching for $L$ in $\operatorname{Eq}(k)$
+becomes quickly prohibitive. 
+\item
+The procedure can be sped up by first finding a presentation
+of $L$ with the minimal number of generators. Besides speeding
+up the search in $\operatorname{Eq}(k)$, it is enough in 
+calculating the unary polymorphs to respect the generators.
+\item
+If it can be shown that the algebra of a minimal representation 
+of $L$ has a transitive permutation group for its nonconstatant
+unary polynomials, then we can restrict our search in 
+$\operatorname{Eq}(k)$ to uniform equivalence relations.
+
+\end{enumerate}
+\end{remarks}
+
+
+\bigskip
+\textcolor{purple}{I changed $\bB_2$ to have 3, not 4, elements
+so it really would be the smallest rep.}
+
+\subsection{Lattices of size at most 7}
 
 \
 
@@ -2832,10 +2973,15 @@ $\bL_2$&
 \end{minipage}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
-    \bB_2& 0& 1& 2& 3\\\hline
-   f(x)& 1& 0& 3& 2\\
-   g(x)& 2& 3& 0& 1\end{array}$
+    \bB_2& 0& 1& 2\\\hline
+   f(x)& 0& 1& 2\end{array}$
 \end{tabular}
+
+%$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+%    \bB_2& 0& 1& 2& 3\\\hline
+%   f(x)& 1& 0& 3& 2\\
+%   g(x)& 2& 3& 0& 1\end{array}$
+%\end{tabular}
 
 \begin{tabular}{ccc}
 $\bL_3$&
