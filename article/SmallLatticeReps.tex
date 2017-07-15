@@ -1287,11 +1287,16 @@ was originally proved by John Snow (see \cite{MR1774743} and \cite{MR2026829}),
 using primitive positive formulas.  We provide an alternative proof for two reasons.
 First, the lemma is a useful tool for proving that certain finite lattices 
 are representable as congruence lattices, and providing a proof helps to keep the
-paper self-contained. More importantly, however, our proof is more direct than
-the proof via primitive positive fomulas in that we construct the algebras
+paper self-contained. More importantly, however, our proof is 
+more direct than
+the proof via primitive positive fomulas in that we construct the 
+algebras
 that the lemma claims exist.  For our purposes this is preferable
-since, when trying to prove that a given lattice is representable, whenever possible we 
+since, when trying to prove that a given lattice is representable, 
+whenever possible we 
 construct an algebra that represents it. 
+
+\textcolor{red}{The above paragraph needs to be shortened.}
 
 Before stating the lemma, we need a couple of definitions.  (These will be
 discussed in greater detail in Section~\ref{sec:closure-method}.)
@@ -1593,7 +1598,8 @@ and isomorphic to $L$. %%  = \Con \<X, \lambda(L_1)\>$.
 \subsection{The closure method}
 \label{sec:closure-method}
 The idea described in this section
-first appeared in \emph{Topics in Universal Algebra}~\cite{Jonsson:1972}, pages
+first appeared in \emph{Topics in Universal Algebra}~\cite{Jonsson:1972},
+pages
 174--175, where J\'onsson states, ``these or related results were discovered
 independently by at least three different parties during the summer and fall of
 1970: by Stanley Burris, Henry Crapo, Alan Day, Dennis Higgs and Warren Nickols
@@ -2072,7 +2078,7 @@ lemma
 shows that we need only consider a single representative $H$ from each of the
 conjugacy classes of subgroups.  
 
-\begin{lemma}[Lem.~1.6B~\cite{Dixon:1996}]
+\begin{lemma}[Lemma~1.6B~\cite{Dixon:1996}]
   Suppose $G$ acts transitively on two sets,
   $A$ and $B$.  Fix $a\in A$ and let $G_a$ be the stabilizer of $a$ (under the first
   action).  Then the two actions are equivalent
@@ -2405,7 +2411,8 @@ see that \eqref{item5} is violated.
 $\bL_{10}$ satisfies (A) and (B$''$) and thus a minimal representation, if one 
 exists, must be by a transitive permutation group.
 
-In Figure~XXXX below all nondistributive lattices
+In Section~\ref{sec:lattices} 
+all nondistributive lattices
 of size 7 or less which are not an ordinal sum are diagrammed. 
 Very few of these can have a representation using a nontransitive
 group. The lattices $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
@@ -2843,7 +2850,7 @@ which we can represent $\bL_{11}$ is 108.
 The algorithm developed by Heitzig and Reinhold 
 in~\cite{HeitzigReinhold2002} and refined by Jipsen
 in~\cite{JipsenLawless2015} can be used to find all lattices with
-at most 7 elements (there are 78). By the results 
+at most 7 elements (there are~78). By the results 
 in Section~\ref{sec:clos-prop-class}
 we omit distributive lattices and lattices that are ordinal sums 
 of smaller lattices. This leaves 35 lattices listed below 
@@ -2872,7 +2879,7 @@ find representations. Let $X_k = \{0, 1, \ldots, k-1\}$.
 In most cases the minimal representation was found using 
 our first algorithm, the closure algorithm.
 
-\subsubsection{Closure algorithm}
+\subsubsection{Closure algorithm}\label{sec:closure-method}
 Let $L$ be the finite lattice we are trying to represent. For this
 algorithm we do the following:
 \begin{enumerate}
@@ -2908,7 +2915,9 @@ If it can be shown that the algebra of a minimal representation
 of $L$ has a transitive permutation group for its nonconstatant
 unary polynomials, then we can restrict our search in 
 $\operatorname{Eq}(k)$ to uniform equivalence relations.
-
+\item
+Of course if $F' \subseteq F$ is a set of generators for the 
+moniod $F$, we can take $\bA = \langle X_k,F' \rangle$.
 \end{enumerate}
 \end{remarks}
 
@@ -2917,7 +2926,7 @@ $\operatorname{Eq}(k)$ to uniform equivalence relations.
 \textcolor{purple}{I changed $\bB_2$ to have 3, not 4, elements
 so it really would be the smallest rep.}
 
-\subsection{Lattices of size at most 7}
+\subsection{Lattices of size at most 7}\label{sec:lattices}
 
 \
 
@@ -3281,6 +3290,8 @@ h(x)& 0& 5& 5& 4& 0& 0& 5& 4& 4\\
 k(x)& 4& 2& 2& 3& 4& 4& 2& 3& 3\\
 l(x)& 5& 5& 7& 7& 7& 6& 6& 6& 5\end{array}$
 \end{tabular}
+
+\vspace{2mm}
 
 \begin{tabular}{ccc}
 $\bL_{13}$&
