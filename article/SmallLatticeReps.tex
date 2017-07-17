@@ -112,7 +112,7 @@ MRREVIEWER = {Nadia P. Mazza},
     year = 	 {1970},
     url={http://db.tt/mXUVTzSr}
   }
-  @article{DeMeo2013},
+  @article{DeMeo2013,
     AUTHOR = {DeMeo, William},
      TITLE = {Expansions of finite algebras and their congruence lattices},
    JOURNAL = {Algebra Universalis},
@@ -1284,19 +1284,26 @@ It's not hard to see that $D \leq \hat{f}[S^n] \leq S^n$, for all $f\in \IC(\nn)
 \label{sec:union-filter-ideal}
 The lemma in this section (Lemma~\ref{lemma:union-filter-ideal})
 was originally proved by John Snow (see \cite{MR1774743} and \cite{MR2026829}),
-using primitive positive formulas.  We provide an alternative proof for two reasons.
-First, the lemma is a useful tool for proving that certain finite lattices 
-are representable as congruence lattices, and providing a proof helps to keep the
-paper self-contained. More importantly, however, our proof is 
-more direct than
-the proof via primitive positive fomulas in that we construct the 
-algebras
-that the lemma claims exist.  For our purposes this is preferable
-since, when trying to prove that a given lattice is representable, 
-whenever possible we 
-construct an algebra that represents it. 
+using primitive positive formulas.  We provide an alternative 
+proof that more directly produces the algebra that represents
+the lattice.
 
-\textcolor{red}{The above paragraph needs to be shortened.}
+
+%for two reasons.
+%First, the lemma is a useful tool for proving that certain 
+%finite lattices 
+%are representable as congruence lattices, and providing a 
+%proof helps to keep the
+%paper self-contained. More importantly, however, our proof is 
+%more direct than
+%the proof via primitive positive fomulas in that we construct the 
+%algebras that the lemma claims exist.  For our purposes this 
+%is preferable
+%since, when trying to prove that a given lattice is representable, 
+%whenever possible we 
+%construct an algebra that represents it. 
+
+%\textcolor{red}{The above paragraph needs to be shortened.}
 
 Before stating the lemma, we need a couple of definitions.  (These will be
 discussed in greater detail in Section~\ref{sec:closure-method}.)
@@ -2417,10 +2424,10 @@ of size 7 or less which are not an ordinal sum are diagrammed.
 Very few of these can have a representation using a nontransitive
 group. The lattices $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
 and $\bL_{34}$ can be represented with an intransitive group. 
-The algebra given in the figure for $\bL_5$ is a minimal 
+The 4-element algebra given in the figure for $\bL_4$ is a minimal 
 representation and does not generate a group. But it does 
 have an intranstive representation on a six element set with
-the operations $(1,2,0,4,5,3)$ and $(0,1,2,3,5,4)$. 
+the operations $(1,2,0,4,5,3)$ and $(0,2,1,3,5,4)$. 
 
 Using techniques similar to those above, one
 can prove that all of the remaining lattices cannot
@@ -2459,18 +2466,35 @@ The same applies to $\psi$. But equivalence relations
 corresponding to such graphs cannot be comparable.
 \end{proof}
 
+\begin{theorem}
+Of the lattices with at most 7 elements, the lattices
+$\bL_2 = \bM_3$, $\bL_4$, $\bL_{15}$ and $\bL_{34}$ can be
+represented by unary algebras whose nonconstant operations
+generate an intransitive permutation group. All other
+lattices from $\bL_1$--$\bL_{35}$ have no representation 
+with a nontransitive permutation group.
+\end{theorem}
+
+\begin{proof}
+The harder cases of this result have be considered above. The
+remaining cases are left to the reader.
+\end{proof}
 
 
-
-In \cite{Shareshian2003} John Shareshian gave a class of finite lattices that
-he conjectured could not be represented as intervals in subgroup lattices.
-They are easy to describe. Let $m_1 \ge \cdots \ge m_t \ge 3$ with $t> 1$.
+In \cite{Shareshian2003} John Shareshian gave a class of finite 
+lattices that he conjectured could not be represented as intervals 
+in subgroup lattices. They are easy to describe. 
+Let $m_1 \ge \cdots \ge m_t \ge 3$ with $t> 1$.
 Take the set $\{\two^{m_i} \mid 1\leq i \leq t\}$ of 
-lattices of subsets of sets of sizes $m_i$ for each $i\in \{1,\ldots,t\}$, remove
-the least and greatest element of each, line them up side by side, and adjoin
-them into one large lattice by giving them all a new common least element and a
+lattices of subsets of sets of sizes $m_i$ for 
+each $i\in \{1,\ldots,t\}$, remove
+the least and greatest element of each, line them up side 
+by side, and adjoin
+them into one large lattice by giving them all a new common 
+least element and a
 new common greatest element.
-An example of such a lattice appears in the diagram in Figure~\ref{fig:shareshian}.
+An example of such a lattice appears in the diagram 
+in Figure~\ref{fig:shareshian}.
 
 \begin{figure}[htb]
 \begin{center}
@@ -2848,7 +2872,7 @@ which we can represent $\bL_{11}$ is 108.
 %% -- Begin conglattices7.tex file insertion -------------------------------
 
 The algorithm developed by Heitzig and Reinhold 
-in~\cite{HeitzigReinhold2002} and refined by Jipsen
+in~\cite{HeitzigReinhold2002} and refined by Jipsen and Lawless
 in~\cite{JipsenLawless2015} can be used to find all lattices with
 at most 7 elements (there are~78). By the results 
 in Section~\ref{sec:clos-prop-class}
@@ -2875,9 +2899,51 @@ lattice of a finite algebra.
 
 \subsection{Algorithms}
 In this subsection we describe the procedures we used to 
-find representations. Let $X_k = \{0, 1, \ldots, k-1\}$.
-In most cases the minimal representation was found using 
-our first algorithm, the closure algorithm.
+find representations. The \emph{closure} algorithm, described below,
+was main workhorse and it produces minimal representations. 
+
+A second technique, developed by the first author in~\cite{DeMeo2013},
+starts with an algebra $\bB$ whose congruence lattice is
+a homomorphic image of $L$ and finds an expansion $\bA$ of $\bB$
+whose congruence lattice is $L$.
+The lattices in Section~\ref{sec:lattices} where this 
+technique was used are 
+$\bL_3$, $\bL_6$, $\bL_7$, $\bL_9$,
+$\bL_{13}$, $\bL_{27}$ and $\bL_{28}$. These are marked with 
+``Method: overalgebras". \textcolor{red}{Why aren't the small
+numbered ones marked?}
+
+
+The third method, \emph{filter-ideal}, is described in 
+Section~\ref{sec:union-filter-ideal}. Representations 
+for $\bL_{17}$ and $\bL_{20}$ used this method combined
+with group theoretical methods.
+
+
+Duality (Theorem~\ref{thm:duals-interv-subl}) was used in 
+certain cases. Examples include the pairs 
+$\bL_{14}$ and $\bL_{15}$, which is discussed above,
+$\bL_{18}$ and $\bL_{19}$,
+$\bL_{20}$ and $\bL_{21}$, and
+$\bL_{22}$ and $\bL_{23}$.
+In each case one of the pair has a small representation (given
+in Section~\ref{sec:lattices}). For the pair
+$\bL_{14}$ and $\bL_{15}$ and the pair 
+$\bL_{20}$ and $\bL_{21}$ we have found explicit representations
+use group methods. But for the others, we do not have 
+explicit representations.
+
+
+Finally we used \emph{group theoretic} methods, usually with the aid
+of GAP. A detailed example of this is given after Figure~\ref{fig:L11}.
+
+
+\textcolor{red}{expand this; say where the gap programs are.
+Also mention where the ua files for the B's are.}. 
+
+
+Let $X_k = \{0, 1, \ldots, k-1\}$.
+
 
 \subsubsection{Closure algorithm}\label{sec:closure-method}
 Let $L$ be the finite lattice we are trying to represent. For this
@@ -2911,10 +2977,22 @@ of $L$ with the minimal number of generators. Besides speeding
 up the search in $\operatorname{Eq}(k)$, it is enough in 
 calculating the unary polymorphs to respect the generators.
 \item
+Subdirect decompositions can be used to speed up finding unary
+polymorphs. For  example, if $\theta_0$, $\theta_1 \in L' \le 
+\operatorname{Eq}(X_k)$ with $\theta_0 \meet \theta_1 = 0$, 
+then, up to isomorphism, $\bA \le \bA/\theta_0 \times \bA/\theta_1$. 
+Thus 
+any polymorph of $L'$ is determined by a polymorph of $\theta_0$ and
+one of $\theta_1$. This cuts the search space from $k^k$ down 
+to $r^r + s^s$, where $r$ and $s$ are the number of blocks in 
+$\theta_0$ and~$\theta_1$.
+\item
 If it can be shown that the algebra of a minimal representation 
 of $L$ has a transitive permutation group for its nonconstatant
 unary polynomials, then we can restrict our search in 
 $\operatorname{Eq}(k)$ to uniform equivalence relations.
+Moreover the search for unary polymorphs can be restricted
+to permutations. 
 \item
 Of course if $F' \subseteq F$ is a set of generators for the 
 moniod $F$, we can take $\bA = \langle X_k,F' \rangle$.
