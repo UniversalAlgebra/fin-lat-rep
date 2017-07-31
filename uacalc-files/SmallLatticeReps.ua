@@ -1,0 +1,1195 @@
+<?xml version="1.0"?>
+<algebraList>
+<algebra>
+  <basicAlgebra>
+    <algName>B1</algName>
+    <desc>Representations as congruence lattices of most algebras of at most 7 elements.</desc>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 1, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B2</algName>
+    <cardinality>3</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B3</algName>
+    <cardinality>7</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>6, 5, 2, 5, 2, 5, 6</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 0, 0, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 1, 2, 1, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 3, 4, 3, 4, 3, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B4</algName>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B4-prime</algName>
+    <desc>L4 represented with an intransitive group.</desc>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1,2,0,4,5,3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0,2,1,3,5,4</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B5</algName>
+    <cardinality>12</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 0, 6, 0, 0, 0, 0, 6, 0, 0, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 2, 3, 4, 5, 0, 7, 8, 9, 10, 11, 6</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>6, 11, 10, 9, 8, 7, 0, 5, 4, 3, 2, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B6</algName>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 5, 3, 4, 5, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 2, 1, 5, 5, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 4, 4, 0, 1, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B7</algName>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 3, 4, 3, 3, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 0, 4, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 5, 5, 1, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B8</algName>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 2, 0, 4, 5, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 5, 4, 0, 2, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B9</algName>
+    <cardinality>16</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>13, 14, 15, 1, 9, 8, 15, 14, 13, 15, 1, 9, 8, 8, 1, 9</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 3, 4, 5, 3, 4, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 0, 0, 0, 0, 6, 7, 6, 7, 10, 11, 12, 10, 11, 12</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B12</algName>
+    <cardinality>9</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 5, 5, 4, 0, 0, 5, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 2, 2, 3, 4, 4, 2, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 3, 3, 3, 6, 6, 6, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 8, 8, 8, 1, 1, 1, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h4</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>5, 5, 7, 7, 7, 6, 6, 6, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B13</algName>
+    <cardinality>19</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>7, 8, 9, 3, 10, 11, 12, 3, 3, 3, 3, 3, 3, 11, 11, 11, 11, 11, 11</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>13, 14, 15, 16, 17, 5, 18, 13, 16, 17, 17, 16, 13, 5, 5, 5, 5, 5, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 0, 0, 2, 2, 0, 3, 4, 0, 4, 4, 6, 5, 2, 6, 6, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 4, 5, 6, 0, 1, 2, 3, 4, 6</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h4</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 1, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2, 1, 2, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B15</algName>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B17</algName>
+    <cardinality>12</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 0, 0, 5, 5, 5, 5, 10, 10, 10, 10</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 7, 5, 6, 8, 11, 9, 10, 0, 3, 1, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B19</algName>
+    <cardinality>8</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>7, 6, 6, 7, 3, 2, 2, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 1, 0, 4, 5, 5, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 2, 3, 1, 0, 2, 3, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B21</algName>
+    <cardinality>9</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 5, 5, 7, 8, 8, 7, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 3, 4, 8, 8, 2, 2, 3, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 6, 1, 1, 0, 0, 5, 6</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B23</algName>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 2, 3, 2, 5, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 1, 5, 3, 4, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 0, 1, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 1, 3, 3, 4, 5</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B24</algName>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 1, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 3, 3, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B25</algName>
+    <cardinality>5</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 1, 4, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 3, 2, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 2, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 0, 1, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B26</algName>
+    <cardinality>6</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 0, 0, 0, 1, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 5, 3, 5, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2, 0, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 4, 5, 5, 1, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B27</algName>
+    <cardinality>16</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 5, 3, 4, 5, 3, 5, 3, 4, 5, 3, 4, 5, 4, 5, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 6, 7, 8, 9, 10, 6, 7, 8, 9, 10, 0, 6, 8, 9, 10</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>11, 12, 2, 13, 14, 15, 12, 2, 13, 14, 15, 11, 12, 13, 14, 15</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h4</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 2, 1, 5, 5, 4, 2, 1, 5, 5, 4, 2, 2, 5, 5, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h5</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 4, 4, 0, 1, 1, 4, 4, 0, 1, 1, 3, 4, 0, 1, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B28</algName>
+    <cardinality>16</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h3</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 3, 4, 3, 3, 4, 3, 4, 3, 3, 4, 3, 3, 3, 3, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 6, 7, 8, 9, 10, 6, 7, 8, 9, 10, 0, 6, 8, 9, 10</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>11, 12, 2, 13, 14, 15, 12, 2, 13, 14, 15, 11, 12, 13, 14, 15</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h4</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 0, 4, 3, 3, 0, 0, 4, 3, 3, 1, 0, 4, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h5</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>4, 5, 5, 1, 2, 2, 5, 5, 1, 2, 2, 4, 5, 1, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B29</algName>
+    <cardinality>5</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 0, 3, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 4, 2, 4, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B30</algName>
+    <cardinality>5</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 3, 4, 3, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 2, 1, 4, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B31</algName>
+    <cardinality>5</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 2, 2, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 1, 0, 0</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 1, 2, 2, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B32</algName>
+    <cardinality>5</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>3, 3, 4, 3, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 1, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 2, 2, 4, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B33</algName>
+    <cardinality>16</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h2</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>14, 15, 12, 13, 10, 11, 8, 9, 6, 7, 4, 5, 2, 3, 0, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 3, 2, 0, 9, 11, 10, 8, 13, 15, 14, 12, 5, 7, 6, 4</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>11, 8, 10, 9, 7, 4, 6, 5, 15, 12, 14, 13, 3, 0, 2, 1</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B34</algName>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>0, 1, 3, 2</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+<algebra>
+  <basicAlgebra>
+    <algName>B35</algName>
+    <desc>Representations as congruence lattices of most algebras of at most 7 elements.</desc>
+    <cardinality>4</cardinality>
+    <operations>
+      <op>
+        <opSymbol>
+          <opName>h0</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>1, 1, 2, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+      <op>
+        <opSymbol>
+          <opName>h1</opName>
+          <arity>1</arity>
+        </opSymbol>
+        <opTable>
+          <intArray>
+            <row>2, 3, 3, 3</row>
+          </intArray>
+        </opTable>
+      </op>
+    </operations>
+  </basicAlgebra>
+</algebra>
+</algebraList>
