@@ -985,17 +985,19 @@ all the equivalence relations that lie in $L$, then
 $\operatorname{Con}(\langle X,F \rangle) = L$. 
 \end{proof}
 
-The following is a list of operations under which $\sL_{con}$ is known to be closed,
-along with the names of those who first (or independently) proved them.  We
-discuss some of these results in greater detail later in this section.
-The class $\sL_{con}$ of lattices isomorphic to congruence lattices of finite
-algebras is closed under the following operations:
+The following is a list of operations under which $\sL_{con}$ is 
+known to be closed,
+along with the names of those who first (or independently) proved them.  
+We discuss some of these results in greater detail later in this section.
+The class $\sL_{con}$ of lattices isomorphic to congruence lattices 
+of finite algebras is closed under the following operations:
 \begin{enumerate} %[label=$\circ$]
 \setcounter{enumi}{-1}
-\item\label{item:0} principal filters: all elements above a given element (the
-correspondence theorem~\cite{Bergman2012}),
-\item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} and Raimund Netter~\cite{Netter:1986}, 1986),
-\item\label{item:2} interval sublattices (follows from~(\ref{item:1}), see Remark a. below),
+\item\label{item:0} principal filters: all elements above a 
+given element (the correspondence theorem~\cite{Bergman2012}),
+\item\label{item:1} lattice duals (Hans Kurzweil~\cite{Kurzweil:1985} 
+and Raimund Netter~\cite{Netter:1986}, 1986),
+\item\label{item:2} interval sublattices (follows from~(\ref{item:1}), see Remark a.~below),
 \item  direct products (\Jiri \Tuma~\cite{Tuma:1986}, 1986), 
 \item  ordinal sums 
   (Ralph McKenzie~\cite{McKenzie:1984}, 1984; John Snow~\cite{Snow:2000}, 2000),
@@ -2198,7 +2200,7 @@ see Aschbacher~\cite{Aschbacher2008}.
 
 The specific conditions on $L$ that 
 \Palfy and \Pudlak gave which guarantee 
-that, if $\cong \Con \<A,F\>$ is a minimal representation of $L$,
+that, if $L \cong \Con \<A,F\>$ is a minimal representation of $L$,
 then the nonconstant elements of $F$ are 
 permutations and the group they generate acts transitively on $A$ are:
 \begin{enumerate}[(A)]
@@ -2330,9 +2332,9 @@ So $(a,b)$, $(b,b')$ and $(a',b')$ are all in $\theta$. Hence
 $(a,a') \in \theta$. Since $a'$ was arbitrary, we see
 $\theta \ge \tau_i$. So $\theta \ge \tau$, as desired.
 
-\eqref{item5} follows from~\eqref{item4}. If
+\eqref{item5} follows from~\eqref{item3} and~\eqref{item4}. If
 $|A_i| = 1$ for $i> 0$ then $\tau_i = 0_\bA$ for these $i$'s. Hence
-$\Join_{i\ne 0} \tau_i = 0_\bA$ and the result follows
+$\Join_{i\ne 0} \tau_i = 0_\bA$ and so \eqref{item6} follows
 from~\eqref{item4} again. If $\lb 0_\bA,\tau\rb$ is directly indecomposable, then,
 by~\eqref{item3}, $|A_i| = 1$ for all but at most one~$i$. So~\eqref{item7}
 follows from~\eqref{item6}.
@@ -2378,8 +2380,10 @@ indecomposable so, by Theorem~\ref{thm:intrans}\eqref{item9},
 it cannot be represented with a nontransitive permutation group. Conditions
 (A) and (B$''$) do hold and hence a minimal representation of 
 $\bL_{14}$ must be by a transitive group. (More precisely, if
-$\bL_{14} \cong \Con \<A,F\>$ then the nonconstant members of $F$ generate 
-a transitive permutation group.) In fact the first author has shown there is a 
+$\bL_{14} \cong \Con \<A,F\>$ is a minimal representation, 
+then the nonconstant members of $F$ generate 
+a transitive permutation group.) In fact the first author 
+has shown there is a 
 subgroup $H$ of $A_6$ of index 90 so that the interval of subgroups of
 $A_6$ containing $H$ (the lattice of overgroups of $H$ in $A_6$) is $\bL_{14}$.
 Of course in this example the algebra has size 90; we do not
@@ -2422,10 +2426,10 @@ In Section~\ref{sec:lattices}
 all nondistributive lattices
 of size 7 or less which are not an ordinal sum are diagrammed. 
 Very few of these can have a representation using a nontransitive
-group. The lattices $\bL_2 = \bM_3$, $\bL_5$, $\bL_{15}$, 
+group. The lattices $\bL_2 = \bM_3$, $\bL_4$, $\bL_{15}$, 
 and $\bL_{34}$ can be represented with an intransitive group. 
 The 4-element algebra given in the figure for $\bL_4$ is a minimal 
-representation and does not generate a group. But it does 
+representation and does not generate a group. But $\bL_4$ does 
 have an intranstive representation on a six element set with
 the operations $(1,2,0,4,5,3)$ and $(0,2,1,3,5,4)$. 
 
@@ -2448,7 +2452,7 @@ Lemma~\ref{lemma:complements} below covers this case.
 
 \begin{lemma}\label{lemma:complements}
 Let $\bA = \<A,G\>$ be a finite algebra, where
-$G$ is an instransitive group of permutations on $A$.
+$G$ is an intransitive group of permutations on $A$.
 Suppose the intransitivity congruence $\tau$ is a coatom.
 Then there do not exist congruences
 $0_\bA < \psi < \theta$ in $\Con(\bA)$
@@ -2980,12 +2984,12 @@ calculating the unary polymorphs to respect the generators.
 Subdirect decompositions can be used to speed up finding unary
 polymorphs. For  example, if $\theta_0$, $\theta_1 \in L' \le 
 \operatorname{Eq}(X_k)$ with $\theta_0 \meet \theta_1 = 0$, 
-then, up to isomorphism, $\bA \le \bA/\theta_0 \times \bA/\theta_1$. 
-Thus 
-any polymorph of $L'$ is determined by a polymorph of $\theta_0$ and
-one of $\theta_1$. This cuts the search space from $k^k$ down 
-to $r^r + s^s$, where $r$ and $s$ are the number of blocks in 
-$\theta_0$ and~$\theta_1$.
+then $X_k$ is naturally embedded into 
+$X_k/\theta_0 \times X_k/\theta_1$. Since the operations in a
+direct product are component-wise, this 
+cuts the search space of possible unary polymorphs 
+from $k^k$ down to $r^r  s^s$, where $r$ and $s$ are the number 
+of blocks in $\theta_0$ and~$\theta_1$.
 \item
 If it can be shown that the algebra of a minimal representation 
 of $L$ has a transitive permutation group for its nonconstatant
