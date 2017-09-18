@@ -1,0 +1,2194 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/conference-talks/conference-ornate-20min.en.tex,v 1.6 2004/10/07 20:53:08 tantau Exp $
+
+%\documentclass[handout]{beamer}
+\documentclass[12 pt]{beamer}
+%\documentclass{beamer}f
+\setbeamertemplate{navigation symbols}{}
+
+%\usepackage{pstricks}
+\usepackage[mathcal]{euscript}
+
+\usepackage{graphicx}
+\usepackage{diagrams}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\input{rflatexmacs}
+\newcommand{\SSS}{\text{\emphslb{S}}}
+\newcommand{\bL}{\alg L}
+\newcommand{\bB}{\alg B}
+
+
+
+%\definecolor{MyDarkGreen}{rgb}{0.2,0.7,0.7}
+\definecolor{MyDarkGreen}{rgb}{0.2,0.6,0.9}
+\definecolor{MyDarkBlue}{rgb}{0.2,0.2,0.7}
+%\definecolor{exercisecolor}{rgb}{0.0,0.8,0.8}
+\definecolor{exercisecolor}{rgb}{0.3,0.2,0.8}
+\newcommand{\emphcyan}[1]{\textcolor{MyDarkBlue}{\textbf{#1}}}
+% \newcommand{\emphcyan}[1]{\textcolor{cyan}{#1}}
+
+%\newbox\bigstrutbox
+%\setbox\bigstrutbox=\hbox{\vrule height12pt depth4pt width0pt}
+%\def\bigstrut{\relax\ifmmode\copy\bigstructbox\else\unhcopy\bigstructbox\fi}
+
+% This file is a solution template for:
+
+% - Talk at a conference/colloquium.
+% - Talk length is about 20min.
+% - Style is ornate.
+
+
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice. 
+
+
+\mode<presentation>
+{
+  %\usetheme{Szeged}
+  %\usetheme{default}
+  \usetheme{Madrid}
+  \usecolortheme{spruce}
+  \setbeamercolor{block title}{use=structure,fg=white,bg=cyan!60!black}
+  % or ...
+
+  %\setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+\usepackage[OT2,T1]{fontenc}
+\usepackage[russian,USenglish]{babel}
+%\usepackage[english]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[Representing Finite Lattices]
+{Representing Finite Lattices as \\Congruence Lattices}
+
+\author{William DeMeo, Ralph Freese, Peter Jipsen}
+%\author{Ralph Freese}
+%\institute{Hawaii}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+%\institute[University of Hawaii] % (optional, but mostly needed)
+%{
+  %\inst{1}%
+  %Department of Computer Science\\
+  %University of Somewhere
+  %\and
+  %\inst{2}%
+  %Department of Theoretical Philosophy\\
+  %University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+
+\date[Aug 14--18, 2017]% (optional, should be abbreviation of conference name)
+{
+\vspace{-12 mm}
+\begin{align*}
+&\texttt{http://math.hawaii.edu/$\sim$ralph/}\\
+&\texttt{http://uacalc.org/}\\
+&\texttt{https://github.com/UACalc/}
+\end{align*}
+}
+
+
+%{\newline The new results of this talk are joint work with Paolo Lipparini.}
+
+%\newline
+%\texttt{\small http://www.uacalc.org/}}
+
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+%\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+
+%\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>
+%    \frametitle{Outline}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+
+
+
+\begin{document}
+
+\thicklines
+
+\begin{frame}
+  \titlepage
+   
+  
+  %\vspace{0.2in}
+  \centerline{BLAST, Vanderbilt University, Aug 14--18, 2017}
+
+
+\end{frame}
+
+
+\begin{frame}[t]
+  \frametitle{The Problem}
+
+\begin{theorem}[Gr\"atzer-Schmidt]
+Every algebraic (so every finite) lattice is isomorphic to 
+$\Con(\alg A)$ for some (unary) algebra 
+$\op{\alg A}$.
+\end{theorem}
+
+\uncover<2->{
+\begin{problem} 
+Is every finite $\alg L$ isomorphic to $\Con (\alg A)$ for some
+\textcolor{purple}{\textbf{finite}} $\alg A$?
+\end{problem}
+}
+
+\uncover<3->{
+Since
+$\Con(\alg A) = \Con\langle A, \op{Pol}_1(\alg A) \rangle$,
+\textcolor{purple}{\textbf{we assume all algebras are unary.}}
+}
+
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Properties}
+
+
+Possible representation properties for a finite lattice $\alg L$:
+
+\begin{enumerate}
+\item[(P1)]
+$\alg L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$.
+\item[(P2)]\uncover<2->{
+$\alg L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$
+where the all nonconstant operations are permutations.}
+\item[(P3)]\uncover<3->{
+$\alg L$ is isomorphic to the congruence
+lattice of some finite algebra $\langle A,F \rangle$
+where the nonconstant operations generate a transitive
+permutation group.}
+\item[(P4)]\uncover<4->{
+$\alg L$ is
+isomorphic to an interval in the lattice of subgroups of a finite
+group.}
+\end{enumerate}
+
+\centerline{\uncover<6->{(P4) $\Leftrightarrow$} 
+\uncover<5->{(P3)
+$\Rightarrow$ (P2)
+$\Rightarrow$ (P1)}
+}
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{(P3) $\Leftrightarrow$ (P4)}
+Let $\alg H$ be a subgroup of $\alg G$. Let
+\[
+A = \{aH : a \in G\}\quad\text{(left cosets)}
+\]  
+\uncover<2->{
+Make an algebra $\alg A$ by adding operations 
+\[
+g : aH \mapsto gaH \qquad\qquad\text{(left multiplication)}
+\]
+}
+\uncover<3->{
+Then $\Con \alg A \iso [H,G]$, the interval in the subgroup lattice.
+}
+
+\end{frame}
+
+
+\begin{frame}[t]
+  \frametitle{P\'alfy-Pudl\'ak}
+  
+\begin{theorem}[1980]
+\textup{(P1)} holds for 
+\textcolor{purple}{all}
+lattices iff \textup{(P4)} holds for
+\textcolor{purple}{all} lattices.
+\end{theorem}
+
+\uncover<2->{
+The \emphcyan{size} of a representation 
+$\alg L \iso \Con(\alg A)$ is $|A|$. For $\alg H \le \alg G$ the size
+in (P4) is $[G : H]$, the number of left $H$-cosets of $\alg G$.
+}
+
+\medskip
+
+\uncover<3->{
+\textbf{Example.} The minimum size for $\alg L_6$ is 6:
+
+\medskip
+
+\begin{tabular}{ccc}
+$\alg L_6$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (-0.5,0.33)[e]{};
+\node(3) at (0.5,0.33)[e]{};
+\node(2) at (-0.5,-0.33)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+}
+\uncover<4->{
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+    \alg B_6& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 2& 2& 1& 5& 5& 4\\
+   g(x)& 3& 4& 4& 0& 1& 1\\
+   h(x)& 4& 5& 3& 4& 5& 3\end{array}$
+\end{tabular}
+}
+
+\medskip
+\uncover<5->{
+P\'alfy and Aschbacher have found groups $\alg H \le \alg G$
+representing this lattice. 
+But P\'alfy's example has $\alg G = \alg A_{11}$ and $|H| = 55$, 
+so the size is $9! = 362880$.
+}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Moral}
+
+\emphcyan{Moral:} Finding a representation with groups, (P4),
+may be much harder (and much bigger) than finding 
+a (P1) representation.
+
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{New representable lattices from old}
+
+\begin{itemize} 
+\item all distributive lattices
+\uncover<2->{
+\item lattice duals (Hans Kurzweil, 1985, and R. Netter, 1986)}
+\uncover<3->{\item interval sublattices}
+\uncover<4->{\item  direct products (Ji\v{r}\'i T\r{u}ma,  1986)}
+\uncover<5->{\item  ordinal sums
+  (Ralph McKenzie, 1984; John Snow, 2000)}
+\uncover<6->{\item  parallel sums (John Snow, 2000)}
+\uncover<7->{\item sublattices of representable lattices 
+obtained as a union of a filter and an ideal
+  (John Snow, 2000)}
+\uncover<8->{\item
+overalgebras (DeMeo, 2013)}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{P\'alfy-Pudl\'ak Conditions}
+
+\begin{enumerate}
+\item[(A)]
+$\alg L$ is simple.
+\uncover<2->{\item[(B)]
+For each $x \ne 0$ in $L$, there are elements $y$ and $z$
+such that $x \join y = x \join z = 1$ and $y\meet z = 0$.}
+\uncover<3->{\item[(C)] $|L|\ne 2$ and each element of $L$ that is not an 
+atom or $0$ contains at least four atoms.}
+\end{enumerate}
+
+\uncover<4->{
+\begin{theorem}
+\begin{itemize}
+\item
+If\/ $\alg L$ satisfies \textup{(A)} and \textup{(B)} then $\alg L$ 
+satisfies \textup{(P1)} $\Rightarrow$ \textup{(P2)}.}
+\uncover<5->{\item
+If\/ $\alg L$ satisfies \textup{(A)}, \textup{(B)} and \textup{(C)} 
+then $\alg L$ satisfies \textup{(P1)} $\Rightarrow$ \textup{(P3)}.}
+\end{itemize}
+\end{theorem}
+
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{McKenzie's variants}
+  
+\begin{enumerate}
+\item[(B${}'$)]
+If $\varphi: L \to L$ is any meet-preserving map such 
+that $\varphi(x) > x$ for
+$x\ne 1$, then $\varphi(x) = 1$ for all~$x$.
+\uncover<2->{\item[(B$''$)]
+The coatoms of $L$ meet to $0$.}
+\end{enumerate}
+
+\uncover<3->{
+\[
+\text{(B)} \implies \text{(B$''$)}  \implies \text{(B$'$)}.
+\]
+}
+
+
+\uncover<4->{\begin{theorem}
+\begin{itemize}
+\item
+If\/ $\alg L$ satisfies \textup{(A)} and \textup{(B${}'$)}  \textup{(or (B${}''$))}
+then a minimal representation of\/ $\alg L$ witnesses that
+$\alg L$ satisfies \textup{(P2)}. So,}
+%\uncover<5->{\item
+%If\/ $\alg L$ satisfies \textup{(A)} and \textup{(B${}''$)} 
+%then $\alg L$ satisfies \textup{(P2)}.}
+\uncover<5->{\item If \textup{(A)} and \textup{(B${}'$)} hold and\/ 
+$\alg L \cong \la A,F \ra$ 
+is minimal,  then $F$ consists of permutations
+and constants. }
+\end{itemize}
+\end{theorem}
+
+\end{frame}
+
+% to get a weakening of (C) we study intransitive group action.
+
+
+\begin{frame}[t]
+  \frametitle{Representations by instransitive groups}
+
+Suppose $\alg A = \la A,G\ra$ is a $G$-set and 
+let $\alg A_i = \la A_i, G\ra$, $i < k$,
+be the minimal subalgebras of $\alg A$; i.e.~each set $A_i$ is an 
+orbit, or
+one-generated subuniverse, of $\alg A$. 
+
+\uncover<2->{
+Define congruences on $A$ by the 
+partitions}
+\uncover<2->{
+\begin{alignat*}{2}
+\tau &= |A_0|A_1|\cdots|A_{k-1}| &&\quad\text{ (the blocks are the orbits)} \\
+\tau_i &= |A_i| &&\quad\text{ (at most one nontrivial block) }\\
+\gamma_i &= |A_i|A - A_i| &&\quad\text{ (exactly two blocks unless
+$A_i = A$) } 
+\end{alignat*}
+}
+\uncover<3->{
+We call $\tau$ the \emphcyan{intransitivity congruence}; 
+%$G$ acts transitively if and only if $\tau = 1$. 
+}
+
+\uncover<4->{
+\begin{theorem}
+Let $\theta \in \Con(\alg A)$, where 
+$\alg A = \la A,G\ra$ and $G$ is a group. Then
+\end{theorem}
+}
+\end{frame}
+
+\begin{frame}[t]
+  %\frametitle{Representations by intransitive groups}
+
+%\begin{theorem}
+%Let $\alg A = \la A,G\ra$ and let $\theta \in \Con(\alg A)$.
+\vspace{-3 mm}
+
+\[
+\tau = |A_0|A_1|\cdots|A_{k-1}| \quad\text{ (the blocks are the orbits) }
+\]
+\vspace{-5 mm}
+\begin{enumerate}
+\item\label{item1}
+$G$ acts transitively if and only if $\tau = 1_{\alg A}$.
+\uncover<2->{\item \label{item2}
+The interval $[\tau,1_\alg A]$ is isomorphic to $\operatorname{Eq}(k)$.}
+\uncover<3->{\item \label{item3}
+The interval $[ 0_\alg A,\tau]$ is isomorphic 
+to $\prod_{i=0}^{k-1} \Con(\alg A_i)$.}
+
+\only<4>{\textcolor{MyDarkGreen}{For $\theta_i \in \Con(\alg A_i)$, map
+$(\theta_0,\ldots,\theta_{k-1}) \mapsto \theta_0\union \cdots \union \theta_{k-1}$.
+}}
+
+\uncover<5->{\item\label{item4}
+If, for some $i$, $\theta \ge \Join_{j \ne i} \tau_j$ 
+then $\theta \ge \tau$
+or $\theta \le \gamma_i$.}
+
+\only<6>{\textcolor{MyDarkGreen}{If $\theta \nleq \gamma_i$, there are $a\in A_i$ and $b \notin A_i$ with
+$(a,b) \in \theta$. Since $G$ acts transitively on each orbit, $\tau_i \le \theta$.
+So $\tau \le \theta$.}}
+
+
+
+\uncover<7->{\item\label{item5}
+If $\theta\meet \tau \prec \tau$  then $\theta \le \gamma_i$ 
+for some~$i$.}
+
+\only<8>{\textcolor{MyDarkGreen}{Follows from (3) and (4).}}
+
+
+\uncover<9->{\item\label{item6}
+If $k>1$ and $|A_i| = 1$ for all $i$ except $0$ then every coatom of $\Con(\alg A)$
+lies above~$\tau$.}
+\uncover<10->{\item\label{item7}
+If $k>1$ and $[ 0_\alg A,\tau]$ is directly indecomposable 
+then every coatom of $\Con(\alg A)$ lies above~$\tau$.}
+\uncover<11->{\item\label{item8}
+If $k = 2$ and $|A_1| = 1$ then $\tau$ is a coatom and 
+everything is comparable with it.}
+
+\only<12>{\textcolor{MyDarkGreen}{From (2) and (6). }}
+\uncover<13->{\item\label{item9}
+If $\tau$ is a coatom and $[ 0_\alg A,\tau]$ is directly indecomposable
+then everything is comparable with it.}
+
+\only<14>{\textcolor{MyDarkGreen}{From (8).}}
+\end{enumerate}
+%\end{theorem}
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Examples: $\alg L_{14}$}
+  
+  
+\vspace{-1 cm}
+  
+\begin{center}  
+\begin{tikzpicture}
+    [scale=1.1, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.4,0.33)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (-0.8,0)[e]{};
+\node(2) at (-0.4,0)[e]{};
+\node(1) at (0.2,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\uncover<2->{
+\draw (5) node [right]{$\tau$};
+}
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(6);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{center}
+
+\vspace{-3 mm}
+
+\begin{example}
+\begin{itemize}
+\item
+$\alg L_{14}$ satisfies (A) and (B${}''$)
+so a minimal representation is permutational.
+\uncover<3->{
+\item
+$\alg L_{14} \cong \Con \la A,G\ra$ is not possible if $G$ acts intransitively,
+} 
+\uncover<4->{
+so
+\item
+if $\Con \la A,F\ra$ is a minimal representation,
+then $F$ generates a transitive group.}
+\uncover<5->{
+\item
+Is $\alg L_{14}$ representable? (Yes: as $[H,A_6]$ with $[A_6 : H] =90$)}
+\uncover<6->{
+\item
+Is this a minimum representation? (Don't know)}
+\end{itemize}
+\end{example}
+
+%by items (1), (2) and (7).
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Examples: $\alg L_{15}$, (the dual of $\alg L_{14}$)}
+  
+  
+\vspace{-1 cm}
+  
+\begin{center} 
+\begin{tikzpicture}
+    [scale=1.3, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.2,0.33)[e]{};
+\node(4) at (-0.4,0)[e]{};
+\node(3) at (-0.8,0)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (0.4,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\uncover<2->{
+\draw (5) node [right]{$\tau$};
+}
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(5);
+\draw(0)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{center}
+
+\uncover<3->{
+\begin{example}
+\begin{itemize}
+\item
+$\alg L_{15} \cong \Con \la \{0,1,2,3\},G\ra$, $G$ the group
+generated by the double transposition 
+$0 \leftrightarrow 1$, $2 \leftrightarrow 3$.}
+\uncover<4->{
+\item
+$\alg L_{14} \cong \alg L^d_{15}$,
+which again proves $\alg L_{14}$ is representable.}
+
+\end{itemize}
+\end{example}
+
+%by items (1), (2) and (7).
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Examples: $\alg L_{4}$.}
+  
+  
+\vspace{-1 cm}
+
+\begin{center}
+\begin{tikzpicture}
+    [scale=1.2, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0.2,0.33)[e]{};
+\node(3) at (-0.5,0)[e]{};
+\node(2) at (0.4,-0.33)[e]{};
+\node(1) at (0,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw (4) node [right]{$\tau$};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{center}
+
+\uncover<2->{
+\begin{example}
+\begin{itemize}
+\item
+
+$\alg L_{4}$ satisfies (B${}''$) but not (A)
+so minimal representations need not be permutational.}
+%\item 
+\only<3>{
+In fact
+\item
+$\alg L_4 \cong \la \{0,1,2,3\}, f, g \ra$, where
+\[
+\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+    \alg B_4& 0& 1& 2& 3\\\hline
+   f(x)& 1& 0& 3& 2\\
+   g(x)& 0& 0& 2& 2\end{array}
+\]
+}
+\only<4>{
+\item
+But $\alg L_4$ does have an intransitive representation on 6:
+\[
+\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+    \alg B'_4& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 1& 2& 0& 4& 5& 3\\
+   g(x)& 0& 2& 1& 3& 5& 4\end{array}
+\]
+}
+
+\end{itemize}
+\end{example}
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Examples: $\alg L_{19}$, a harder example:}
+
+\vspace{-10 mm}
+
+\begin{center}
+\begin{tikzpicture}
+    [scale=1.2, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (-0.5,0.33)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (-0.5,-0.33)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw (5) node [left]{$\tau$};
+\draw (4) node [right]{$\theta$};
+\draw (1) node [right]{$\psi$};
+
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{center}
+
+\uncover<2->{
+\begin{lemma}
+Let $\alg A = \la A,G\ra$ be a finite algebra, where
+$G$ is an intransitive group of permutations on $A$.
+Suppose the intransitivity congruence $\tau$ is a coatom.
+Then there do not exist congruences
+$0_{\alg A} < \psi < \theta$ in $\Con(\alg A)$
+with $\theta \meet \tau = 0_{\alg A}$. 
+\end{lemma}
+}
+
+
+
+
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Proof}
+
+\begin{lemma}
+Let $\alg A = \la A,G\ra$ be a finite algebra, where
+$G$ is an intransitive group of permutations on $A$.
+Suppose the intransitivity congruence $\tau$ is a coatom.
+Then there do not exist congruences
+$0_{\alg A} < \psi < \theta$ in $\Con(\alg A)$
+with $\theta \meet \tau = 0_{\alg A}$. 
+\end{lemma}
+
+\begin{proof}
+Since $\tau$ is a coatom, there are exactly two orbits; call
+them $B$ and $C$. Since $\theta \meet \tau = 0_{\alg A}$, if
+$(x,y) \in \theta$ then $x=y$ or one is in $B$ and the other
+is in $C$. So $\theta$ defines a bipartite graph between
+$B$ and $C$. Since $G$ acts transitively on both $B$ and $C$,
+this graph corresponds to a bijection between $B$ and $C$. 
+The same applies to $\psi$. But equivalence relations
+corresponding to such graphs cannot be comparable.
+\end{proof}
+
+  
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{Small Lattices}
+
+\begin{theorem}
+All lattices with at most 7 elements can be represented, with the
+one possible exception of\/ $\alg L_{10}$:
+\vspace{-9mm}
+\begin{center}
+\begin{tikzpicture}
+    [scale=1.2, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0.33,1)[e]{};
+\node(5) at (0,0.33)[e]{};
+\node(4) at (0.66,0.33)[e]{};
+\node(3) at (-1,0)[e]{};
+\node(2) at (-0.33,-0.33)[e]{};
+\node(1) at (0.33,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\uncover<3->{
+\draw (4) node [right] {$\theta$};
+\draw (5) node [right] {$\tau$};
+}
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{center}
+\uncover<2->{
+If\/ $\alg L_{10} \cong \la A,F\ra$, then $F$ generates a transitive 
+group on $A$.
+}
+\end{theorem}
+
+\uncover<3->{
+\begin{proof}
+$\alg L_{10}$ satisfies (A) and (B${}''$). By part (5) of the 
+intransitivity theorem, it cannot be represented with an 
+intransitive group. 
+\end{proof}
+}
+
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Finding Reps: Methods and Algorithms} 
+
+\begin{itemize}
+\uncover<2->{
+\item
+Closure Method}
+\uncover<3->{
+\item
+Overalgebras}
+\uncover<4->{
+\item
+Ideal-Filter}
+\uncover<5->{
+\item
+Duality}
+\uncover<6->{
+\item
+    Group Methods (GAP)}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Closure Method to find a Representation of $\alg L$} 
+\begin{itemize}
+\uncover<2->{
+\item[(1)]
+Search through $\operatorname{Eq}(X_k)$, $k = 2,3, \ldots$ finding
+sublattices isomorphic to~$\alg L$. }
+\uncover<3->{
+\item[(2)]
+For each sublattice $\alg L \cong \alg L' \le \operatorname{Eq}(X_k)$ found, 
+find the unary polymorphs of the members of $L'$; that is,
+calculate the set $F$ of all unary operations on $X_k$
+which respect all $\theta \in L'$.}
+\uncover<4->{
+\item[(3)]
+For $F$ found in the previous step, test if
+$\Con(\langle X_k,F \rangle) = L'$. 
+If so then $\alg A = \langle X_k,F \rangle$ is a minimal 
+representation. Otherwise continue the search.}
+
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Remarks}
+
+\begin{itemize}
+%\item
+%Of course if $\alg L$ has no representation, this procedure will 
+%not converge.
+%Moreover, seaching for $\alg L$ in $\operatorname{Eq}(k)$
+%becomes quickly prohibitive. 
+
+\item[(a)]
+\textbf{Find a small presentation of $\alg L$:}
+
+The procedure can be sped up by first finding a presentation
+of $\alg L$ with the minimal number of generators. Besides speeding
+up the search in $\operatorname{Eq}(k)$, it is enough in 
+calculating the unary polymorphs to respect the generators.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+\frametitle{Remarks}
+
+\begin{itemize}
+
+\item[(b)]
+\textbf{Subdirect Decompositions:}
+
+
+Subdirect decompositions can be used to speed up finding unary
+polymorphs. For  example, if $\theta_0$, $\theta_1 \in L' \le 
+\operatorname{Eq}(X_k)$ with $\theta_0 \meet \theta_1 = 0$, 
+then $X_k$ is naturally embedded into 
+$X_k/\theta_0 \times X_k/\theta_1$. Since the operations in a
+direct product are component-wise, this 
+cuts the search space of possible unary polymorphs 
+from $k^k$ down to $r^r  s^s$, where $r$ and $s$ are the number 
+of blocks in $\theta_0$ and~$\theta_1$.
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]
+\frametitle{Remarks}
+
+\begin{itemize}
+
+\item[(c)]
+\textbf{Uniform Equivalence Relations:}
+
+If it can be shown that the algebra of a minimal representation 
+of $\alg L$ has a transitive permutation group for its nonconstatant
+unary polynomials, then we can restrict our search in 
+$\operatorname{Eq}(k)$ to uniform equivalence relations.
+Moreover the search for unary polymorphs can be restricted
+to permutations. 
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]
+\frametitle{Remarks}
+
+\begin{itemize}
+
+\item[(d)]
+\textbf{Small generating set for the operations:}
+
+Of course if $F' \subseteq F$ is a set of generators for the 
+moniod $F$, we can take $\alg A = \langle X_k,F' \rangle$.
+
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Nondist., linearly indec., small lattices} 
+
+
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{ccc}
+$\alg L_1$&\quad
+\begin{minipage}{0.06\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(4) at (0,1)[e]{};
+\node(3) at (0.33,0.33)[e]{};%[$1\ 2|3\ 4$]
+\node(2) at (-0.5,0.0)[e]{};%$1\ 3|2\ 4$};
+\node(1) at (0.33,-0.33)[e]{};%$1|2|3\ 4$};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(3)--(4);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}
+\begin{array}{c|cccc}
+    \alg B_1& 0& 1& 2& 3\\\hline
+   f(x)& 1& 0& 3& 2\\
+   g(x)& 1& 0& 1& 0\end{array}$
+\end{tabular}
+
+\ 
+
+\begin{tabular}{ccc}
+$\bL_2$&\quad
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(4) at (-0.0,1.0)[e]{};
+\node(3) at (0.5,0.0)[e]{};
+\node(2) at (0.0,0.0)[e]{};
+\node(1) at (-0.5,0.0)[e]{};
+\node(0) at (-0.0,-1.0)[e]{};
+\node at (0,1.3){};
+\draw(3)--(4);
+\draw(2)--(4);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+    \bB_2& 0& 1& 2\\\hline
+   f(x)& 0& 1& 2\end{array}$
+\end{tabular}
+
+
+
+\begin{tabular}{ccc}
+$\bL_3$&\quad
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (-0.5,0.0)[e]{};
+\node(2) at (0,0)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccc}
+           \bB_3& 0& 1& 2& 3& 4& 5& 6\\\hline
+   f(x)& 0& 1& 2& 1& 2& 1& 0\\
+   g(x)& 0& 3& 4& 3& 4& 3& 0\\
+   h(x)& 6& 5& 2& 5& 2& 5& 6\\
+   k(x)& 0& 1& 2& 0& 0& 2& 2\end{array}$
+\end{tabular}
+
+\qquad\qquad \textcolor{MyDarkGreen}{Method: overalgebras}
+
+
+\end{frame}
+
+\begin{frame}
+%\frametitle{Small Lattices}
+
+\begin{tabular}{ccc}
+$\bL_4$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0.2,0.33)[e]{};
+\node(3) at (-0.5,0)[e]{};
+\node(2) at (0.4,-0.33)[e]{};
+\node(1) at (0,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+    \bB_4& 0& 1& 2& 3\\\hline
+   f(x)& 1& 0& 3& 2\\
+   g(x)& 0& 0& 2& 2\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_5$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (0.4,0.33)[e]{};
+\node(2) at (-0.5,0)[e]{};
+\node(1) at (0.2,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
+           \bB_5& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
+    f(x)& 1&  2&   3& 4& 5& 0& 7& 8& 9& 10& 11& 6\\
+   g(x)& 6& 11& 10& 9& 8& 7& 0& 5& 4& 3&   2&  1\\
+   h(x)& 0& 0& 0& 6& 0& 0& 0& 0& 6& 0& 0& 0\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_6$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (-0.5,0.33)[e]{};
+\node(3) at (0.5,0.33)[e]{};
+\node(2) at (-0.5,-0.33)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+    \bB_6& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 2& 2& 1& 5& 5& 4\\
+   g(x)& 3& 4& 4& 0& 1& 1\\
+   h(x)& 4& 5& 3& 4& 5& 3\end{array}$
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+%\frametitle{Small Lattices}
+
+\begin{tabular}{ccc}
+$\bL_7$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (0.5,0.5)[e]{};
+\node(3) at (-0.5,0)[e]{};
+\node(2) at (0.5,0)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(2);
+\draw(0)--(1);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+    \bB_7& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 1& 0& 0& 4& 3& 3\\
+   g(x)& 4& 5& 5& 1& 2& 2\\
+   h(x)& 3& 3& 4& 3& 3& 4\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_8$&
+\begin{minipage}{0.1\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(5) at (0,1)[e]{};
+\node(4) at (-.75,0.0)[e]{};
+\node(3) at (-.25,0)[e]{};
+\node(2) at (0.25,0)[e]{};
+\node(1) at (.75,0)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(4)--(5);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\draw(0)--(4);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+    \bB_8& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 1& 2& 0& 4& 5& 3\\
+   g(x)& 3& 5& 4& 0& 2& 1\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_9$&
+\begin{minipage}{0.08\textwidth}
+\begin{tikzpicture}
+    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.33)[e]{};
+\node(4) at (-0.33,0)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0,0)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(6);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\draw(0)--(4);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
+        \bB_9& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
+    f(x)& 0& 0& 0& 0& 0& 0& 2& 1&  2&  1&   3&   4&   5&   3&   4&  5\\
+   g(x)& 0& 0& 0& 0& 0& 0& 6&  7&  6&  7& 10& 11& 12& 10& 11& 12 \\
+   h(x)&13&14&15&1&9&8&15&14&13& 15& 1&  9&    8&   8& 1&   9\end{array}$
+%Method: overalgebras
+\end{tabular}
+
+\qquad\qquad \textcolor{MyDarkGreen}{Method: overalgebras}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tabular}{ccc}
+$\bL_{10}$&
+\begin{minipage}{0.1\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0.33,1)[e]{};
+\node(5) at (0,0.33)[e]{};
+\node(4) at (0.66,0.33)[e]{};
+\node(3) at (-1,0)[e]{};
+\node(2) at (-0.33,-0.33)[e]{};
+\node(1) at (0.33,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+\textbf{No finite algebra known with this}\\ 
+\textbf{as its congruence lattice.}
+\end{tabular}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{11}$&
+\begin{minipage}{0.08\textwidth}
+\begin{tikzpicture}
+    [xscale=.4, yscale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0.33,1)[e]{};
+\node(5) at (-0.33,0.33)[e]{};
+\node(4) at (1,0.33)[e]{};
+\node(3) at (0,0)[e]{};
+\node(2) at (-1,-0.33)[e]{};
+\node(1) at (0.33,-0.33)[e]{};
+\node(0) at (-0.33,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+A finite algebra with 108 elements known.\\
+\end{tabular}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{12}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.33)[e]{};
+\node(4) at (-0.5,0.33)[e]{};
+\node(3) at (0.0,0.0)[e]{};
+\node(2) at (0.5,-0.33)[e]{};
+\node(1) at (-0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccccc}
+   \bB_{12}& 0& 1& 2& 3& 4& 5& 6& 7& 8\\\hline
+f(x)& 0& 0& 3& 3& 3& 6& 6& 6& 0\\
+g(x)& 0& 0& 8& 8& 8& 1& 1& 1& 0\\
+h(x)& 0& 5& 5& 4& 0& 0& 5& 4& 4\\
+k(x)& 4& 2& 2& 3& 4& 4& 2& 3& 3\\
+l(x)& 5& 5& 7& 7& 7& 6& 6& 6& 5\end{array}$
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+\begin{tabular}{ccc}
+$\bL_{13}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (0,0)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0.5,0)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(2);
+\draw(0)--(1);
+\draw(0)--(3);
+\draw(0)--(4);
+\end{tikzpicture}
+\end{minipage}
+&
+{\footnotesize
+$\setlength{\arraycolsep}{1pt}
+\begin{array}{c|ccccccccccccccccccc}
+    \bB_{13}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9&10&11&12&13&14&15&16&17&18\\\hline
+f(x)& 0& 1& 2& 1& 2& 1& 0& 0& 1& 2&   2& 1&  0&  0&  1&  2&  1&  2& 0\\
+g(x)& 0& 1& 2& 0& 0& 2& 2& 0& 3& 4&  0&  4& 4&   6&  5&  2&  6&  6& 2\\
+h(x)& 0& 1& 2& 3& 4& 5& 6& 0& 1& 2&  4&  5& 6&   0& 1&   2&  3&  4& 6\\
+k(x)& 7& 8& 9& 3&10&11&12&3&3& 3&  3&  3& 3& 11&11&11& 11&11&11\\
+l(x)&13&14&15&16&17& 5&18&13&16&17&17&16&13&5&5&5& 5&  5& 5
+ \end{array}$}
+ %\begin{tabular}{l}
+ %Method: \\overalgebras
+ %\end{tabular}
+\end{tabular}
+
+\qquad\qquad \textcolor{MyDarkGreen}{Method: overalgebras}
+
+\begin{tabular}{ccc}
+$\bL_{14}$&
+\begin{minipage}{0.08\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.4,0.33)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (-0.8,0)[e]{};
+\node(2) at (-0.4,0)[e]{};
+\node(1) at (0.2,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(6);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+Upper interval in Sub$(A_6)$,\\
+algebra of size 90\end{tabular}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{15}$&
+\begin{minipage}{0.08\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.2,0.33)[e]{};
+\node(4) at (-0.4,0)[e]{};
+\node(3) at (-0.8,0)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (0.4,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(5);
+\draw(0)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+    \bB_{15}& 0& 1& 2& 3\\\hline
+   f(x)& 1& 0& 3& 2\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{16}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (-0.1,0.33)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (0.2,0.33)[e]{};
+\node(2) at (-0.66,0)[e]{};
+\node(1) at (0.25,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(6);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+Upper interval in Sub$(C_2.A_6)$\\
+algebra of size 180\end{tabular}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tabular}{ccc}
+$\bL_{17}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1.0)[e]{};
+\node(5) at (0.25,0.33)[e]{};
+\node(4) at (-0.66,0)[e]{};
+\node(3) at (0.2,-0.33)[e]{};
+\node(2) at (-0.1,-0.33)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(5);
+\draw(0)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
+       \bB_{17}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9& 10& 11\\\hline
+    f(x)& 1& 0& 3& 2& 5& 4& 7& 6& 9& 8& 11& 10\\
+   g(x)& 4& 7& 5& 6& 8&11& 9&10& 0& 3&  1&  2\\
+   h(x)& 0& 0& 0& 0& 5& 5& 5& 5&10&10&10&10\end{array}$
+
+\end{tabular}
+
+\qquad\qquad\qquad\textcolor{MyDarkGreen}{Method: filter-ideal in Sub$(A_4)$}
+
+
+\begin{tabular}{ccc}
+$\bL_{18}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.33)[e]{};
+\node(4) at (-0.5,0.33)[e]{};
+\node(3) at (0,0.33)[e]{};
+\node(2) at (0.5,-0.33)[e]{};
+\node(1) at (-0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+Dual of 19, no explicit\\
+small representation known\end{tabular}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{19}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (-0.5,0.33)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (-0.5,-0.33)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccc}
+   \bB_{19}& 0& 1& 2& 3& 4& 5& 6& 7\\\hline
+f(x)& 0& 1& 1& 0& 4& 5& 5& 4\\
+g(x)& 0& 2& 3& 1& 0& 2& 3& 1\\
+h(x)& 7& 6& 6& 7& 3& 2& 2& 3\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{20}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.44,0.66)[e]{};
+\node(4) at (0,0.33)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0.44,0)[e]{};
+\node(1) at (0,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(2);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+\textcolor{MyDarkGreen}{Method: filter-ideal in SmallGroup(216,153) in GAP}\\
+\end{tabular}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tabular}{ccc}
+$\bL_{21}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0,0.33)[e]{};
+\node(4) at (0.44,0)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (0.44,-0.66)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(5);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccccc}
+   \bB_{21}& 0& 1& 2& 3& 4& 5& 6& 7& 8\\\hline
+f(x)& 3& 3& 4& 8& 8& 2& 2& 3& 4\\
+g(x)& 0& 0& 6& 1& 1& 0& 0& 5& 6\\
+h(x)& 4& 5& 5& 7& 8& 8& 7& 4& 4\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{22}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (0,0.5)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0.5,0)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(4);
+\draw(2)--(5);
+\draw(1)--(2);
+\draw(0)--(1);
+\draw(0)--(3);
+\end{tikzpicture}
+\end{minipage}
+&
+\begin{tabular}{l}
+\textcolor{MyDarkGreen}{Dual of 23, no explicit small}\\
+\textcolor{MyDarkGreen}{representation known}
+\end{tabular}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{23}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (0.5,0)[e]{};
+\node(3) at (-0.66,0)[e]{};
+\node(2) at (0.5,-0.5)[e]{};
+\node(1) at (0,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(5);
+\draw(3)--(6);
+\draw(2)--(4);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+      \bB_{23}& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)& 0& 1& 0& 1& 4& 4\\
+   g(x)& 1& 1& 3& 3& 4& 5\\
+   h(x)& 3& 2& 3& 2& 5& 5\\
+   k(x)& 4& 1& 5& 3& 4& 5\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{24}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0,0.33)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (-0.5,0.33)[e]{};
+\node(2) at (0.5,-0.33)[e]{};
+\node(1) at (-0.5,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(4);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+      \bB_{24}& 0& 1& 2& 3\\\hline
+   f(x)& 1& 1& 2& 2\\
+   g(x)& 2& 3& 3& 2\end{array}$
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ccc}
+$\bL_{25}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (-0.5,0.33)[e]{};
+\node(4) at (0.5,0.33)[e]{};
+\node(3) at (-0.5,-0.33)[e]{};
+\node(2) at (0.5,-0.33)[e]{};
+\node(1) at (0,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(5);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
+      \bB_{25}& 0& 1& 2& 3& 4\\\hline
+   f(x)&0& 0& 2& 2& 2\\
+   g(x)&0& 1& 0& 1& 1\\
+   h(x)&1& 1& 4& 4& 4\\
+   k(x)&2& 3& 2& 3& 3\end{array}$
+\end{tabular}
+
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{26}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.25,0.5)[e]{};
+\node(4) at (-0.66,0)[e]{};
+\node(3) at (0,0)[e]{};
+\node(2) at (0.5,0)[e]{};
+\node(1) at (0.25,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(2);
+\draw(1)--(3);
+\draw(0)--(1);
+\draw(0)--(4);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
+      \bB_{26}& 0& 1& 2& 3& 4& 5\\\hline
+   f(x)&1& 0& 3& 2& 0& 2\\
+   g(x)&4& 4& 5& 5& 1& 3\\
+   h(x)&0& 0& 0& 0& 1& 1\\
+   k(x)&3& 5& 3& 5& 3& 3\end{array}$
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ccc}
+$\bL_{27}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (-0.5,0.33)[e]{};
+\node(3) at (0.5,0.0)[e]{};
+\node(2) at (-0.5,-0.33)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
+        \bB_{27}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
+   f(x)&0& 1& 2& 3& 4& 5& 0& 0& 0& 0& 0& 2& 2& 2& 2& 2\\
+   g(x)&4& 5& 3& 4& 5& 3& 5& 3& 4& 5& 3& 4& 5& 4& 5& 3\\
+   h(x)&2& 2& 1& 5& 5& 4& 2& 1& 5& 5& 4& 2& 2& 5& 5& 4\\
+   k(x)&3& 4& 4& 0& 1& 1& 4& 4& 0& 1& 1& 3& 4& 0& 1& 1\\
+   l(x)&0& 6& 7& 8& 9& 10& 6& 7& 8& 9& 10& 0& 6& 8& 9& 10\\
+   m(x)&11& 12& 2& 13& 14& 15& 12& 2& 13& 14& 15& 11& 12& 13& 14& 15
+\end{array}$
+ %\begin{tabular}{l}
+ %\textcolor{MyDarkGreen}{Method:} \\overalgebras
+ %\end{tabular}
+\end{tabular}
+
+\qquad\qquad\qquad\textcolor{MyDarkGreen}{Method: overalgebras}
+
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{28}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.6)[e]{};
+\node(4) at (-0.5,0)[e]{};
+\node(3) at (0.5,0.2)[e]{};
+\node(2) at (0.5,-0.2)[e]{};
+\node(1) at (0.5,-0.6)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(3);
+\draw(1)--(2);
+\draw(0)--(1);
+\draw(0)--(4);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
+        \bB_{28}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
+   f(x)&0& 1& 2& 3& 4& 5& 0& 0& 0& 0& 0& 2& 2& 2& 2& 2\\
+   g(x)&3& 3& 4& 3& 3& 4& 3& 4& 3& 3& 4& 3& 3& 3& 3& 4\\
+   h(x)&1& 0& 0& 4& 3& 3& 0& 0& 4& 3& 3& 1& 0& 4& 3& 3\\
+   k(x)&4& 5& 5& 1& 2& 2& 5& 5& 1& 2& 2& 4& 5& 1& 2& 2\\
+   l(x)&0& 6& 7& 8& 9& 10& 6& 7& 8& 9& 10& 0& 6& 8& 9& 10\\
+   m(x)&11& 12& 2& 13& 14& 15& 12& 2& 13& 14& 15& 11& 12& 13& 14& 15
+\end{array}$
+% \begin{tabular}{l}
+ %\textcolor{MyDarkGreen}{Method: \\overalgebras}
+% \end{tabular}
+\end{tabular}
+
+\qquad\qquad\qquad\textcolor{MyDarkGreen}{Method: overalgebras}
+
+
+\end{frame}
+
+\begin{frame}
+
+
+
+\begin{tabular}{ccc}
+$\bL_{29}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0.,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (-0.66,0.25)[e]{};
+\node(3) at (0.5,0)[e]{};
+\node(2) at (-0.66,-0.25)[e]{};
+\node(1) at (0,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
+      \bB_{29}& 0& 1& 2& 3& 4\\\hline
+   f(x)&1& 0& 3& 2& 2\\
+   g(x)&2& 4& 2& 4& 3\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{30}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0,0.5)[e]{};
+\node(4) at (-0.66,0.25)[e]{};
+\node(3) at (0.5,0)[e]{};
+\node(2) at (-0.66,-0.25)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(2)--(4);
+\draw(1)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
+      \bB_{30}& 0& 1& 2& 3& 4\\\hline
+   f(x)&0& 3& 4& 3& 4\\
+   g(x)&2& 2& 1& 4& 3\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{31}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0.5,0.5)[e]{};
+\node(4) at (-0.66,0.25)[e]{};
+\node(3) at (0.5,0)[e]{};
+\node(2) at (0.5,-0.5)[e]{};
+\node(1) at (0,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(3);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
+   \bB_{31}& 0& 1& 2& 3& 4\\\hline
+   f(x)&0& 1& 1& 0& 0\\
+   g(x)&1& 1& 2& 2& 2\\
+   h(x)&3& 2& 2& 4& 4\end{array}$
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{ccc}
+$\bL_{32}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (0,0.5)[e]{};
+\node(4) at (0.5,0.5)[e]{};
+\node(3) at (0.5,0)[e]{};
+\node(2) at (-0.66,-0.25)[e]{};
+\node(1) at (0.5,-0.5)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(3)--(4);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
+      \bB_{32}& 0& 1& 2& 3& 4\\\hline
+   f(x)&0& 1& 1& 3& 3\\
+   g(x)&1& 2& 2& 4& 4\\
+   h(x)&3& 3& 4& 3& 4\end{array}$
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ccc}
+$\bL_{33}$&
+\begin{minipage}{0.12\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (1,0)[e]{};
+\node(4) at (0.5,0)[e]{};
+\node(3) at (0,0)[e]{};
+\node(2) at (-0.5,0)[e]{};
+\node(1) at (-1,0)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(6);
+\draw(1)--(6);
+\draw(0)--(1);
+\draw(0)--(2);
+\draw(0)--(3);
+\draw(0)--(4);
+\draw(0)--(5);
+\end{tikzpicture}
+\end{minipage}
+&
+{\footnotesize
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
+        \bB_{33}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
+   f(x)&1& 3& 2& 0& 9& 11& 10& 8& 13& 15& 14& 12& 5& 7& 6& 4\\
+   g(x)&11& 8& 10& 9& 7& 4& 6& 5& 15& 12& 14& 13& 3& 0& 2& 1\\
+   h(x)&14& 15& 12& 13& 10& 11& 8& 9& 6& 7& 4& 5& 2& 3& 0& 1\end{array}$}
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{34}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (0,1)[e]{};
+\node(5) at (-0.33,0.33)[e]{};
+\node(4) at (0.33,0.33)[e]{};
+\node(3) at (0,0.33)[e]{};
+\node(2) at (-0.66,-0.33)[e]{};
+\node(1) at (0,-0.33)[e]{};
+\node(0) at (-0.33,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(6);
+\draw(2)--(5);
+\draw(1)--(3);
+\draw(1)--(4);
+\draw(1)--(5);
+\draw(0)--(1);
+\draw(0)--(2);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+      \bB_{34}& 0& 1& 2& 3\\\hline
+   f(x)&0& 1& 3& 2\end{array}$
+\end{tabular}
+
+\begin{tabular}{ccc}
+$\bL_{35}$&
+\begin{minipage}{0.07\textwidth}
+\begin{tikzpicture}
+    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
+\node(6) at (-0.33,1)[e]{};
+\node(5) at (0,0.33)[e]{};
+\node(4) at (-0.66,0.33)[e]{};
+\node(3) at (0.33,-0.33)[e]{};
+\node(2) at (0,-0.33)[e]{};
+\node(1) at (-0.33,-0.33)[e]{};
+\node(0) at (0,-1)[e]{};
+\node at (0,1.3){};
+\draw(5)--(6);
+\draw(4)--(6);
+\draw(3)--(5);
+\draw(2)--(5);
+\draw(1)--(5);
+\draw(1)--(4);
+\draw(0)--(3);
+\draw(0)--(2);
+\draw(0)--(1);
+\end{tikzpicture}
+\end{minipage}
+&
+$\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
+      \bB_{35}& 0& 1& 2& 3\\\hline
+   f(x)&1& 1& 2& 3\\
+   g(x)&2& 3& 3& 3\end{array}$
+\end{tabular}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem}
+
+\begin{itemize}
+\item
+What about nonunary algebras?
+\end{itemize}
+
+\uncover<2->{
+\begin{problem}
+Which (finite) lattices can be represented as $\Con  A$, 
+where $\alg A$ has a Taylor term?
+\end{problem}
+}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Resources}
+
+
+\begin{itemize}
+\item
+\textcolor{MyDarkGreen}{SmallLatticeReps.ua}, a UACalc file with 
+most of the $\alg B_i$'s:
+\[
+\texttt{http://math.hawaii.edu/$\sim$ralph/}
+\]
+\item
+The slides of this talk are there too.
+\item
+SmallLatticeReps.ua and other algebra files:
+\[
+\texttt{https://github.com/UACalc/SmallAlgebras/}
+\]
+\item
+Get UACalc at
+\[
+\texttt{http://uacalc.org/}
+\]
+\item
+Source at 
+\[
+\texttt{https://github.com/UACalc/uacalcsrc/}
+\]
+\end{itemize}
+
+
+
+\end{frame}
+
+
+\end{document}
+ 
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htb]
+%\renewcommand{\dotsize}{1.5pt}
+\begin{center}
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L14.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+  \hskip15mm
+  \begin{tikzpicture}[scale=1]
+    \input{inputs/tikz/L15.tex}
+    %    \draw (bottom) node [right]{$L_{11}$};
+  \end{tikzpicture}
+\end{center}
+\caption{$\bL_{14}$ (on the left) and $\bL_{15}$}\label{fig:L14and15}
+\end{figure}
+
+
+
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
