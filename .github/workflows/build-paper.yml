@@ -1,0 +1,78 @@
+# Compiles the article on every change to article/, so that collaborators can
+# confirm their edits build without needing a local LaTeX installation.
+#
+# The PDF from a successful run is attached to the run as a downloadable
+# artifact; when a run fails, the LaTeX logs are attached instead so the error
+# can be diagnosed from the browser.
+name: Build paper
+
+on:
+  push:
+    paths:
+      - 'article/**'
+      - '.github/workflows/build-paper.yml'
+  pull_request:
+    paths:
+      - 'article/**'
+      - '.github/workflows/build-paper.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to the same branch cancels an in-flight build of the older commit.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile SmallLatticeReps.tex
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # The article needs a fairly broad TeX Live: stmaryrd and euscript come
+      # from the font packages, tikz from texlive-pictures, and acronym, crop,
+      # showkeys and upref from the latex-extra/plain-generic bundles.
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-science \
+            texlive-pictures \
+            texlive-bibtex-extra \
+            texlive-plain-generic \
+            texlive-binaries
+
+      # Uses the article's own Makefile so CI and local builds stay in step.
+      # The flags keep pdflatex from stopping to prompt for input on an error,
+      # which would otherwise stall the runner until it times out.
+      - name: Compile the article
+        working-directory: article
+        run: make PDFLATEX="pdflatex -interaction=nonstopmode -halt-on-error"
+
+      - name: Upload the PDF
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmallLatticeReps-${{ github.sha }}
+          path: article/SmallLatticeReps.pdf
+          if-no-files-found: error
+
+      - name: Upload LaTeX logs if the build failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-logs-${{ github.sha }}
+          path: |
+            article/*.log
+            article/*.blg
+          if-no-files-found: warn

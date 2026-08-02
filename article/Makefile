@@ -5,6 +5,12 @@ AUX1=SmallLatticeReps
 AUX2=inputs/macros.sty
 AUX3=inputs/au.cls
 
+# Overridable so a non-interactive caller can add flags, e.g.
+#   make PDFLATEX="pdflatex -interaction=nonstopmode -halt-on-error"
+# Plain `make` behaves exactly as it always has.
+PDFLATEX ?= pdflatex
+BIBTEX ?= bibtex
+
 all: $(FILE).pdf
 
 .PHONY: clean
@@ -14,10 +20,10 @@ clean:
 
 $(FILE).pdf: $(FILE).tex $(AUX2)
 	rm -f $(REFS).bib
-	pdflatex $(FILE).tex
-	bibtex $(AUX1).aux
-	pdflatex $(FILE).tex
-	pdflatex $(FILE).tex
+	$(PDFLATEX) $(FILE).tex
+	$(BIBTEX) $(AUX1).aux
+	$(PDFLATEX) $(FILE).tex
+	$(PDFLATEX) $(FILE).tex
 
 $(FILE).tex: $(AUX2) $(AUX3)
 
