@@ -5,3 +5,11 @@
 *.out
 *.toc
 *.snm
+*.bbl
+*.blg
+
+# Build products of article/Makefile. refs.bib is generated from the
+# filecontents block at the top of SmallLatticeReps.tex, so it should never be
+# edited or committed directly.
+article/SmallLatticeReps.pdf
+article/inputs/refs.bib
