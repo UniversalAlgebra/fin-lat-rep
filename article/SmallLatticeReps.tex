@@ -797,10 +797,14 @@ $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
 label it $\bL_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
 reveals that the smallest group $G$ in whose subgroup lattice
 $N_5$ appears as an upper interval is \code{SmallGroup(216,153)}, 
-a group with 216 elements.  That search was made with the function
-\code{findUpperIntervals} of~\cite{finlatrepgap}, which looks through
-the Small Groups Library of \gap, and its libraries of transitive and
-of primitive groups, for upper intervals of a prescribed size.  It is easy
+a group with 216 elements.  The programs behind this search are
+in~\cite{finlatrepgap}.  There, \code{findUpperIntervals.g} looks through
+the Small Groups Library of \gap, and its libraries of transitive and of
+primitive groups, for upper intervals whose size lies in a prescribed
+range; and \code{pentagonSearch.g} settles the present claim directly, by
+examining every group $G$ with $|G| \leq 216$ together with every
+core-free subgroup $H \leq G$, and finding that \code{SmallGroup(216,153)}
+is the only such $G$ for which $\lb H, G\rb \cong N_5$.  It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
 $\lb H, G\rb \cong N_5$, so the size is $[G:H]= 36$. Therefore,
 the algebra given by this group representation has 36 elements.
@@ -2971,15 +2975,21 @@ of \gap~\cite{GAP4}.  A detailed example of this is given after
 Figure~\ref{fig:L11}.
 
 The \gap programs we used for this are collected in~\cite{finlatrepgap}.
-There are four of them.
+There are five of them.
 \begin{itemize}
 \item
 \code{findUpperIntervals.g} searches the Small Groups Library of \gap,
 and its libraries of transitive and of primitive groups, for upper intervals
 $\lb H, G\rb$ whose size lies in a prescribed range, and writes out the
 isomorphism types it finds.  It is the program behind the assertion in
-Section~\ref{sec:intro} that \code{SmallGroup(216,153)} is the smallest
-group having $N_5$ as an upper interval.
+Section~\ref{sec:intro} about upper intervals in small groups.
+\item
+\code{pentagonSearch.g} verifies the claim made there that
+\code{SmallGroup(216,153)} is the smallest group having $N_5$ as an
+upper interval.  It examines every group of order at most 216 and every
+core-free subgroup of each, and finds exactly one such group; that group
+has twelve such subgroups $H$, forming a single conjugacy class, each
+cyclic of order 6 and so of index 36.
 \item
 \code{PJ11.gap} is the computation displayed after Figure~\ref{fig:L11},
 command for command; it represents $\bL_{11}$ first on 216 and then on
