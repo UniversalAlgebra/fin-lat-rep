@@ -12,9 +12,12 @@ again.
 | `Jipsen_congruence_algebras7.ua`, `L7.ua`, `PJ11.ua`, `PJ14.ua`, `A6nseC2.ua`, `alg*.ua` | [`Jipsen/`][jipsen] |
 | `GroupsAndGsets/*.ua` | [`Groups/`][groups] |
 
-Two of the files here were already upstream under a different name, as follows:
-`GroupsAndGsets/A4xA4sdpC2.ua` is `Groups/A4xA4_sdp_C2.ua`, and
-`GroupsAndGsets/DoubleWinged2x2.ua` is `Groups/PSL2-11_sdp_C2.ua`.
+Three of the files here are upstream under a different name, as follows:
+`GroupsAndGsets/A4xA4sdpC2.ua` is `Groups/A4xA4_sdp_C2.ua`;
+`GroupsAndGsets/DoubleWinged2x2.ua` is `Groups/PSL2-11_sdp_C2.ua`; and
+`GroupsAndGsets/IntransGset-S3ActOnS3-1.ua` is `Groups/RegActS3.ua`, which is
+the same pair of operation tables under a name that describes them, since that
+action is the regular action of S3 and so transitive, not intransitive.
 
 `SmallLatticeReps.ua` is the file the article means when it refers to the
 algebras B<sub>i</sub>.  It holds 29 algebras: B<sub>1</sub> through
