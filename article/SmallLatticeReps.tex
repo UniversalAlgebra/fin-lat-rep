@@ -374,6 +374,31 @@ MRREVIEWER = {Mikl\~A${}^3$s B\~A${}^3$na},
        DOI = {10.1007/PL00013837},
        URL = {http://dx.doi.org/10.1007/PL00013837},
 }
+@misc{UACalc,
+  author =      {Ralph Freese and Emil Kiss and Matthew Valeriote},
+  title =       {Universal {A}lgebra {C}alculator},
+  note =        {Available at: {\verb+www.uacalc.org+}},
+  year =        {2011},
+}
+@misc{AlgebraFiles,
+  author =      {William DeMeo and Ralph Freese},
+  title =       {{UACalc} {A}lgebra{F}iles},
+  year =        {2016},
+  doi =         {10.5281/zenodo.595266},
+  url =         {https://doi.org/10.5281/zenodo.595266},
+  note =        {A repository of algebra files for the Universal Algebra
+                 Calculator, {\verb+https://github.com/UACalc/AlgebraFiles+},
+                 archived at {\verb+https://doi.org/10.5281/zenodo.595266+},
+                 which resolves to the most recently archived version.},
+}
+@misc{finlatrepgap,
+  author =      {William DeMeo},
+  title =       {fin-lat-rep-gap: {GAP} programs for representing finite
+                 lattices as congruence lattices of finite algebras},
+  year =        {2026},
+  note =        {Available at:
+                 {\verb+https://github.com/UniversalAlgebra/fin-lat-rep-gap+}},
+}
 @article {JipsenLawless2015,
     AUTHOR = {Jipsen, Peter and Lawless, Nathan},
      TITLE = {Generating all finite modular lattices of a given size},
@@ -714,10 +739,14 @@ In this paper we review some of the well known methods, as well as
 some more recently developed methods, for constructing a finite
 algebra whose congruence lattice is isomorphic to a given finite
 lattice. 
-Using these methods combined with programs we have developed using
-GAP, UACalc, \textcolor{red}{others, give refs},
+Using these methods, combined with programs we have developed using
+\gap~\cite{GAP4} and the Universal Algebra Calculator~\cite{UACalc},
 we make a catalog of representations of small
-lattices. We show that with one possible
+lattices.  The programs and the algebras are both available.  The
+\gap programs are collected in~\cite{finlatrepgap}, and the algebras
+are collected in~\cite{AlgebraFiles} as files that the Universal
+Algebra Calculator reads; Section~\ref{sec:algorithms} says which
+program and which file goes with each representation. We show that with one possible
 exception ($\bL_{10}$ in the last section) every 
 lattice with at most 7 elements is (isomorphic to) the 
 congruence lattice of a finite lattice. 
@@ -768,7 +797,10 @@ $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
 label it $\bL_1$.  A search of \gaps Small Groups Library~\cite{GAP4}
 reveals that the smallest group $G$ in whose subgroup lattice
 $N_5$ appears as an upper interval is \code{SmallGroup(216,153)}, 
-a group with 216 elements. It is easy
+a group with 216 elements.  That search was made with the function
+\code{findUpperIntervals} of~\cite{finlatrepgap}, which looks through
+the Small Groups Library of \gap, and its libraries of transitive and
+of primitive groups, for upper intervals of a prescribed size.  It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
 $\lb H, G\rb \cong N_5$, so the size is $[G:H]= 36$. Therefore,
 the algebra given by this group representation has 36 elements.
@@ -781,10 +813,6 @@ On the other hand, the smallest algebra that represents $N_5$ has just four elem
 %% \todo{can we say that Group(216,153) is the smallest group
 %% with $N_5$ as an interval?}
 %% Answer: yes.
-
-\todo{Add appendix section that includes \gap code for finding upper intervals
-  so the reader can verify that SmallGroup(216,153) is the smallest group with pentagonal upper
-  interval.} 
 
 For some lattices it can be shown that in a minimal 
 representation every nonconstant operation must be a 
@@ -2901,7 +2929,7 @@ lattice of a finite algebra.
 
 %Thirteen of the 35 lattices below are subdirectly reducible (specifically: 6, 7,12, 13, 26, 27, 28, 29, 30, 31, 32, 34, 35). 
 
-\subsection{Algorithms}
+\subsection{Algorithms}\label{sec:algorithms}
 In this subsection we describe the procedures we used to 
 find representations. The \emph{closure} algorithm, described below,
 was main workhorse and it produces minimal representations. 
@@ -2939,11 +2967,43 @@ explicit representations.
 
 
 Finally we used \emph{group theoretic} methods, usually with the aid
-of GAP. A detailed example of this is given after Figure~\ref{fig:L11}.
+of \gap~\cite{GAP4}.  A detailed example of this is given after
+Figure~\ref{fig:L11}.
 
+The \gap programs we used for this are collected in~\cite{finlatrepgap}.
+There are four of them.
+\begin{itemize}
+\item
+\code{findUpperIntervals.g} searches the Small Groups Library of \gap,
+and its libraries of transitive and of primitive groups, for upper intervals
+$\lb H, G\rb$ whose size lies in a prescribed range, and writes out the
+isomorphism types it finds.  It is the program behind the assertion in
+Section~\ref{sec:intro} that \code{SmallGroup(216,153)} is the smallest
+group having $N_5$ as an upper interval.
+\item
+\code{PJ11.gap} is the computation displayed after Figure~\ref{fig:L11},
+command for command; it represents $\bL_{11}$ first on 216 and then on
+108 elements.
+\item
+\code{PJ17.gap} exhibits $\bL_{17}$ as an interval in the subgroup lattice
+of \code{SmallGroup(288,1025)}, which is $(A_4 \times A_4) : C_2$.  This is
+a different representation from the 12-element one tabulated for $\bL_{17}$
+in Section~\ref{sec:lattices}.
+\item
+\code{Hexagon.g} verifies that \Palfy's example in $A_{11}$~\cite{Palfy1988}
+really is a hexagon: the interval $\lb H, A_{11}\rb$ is $\bL_6$, where
+$H \cong C_{11} : C_5$, and the index $[A_{11}:H]$ is $9! = 362880$.
+\end{itemize}
 
-\textcolor{red}{expand this; say where the gap programs are.
-Also mention where the ua files for the B's are.}. 
+The algebras $\bB_i$ listed in Section~\ref{sec:lattices} are available
+as files that the Universal Algebra Calculator~\cite{UACalc} reads.  They
+are collected in the file \code{CongruenceLatReps/SmallLatticeReps.ua}
+of~\cite{AlgebraFiles}, where the algebra named \code{B}$i$ is the
+algebra called $\bB_i$ here.  The groups and $G$-sets used by the
+programs above are in the \code{Groups} directory of the same repository;
+in particular \code{Groups/RegActSmallGroup216-153.ua} is the $G$-set
+underlying the representations of $\bL_{11}$ and $\bL_{20}$, and
+\code{Groups/A4xA4\_sdp\_C2.ua} is the one underlying $\bL_{17}$.
 
 
 Let $X_k = \{0, 1, \ldots, k-1\}$.
