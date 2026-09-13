@@ -244,8 +244,9 @@ It should carry, at least:
 
 - `help`, listing the targets.
 - `paper`, delegating to `article/Makefile`.
-- `project-lint`, `project-update`, `project-update-check`, `project-populate`,
-  driving [github-project][] against `docs/GITHUB_PROJECT.md`.
+- `project-lint`, `project-populate-dry`, `project-populate`, `project-update`
+  and `project-update-check`, driving [github-project][] against
+  `docs/GITHUB_PROJECT.md`.
 
 The engine must be **referenced, never vendored**; a copy in this repository is
 exactly the drift this plan exists to stop.  Add it as a flake input, re-export
