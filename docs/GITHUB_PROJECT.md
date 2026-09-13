@@ -193,8 +193,17 @@ What is needed at runtime:
   bytes, sha256 `cf2e32fb11909cb04a4a3590ac1b448f891b327ae4a800a1eaaf7968328c4eee`
   as of 2026-09-13.  Its class files are Java 8 bytecode (major version 52) and
   it was built with Ant 1.9.3 under JDK 1.8.0_92.
-- Four jars from `UACalc/uacalcsrc`, in its `jars/` directory: `LatDraw.jar`,
-  `groovy-all-1.0.jar`, `groovy-engine.jar`, `miglayout-3.7-swing.jar`.  The
+- Four supporting jars: `LatDraw.jar`, `groovy-all-1.0.jar`,
+  `groovy-engine.jar`, `miglayout-3.7-swing.jar`.  Two sources, and they
+  disagree.  `UACalc/uacalcsrc/jars/` vendors all four, but its `LatDraw.jar`
+  (134483 bytes) and `miglayout-3.7-swing.jar` (75838 bytes) are older than the
+  copies uacalc.org serves and ships beside the release (151620 and 83768
+  bytes).  Prefer uacalc.org where it serves the jar, since that is what the
+  released `uacalc.jar` was built against, and fall back to `uacalcsrc/jars/`
+  for `groovy-all-1.0.jar` and `groovy-engine.jar`, which uacalc.org does not
+  serve.  Note that the verification below was done with the older
+  `uacalcsrc` set, so re-run it against whichever set the flake ends up
+  pinning.  The
   jar's `Class-Path` manifest entry also names `designgridlayout-1.1p1.jar` and
   `swing-layout-1.0.2.jar`, which exist nowhere in either repository.  They are
   **not** needed: `designgridlayout` is imported only by
