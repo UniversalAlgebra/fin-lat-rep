@@ -34,8 +34,8 @@ would erase every issue body written here.
 The article's results rest on three pieces of software: GAP, the Universal
 Algebra Calculator, and LaTeX.  None of them is pinned anywhere in this
 repository, and the versions have moved underneath the paper.  The article
-cites GAP 4.8.3 (2016); on a current GAP two of the four scripts that were
-moved to [fin-lat-rep-gap][] had stopped establishing what they claim, silently,
+cites GAP 4.8.3 (2016); on a current GAP, two of the scripts that were moved
+to [fin-lat-rep-gap][] had stopped establishing what they claim, silently,
 because they selected subgroups by position in a list whose order changed.  The
 algebra files were similarly stale where they were published, so B28 was wrong
 for a decade.
@@ -92,9 +92,16 @@ git and Emacs tutorial out of `README.md` into `CONTRIBUTING.md`.
 
 **Exit criterion:**
 
-On a machine with Nix and nothing else, `nix develop` followed by each of
-`gap --version`, `uacalc` (with a display) and `make -C article` succeeds, and
-`README.md` says so in under a screen of text.
+On a machine with Nix and nothing else, `nix develop` gives a shell in which
+`gap --version` and `make -C article` succeed, the UACalc command line reads a
+`.ua` file, and the bounded GUI smoke test from M1-2 passes.  That last one
+needs a definition, because a GUI does not exit: run it under a timeout and
+require that it is still alive when the timeout fires, which `timeout` reports
+as status 124.
+
+    timeout 30 xvfb-run -a uacalc; test $? -eq 124
+
+`README.md` says all of this in under a screen of text.
 
 ---
 
@@ -113,9 +120,13 @@ was made deliberately.
 
 `make verify` recomputes the congruence lattice of every algebra in
 `SmallLatticeReps.ua`, compares each with the lattice drawn beside it in
-`article/SmallLatticeReps.tex`, and exits non-zero on any disagreement; CI runs
-it; and `docs/adr/0001-*.md` records why the environment is pinned the way it
-is.
+`article/SmallLatticeReps.tex`, and exits non-zero on any disagreement, and CI
+runs it.  The toolchain decisions are written down somewhere a contributor will
+find them: `docs/adr/0001-*.md` if M2-3 is done as proposed, or
+`docs/TOOLCHAIN.md` if M2-3 is reduced to its lighter alternative.  The
+criterion is that the decisions are recorded, not that they take a particular
+form, so dropping M2-3's ADR framing does not make this milestone
+unachievable.
 
 ---
 
@@ -356,6 +367,10 @@ Acceptance criteria:
   longer true.
 - `CONTRIBUTING.md` exists and is linked from `README.md`.
 - Neither file tells the reader to install anything that `nix develop` provides.
+- The `\gaps` rendering is fixed: no sentence in `article/SmallLatticeReps.tex`
+  typesets "GAPs" where it means "GAP's".  Either give the macro a possessive
+  form or reword the sentences that use it.  Without this the bug survives all
+  the other criteria.
 
 ---
 
@@ -377,8 +392,20 @@ What it does: read `CongruenceLatReps/SmallLatticeReps.ua` from
 [AlgebraFiles][], compute the congruence lattice of each algebra `B`*i* by
 closing each pair under the unary operations and join-closing the principal
 congruences, parse the covering relations of the lattice `L`*i* drawn beside it
-in `article/SmallLatticeReps.tex` out of the TikZ (`\node(k) at ...` and
-`\draw(a)--(b);` lines), and test the two for isomorphism.  Run over the
+in the catalog subsection of `article/SmallLatticeReps.tex`, and test the two
+for isomorphism.
+
+The catalog's diagrams are written inline, as `\node(k) at ...` and
+`\draw(a)--(b);`, and nothing else: measured today it holds 235 `\node` lines
+and 278 `\draw(a)--(b)` edges, with no `\input` and no chained `\draw ... to
+...` paths anywhere in the subsection.  Parsing those two forms is therefore
+enough, and was enough to check all 29 algebras.  The `article/inputs/tikz/`
+files *do* use the chained `to` form, but they are illustrations in the body of
+the paper, several of lattices with no catalog algebra at all, so they are out
+of scope here.  To keep that from silently becoming untrue, **the checker must
+assert that it found exactly as many diagrams as there are algebras** and fail
+otherwise; if a catalog diagram is ever moved into an `\input`, the check then
+stops loudly rather than quietly skipping it.  Run over the
 current file it reports agreement for all 29 algebras; run over the copy that
 was published before [#22][] it reports an 8-element lattice for B28, which is
 the bug.
@@ -474,8 +501,12 @@ Acceptance criteria:
   that this is the gate, not the recipe: how to check one algebra by hand is
   M2-1's `docs/CHECKING-AN-ALGEBRA.md`, and `README.md` should link it.
 - A workflow runs it on pull requests touching `scripts/`, `uacalc-files/`,
-  `article/SmallLatticeReps.tex`, `flake.nix`, `flake.lock`, `Makefile`, or the
-  workflow file itself.  The last four matter as much as the first three: a
+  `article/SmallLatticeReps.tex`, `article/inputs/tikz/**`, `flake.nix`,
+  `flake.lock`, `Makefile`, or the workflow file itself.  The tikz path is
+  defensive rather than a present gap: every diagram the checker reads is
+  inline in `SmallLatticeReps.tex` today, and the count assertion in M2-1 is
+  what would catch a move, but the trigger costs nothing and covers the case
+  where a catalog diagram is relocated there.  The last four matter as much as the first three: a
   change to `flake.nix` can alter the environment without touching the lock, a
   change to `Makefile` can alter or remove `verify`, and a change to the
   workflow can disable the gate.  Any of those slipping through unverified
@@ -499,8 +530,10 @@ them is fresh now and will not be in a year.
    scripts that selected subgroups by position silently stopped establishing
    their claims: `Hexagon.g` reported five maximal subgroups of
    A<sub>11</sub> containing `H` where the article says two, with no error.
-   Hulpke's fast `IntermediateSubgroups` method, vendored here as a patch
-   because GAP 4.8 lacked it, has been in the GAP library since 4.9.  The
+   Hulpke's fast `IntermediateSubgroups` method, which this repository
+   vendored as a patch because GAP 4.8 lacked it and which now sits in
+   [fin-lat-rep-gap][]'s `obsolete/` directory after [#23][], has been in the
+   GAP library since 4.9.  The
    decision is to track a current GAP and select by property rather than by
    index, and the rule belongs somewhere a future contributor will read it.
 2. **Fetch the UACalc jar rather than build from source**, with the
@@ -522,6 +555,10 @@ ADR links, not in the ADR.
 Acceptance criteria:
 
 - `docs/adr/0001-reproducible-environment.md` exists and follows that shape.
+- The companion note it links exists too.  The ADR records the decisions; the
+  explanation of how the environment actually works belongs beside it, and an
+  ADR linking nothing would satisfy the letter of this issue while losing the
+  half a reader needs.
 - Each decision cites what was measured, with the GAP version the measurement
   was made on.
 - `CONTRIBUTING.md` links it.
