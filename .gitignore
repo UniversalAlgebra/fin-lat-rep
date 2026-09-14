@@ -13,3 +13,7 @@
 # edited or committed directly.
 article/SmallLatticeReps.pdf
 article/inputs/refs.bib
+
+# Python
+__pycache__/
+*.pyc
