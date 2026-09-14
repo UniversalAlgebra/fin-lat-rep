@@ -169,6 +169,7 @@ Contents of the shell:
 - `xvfb-run`, for the headless GUI smoke test in M1-2.  Putting it in the
   shell rather than relying on the CI runner keeps that test runnable
   locally and keeps the clean-machine claim honest.
+- `jython`, which is how UACalc is driven without a display.  See M1-2.
 
 Acceptance criteria:
 
@@ -244,22 +245,41 @@ Acceptance criteria:
 
   `uacalc.jar` has no version in its URL, so the hash is the mitigation rather
   than a fix: when it changes, the build fails loudly and someone decides.
-- A small **non-GUI runner** is written and packaged, so M2-1 can drive UACalc
-  from a script.  UACalc ships no headless entry point: `UACalculator2` is the
-  only `Main-Class`, and it raises `HeadlessException` without a display.  What
-  exists is a usable library API, so the runner is a few lines against it:
+- **The Jython command line is packaged**, which is how UACalc is driven
+  without a display.  It is not something to invent: DeMeo and Freese wrote it,
+  it lives in [UACalc/UACalc_CLI][], and it is documented at
+  [uacalc-at-the-command-line][].  `uacalc.jar`'s only `Main-Class` is the Swing
+  application `UACalculator2`, which is why the GUI is all one sees from the
+  jar alone, but the Java API underneath is what the Jython layer exposes.
 
-      List<SmallAlgebra> algs = org.uacalc.io.AlgebraIO.readAlgebraListFile(path);
-      for (SmallAlgebra a : algs)
-          System.out.println(a.getName() + " " + a.cardinality() + " " + a.con().cardinality());
+  Use `jython` from nixpkgs, currently 2.7.4, rather than the
+  `jython-standalone-2.7-b1.jar` vendored in UACalc_CLI: that jar is a 2014
+  beta, and the repository carries no license and has not been touched since
+  2014.  Verified 2026-09-14 on nixpkgs jython 2.7.4 with OpenJDK 21, run
+  non-interactively with the five jars on `CLASSPATH`:
 
-  compiled and run against the five jars above on the classpath.  That exact
-  shape read all 29 algebras from `SmallLatticeReps.ua` and returned
-  `|Con(B28)| = 7`.  Expose it from the flake as a command, so M2-1 has
-  something to call rather than an API to rediscover.
+      from org.uacalc.io import AlgebraIO
+      algs = AlgebraIO.readAlgebraListFile(path)
+      for a in algs: print a.getName(), a.cardinality(), a.con().cardinality()
+
+  That read all 29 algebras out of `SmallLatticeReps.ua` and computed every
+  congruence lattice, giving `|Con(B28)| = 7`, agreeing with an independent
+  implementation.  Expose it from the flake as a `uacalc-cli` command, with the
+  classpath already set, so M2-1 has something to call.
+
+  Two things need fixing as it is packaged.  `CLI/uacalc.py` hard-codes
+  `UACALC_CLI_ROOT` to `~/git/UACalc_CLI`, and it imports `readline` and
+  `rlcompleter` at module scope, which are interactive conveniences a scripted
+  run should not require.  Either parameterize that bootstrap or skip it and
+  set `CLASSPATH` directly, which is what the verification above did.
 - A smoke test launches the GUI under `xvfb-run` and asserts it survives, which
   is cheap enough for CI and is what catches a JDK bump that breaks Swing.
   `xvfb-run` is in the devShell (M1-1), so the test runs locally too.
+- The [Scala REPL][scala-repl] is worth a line in the documentation as the
+  exploratory path, `scala -classpath uacalc.jar`.  It is not a substitute for
+  the Jython command line here: it is documented for interactive use only, with
+  no scripted invocation and no example of loading a `.ua` file, and the
+  version it was written against, Scala 2.10.3, is from 2013.
 - The known fragility (an unversioned URL on a personal web server) is written
   down, either in the ADR from M2-3 or beside the package in the flake.
 
@@ -365,10 +385,15 @@ the bug.
 Two things worth deciding while implementing:
 
 - **Which engine computes Con.** A short independent implementation is a
-  genuine second opinion and has no dependencies; calling UACalc through the
-  headless entry point from M1-2 checks the file against the program the
-  article actually used.  Doing both, and comparing, is strictly better than
-  either, and both were run by hand during scoping: they agree.
+  genuine second opinion and has no dependencies; driving UACalc through the
+  Jython command line from M1-2 checks the file against the program the article
+  actually used.  Doing both, and comparing, is strictly better than either,
+  and both were run by hand during scoping: they agree on all 29 algebras.
+
+  Note the language split this creates.  Jython is Python 2, so the UACalc side
+  cannot share code with a Python 3 checker under `scripts/python/`.  Keep the
+  Jython script small and let it emit a simple table that the Python 3 side
+  reads and compares, rather than trying to make one program serve both.
 - **Where the `.ua` file comes from.** It now lives in [AlgebraFiles][], not
   here.  Either fetch it at check time, which tests the published artifact and
   needs the network, or pin it as a flake input, which is reproducible and can
@@ -532,6 +557,9 @@ _(not yet populated: run `make update` after the first `make populate`)_
 [AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [github-project]: https://github.com/williamdemeo/github-project
 [adr-exemplar]: https://github.com/formalverification/agda-native-air/blob/main/docs/adr/0002-agda-mcp.md
+[UACalc/UACalc_CLI]: https://github.com/UACalc/UACalc_CLI
+[uacalc-at-the-command-line]: https://universalalgebra.wordpress.com/documentation/uacalc/uacalc-at-the-command-line/
+[scala-repl]: https://universalalgebra.wordpress.com/documentation/scala/scala-repl-with-uacalc-objects/
 [#20]: https://github.com/UniversalAlgebra/fin-lat-rep/issues/20
 [#22]: https://github.com/UniversalAlgebra/fin-lat-rep/pull/22
 [#23]: https://github.com/UniversalAlgebra/fin-lat-rep/pull/23
