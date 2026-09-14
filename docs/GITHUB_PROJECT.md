@@ -183,9 +183,9 @@ Measured while scoping this: GAP 4.15.1 from nixpkgs runs all five programs in
 **Milestone:** 1. A working environment in one command
 
 The article's algebras are distributed as `.ua` files, which are only useful if
-the reader can open them.  UACalc is not in nixpkgs, so the flake has to
+the reader can open them.  UACalc is not in nixpkgs, so the flake should
 package it.  The following was established by hand while scoping this issue, so
-the work is assembly rather than investigation.
+the work is merely assembly, not an investigation.
 
 What is needed at runtime:
 
