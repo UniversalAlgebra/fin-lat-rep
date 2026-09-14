@@ -343,7 +343,8 @@ a visitor actually needs, which is what this repository is and how to build it.
   still wanted, how to add a BibTeX entry to the `filecontents` block rather
   than to the generated `inputs/refs.bib`, and troubleshooting for the devShell
   and the LaTeX build.
-- `docs/` takes anything longer than that.
+- `docs/` takes anything longer than that, including the one-algebra checking
+  recipe from M2-1.
 
 This is also the place to fix a small typesetting bug noticed in [#23][]: the
 `\gaps` macro expands to an acronym plural, so several sentences that want
@@ -421,6 +422,19 @@ Acceptance criteria:
   and cannot be broken by anything upstream.
 - Its output names the algebra and prints both covering relations when they
   disagree.
+- **`docs/CHECKING-AN-ALGEBRA.md` shows how to check a single algebra by
+  hand**, in both engines, with a worked example and its real output.  This is
+  the recipe a collaborator reaches for when they want to satisfy themselves
+  about one entry rather than run the whole gate, and without it the knowledge
+  lives only in whoever wrote the checker.  It should be short enough to follow
+  in a couple of minutes, and it should say what the answer means: that the
+  catalog holds lattices of size *at most* seven, 2 of size 5, 6 of size 6 and
+  27 of size 7, so a five-element congruence lattice is the right answer for
+  B1, whose L1 is the pentagon, and not a sign of trouble.  Worked example:
+
+      $ CLASSPATH=... jython check.py CongruenceLatReps/SmallLatticeReps.ua
+      B1        |A| =  4   |Con(A)| = 5
+      B28       |A| = 16   |Con(A)| = 7
 
 ---
 
@@ -456,7 +470,9 @@ changes even when nothing else changed.
 
 Acceptance criteria:
 
-- `make verify` passes in the devShell and is documented in `README.md`.
+- `make verify` passes in the devShell and is documented in `README.md`.  Note
+  that this is the gate, not the recipe: how to check one algebra by hand is
+  M2-1's `docs/CHECKING-AN-ALGEBRA.md`, and `README.md` should link it.
 - A workflow runs it on pull requests touching `scripts/`, `uacalc-files/`,
   `article/SmallLatticeReps.tex`, `flake.nix`, `flake.lock`, `Makefile`, or the
   workflow file itself.  The last four matter as much as the first three: a
