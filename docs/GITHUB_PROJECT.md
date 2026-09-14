@@ -152,7 +152,7 @@ new issue number is written back into the heading as a `(#N)` suffix.
 
 <!-- BEGIN GENERATED: milestone-1 -->
 
-### Issue M1-1: Add a flake.nix whose default devShell carries the paper's toolchain
+### Issue M1-1: Add a flake.nix whose default devShell carries the paper's toolchain (#25)
 
 **Labels:** `milestone-1-environment`, `enhancement`
 **Milestone:** 1. A working environment in one command
@@ -196,7 +196,7 @@ Measured while scoping this: GAP 4.15.1 from nixpkgs runs all five programs in
 
 ---
 
-### Issue M1-2: Package the Universal Algebra Calculator in the flake
+### Issue M1-2: Package the Universal Algebra Calculator in the flake (#26)
 
 **Labels:** `milestone-1-environment`, `enhancement`
 **Milestone:** 1. A working environment in one command
@@ -296,7 +296,7 @@ Acceptance criteria:
 
 ---
 
-### Issue M1-3: Add a top-level Makefile and wire the github-project engine
+### Issue M1-3: Add a top-level Makefile and wire the github-project engine (#27)
 
 **Labels:** `milestone-1-environment`, `enhancement`
 **Milestone:** 1. A working environment in one command
@@ -337,7 +337,7 @@ Acceptance criteria:
 
 ---
 
-### Issue M1-4: Split README.md, and document the development shell
+### Issue M1-4: Split README.md, and document the development shell (#28)
 
 **Labels:** `milestone-1-environment`, `documentation`
 **Milestone:** 1. A working environment in one command
@@ -380,7 +380,7 @@ Acceptance criteria:
 
 <!-- BEGIN GENERATED: milestone-2 -->
 
-### Issue M2-1: Bring the congruence-lattice check into the repository
+### Issue M2-1: Bring the congruence-lattice check into the repository (#29)
 
 **Labels:** `milestone-2-verification`, `enhancement`
 **Milestone:** 2. The paper's computations, re-runnable
@@ -465,7 +465,7 @@ Acceptance criteria:
 
 ---
 
-### Issue M2-2: Add `make verify`, and run it in CI
+### Issue M2-2: Add `make verify`, and run it in CI (#30)
 
 **Labels:** `milestone-2-verification`, `enhancement`
 **Milestone:** 2. The paper's computations, re-runnable
@@ -516,7 +516,7 @@ Acceptance criteria:
 
 ---
 
-### Issue M2-3: Record the toolchain decisions in an ADR
+### Issue M2-3: Record the toolchain decisions in an ADR (#31)
 
 **Labels:** `milestone-2-verification`, `documentation`
 **Milestone:** 2. The paper's computations, re-runnable
