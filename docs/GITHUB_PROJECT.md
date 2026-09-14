@@ -162,6 +162,13 @@ Contents of the shell:
   `texlive-plain-generic` and the font bundles); the flake should carry the
   nixpkgs equivalent rather than `scheme-full`, which is several gigabytes.
 - `python3` and `gnumake`, for the project targets in M1-3 and the checks in M2-1.
+- `gh`.  The github-project engine shells out to it, and in `GHPROJECT_DIR`
+  mode (M1-3) the scripts are run directly rather than through the engine's
+  own wrapper, so `gh` has to be on the shell's PATH or `make project-populate`
+  cannot work from a fresh `nix develop`.
+- `xvfb-run`, for the headless GUI smoke test in M1-2.  Putting it in the
+  shell rather than relying on the CI runner keeps that test runnable
+  locally and keeps the clean-machine claim honest.
 
 Acceptance criteria:
 
@@ -193,17 +200,12 @@ What is needed at runtime:
   bytes, sha256 `cf2e32fb11909cb04a4a3590ac1b448f891b327ae4a800a1eaaf7968328c4eee`
   as of 2026-09-13.  Its class files are Java 8 bytecode (major version 52) and
   it was built with Ant 1.9.3 under JDK 1.8.0_92.
-- Four supporting jars: `LatDraw.jar`, `groovy-all-1.0.jar`,
-  `groovy-engine.jar`, `miglayout-3.7-swing.jar`.  Two sources, and they
-  disagree.  `UACalc/uacalcsrc/jars/` vendors all four, but its `LatDraw.jar`
-  (134483 bytes) and `miglayout-3.7-swing.jar` (75838 bytes) are older than the
-  copies uacalc.org serves and ships beside the release (151620 and 83768
-  bytes).  Prefer uacalc.org where it serves the jar, since that is what the
-  released `uacalc.jar` was built against, and fall back to `uacalcsrc/jars/`
-  for `groovy-all-1.0.jar` and `groovy-engine.jar`, which uacalc.org does not
-  serve.  Note that the verification below was done with the older
-  `uacalcsrc` set, so re-run it against whichever set the flake ends up
-  pinning.  The
+- Four supporting jars, all four vendored in `UACalc/uacalcsrc/jars/`.  Pin
+  that repository by commit; `538ec6a0adaaee2c81ff1a481238d944d63ce4c7` is its
+  current head.  Of the four, only `LatDraw.jar` is also served from
+  uacalc.org, in a newer build (151620 bytes against 134483); the other three
+  404 there.  Take all four from `uacalcsrc`, because that is the set the
+  verification below was actually run against.  The
   jar's `Class-Path` manifest entry also names `designgridlayout-1.1p1.jar` and
   `swing-layout-1.0.2.jar`, which exist nowhere in either repository.  They are
   **not** needed: `designgridlayout` is imported only by
@@ -229,13 +231,35 @@ Acceptance criteria:
 
 - The flake provides a `uacalc` executable on the devShell's `PATH` that
   launches the GUI.
-- The fetch pins the sha256, so that a change to the upstream jar fails the
-  build loudly instead of changing results quietly.  There is no version in the
-  URL; this is the mitigation, not a fix.
-- A headless entry point is also available, so M2-1 can call UACalc from a
-  script without a display.
+- **Every** runtime artifact is pinned, not just `uacalc.jar`: a sha256 on each
+  fetch from uacalc.org, and a commit on `uacalcsrc`.  A change to any jar on
+  the classpath changes the environment, so pinning only the main one would
+  leave the rest free to drift.  Measured 2026-09-14:
+
+      cf2e32fb11909cb04a4a3590ac1b448f891b327ae4a800a1eaaf7968328c4eee  uacalc.jar              998189 B  (uacalc.org)
+      43ceb01bb9c40c4e6dbd337e5851f10ebbead1a2ade6e598946cf6309a17aa1c  LatDraw.jar             134483 B  (uacalcsrc)
+      d9cab69d9c26f4bfc0cc2184ddc4814a60c6542e7cfd44dc2d42730f39fdde4a  miglayout-3.7-swing.jar  75838 B  (uacalcsrc)
+      bedb09ac0050dda392049c66e4ad92918050de22c44317e3c43bf3ef4d17c907  groovy-all-1.0.jar      2291484 B  (uacalcsrc)
+      4c412918ca398d1da02ef8b09dab050a58ab2b3721ec23f08beb91b6fc4077a3  groovy-engine.jar         11774 B  (uacalcsrc)
+
+  `uacalc.jar` has no version in its URL, so the hash is the mitigation rather
+  than a fix: when it changes, the build fails loudly and someone decides.
+- A small **non-GUI runner** is written and packaged, so M2-1 can drive UACalc
+  from a script.  UACalc ships no headless entry point: `UACalculator2` is the
+  only `Main-Class`, and it raises `HeadlessException` without a display.  What
+  exists is a usable library API, so the runner is a few lines against it:
+
+      List<SmallAlgebra> algs = org.uacalc.io.AlgebraIO.readAlgebraListFile(path);
+      for (SmallAlgebra a : algs)
+          System.out.println(a.getName() + " " + a.cardinality() + " " + a.con().cardinality());
+
+  compiled and run against the five jars above on the classpath.  That exact
+  shape read all 29 algebras from `SmallLatticeReps.ua` and returned
+  `|Con(B28)| = 7`.  Expose it from the flake as a command, so M2-1 has
+  something to call rather than an API to rediscover.
 - A smoke test launches the GUI under `xvfb-run` and asserts it survives, which
   is cheap enough for CI and is what catches a JDK bump that breaks Swing.
+  `xvfb-run` is in the devShell (M1-1), so the test runs locally too.
 - The known fragility (an unversioned URL on a personal web server) is written
   down, either in the ADR from M2-3 or beside the package in the flake.
 
@@ -351,15 +375,25 @@ Two things worth deciding while implementing:
   go stale.  Prefer the flake input, so the check has something to be stale
   *against*.
 
-Python in this repository follows the house style: everything under
-`scripts/python/`, total functions, type annotations throughout, a file-header
-comment, and a Makefile target per test suite.
+This repository has no Python in it yet, so the checker establishes the
+convention rather than following one already here.  Use the one these projects
+use elsewhere: everything under `scripts/python/`, total functions that return
+a result rather than raising for control flow, type annotations throughout, a
+file-header comment saying what the file is for, and a Makefile target per test
+suite.
 
 Acceptance criteria:
 
 - The check runs from a Makefile target and exits non-zero on disagreement.
 - It has a test that fails against the pre-[#22][] algebra file, so the check is
-  shown to have teeth rather than merely to pass.
+  shown to have teeth rather than merely to pass.  That input needs to be
+  pinned, since the published copy is now corrected and the old one exists
+  only in history.  Check in a small fixture holding just the defective B28,
+  under `scripts/python/fixtures/`, with its sha256 recorded; the source is
+  `CongruenceLatReps/SmallLatticeReps.ua` at AlgebraFiles commit
+  `9e1ef390ef7a1288cdabdfb449d23c9095c02173`.  A fixture is preferable to
+  fetching that revision at test time, because the test then needs no network
+  and cannot be broken by anything upstream.
 - Its output names the algebra and prints both covering relations when they
   disagree.
 
@@ -378,6 +412,11 @@ Tie the checks together and put a gate on them.
 - a structural pass over the `.ua` files: every operation table has
   `cardinality ** arity` entries, all in range;
 - the GAP programs from [fin-lat-rep-gap][] that are fast enough to gate.
+  Those live in another repository as of [#23][], so `make verify` has to
+  obtain them at a recorded revision: add that repository as a flake input, so
+  `flake.lock` pins it and `nix flake update` moves it deliberately.  A
+  floating clone would make this gate depend on unreviewed upstream changes,
+  which is the opposite of what it is for.
   `PJ17.gap` takes seconds and `PJ11.gap` under a minute; `Hexagon.g` needs a
   few minutes and several gigabytes of memory for the subgroup lattice of
   A<sub>11</sub>; `pentagonSearch.g` takes about five minutes.  Gate the first
@@ -394,7 +433,12 @@ Acceptance criteria:
 
 - `make verify` passes in the devShell and is documented in `README.md`.
 - A workflow runs it on pull requests touching `scripts/`, `uacalc-files/`,
-  `flake.lock` or `article/SmallLatticeReps.tex`.
+  `article/SmallLatticeReps.tex`, `flake.nix`, `flake.lock`, `Makefile`, or the
+  workflow file itself.  The last four matter as much as the first three: a
+  change to `flake.nix` can alter the environment without touching the lock, a
+  change to `Makefile` can alter or remove `verify`, and a change to the
+  workflow can disable the gate.  Any of those slipping through unverified
+  would make the guarantee hollow.
 - The slow checks run on a schedule and open or update a single tracking issue
   on failure rather than emailing on every run.
 
@@ -425,11 +469,14 @@ them is fresh now and will not be in a year.
    the closure-algorithm searches and the exhaustive Small Groups sweeps are
    re-runnable but not gateable.
 
-Format follows the house ADR convention: a plain title, a `File:` line, bullets
-for Status, Date, Tracking and Ancestry, an executive summary, one section per
-decision area with its own Decision, Evidence and Status, a numbered decision
-log, and reference-style links.  Explanation of the environment itself belongs
-in a companion note the ADR links, not in the ADR.
+This repository has no ADRs, so the format is proposed here rather than
+inherited.  Follow the one used in these projects elsewhere, for which
+[agda-native-air's `docs/adr/0002-agda-mcp.md`][adr-exemplar] is the worked
+example: a plain title, a `File:` line, bullets for Status, Date, Tracking and
+Ancestry, an executive summary, one section per decision area with its own
+Decision, Evidence and Status, a numbered decision log, and reference-style
+links.  Explanation of the environment itself belongs in a companion note the
+ADR links, not in the ADR.
 
 Acceptance criteria:
 
@@ -484,6 +531,7 @@ _(not yet populated: run `make update` after the first `make populate`)_
 [fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [github-project]: https://github.com/williamdemeo/github-project
+[adr-exemplar]: https://github.com/formalverification/agda-native-air/blob/main/docs/adr/0002-agda-mcp.md
 [#20]: https://github.com/UniversalAlgebra/fin-lat-rep/issues/20
 [#22]: https://github.com/UniversalAlgebra/fin-lat-rep/pull/22
 [#23]: https://github.com/UniversalAlgebra/fin-lat-rep/pull/23
