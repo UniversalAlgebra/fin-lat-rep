@@ -13,6 +13,29 @@ or [submit an issue][].
 Authors, to keep track of todo items use the [issue tracker][], or post
 your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
 
+## What is where
+
+| | |
+| --- | --- |
+| `article/` | the LaTeX source of the article |
+| `lattice-lists/` | Peter Jipsen's catalogs of small lattices and their congruence representations |
+| `misc/` | background papers by Aschbacher, Pálfy, and Pálfy and Pudlák |
+| `talks/` | slides from talks about this work |
+| `programs/` | see [`programs/README.md`](programs/README.md): the GAP programs now live in [UniversalAlgebra/fin-lat-rep-gap][] |
+| `uacalc-files/` | see [`uacalc-files/README.md`](uacalc-files/README.md): the algebra files now live in [UACalc/AlgebraFiles][] |
+
+The software behind the article is in three other repositories, as follows:
+
++  the GAP programs for the group-theoretic arguments, in
+   [UniversalAlgebra/fin-lat-rep-gap][];
++  the algebras B<sub>i</sub> and the groups and G-sets, as files the
+   [Universal Algebra Calculator][] reads, in [UACalc/AlgebraFiles][];
++  the overalgebras construction, in [williamdemeo/Overalgebras][].
+
+The closure algorithm, which is the article's main workhorse, is part of the
+Universal Algebra Calculator itself; see `BasicPartition.java` in
+[UACalc/uacalcsrc][].
+
 ## git at the command line
 
 First, stage your latest changes for commit.
@@ -98,3 +121,8 @@ directly from **Emacs** using magit.
 [submit an issue]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 [issue tracker]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 
+[UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
+[UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
+[UACalc/uacalcsrc]: https://github.com/UACalc/uacalcsrc
+[williamdemeo/Overalgebras]: https://github.com/williamdemeo/Overalgebras
+[Universal Algebra Calculator]: https://uacalc.org
