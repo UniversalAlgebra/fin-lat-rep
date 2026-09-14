@@ -801,9 +801,11 @@ a group with 216 elements.  The programs behind this search are
 in~\cite{finlatrepgap}.  There, \code{findUpperIntervals.g} looks through
 the Small Groups Library of \gap, and its libraries of transitive and of
 primitive groups, for upper intervals whose size lies in a prescribed
-range; and \code{pentagonSearch.g} settles the present claim directly, by
-examining every group $G$ with $|G| \leq 216$ together with every
-core-free subgroup $H \leq G$, and finding that \code{SmallGroup(216,153)}
+range; and \code{pentagonSearch.g} settles the present claim directly.  For
+each group $G$ with $|G| \leq 216$ it examines the subgroups that can
+occur at the bottom of such an interval, namely the core-free
+intersections of two maximal subgroups of $G$ (the reduction is explained
+in Section~\ref{sec:algorithms}), and finds that \code{SmallGroup(216,153)}
 is the only such $G$ for which $\lb H, G\rb \cong N_5$.  It is easy
 to verify that there is a six-element subgroup $H\leq G$ such that
 $\lb H, G\rb \cong N_5$, so the size is $[G:H]= 36$. Therefore,
@@ -2717,17 +2719,28 @@ In this example, where $\lb H,G \rb$ is the pentagon, the index is $[G:H]=36$.
 Now, there might be a nontrivial subgroup $M < H$ such that in the interval
 $\lb M, G \rb$ there is a union of a filter and ideal in $\Sub(G)$ that is isomorphic to
 $\bL_{11}$. This would give us a representation of $\bL_{11}$ on smaller set than 216.
-Indeed, looking at the subgroup lattice of $G$ in \xgap, we see that, 
-$H$ has only two nontrivial proper subgroups.  These are
+Indeed, $H$ is cyclic of order 6, so it has exactly two nontrivial proper
+subgroups, one of order 2 and one of order 3.
 
 {\small 
 \begin{verbatim}
-M1:=Representative(ccsgB[2]);
-M2:=Representative(ccsgB[4]);
-IsSubgroup(H,Representative(ccsgB[2]));  # returns true
-IsSubgroup(H,Representative(ccsgB[4]));  # returns true
+subsH:=Filtered(List(ConjugacyClassesSubgroups(H), Representative),
+                x -> Size(x) > 1 and Size(x) < Size(H));
+M1:=First(subsH, x -> Size(x) = 2);
+M2:=First(subsH, x -> Size(x) = 3);
+IsSubgroup(H,M1);  # returns true
+IsSubgroup(H,M2);  # returns true
 \end{verbatim}
 }
+\begin{remark}
+Earlier versions of this computation selected \code{M1} and \code{M2} by
+their position in \code{ConjugacyClassesSubgroups(B)}.  That position is
+not stable across \gap releases, and by \gap 4.15 the subgroup at the
+position once used for \code{M2} is no longer a subgroup of $H$, so the
+argument silently ceased to hold.  Selecting by order, as above, is
+stable.  The same lesson applies throughout: identify a subgroup by a
+property, never by an index into a list \gap returns.
+\end{remark}
 We need to find a subgroup that covers one of these two subgroups
 and is not below \code{A} or \code{C}.
 {\small 
@@ -2986,10 +2999,18 @@ Section~\ref{sec:intro} about upper intervals in small groups.
 \item
 \code{pentagonSearch.g} verifies the claim made there that
 \code{SmallGroup(216,153)} is the smallest group having $N_5$ as an
-upper interval.  It examines every group of order at most 216 and every
-core-free subgroup of each, and finds exactly one such group; that group
-has twelve such subgroups $H$, forming a single conjugacy class, each
-cyclic of order 6 and so of index 36.
+upper interval.  It does not enumerate every subgroup, which would not
+finish: for each group of order at most 216 it examines only the
+subgroups that can occur at the bottom of such an interval.  Two
+observations cut the search down to those.  First, $H$ may be taken
+core-free, since $\lb H, G\rb \cong \lb H/N, G/N\rb$ where
+$N = \operatorname{Core}_G(H)$, and $G/N$ is smaller.  Second, the two
+coatoms of the interval are maximal subgroups $B$ and $C$ of $G$, and
+their meet in the interval is $B \meet C$, which is the bottom of the
+pentagon; so $H = B \meet C$ is an intersection of two maximal
+subgroups, and $B$ may be taken up to conjugacy.  Exactly one group is
+found.  In it, twelve subgroups $H$ witness the pentagon, forming a
+single conjugacy class, each cyclic of order 6 and so of index 36.
 \item
 \code{PJ11.gap} is the computation displayed after Figure~\ref{fig:L11},
 command for command; it represents $\bL_{11}$ first on 216 and then on
