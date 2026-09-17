@@ -99,14 +99,16 @@ Real output, trimmed, as `<name> <cardinality> <|Con(A)|>`:
     ...
     B28 16 7
 
-Pass that table back to engine one and the two are compared outright:
+Pass that table back to engine one and the two are compared outright, on both
+the cardinality and the number of congruences, so that a table generated from a
+stale or different algebra file is caught rather than read as agreement:
 
     cd scripts/python
     PYTHONPATH=. python3 -m finlatrep.check --uacalc-table /tmp/uacalc-table.txt \
         ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
         ../../article/SmallLatticeReps.tex
 
-    UACalc agrees on |Con(A)| for all 29 algebras.
+    UACalc agrees on |A| and |Con(A)| for all 29 algebras.
 
 or, from the top of the repository:
 

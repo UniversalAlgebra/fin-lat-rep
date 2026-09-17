@@ -3,7 +3,9 @@
      2026-09-13, at commit 9e1ef390ef7a1288cdabdfb449d23c9095c02173.
      It has six operations rather than seven and its congruence lattice has
      eight elements, so it is NOT L28.  Kept as a regression fixture: the
-     catalog check must fail on this file.  See fin-lat-rep issues #20, #22. -->
+     catalog check must fail on this file.  See fin-lat-rep issues #20, #22.
+     This file's sha256 is pinned in scripts/python/finlatrep/test_check.py,
+     which is where it has to live: a file cannot carry its own checksum. -->
 <algebraList>
 <algebra>
   <basicAlgebra>

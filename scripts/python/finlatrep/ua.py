@@ -11,6 +11,7 @@ Description: Reading finite algebras out of a UACalc `.ua` file.
 
 from __future__ import annotations
 
+import re
 import xml.etree.ElementTree as ElementTree
 from dataclasses import dataclass
 from pathlib import Path
@@ -18,6 +19,8 @@ from typing import List, Tuple
 
 from _utils.file_ops import read_text
 from _utils.pipeline_types import ErrorType, PipelineError, Result, sequence_results
+
+_INTEGER = re.compile(r"[+-]?\d+")
 
 
 @dataclass(frozen=True)
@@ -53,7 +56,17 @@ def _parse_operation(element: ElementTree.Element) -> Result[Operation, Pipeline
         )
     values: List[int] = []
     for row in element.findall(".//row"):
-        values.extend(int(token) for token in (row.text or "").replace(",", " ").split())
+        for token in (row.text or "").replace(",", " ").split():
+            # A stray token here is malformed input, not a bug, so it has to
+            # come back as an error rather than a ValueError out of int().
+            if not _INTEGER.fullmatch(token):
+                return Result.err(
+                    PipelineError(
+                        ErrorType.PARSING_ERROR,
+                        f"operation {name}: {token!r} in an operation table is not an integer",
+                    )
+                )
+            values.append(int(token))
     return Result.ok(Operation(name=name, arity=int(arity_text), table=tuple(values)))
 
 
@@ -107,9 +120,18 @@ def parse_algebras(text: str) -> Result[Tuple[Algebra, ...], PipelineError]:
         return Result.err(
             PipelineError(ErrorType.PARSING_ERROR, "file is not well-formed XML", cause=exc)
         )
-    parsed = sequence_results(
-        [_parse_algebra(element) for element in root.iter("basicAlgebra")]
-    )
+    elements = list(root.iter("basicAlgebra"))
+    if not elements:
+        # Otherwise the caller compares nothing, reports that everything it
+        # compared agreed, and exits 0.  A gate that does no work must fail.
+        return Result.err(
+            PipelineError(
+                ErrorType.VALIDATION_ERROR,
+                "no <basicAlgebra> elements: this is not a UACalc algebra file, "
+                "or it is empty",
+            )
+        )
+    parsed = sequence_results([_parse_algebra(element) for element in elements])
     return parsed.map(tuple)
 
 

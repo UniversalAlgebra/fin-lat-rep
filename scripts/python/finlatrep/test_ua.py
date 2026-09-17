@@ -61,6 +61,29 @@ class ParsingTests(unittest.TestCase):
         binary = WELL_FORMED.replace("<arity>1</arity>", "<arity>2</arity>")
         self.assertTrue(parse_algebras(binary).is_err)
 
+    def test_a_non_integer_table_entry_is_an_error_not_an_exception(self) -> None:
+        """Malformed input must come back as a Result, not a ValueError."""
+        outcome = parse_algebras(_with_table("0, x, 2"))
+        self.assertTrue(outcome.is_err)
+        self.assertEqual(outcome.unwrap_err().error_type, ErrorType.PARSING_ERROR)
+        self.assertIn("is not an integer", outcome.unwrap_err().message)
+
+    def test_a_negative_table_entry_parses_and_is_then_range_checked(self) -> None:
+        """`-1` is an integer, so it fails on range rather than on syntax."""
+        outcome = parse_algebras(_with_table("0, 1, -1"))
+        self.assertTrue(outcome.is_err)
+        self.assertEqual(outcome.unwrap_err().error_type, ErrorType.VALIDATION_ERROR)
+
+    def test_a_file_with_no_algebras_is_rejected(self) -> None:
+        """Otherwise the caller compares nothing and reports that all of it agreed."""
+        outcome = parse_algebras("<algebraList></algebraList>")
+        self.assertTrue(outcome.is_err)
+        self.assertEqual(outcome.unwrap_err().error_type, ErrorType.VALIDATION_ERROR)
+        self.assertIn("no <basicAlgebra>", outcome.unwrap_err().message)
+
+    def test_a_file_with_the_wrong_root_is_rejected(self) -> None:
+        self.assertTrue(parse_algebras("<notAlgebras><x/></notAlgebras>").is_err)
+
     def test_unary_operations_ignores_higher_arity(self) -> None:
         """Group files carry a binary multiplication the catalog check must skip."""
         binary = WELL_FORMED.replace("<arity>1</arity>", "<arity>2</arity>").replace(

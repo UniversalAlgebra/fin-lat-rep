@@ -144,44 +144,74 @@ def check_diagram_count(
     return Result.ok(None)
 
 
-def parse_uacalc_table(text: str) -> Result[Dict[str, int], PipelineError]:
+@dataclass(frozen=True)
+class UACalcRow:
+    """One line of the table scripts/jython/con_table.py emits."""
+
+    cardinality: int
+    congruences: int
+
+
+def parse_uacalc_table(text: str) -> Result[Dict[str, UACalcRow], PipelineError]:
     """Read `<name> <cardinality> <|Con(A)|>` lines from scripts/jython/con_table.py."""
-    sizes: Dict[str, int] = {}
+    rows: Dict[str, UACalcRow] = {}
     for number, line in enumerate(text.splitlines(), start=1):
         if not line.strip():
             continue
         fields = line.split()
-        if len(fields) != 3 or not fields[2].isdigit():
+        if len(fields) != 3 or not fields[1].isdigit() or not fields[2].isdigit():
             return Result.err(
                 PipelineError(
                     ErrorType.PARSING_ERROR,
                     f"line {number} of the UACalc table is not '<name> <card> <con>': {line!r}",
                 )
             )
-        sizes[fields[0]] = int(fields[2])
-    return Result.ok(sizes)
+        rows[fields[0]] = UACalcRow(cardinality=int(fields[1]), congruences=int(fields[2]))
+    return Result.ok(rows)
 
 
 def cross_check(
-    comparisons: Sequence[Comparison], uacalc_sizes: Dict[str, int]
+    comparisons: Sequence[Comparison], uacalc_rows: Dict[str, UACalcRow]
 ) -> Result[None, PipelineError]:
-    """Require UACalc to agree with our own |Con(A)| for every algebra.
+    """Require UACalc to agree with our own reading of every algebra.
 
     This is what makes the check a second opinion rather than a restatement:
     the article's algebras were produced with UACalc, so an independent
     implementation agreeing with it is evidence, and a disagreement is a bug in
     one of the two that has to be resolved before either is trusted.
+
+    Both numbers on each row are compared, not just the congruence count.  A
+    table generated from a different or stale algebra file would otherwise
+    still read as agreement whenever a name and a congruence count happened to
+    coincide, which is precisely when a mismatched table is hardest to notice.
     """
     disagreements = [
-        f"{c.algebra}: we compute {c.computed.size}, UACalc computes {uacalc_sizes[c.algebra]}"
+        message
         for c in comparisons
-        if c.algebra in uacalc_sizes and uacalc_sizes[c.algebra] != c.computed.size
+        if c.algebra in uacalc_rows
+        for message in _row_disagreements(c, uacalc_rows[c.algebra])
     ]
-    missing = [c.algebra for c in comparisons if c.algebra not in uacalc_sizes]
+    missing = [c.algebra for c in comparisons if c.algebra not in uacalc_rows]
     if disagreements or missing:
         detail = "; ".join(disagreements + [f"{m}: absent from the UACalc table" for m in missing])
         return Result.err(PipelineError(ErrorType.VALIDATION_ERROR, detail))
     return Result.ok(None)
+
+
+def _row_disagreements(comparison: Comparison, row: UACalcRow) -> List[str]:
+    """Every way one UACalc row fails to match what we computed."""
+    problems = []
+    if row.cardinality != comparison.cardinality:
+        problems.append(
+            f"{comparison.algebra}: we read |A| = {comparison.cardinality}, "
+            f"UACalc read {row.cardinality} (the table is from a different algebra file)"
+        )
+    if row.congruences != comparison.computed.size:
+        problems.append(
+            f"{comparison.algebra}: we compute {comparison.computed.size}, "
+            f"UACalc computes {row.congruences}"
+        )
+    return problems
 
 
 def run(algebra_file: Path, article: Path) -> Result[Tuple[Comparison, ...], PipelineError]:
@@ -233,12 +263,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         agreed = (
             read_text(args.uacalc_table)
             .and_then(parse_uacalc_table)
-            .and_then(lambda sizes: cross_check(comparisons, sizes))
+            .and_then(lambda rows: cross_check(comparisons, rows))
         )
         if agreed.is_err:
             print(f"error: UACalc disagrees: {agreed.unwrap_err()}", file=sys.stderr)
             return 2
-        print(f"UACalc agrees on |Con(A)| for all {len(comparisons)} algebras.\n")
+        print(f"UACalc agrees on |A| and |Con(A)| for all {len(comparisons)} algebras.\n")
 
     return _report(comparisons)
 

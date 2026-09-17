@@ -7,6 +7,7 @@ Description: Tests for the catalog check, including the regression that shows
 
 from __future__ import annotations
 
+import hashlib
 import unittest
 from pathlib import Path
 from typing import Sequence
@@ -18,6 +19,7 @@ from finlatrep.check import (  # noqa: I001
     check_diagram_count,
     cross_check,
     lattice_index_of,
+    UACalcRow,
     parse_uacalc_table,
     run,
 )
@@ -27,6 +29,9 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 ARTICLE = REPO / "article" / "SmallLatticeReps.tex"
 PRE_FIX_B28 = HERE.parent / "fixtures" / "B28-pre-fix.ua"
+# Recorded here rather than inside the fixture, which cannot contain its own
+# checksum.  Taken from AlgebraFiles commit 9e1ef390.
+FIXTURE_SHA256 = "8369d4447d5b3403d9621aadb45c3864b1925cc567843db4e866b87efc53ade6"
 
 
 class NamingTests(unittest.TestCase):
@@ -68,6 +73,17 @@ class RegressionTests(unittest.TestCase):
     def test_the_fixture_is_present(self) -> None:
         self.assertTrue(PRE_FIX_B28.is_file(), f"not found: {PRE_FIX_B28}")
 
+    def test_the_fixture_is_the_algebra_it_claims_to_be(self) -> None:
+        """Pin the fixture by checksum, not just by provenance comment.
+
+        The whole suite's claim to have teeth rests on this file being the
+        defective B28 and not something that drifted.  An accidental edit
+        would otherwise turn the regression test into a test of whatever the
+        file became.
+        """
+        digest = hashlib.sha256(PRE_FIX_B28.read_bytes()).hexdigest()
+        self.assertEqual(digest, FIXTURE_SHA256)
+
     def test_the_pre_fix_b28_is_reported_as_a_mismatch(self) -> None:
         comparisons = run(PRE_FIX_B28, ARTICLE).unwrap()
         self.assertEqual(len(comparisons), 1)
@@ -95,26 +111,44 @@ class CrossCheckTests(unittest.TestCase):
         return run(PRE_FIX_B28, ARTICLE).unwrap()
 
     def test_reads_a_well_formed_table(self) -> None:
-        sizes = parse_uacalc_table("B1 4 5\nB28 16 7\n").unwrap()
-        self.assertEqual(sizes, {"B1": 5, "B28": 7})
+        rows = parse_uacalc_table("B1 4 5\nB28 16 7\n").unwrap()
+        self.assertEqual(rows["B1"], UACalcRow(cardinality=4, congruences=5))
+        self.assertEqual(rows["B28"], UACalcRow(cardinality=16, congruences=7))
 
     def test_blank_lines_are_ignored(self) -> None:
-        self.assertEqual(parse_uacalc_table("\nB1 4 5\n\n").unwrap(), {"B1": 5})
+        rows = parse_uacalc_table("\nB1 4 5\n\n").unwrap()
+        self.assertEqual(rows, {"B1": UACalcRow(cardinality=4, congruences=5)})
 
     def test_a_malformed_line_is_an_error(self) -> None:
         outcome = parse_uacalc_table("B1 4\n")
         self.assertTrue(outcome.is_err)
         self.assertEqual(outcome.unwrap_err().error_type, ErrorType.PARSING_ERROR)
 
-    def test_agreement_passes(self) -> None:
-        """Our own computation says 8 for the pre-fix B28, so 8 is agreement."""
-        self.assertTrue(cross_check(self._b28(), {"B28": 8}).is_ok)
+    def test_a_non_numeric_cardinality_is_an_error(self) -> None:
+        self.assertTrue(parse_uacalc_table("B1 four 5\n").is_err)
 
-    def test_disagreement_is_reported_with_both_numbers(self) -> None:
-        outcome = cross_check(self._b28(), {"B28": 7})
+    def test_agreement_passes(self) -> None:
+        """Our own reading of the pre-fix B28 is |A| = 16 with 8 congruences."""
+        row = UACalcRow(cardinality=16, congruences=8)
+        self.assertTrue(cross_check(self._b28(), {"B28": row}).is_ok)
+
+    def test_disagreement_on_congruences_is_reported_with_both_numbers(self) -> None:
+        outcome = cross_check(self._b28(), {"B28": UACalcRow(16, 7)})
         self.assertTrue(outcome.is_err)
         self.assertIn("we compute 8", outcome.unwrap_err().message)
         self.assertIn("UACalc computes 7", outcome.unwrap_err().message)
+
+    def test_a_table_from_a_different_algebra_file_is_caught(self) -> None:
+        """The congruence count alone can coincide; the cardinality gives it away.
+
+        Without comparing |A| a stale table reads as agreement whenever a name
+        and a congruence count happen to match, which is exactly when a
+        mismatched table is hardest to notice.
+        """
+        outcome = cross_check(self._b28(), {"B28": UACalcRow(cardinality=99, congruences=8)})
+        self.assertTrue(outcome.is_err)
+        self.assertIn("we read |A| = 16", outcome.unwrap_err().message)
+        self.assertIn("different algebra file", outcome.unwrap_err().message)
 
     def test_an_algebra_absent_from_the_table_is_reported(self) -> None:
         outcome = cross_check(self._b28(), {})
