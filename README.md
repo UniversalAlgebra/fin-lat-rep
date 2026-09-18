@@ -1,17 +1,31 @@
 # fin-lat-rep
 
-This repository collects some resources for preparing the article on
-representing small lattices as congruence lattices of finite algebras.  The
-LaTeX files for the article itself are in the
-[article directory](https://github.com/UniversalAlgebra/fin-lat-rep/tree/master/article).
+Source and supporting material for *Representing Finite Lattices as Congruence
+Lattices of Finite Algebras*, by William DeMeo, Ralph Freese and Peter Jipsen.
+The LaTeX source of the article is in [`article/`][article].
 
-Visitors, for questions, comments, or suggestions please contact the authors listed below,
-or post a message on the
-[wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki),
-or [submit an issue][].
+It asks which finite lattices arise as the congruence lattice of a finite
+algebra, and answers it for the small ones: Section 4 tabulates 35 lattices of
+at most seven elements and, for 29 of them, a finite unary algebra
+B<sub>i</sub> whose congruence lattice is the L<sub>i</sub> drawn beside it.
 
-Authors, to keep track of todo items use the [issue tracker][], or post
-your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-rep/wiki).
+## Building and checking it
+
+One command sets up everything, and installs nothing into your system:
+
+    nix develop
+
+That shell carries GAP with its Small Groups Library, a JDK, Jython, the
+[Universal Algebra Calculator][], TeX Live, Python, `make` and `gh`, pinned by
+`flake.lock`, so that everyone builds the paper with the same software.  Then:
+
+    make paper          build article/SmallLatticeReps.pdf
+    make uacalc-smoke   check that the calculator starts and stays up
+    make help           list every target
+
+`uacalc` opens the calculator on an algebra file and `uacalc-cli` is its Jython
+command line, for driving it without a display; both already know where the
+jars are.
 
 ## What is where
 
@@ -24,103 +38,21 @@ your comments on the [wiki pages](https://github.com/UniversalAlgebra/fin-lat-re
 | `programs/` | see [`programs/README.md`](programs/README.md): the GAP programs now live in [UniversalAlgebra/fin-lat-rep-gap][] |
 | `uacalc-files/` | see [`uacalc-files/README.md`](uacalc-files/README.md): the algebra files now live in [UACalc/AlgebraFiles][] |
 
-The software behind the article is in three other repositories, as follows:
+The overalgebras construction is in [williamdemeo/Overalgebras][], and the
+closure algorithm, the article's main workhorse, is part of the calculator
+itself; see `BasicPartition.java` in [UACalc/uacalcsrc][].
 
-+  the GAP programs for the group-theoretic arguments, in
-   [UniversalAlgebra/fin-lat-rep-gap][];
-+  the algebras B<sub>i</sub> and the groups and G-sets, as files the
-   [Universal Algebra Calculator][] reads, in [UACalc/AlgebraFiles][];
-+  the overalgebras construction, in [williamdemeo/Overalgebras][].
+## Contributing
 
-The closure algorithm, which is the article's main workhorse, is part of the
-Universal Algebra Calculator itself; see `BasicPartition.java` in
-[UACalc/uacalcsrc][].
+[CONTRIBUTING.md][] has the git workflow, how to add a BibTeX entry, and what
+to do when the shell or the LaTeX build misbehaves; the roadmap is
+[`docs/GITHUB_PROJECT.md`][plan].  Questions and suggestions are welcome as
+[issues][].
 
-## git at the command line
-
-First, stage your latest changes for commit.
-
-    git add SmallLatticeReps.tex
-	
-Then, commit your changes locally.
-
-    git commit -m "change this part because..."
-
-Next, pull down the latest remote changes.
-
-	git pull
-	
-This might ask you to commit a merge message.  Do it!
-If git isn't able to do the merge automatically, it will give you a message
-indicating that and then you'll need to do a manual merge, which is a giant pain
-in the ass.  A merge tool like meld might be helpful.  You could also try `git diff`
-to see differences between local and remote versions.
-
-Finally, push your merged local repo to the remote repo.
-
-    git push origin master
-	
-## compiling the document
-
-In case there were additional references added since last time you
-compiled, you should first delete the file inputs/refs.bib. Then do
-
-    pdflatex SmallLatticeReps.tex
-    bibtex SmallLatticeReps.aux
-	pdflatex SmallLatticeReps.tex
-	pdflatex SmallLatticeReps.tex
-	
-You could also try typing `make` at the command line. It might work. It might not work.
-
-
-## Emacs/Magit workflow
-This section describes a few basic commands for committing and pushing changes
-directly from **Emacs** using magit.
-
-### To install magit
-
-1. Put the following in your .emacs file:
-
-        ;;
-        ;; For Magit
-    	;;
-    	(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.milkbox.net/packages/")))
-    	;; If you want to use magit, install the magit package
-    	;; (if you haven't done so already) with the following commands:
-    	;; \M package-refresh-contents
-    	;; \M package-install [Enter] magit
-    	(define-key global-map "\M-gm" 'magit-status)
-
-   
-2. Restart emacs and do
-
-        M-x package-install <enter>
-		magit <enter>
-
-### use magit
-
-1. Activate the magit status buffer with `M-x g m`.
-
-2. Move the point down to appropriate line in the `Unstanged changes` section and
-   hit the `s` key.
-
-3. Type `c` `c`.
-
-4. write a commit message, hopefully explaining why (not what) changes were
-   made.
-
-5. Type `C-c` `C-c` to commit the changes.
-
-6. Type `P` `P` to push the changes to github.
-
-
-
-
-[submit an issue]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
-[issue tracker]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
-
+[article]: https://github.com/UniversalAlgebra/fin-lat-rep/tree/master/article
+[CONTRIBUTING.md]: CONTRIBUTING.md
+[plan]: docs/GITHUB_PROJECT.md
+[issues]: https://github.com/UniversalAlgebra/fin-lat-rep/issues
 [UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [UACalc/uacalcsrc]: https://github.com/UACalc/uacalcsrc
