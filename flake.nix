@@ -398,7 +398,7 @@
                   echo '  make paper          # build article/SmallLatticeReps.pdf'
                   echo '  make check-catalog  # check every algebra against the lattice drawn beside it'
                   echo '  make uacalc-smoke   # check that the calculator comes up (Linux only)'
-                  echo '  make verify         # every check that gates a change; what CI runs'
+                  echo '  make verify         # the computational checks CI runs on a pull request'
                   echo '  make help           # list every target'
                   echo ' ----------------------------------------------'
                   echo

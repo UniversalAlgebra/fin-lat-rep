@@ -83,8 +83,9 @@ from 2013.  Anything that has to be re-run belongs in `uacalc-cli`.
 
     make verify
 
-runs everything that gates a change, and is exactly what CI runs on a pull
-request (`.github/workflows/verify.yml`).  In order, it does the following:
+runs every computational check that gates a change, and is one of the two jobs
+CI runs on a pull request (`.github/workflows/verify.yml`).  In order, it does
+the following:
 
 +  `make test`, the unit suites under `scripts/python`;
 +  `make uacalc-table`, which has UACalc itself compute |Con(A)| for every
@@ -98,6 +99,17 @@ request (`.github/workflows/verify.yml`).  In order, it does the following:
 
 About a minute all told, most of it GAP.  Each step runs on its own too, and
 `make help` lists them.
+
+The other CI job is
+
+    nix flake check
+
+which evaluates every flake output and runs the UACalc smoke test under a
+virtual framebuffer.  It is not folded into `make verify` because every Make
+target here runs without Nix, and the two answer different questions: `verify`
+asks whether the mathematics still holds, `nix flake check` whether the
+environment still builds.  Run it yourself after touching `flake.nix` or
+`flake.lock`.
 
     make verify-slow
 

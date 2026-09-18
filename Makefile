@@ -3,7 +3,8 @@
 # Front door for the repository.  It carries the paper, the catalog check from
 # issue #29, the Universal Algebra Calculator's smoke test from issue #26, the
 # project targets from issue #27, which drive the github-project engine, and
-# `verify`, from issue #30, which is everything that gates a change.
+# `verify`, from issue #30: every computational check that gates a change.
+# CI runs `verify` and, beside it, `nix flake check`; see the note at `verify`.
 #
 # Every target expects the development shell.  Run `nix develop` first: that
 # is where pdflatex, uacalc and xvfb-run are, and nothing here asks you to
@@ -130,10 +131,18 @@ verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 	  exit 2; }
 	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A -o 4g scripts/gap/verify-fast.g
 
-# Everything that gates a change, in the order that fails fastest: the unit
-# suites, then the catalog check with UACalc as the second engine, then GAP.
-# Sub-makes rather than prerequisites so the order holds under -j too.
-verify: ## Run every check that gates a change (what CI runs on a pull request)
+# Every computational check that gates a change, in the order that fails
+# fastest: the unit suites, then the catalog check with UACalc as the second
+# engine, then GAP.  Sub-makes rather than prerequisites so the order holds
+# under -j too.
+#
+# CI runs this and `nix flake check`, which evaluates every flake output and
+# runs the UACalc smoke test.  That one is not folded in here because every
+# target in this file runs without Nix, and the two answer different
+# questions: `verify` asks whether the mathematics still holds, `nix flake
+# check` whether the environment still builds.  Run it yourself after
+# touching flake.nix or flake.lock.
+verify: ## Run the computational checks that gate a change (CI runs this and nix flake check)
 	$(MAKE) test
 	$(MAKE) uacalc-table
 	$(MAKE) check-catalog UACALC_TABLE=$(BUILD)/uacalc-table.txt
