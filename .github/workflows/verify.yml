@@ -1,0 +1,76 @@
+# Runs `make verify` on every change that could affect what the article's
+# computations say: the checker, the algebra or GAP pins, the article's catalog
+# and diagrams, the Makefile, the flake, and this workflow itself.  Any of
+# those slipping through unverified would make the gate hollow, which is why
+# the path list is long.
+#
+# `nix develop .#ci` is the dev shell without TeX Live, which is by far the
+# largest closure and is not needed to verify anything; the paper has its own
+# workflow.  Everything the shell pulls comes from cache.nixos.org except the
+# UACalc wrapper, which is small.
+name: Verify
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'uacalc-files/**'
+      - 'article/SmallLatticeReps.tex'
+      - 'article/inputs/tikz/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'Makefile'
+      - '.github/workflows/verify.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'uacalc-files/**'
+      - 'article/SmallLatticeReps.tex'
+      - 'article/inputs/tikz/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'Makefile'
+      - '.github/workflows/verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: make verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      # One command, the same one a contributor runs.  The shell provides GAP,
+      # the JDK, Jython, UACalc, Python, and the pinned algebras and GAP
+      # programs as $ALGEBRAFILES_DIR and $FINLATREPGAP_DIR.
+      - name: Verify
+        run: nix develop .#ci --command make verify
+
+  flake-check:
+    name: nix flake check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      # Evaluates every output and runs the flake's checks, which include the
+      # UACalc GUI smoke test under a virtual framebuffer.  This is what catches
+      # a JDK bump that breaks Swing.
+      - name: Check the flake
+        run: nix flake check --print-build-logs
