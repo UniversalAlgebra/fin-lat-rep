@@ -82,9 +82,17 @@ check-catalog: ## Check every algebra against the lattice the article draws
 # Milestone 1's exit criterion for UACalc.  A GUI does not exit, so the test
 # is that it is still alive when the timeout fires, which `timeout` reports as
 # status 124; given no display it exits 0 instead, and given no uacalc.jar it
-# exits 1.  Linux only, because xvfb-run is.  `nix flake check` runs the same
-# test in the sandbox.
-uacalc-smoke: ## Launch the UACalc GUI under a framebuffer and require it to survive
+# exits 1.  `nix flake check` runs the same test in the sandbox.
+#
+# Linux only, because xvfb-run is: flake.nix puts it in the shell on Linux and
+# not on Darwin.  The guard says that, rather than leaving a Darwin reader with
+# `xvfb-run: command not found` to interpret.
+uacalc-smoke: ## Check the UACalc GUI comes up and stays up (Linux only)
+	@command -v xvfb-run > /dev/null || { \
+	  echo "error: xvfb-run is not on PATH, so this target cannot run here."; \
+	  echo "       It is Linux only; the dev shell omits xvfb-run on Darwin."; \
+	  echo "       Run 'uacalc' yourself to see the GUI."; \
+	  exit 2; }
 	timeout 30 xvfb-run -a uacalc; test $$? -eq 124
 
 test: test-utils test-finlatrep ## Run every test suite

@@ -67,15 +67,17 @@ from 2013.  Anything that has to be re-run belongs in `uacalc-cli`.
 Branch from the issue.  The "Create a branch" button on an issue's page names
 the branch after it and tells you how to fetch it, which keeps the branch, the
 issue and the pull request tied together with no naming convention to remember.
+For issue #26 it produced `26-m1-2-package-uacalc-in-the-flake`.
 
     git fetch origin
-    git switch 26-m1-2-package-uacalc-in-the-flake
+    git switch <the branch that button made>
 
-Commit, push, and open a pull request whose description ends with `Closes #26`
-as a paragraph of its own, which is the form GitHub's auto-close parser
-recognizes.  Leave that description unwrapped: GitHub renders every newline in
-a pull request body as a line break, so a hard-wrapped one displays ragged.
-Commit messages are the opposite, and wrap at about 80 columns.
+Commit, push, and open a pull request whose description ends with `Closes #N`,
+naming your own issue, as a paragraph of its own, which is the form GitHub's
+auto-close parser recognizes.  Leave that description unwrapped: GitHub renders
+every newline in a pull request body as a line break, so a hard-wrapped one
+displays ragged.  Commit messages are the opposite, and wrap at about 80
+columns.
 
 ## Emacs and magit
 

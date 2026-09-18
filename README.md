@@ -20,7 +20,7 @@ That shell carries GAP with its Small Groups Library, a JDK, Jython, the
 `flake.lock`, so that everyone builds the paper with the same software.  Then:
 
     make paper          build article/SmallLatticeReps.pdf
-    make uacalc-smoke   check that the calculator starts and stays up
+    make uacalc-smoke   check that the calculator comes up (Linux only)
     make help           list every target
 
 `uacalc` opens the calculator on an algebra file and `uacalc-cli` is its Jython
