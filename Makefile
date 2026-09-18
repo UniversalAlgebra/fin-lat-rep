@@ -103,12 +103,21 @@ test-utils: ## Run the shared functional primitives' tests
 test-finlatrep: ## Run the catalog checker's tests
 	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s finlatrep -p "test_*.py"
 
+# All three scripts, not just one: the targets below run lint, populate and
+# update, so a GHPROJECT_DIR holding only some of them would pass a
+# single-script guard and then fail with a raw python file-not-found instead of
+# the status 2 this promises.
 _check-ghproject:
-	@test -z "$(GHPROJECT_DIR)" || test -f "$(GHPROJECT_DIR)/scripts/gh_project_update.py" || { \
-	  echo "error: github-project engine not found at $(GHPROJECT_DIR)"; \
-	  echo "       clone williamdemeo/github-project there, or unset"; \
-	  echo "       GHPROJECT_DIR to use the flake input"; \
-	  exit 2; }
+	@if [ -n "$(GHPROJECT_DIR)" ]; then \
+	  for s in lint populate update; do \
+	    test -f "$(GHPROJECT_DIR)/scripts/gh_project_$$s.py" || { \
+	      echo "error: github-project engine not usable at $(GHPROJECT_DIR)"; \
+	      echo "       missing scripts/gh_project_$$s.py"; \
+	      echo "       clone williamdemeo/github-project there, or unset"; \
+	      echo "       GHPROJECT_DIR to use the flake input"; \
+	      exit 2; }; \
+	  done; \
+	fi
 
 project-lint: _check-ghproject ## Check the plan file for structural defects
 	$(GHPROJECT_LINT) $(PLAN)

@@ -62,8 +62,11 @@ importable.
     B3 7 6
 
 The wrapper sets `JYTHONPATH`, `CLASSPATH` and `UACALC_JARS` to the same five
-jars, so there is nothing to arrange by hand.  The algebra files are in
-[UACalc/AlgebraFiles][].
+jars, so there is nothing to arrange by hand.  The algebras are in
+[UACalc/AlgebraFiles][], which the flake pins too: the shell sets
+`$ALGEBRAFILES_DIR` to that pinned copy, which is what `make check-catalog`
+reads when you do not say otherwise, and `nix flake update algebrafiles` is how
+it moves.
 
 The [Scala REPL][scala-repl], `scala -classpath uacalc.jar`, is the exploratory
 path only: it is documented for interactive use, with no scripted invocation

@@ -26,7 +26,19 @@
   # it moves.
   inputs.github-project.url = "github:williamdemeo/github-project";
 
-  outputs = { nixpkgs, github-project, ... }:
+  # The algebras themselves.  They live in UACalc/AlgebraFiles rather than in
+  # this repository (see uacalc-files/README.md), and `make check-catalog`
+  # needs them, so the shell hands them over rather than asking a contributor
+  # to have a checkout in the right place.  Pinned, which the plan's M2-1
+  # prefers over fetching at check time: a pinned copy is something the check
+  # can be stale AGAINST, and `nix flake update algebrafiles` is how it moves.
+  # Not a flake, so `flake = false` and the store path is the directory.
+  inputs.algebrafiles = {
+    url = "github:UACalc/AlgebraFiles";
+    flake = false;
+  };
+
+  outputs = { nixpkgs, github-project, algebrafiles, ... }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
@@ -304,6 +316,13 @@
             # xvfb-run, for the headless UACalc GUI smoke test of issue #26.  X
             # is a Linux concern here; on Darwin the shell does without it.
             ++ pkgs.lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.xvfb-run;
+
+            # `make check-catalog` reads $(ALGEBRAFILES_DIR), whose default in
+            # the Makefile is a personal checkout path; `?=` yields to this, so
+            # inside the shell the check runs against the pinned algebras with
+            # no argument and no checkout, and outside it the Makefile default
+            # still applies.
+            ALGEBRAFILES_DIR = "${algebrafiles}";
 
             # One line, and on stderr, so that `nix develop --command ...`
             # leaves stdout to whatever it was asked to run.

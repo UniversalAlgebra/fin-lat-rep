@@ -8,6 +8,11 @@ about one of those entries in a couple of minutes.
 `make check-catalog` does all 29 at once.  Read that if you want the gate.
 This page is the recipe.
 
+`$ALGEBRAFILES_DIR` below is set by the development shell, which pins
+[UACalc/AlgebraFiles] as a flake input, so the commands run as written from
+`nix develop` with nothing to clone.  Outside the shell, point it at your own
+checkout, or give any `.ua` file instead.
+
 ## First, what the answer should look like
 
 The catalog is lattices of size **at most** seven, not all of size seven.  Of
@@ -30,7 +35,7 @@ No dependencies beyond Python 3.
 
     cd scripts/python
     PYTHONPATH=. python3 -m finlatrep.check \
-        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
+        "$ALGEBRAFILES_DIR/CongruenceLatReps/SmallLatticeReps.ua" \
         ../../article/SmallLatticeReps.tex
 
 Real output, trimmed:
@@ -83,7 +88,7 @@ and Freese, in [UACalc/UACalc_CLI] and documented at
 `nix develop` the recipe is one command with nothing to arrange first:
 
     uacalc-cli scripts/jython/con_table.py \
-        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua
+        "$ALGEBRAFILES_DIR/CongruenceLatReps/SmallLatticeReps.ua"
 
 `uacalc-cli` is Jython with UACalc's five jars already importable, and it
 exports `UACALC_JARS`, which is what `con_table.py` reads.  UACalc's own
@@ -110,7 +115,7 @@ table generated from a stale or different algebra file is caught rather than
 read as agreement:
 
     uacalc-cli scripts/jython/con_table.py \
-        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
+        "$ALGEBRAFILES_DIR/CongruenceLatReps/SmallLatticeReps.ua" \
         > /tmp/uacalc-table.txt
     make check-catalog UACALC_TABLE=/tmp/uacalc-table.txt
 
@@ -123,7 +128,7 @@ or the same thing from `scripts/python`, if you want the checker directly:
 
     cd scripts/python
     PYTHONPATH=. python3 -m finlatrep.check --uacalc-table /tmp/uacalc-table.txt \
-        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
+        "$ALGEBRAFILES_DIR/CongruenceLatReps/SmallLatticeReps.ua" \
         ../../article/SmallLatticeReps.tex
 
 Jython is Python 2, which is why `scripts/jython/` shares no code with
@@ -173,4 +178,5 @@ That is what this page, and the checker beside it, are for.
 [#20]: https://github.com/UniversalAlgebra/fin-lat-rep/issues/20
 [UACalc/UACalc_CLI]: https://github.com/UACalc/UACalc_CLI
 [`UACalc/uacalcsrc`]: https://github.com/UACalc/uacalcsrc
+[UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [uacalc-at-the-command-line]: https://universalalgebra.wordpress.com/documentation/uacalc/uacalc-at-the-command-line/

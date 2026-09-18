@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "algebrafiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789687758,
+        "narHash": "sha256-qYt1Zu3lxNJK2/YJCZE8MXXM2bis8+dAyigs0DyVHII=",
+        "owner": "UACalc",
+        "repo": "AlgebraFiles",
+        "rev": "aece7be88a7490ef3b882176744ca47c9af4f824",
+        "type": "github"
+      },
+      "original": {
+        "owner": "UACalc",
+        "repo": "AlgebraFiles",
+        "type": "github"
+      }
+    },
     "github-project": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -52,6 +68,7 @@
     },
     "root": {
       "inputs": {
+        "algebrafiles": "algebrafiles",
         "github-project": "github-project",
         "nixpkgs": "nixpkgs_2"
       }

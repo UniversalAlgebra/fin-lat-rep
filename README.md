@@ -18,10 +18,10 @@ One command sets up everything, and installs nothing permanently on your system:
 
     nix develop
 
-That command lands you in a [Nix][] "devShell" with all the tools you need: GAP with its Small Groups Library, a JDK, the [Universal
-GAP with its Small Groups Library, a JDK, the [Universal
-Algebra Calculator][], TeX Live, Jython, Python, `make` and `gh`, all pinned by
-`flake.lock`, so that everyone builds the paper with the same software.
+That command lands you in a [Nix][] "devShell" with all the tools you need:
+GAP with its Small Groups Library, a JDK, the [Universal Algebra Calculator][],
+TeX Live, Jython, Python, `make` and `gh`, all pinned by `flake.lock`, so that
+everyone builds the paper with the same software.
 
 Once you're in the devShell,
 
