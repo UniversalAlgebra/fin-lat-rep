@@ -100,6 +100,19 @@ the following:
 About a minute all told, most of it GAP.  Each step runs on its own too, and
 `make help` lists them.
 
+Every check prints one line: a mark, the file that ran it, and what it tested,
+as follows:
+
+    ✅ finlatrep/test_ua.py  a short table is rejected
+    ✅ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 7   L28 has 7
+    ✅ verify-fast.g  [G:H] = 36
+
+A failing check prints ❌ instead, with its detail after the suite, and each
+stage ends with a marked summary; `make verify` ends with one of its own.  The
+unit tests get their line from `_utils/run_tests.py`, which prints the first
+sentence of the test's docstring, or its name in words when it has none, so a
+well-named test is a well-described one.
+
 The other CI job is
 
     nix flake check

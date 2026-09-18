@@ -18,7 +18,7 @@ checkout, or give any `.ua` file instead.
 The catalog is lattices of size **at most** seven, not all of size seven.  Of
 the 35, **2 have five elements, 6 have six, and 27 have seven**.  So:
 
-    B1         |A| =  4   |Con(A)| = 5   L1 has 5   ok
+    ✅ finlatrep/check.py  B1         |A| =  4   |Con(A)| = 5   L1 has 5
 
 is correct and not a shortfall.  L<sub>1</sub> is the pentagon N<sub>5</sub>,
 and the article says as much: *"the pentagon, which is typically denoted by
@@ -26,8 +26,8 @@ N₅, but in our table in Section 4 we label it L₁"*, together with *"the
 smallest algebra that represents N₅ has just four elements"*.  B1 has exactly
 four.
 
-The one number that should alarm you is a **`MISMATCH`**, which is what the
-defect in [#20] looked like.
+The one line that should alarm you starts with ❌, which is what the defect
+in [#20] looked like.
 
 ## Engine one: this repository's own implementation
 
@@ -38,14 +38,16 @@ No dependencies beyond Python 3.
         "$ALGEBRAFILES_DIR/CongruenceLatReps/SmallLatticeReps.ua" \
         ../../article/SmallLatticeReps.tex
 
-Real output, trimmed:
+Real output, trimmed.  Every line is a mark, the script that made the check,
+and what it compared; a disagreement prints ❌ and its two covering relations:
 
-    B1         |A| =  4   |Con(A)| = 5   L1 has 5   ok
-    B2         |A| =  3   |Con(A)| = 5   L2 has 5   ok
+    ✅ finlatrep/check.py  the article draws a diagram for each of the 29 lattices these algebras are named for
+    ✅ finlatrep/check.py  B1         |A| =  4   |Con(A)| = 5   L1 has 5
+    ✅ finlatrep/check.py  B2         |A| =  3   |Con(A)| = 5   L2 has 5
     ...
-    B28        |A| = 16   |Con(A)| = 7   L28 has 7   ok
+    ✅ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 7   L28 has 7
     ...
-    All 29 algebras agree with the lattices the article draws.
+    ✅ finlatrep/check.py  all 29 algebras agree with the lattices the article draws.
 
 It computes Con(A) by forming each principal congruence Cg(a, b), the least
 congruence identifying a and b, and then join-closing them, since every
@@ -55,7 +57,7 @@ L<sub>i</sub> straight out of the TikZ in the article's catalog subsection.
 When the two disagree it says so with both covering relations, which is the
 form you can actually check against the picture:
 
-    B28        |A| = 16   |Con(A)| = 8   L28 has 7   MISMATCH
+    ❌ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 8   L28 has 7
 
       B28 does not represent L28:
         Con(B28) has 8 elements, covers [(1, 0), (2, 1), (3, 2), (4, 3), (5, 4), (6, 0), (7, 5), (7, 6)]
@@ -122,10 +124,14 @@ read as agreement:
 (`make verify` does exactly this, with the table at `build/uacalc-table.txt`,
 and then runs the GAP checks; that is the gate, and this page is the recipe.)
 
-    UACalc agrees on |A| and |Con(A)| for all 29 algebras.
-      B1         |A| =  4   |Con(A)| = 5   L1 has 5   ok
-      ...
-    All 29 algebras agree with the lattices the article draws.
+    ✅ finlatrep/check.py  B1         UACalc also reads |A| =  4 and computes |Con(A)| = 5
+    ...
+    ✅ finlatrep/check.py  UACalc agrees on |A| and |Con(A)| for all 29 algebras.
+
+    ✅ finlatrep/check.py  the article draws a diagram for each of the 29 lattices these algebras are named for
+    ✅ finlatrep/check.py  B1         |A| =  4   |Con(A)| = 5   L1 has 5
+    ...
+    ✅ finlatrep/check.py  all 29 algebras agree with the lattices the article draws.
 
 or the same thing from `scripts/python`, if you want the checker directly:
 
@@ -151,7 +157,7 @@ Worked, on that one-algebra fixture.  Engine one:
     PYTHONPATH=. python3 -m finlatrep.check \
         fixtures/B28-pre-fix.ua ../../article/SmallLatticeReps.tex
 
-    B28        |A| = 16   |Con(A)| = 8   L28 has 7   MISMATCH
+    ❌ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 8   L28 has 7
 
 Engine two, on the same file:
 

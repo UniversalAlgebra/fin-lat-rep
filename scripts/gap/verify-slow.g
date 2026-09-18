@@ -7,14 +7,22 @@
 #
 # See verify-fast.g for the conventions; this file follows them.
 
+# GAP wraps its output at the screen width, 80 columns when there is no
+# terminal, which broke the marked lines below in two; 4096 is the widest
+# it allows.
+SizeScreen([ 4096 ]);
+
 dir := GAPInfo.SystemEnvironment.FINLATREPGAP_DIR;
+me := "verify-slow.g";
+passes := 0;
 failures := 0;
 
 check := function(what, got, want)
     if got = want then
-        Print("  ok    ", what, "\n");
+        Print("✅ ", me, "  ", what, "\n");
+        passes := passes + 1;
     else
-        Print("  FAIL  ", what, "\n        got  ", got, "\n        want ", want, "\n");
+        Print("❌ ", me, "  ", what, "\n        got  ", got, "\n        want ", want, "\n");
         failures := failures + 1;
     fi;
 end;
@@ -39,8 +47,8 @@ if Length(found) = 1 then
 fi;
 
 if failures > 0 then
-    Print("\n", failures, " assertion(s) failed.\n");
+    Print("\n❌ ", me, "  ", failures, " of ", passes + failures, " assertions failed.\n");
     QUIT_GAP(1);
 fi;
-Print("\nAll slow GAP checks agree with the article.\n");
+Print("\n✅ ", me, "  all ", passes, " assertions hold; the slow GAP checks agree with the article.\n");
 QUIT_GAP(0);

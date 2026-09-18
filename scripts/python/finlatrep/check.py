@@ -36,6 +36,12 @@ from finlatrep.ua import Algebra, read_algebras
 _ALGEBRA_NAME = re.compile(r"^B(\d+)(?:-(\w+))?$")
 
 
+# Every line this script prints about a check starts with a mark and this
+# name, so that in `make verify` a reader can see what was tested and by whom.
+ME = "finlatrep/check.py"
+PASS = "✅"
+FAIL = "❌"
+
 @dataclass(frozen=True)
 class Comparison:
     """The outcome of checking one algebra against one drawn lattice."""
@@ -48,12 +54,12 @@ class Comparison:
     agrees: bool
 
     def describe(self) -> str:
-        """One line for a run that is going well."""
-        verdict = "ok" if self.agrees else "MISMATCH"
+        """One line per algebra: the mark, this script, and what was compared."""
         return (
-            f"  {self.algebra:<10} |A| = {self.cardinality:>2}   "
+            f"{PASS if self.agrees else FAIL} {ME}  "
+            f"{self.algebra:<10} |A| = {self.cardinality:>2}   "
             f"|Con(A)| = {self.computed.size}   "
-            f"L{self.lattice_index} has {self.drawn.size}   {verdict}"
+            f"L{self.lattice_index} has {self.drawn.size}"
         )
 
     def describe_failure(self) -> str:
@@ -247,7 +253,13 @@ def run(algebra_file: Path, article: Path) -> Result[Tuple[Comparison, ...], Pip
 
 
 def _report(comparisons: Sequence[Comparison]) -> int:
-    """Print the outcome and return the exit code."""
+    """Print the outcome, one marked line per check, and return the exit code."""
+    # Reaching here means check_diagram_count passed inside run(); say so,
+    # since it is a check of its own and would otherwise leave no line.
+    print(
+        f"{PASS} {ME}  the article draws a diagram for each of the "
+        f"{len(comparisons)} lattices these algebras are named for"
+    )
     for comparison in comparisons:
         print(comparison.describe())
     failures = [c for c in comparisons if not c.agrees]
@@ -255,9 +267,9 @@ def _report(comparisons: Sequence[Comparison]) -> int:
     if failures:
         for failure in failures:
             print(failure.describe_failure())
-        print(f"\n{len(failures)} of {len(comparisons)} algebras disagree with the article.")
+        print(f"\n{FAIL} {ME}  {len(failures)} of {len(comparisons)} algebras disagree with the article.")
         return 1
-    print(f"All {len(comparisons)} algebras agree with the lattices the article draws.")
+    print(f"{PASS} {ME}  all {len(comparisons)} algebras agree with the lattices the article draws.")
     return 0
 
 
@@ -281,15 +293,23 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     comparisons = outcome.unwrap()
 
     if args.uacalc_table is not None:
-        agreed = (
-            read_text(args.uacalc_table)
-            .and_then(parse_uacalc_table)
-            .and_then(lambda rows: cross_check(comparisons, rows))
-        )
-        if agreed.is_err:
-            print(f"error: UACalc disagrees: {agreed.unwrap_err()}", file=sys.stderr)
+        table = read_text(args.uacalc_table).and_then(parse_uacalc_table)
+        if table.is_err:
+            print(f"error: {table.unwrap_err()}", file=sys.stderr)
             return 2
-        print(f"UACalc agrees on |A| and |Con(A)| for all {len(comparisons)} algebras.\n")
+        rows = table.unwrap()
+        agreed = cross_check(comparisons, rows)
+        if agreed.is_err:
+            print(f"{FAIL} {ME}  UACalc disagrees: {agreed.unwrap_err()}", file=sys.stderr)
+            return 2
+        # One line per algebra here too: the agreement is 29 checks, not one.
+        for comparison in comparisons:
+            row = rows[comparison.algebra]
+            print(
+                f"{PASS} {ME}  {comparison.algebra:<10} UACalc also reads |A| = "
+                f"{row.cardinality:>2} and computes |Con(A)| = {row.congruences}"
+            )
+        print(f"{PASS} {ME}  UACalc agrees on |A| and |Con(A)| for all {len(comparisons)} algebras.\n")
 
     return _report(comparisons)
 

@@ -18,14 +18,22 @@
 # upgrade, the likeliest cause is the index drift recorded in Remark 3.7: a
 # subgroup selected by position in a list whose order changed.
 
+# GAP wraps its output at the screen width, 80 columns when there is no
+# terminal, which broke the marked lines below in two; 4096 is the widest
+# it allows.
+SizeScreen([ 4096 ]);
+
 dir := GAPInfo.SystemEnvironment.FINLATREPGAP_DIR;
+me := "verify-fast.g";
+passes := 0;
 failures := 0;
 
 check := function(what, got, want)
     if got = want then
-        Print("  ok    ", what, "\n");
+        Print("✅ ", me, "  ", what, "\n");
+        passes := passes + 1;
     else
-        Print("  FAIL  ", what, "\n        got  ", got, "\n        want ", want, "\n");
+        Print("❌ ", me, "  ", what, "\n        got  ", got, "\n        want ", want, "\n");
         failures := failures + 1;
     fi;
 end;
@@ -57,8 +65,8 @@ check("no cover of M2 in B avoids both A and C, so 108 is the best this gives",
                   and not IsSubgroup(C, intM2B.subgroups[i])), false);
 
 if failures > 0 then
-    Print("\n", failures, " assertion(s) failed.\n");
+    Print("\n❌ ", me, "  ", failures, " of ", passes + failures, " assertions failed.\n");
     QUIT_GAP(1);
 fi;
-Print("\nAll fast GAP checks agree with the article.\n");
+Print("\n✅ ", me, "  all ", passes, " assertions hold; the fast GAP checks agree with the article.\n");
 QUIT_GAP(0);

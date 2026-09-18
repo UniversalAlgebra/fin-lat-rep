@@ -115,12 +115,14 @@ uacalc-table: ## Compute |Con(A)| for every algebra with UACalc itself
 	  exit 2; }
 	@test -f "$(ALGEBRA_FILE)" || { echo "error: no algebra file at $(ALGEBRA_FILE)"; exit 2; }
 	@mkdir -p $(BUILD)
-	uacalc-cli scripts/jython/con_table.py "$(ALGEBRA_FILE)" > $(BUILD)/uacalc-table.txt
-	@echo "wrote $(BUILD)/uacalc-table.txt ($$(wc -l < $(BUILD)/uacalc-table.txt) algebras)"
+	@uacalc-cli scripts/jython/con_table.py "$(ALGEBRA_FILE)" > $(BUILD)/uacalc-table.txt \
+	  || { echo "❌ scripts/jython/con_table.py  UACalc could not compute the table"; exit 1; }
+	@echo "✅ scripts/jython/con_table.py  UACalc computed |A| and |Con(A)| for $$(wc -l < $(BUILD)/uacalc-table.txt) algebras, in $(BUILD)/uacalc-table.txt"
 
 # The fast group-theoretic checks: PJ17.gap in seconds, PJ11.gap in under a
 # minute.  scripts/gap/verify-fast.g reads them from the pinned programs and
 # asserts what the article says; GAP exits 1 on any failed assertion.
+
 verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 	@command -v gap > /dev/null || { \
 	  echo "error: gap is not on PATH; run this inside 'nix develop'."; exit 2; }
@@ -143,10 +145,19 @@ verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 # check` whether the environment still builds.  Run it yourself after
 # touching flake.nix or flake.lock.
 verify: ## Run the computational checks that gate a change (CI runs this and nix flake check)
-	$(MAKE) test
-	$(MAKE) uacalc-table
-	$(MAKE) check-catalog UACALC_TABLE=$(BUILD)/uacalc-table.txt
-	$(MAKE) verify-gap
+	@echo "== make test: the unit suites, one line per test =="
+	@$(MAKE) --no-print-directory test
+	@echo
+	@echo "== make uacalc-table: UACalc computes every algebra's congruence lattice =="
+	@$(MAKE) --no-print-directory uacalc-table
+	@echo
+	@echo "== make check-catalog: our reading against the article's diagrams, and against UACalc =="
+	@$(MAKE) --no-print-directory check-catalog UACALC_TABLE=$(BUILD)/uacalc-table.txt
+	@echo
+	@echo "== make verify-gap: the fast GAP computations against the article's numbers =="
+	@$(MAKE) --no-print-directory verify-gap
+	@echo
+	@echo "✅ make verify  every stage passed"
 
 # The slow half: Hexagon.g wants several gigabytes for the subgroup lattice of
 # A11, and pentagonSearch.g runs six to thirteen minutes.  A scheduled CI job
@@ -160,11 +171,13 @@ verify-slow: ## Re-run the slow GAP computations (minutes; CI runs this on a sch
 
 test: test-utils test-finlatrep ## Run every test suite
 
+# Through _utils/run_tests.py rather than unittest's own runner, so that
+# every test prints one line saying what it tested and which file tested it.
 test-utils: ## Run the shared functional primitives' tests
-	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s _utils -p "test_*.py"
+	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m _utils.run_tests _utils
 
 test-finlatrep: ## Run the catalog checker's tests
-	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s finlatrep -p "test_*.py"
+	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m _utils.run_tests finlatrep
 
 # All three scripts, not just one: the targets below run lint, populate and
 # update, so a GHPROJECT_DIR holding only some of them would pass a
