@@ -4,20 +4,28 @@
 
     nix develop
 
-is the whole setup story.  It gives you GAP with its Small Groups Library, a
-JDK, Jython, the Universal Algebra Calculator, TeX Live, Python, `make` and
-`gh`, at the versions `flake.lock` pins.  Nothing in this repository asks you
-to install any of them yourself, and nothing you install yourself is used in
-preference to the shell's copy.
+is the whole setup story.
+
+Enter that command in the main project directory and (assuming you have Nix
+installed) you will be dropped into a [Nix][] devShell with all the tools you need.
+
+The devShell gives you GAP with its Small Groups Library, a JDK, the Universal
+Algebra Calculator, TeX Live, Jython, Python, `make` and `gh`, at the versions
+`flake.lock` pins.
+
+Nothing in this repository asks you to install any of them yourself, and nothing
+you install yourself is used in preference to the Nix shell's copy.
 
 The flake pins on purpose.  The article cites GAP 4.8.3 from 2016, and on a
 current GAP two of the programs behind its group-theoretic claims had silently
 stopped establishing them, because they selected subgroups by position in a
 list whose order had changed.  See [`docs/GITHUB_PROJECT.md`][plan].
 
-If you have no Nix, `.github/workflows/build-paper.yml` lists the Debian
-packages the article needs.  You are then matching versions by hand, which is
-the thing the flake exists to stop.
+If you don't have Nix installed, you should!  Get it from https://nixos.org/.
+
+If you'd rather not install Nix, you can look at the file `.github/workflows/build-paper.yml`
+which lists the Debian packages the article needs.  You can then install matching
+versions by hand (but that is what Nix is for).
 
 ## Building the article
 
@@ -33,7 +41,7 @@ References live in the `filecontents*` block at the top of
 `article/SmallLatticeReps.tex`, between `\begin{filecontents*}{inputs/refs.bib}`
 and `\end{filecontents*}`.  Add your entry there.
 
-**Never add an entry to `article/inputs/refs.bib`.**  That file is generated
+**Never add an entry to `article/inputs/refs.bib`**.  That file is generated
 from the block above on every build: `article/Makefile` deletes it before each
 run, and `.gitignore` excludes it, so an entry put there is lost the next time
 anybody builds the paper.
@@ -105,33 +113,33 @@ and `GHPROJECT_DIR=<checkout> make project-lint` runs a local one instead.
 
 ## When something goes wrong
 
-**A change to a new file seems to have no effect, or Nix cannot see it.**  A
+**A change to a new file seems to have no effect, or Nix cannot see it**.  A
 flake sees only files git knows about, so an untracked file is simply absent
 from the tree Nix builds from.  `git add` it first; you do not have to commit.
 
-**`! LaTeX Error: File 'x.sty' not found`.**  The shell's TeX Live is named
+**`! LaTeX Error: File 'x.sty' not found`**.  The shell's TeX Live is named
 package by package rather than by collection, because the collections come to
 3794 MiB against this list's 441 MiB.  Add the package that owns the file to
 the list in `flake.nix`; the comment above that list gives the one-liner that
 asks TeX Live's own database which package that is, since the owner is rarely
 the name you would guess.
 
-**`acro:` keys in the margins of your PDF.**  Not an error, and not yours.  The
+**`acro:` keys in the margins of your PDF**.  Not an error, and not yours.  The
 article loads `showkeys`, and TeX Live 2025's `acronym` is caught by it where
 TeX Live 2023's was not, so a local build shows sixteen keys that the CI
 artifact does not.
 
-**`hash mismatch in fixed-output derivation` for `uacalc.jar`.**  The file
+**`hash mismatch in fixed-output derivation` for `uacalc.jar`**.  The file
 behind <https://uacalc.org/uacalc.jar> has changed; the URL carries no version,
 so the hash is what turns that into a loud failure instead of a silent change
 of environment.  The comment beside the package in `flake.nix` says what to do.
 
-**`ImportError: No module named uacalc`.**  You are running plain `jython` with
+**`ImportError: No module named uacalc`**.  You are running plain `jython` with
 `CLASSPATH` set.  nixpkgs runs Jython as `java -jar jython.jar`, and `java
 -jar` ignores both `-cp` and `CLASSPATH`.  Use `uacalc-cli`, or set
 `JYTHONPATH`.
 
-**A `make project-*` target fails with status 2.**  That is a failed run, most
+**A `make project-*` target fails with status 2**.  That is a failed run, most
 often `gh` not being authenticated; check with `gh auth status`.  Status 1 from
 `project-update-check` is a different thing: it means the file and GitHub
 disagree, and `make project-update` is the fix.
@@ -141,3 +149,4 @@ disagree, and `make project-update` is the fix.
 [williamdemeo/github-project]: https://github.com/williamdemeo/github-project
 [uacalc-at-the-command-line]: https://universalalgebra.wordpress.com/documentation/uacalc/uacalc-at-the-command-line/
 [scala-repl]: https://universalalgebra.wordpress.com/documentation/scala/scala-repl-with-uacalc-objects/
+[Nix]: https://nixos.org/

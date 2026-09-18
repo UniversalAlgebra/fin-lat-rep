@@ -6,17 +6,24 @@ The LaTeX source of the article is in [`article/`][article].
 
 It asks which finite lattices are congruence lattices of finite algebras, and
 answers it for the small ones: Section 4 tabulates 35 lattices of at most seven
-elements and, for 29, a unary algebra whose congruence lattice each one is.
+elements and, for 29 of them, a unary algebra representing each one.
 
 ## Building and checking it
 
-One command sets up everything, and installs nothing into your system:
+These instructions assume you have [Nix][] installed and you know how to use
+the command line in a terminal.  If you don't have Nix, go to https://nixos.org/
+and install it.
+
+One command sets up everything, and installs nothing permanently on your system:
 
     nix develop
 
-It carries GAP with its Small Groups Library, a JDK, Jython, the [Universal
-Algebra Calculator][], TeX Live, Python, `make` and `gh`, all pinned by
-`flake.lock`, so that everyone builds the paper with the same software.  Then:
+That command lands you in in a [Nix][] "devShell" with all the tools you need:
+GAP with its Small Groups Library, a JDK, the [Universal
+Algebra Calculator][], TeX Live, Jython, Python, `make` and `gh`, all pinned by
+`flake.lock`, so that everyone builds the paper with the same software.
+
+Once you're in the devShell,
 
     make paper          build article/SmallLatticeReps.pdf
     make check-catalog  check every algebra against the lattice drawn beside it
@@ -59,3 +66,4 @@ to do when the shell or the LaTeX build misbehaves; the roadmap is
 [UACalc/uacalcsrc]: https://github.com/UACalc/uacalcsrc
 [williamdemeo/Overalgebras]: https://github.com/williamdemeo/Overalgebras
 [Universal Algebra Calculator]: https://uacalc.org
+[Nix]: https://nixos.org/
