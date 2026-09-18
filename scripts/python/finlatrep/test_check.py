@@ -29,8 +29,10 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 ARTICLE = REPO / "article" / "SmallLatticeReps.tex"
 PRE_FIX_B28 = HERE.parent / "fixtures" / "B28-pre-fix.ua"
+CORRECT_B1_B28 = HERE.parent / "fixtures" / "B1-B28-correct.ua"
 # Recorded here rather than inside the fixture, which cannot contain its own
 # checksum.  Taken from AlgebraFiles commit 9e1ef390.
+CORRECT_SHA256 = "294f8ab03c4f66d2bc7b97ca32a498d2f620887b8e283dbf3a5a6f4c5d2c417d"
 FIXTURE_SHA256 = "8369d4447d5b3403d9621aadb45c3864b1925cc567843db4e866b87efc53ade6"
 
 
@@ -154,6 +156,47 @@ class CrossCheckTests(unittest.TestCase):
         outcome = cross_check(self._b28(), {})
         self.assertTrue(outcome.is_err)
         self.assertIn("absent from the UACalc table", outcome.unwrap_err().message)
+
+
+class AgreementTests(unittest.TestCase):
+    """The other direction: the checker must also be able to say yes.
+
+    Without this the suite pins only failure.  Measured: with `agrees` forced
+    to False in `compare`, every one of these suites still passed and only a
+    real `make check-catalog` noticed.  A checker that called every algebra a
+    mismatch would therefore have shipped green.
+    """
+
+    def test_the_fixture_is_the_algebras_it_claims_to_be(self) -> None:
+        digest = hashlib.sha256(CORRECT_B1_B28.read_bytes()).hexdigest()
+        self.assertEqual(digest, CORRECT_SHA256)
+
+    def test_the_corrected_algebras_agree_with_the_article(self) -> None:
+        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap()
+        self.assertEqual([c.algebra for c in comparisons], ["B1", "B28"])
+        for comparison in comparisons:
+            self.assertTrue(
+                comparison.agrees,
+                f"{comparison.algebra} should represent L{comparison.lattice_index}",
+            )
+
+    def test_b1_is_the_five_element_pentagon(self) -> None:
+        """The answer that looks alarming and is not: the catalog holds
+        lattices of size AT MOST seven, and L1 is the pentagon."""
+        b1 = run(CORRECT_B1_B28, ARTICLE).unwrap()[0]
+        self.assertEqual(b1.cardinality, 4)
+        self.assertEqual(b1.computed.size, 5)
+        self.assertEqual(b1.drawn.size, 5)
+
+    def test_the_corrected_b28_has_a_seven_element_congruence_lattice(self) -> None:
+        """The same algebra the pre-fix fixture gets wrong with eight."""
+        b28 = run(CORRECT_B1_B28, ARTICLE).unwrap()[1]
+        self.assertEqual(b28.computed.size, 7)
+        self.assertTrue(b28.agrees)
+
+    def test_a_passing_run_reports_no_failures(self) -> None:
+        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap()
+        self.assertEqual([c for c in comparisons if not c.agrees], [])
 
 
 class ErrorPathTests(unittest.TestCase):

@@ -58,10 +58,18 @@ form you can actually check against the picture:
 
 That is a real run, against
 [`scripts/python/fixtures/B28-pre-fix.ua`](../scripts/python/fixtures/B28-pre-fix.ua),
-the B28 that stood in AlgebraFiles from 2017 until 2026.  Try it:
+the B28 that stood in AlgebraFiles from 2017 until 2026.  Try it, and try its
+counterpart, which must pass:
 
     PYTHONPATH=. python3 -m finlatrep.check \
-        fixtures/B28-pre-fix.ua ../../article/SmallLatticeReps.tex
+        fixtures/B28-pre-fix.ua ../../article/SmallLatticeReps.tex     # exits 1
+
+    PYTHONPATH=. python3 -m finlatrep.check \
+        fixtures/B1-B28-correct.ua ../../article/SmallLatticeReps.tex  # exits 0
+
+The two together are what pin the checker in both directions.  With only the
+failing one, a checker that called every algebra a mismatch would satisfy the
+whole test suite.
 
 ## Engine two: UACalc itself
 

@@ -19,7 +19,8 @@ ALGEBRA_FILE ?= $(ALGEBRAFILES_DIR)/CongruenceLatReps/SmallLatticeReps.ua
 # own implementation alone.  See docs/CHECKING-AN-ALGEBRA.md.
 UACALC_TABLE ?=
 ifneq (,$(UACALC_TABLE))
-CHECK_FLAGS := --uacalc-table $(UACALC_TABLE)
+# abspath, because the recipe cd's into scripts/python before this is used.
+CHECK_FLAGS := --uacalc-table $(abspath $(UACALC_TABLE))
 else
 CHECK_FLAGS :=
 endif
