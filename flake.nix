@@ -114,9 +114,23 @@
           jars = [
             {
               name = "uacalc.jar";
+              # Two sources for the same bytes.  uacalc.org is the origin, and
+              # GitHub's runners could not connect to it in two of the first
+              # five CI fetches (issue #39; nine minutes of connection
+              # timeouts each).  The Internet Archive's capture of 2024-06-13
+              # is byte-identical to what uacalc.org serves today (measured:
+              # same sha256, 998189 bytes), and its `id_` URL serves the
+              # original file rather than a rewritten page, so it stands in
+              # under the same hash.  fetchurl tries the URLs in order, each
+              # with curl's own retries; the connect timeout is what makes a
+              # dead first host cost about a minute rather than nine.
               src = pkgs.fetchurl {
-                url = "https://uacalc.org/uacalc.jar";
+                urls = [
+                  "https://uacalc.org/uacalc.jar"
+                  "https://web.archive.org/web/20240613221112id_/https://uacalc.org/uacalc.jar"
+                ];
                 hash = "sha256-zy4y+xGQnLBKSjWQrBtEj4kbMnrkqACh6q95aDKMTu4=";
+                curlOptsList = [ "--connect-timeout" "20" ];
               };
             }
             {
