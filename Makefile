@@ -1,8 +1,10 @@
 # File: Makefile
 #
 # Front door for the repository.  It carries the paper, the catalog check from
-# issue #29, the Universal Algebra Calculator's smoke test from issue #26, and
-# the project targets from issue #27, which drive the github-project engine.
+# issue #29, the Universal Algebra Calculator's smoke test from issue #26, the
+# project targets from issue #27, which drive the github-project engine, and
+# `verify`, from issue #30: every computational check that gates a change.
+# CI runs `verify` and, beside it, `nix flake check`; see the note at `verify`.
 #
 # Every target expects the development shell.  Run `nix develop` first: that
 # is where pdflatex, uacalc and xvfb-run are, and nothing here asks you to
@@ -13,11 +15,19 @@ PYTHON_DIR := scripts/python
 ARTICLE := article/SmallLatticeReps.tex
 
 # The algebras live in UACalc/AlgebraFiles, not here; see uacalc-files/README.md.
-# Point ALGEBRA_FILE at a local checkout, or at any .ua file you want checked.
-# Issue #25 replaces this with a pinned flake input, at which point the default
-# stops depending on where a contributor happens to keep the checkout.
+# Inside `nix develop` the shell sets ALGEBRAFILES_DIR to the pinned flake
+# input and `?=` yields to it, so the check runs against the same algebras in
+# CI and on every machine.  The default below is for a shell without Nix; point
+# it at a checkout, or set ALGEBRA_FILE to any .ua file you want checked.
 ALGEBRAFILES_DIR ?= $(HOME)/git/UACalc/AlgebraFiles/master
 ALGEBRA_FILE ?= $(ALGEBRAFILES_DIR)/CongruenceLatReps/SmallLatticeReps.ua
+
+# The GAP programs live in UniversalAlgebra/fin-lat-rep-gap, pinned the same
+# way; `make verify-gap` reads them from here.  See programs/README.md.
+FINLATREPGAP_DIR ?= $(HOME)/git/UniversalAlgebra/fin-lat-rep-gap/main
+
+# Where `make verify` writes the UACalc table it then checks against.
+BUILD := build
 
 # Cross-check against UACalc itself.  Optional: unset, the check runs on its
 # own implementation alone.  See docs/CHECKING-AN-ALGEBRA.md.
@@ -57,8 +67,9 @@ GHPROJECT_UPDATE       := nix run .\#ghproject-update --
 GHPROJECT_UPDATE_CHECK := nix run .\#ghproject-update-check --
 endif
 
-.PHONY: help paper check-catalog uacalc-smoke test test-finlatrep test-utils \
-        clean project-lint project-populate-dry project-populate \
+.PHONY: help paper check-catalog uacalc-smoke uacalc-table verify verify-gap \
+        verify-slow test test-finlatrep test-utils clean \
+        project-lint project-populate-dry project-populate \
         project-update project-update-check _check-ghproject
 
 # The column is 20 rather than 16, because project-update-check and
@@ -95,13 +106,85 @@ uacalc-smoke: ## Check the UACalc GUI comes up and stays up (Linux only)
 	  exit 2; }
 	timeout 30 xvfb-run -a uacalc; test $$? -eq 124
 
+# The second engine: UACalc itself, driven through its Jython command line,
+# writing the `<name> <card> <con>` table that check-catalog compares against.
+# `uacalc-cli` is the dev shell's wrapper with the five jars on the classpath.
+uacalc-table: ## Compute |Con(A)| for every algebra with UACalc itself
+	@command -v uacalc-cli > /dev/null || { \
+	  echo "error: uacalc-cli is not on PATH; run this inside 'nix develop'."; \
+	  exit 2; }
+	@test -f "$(ALGEBRA_FILE)" || { echo "error: no algebra file at $(ALGEBRA_FILE)"; exit 2; }
+	@mkdir -p $(BUILD)
+	@uacalc-cli scripts/jython/con_table.py "$(ALGEBRA_FILE)" > $(BUILD)/uacalc-table.txt \
+	  || { echo "❌ scripts/jython/con_table.py  UACalc could not compute the table"; exit 1; }
+	@echo "✅ scripts/jython/con_table.py  UACalc computed |A| and |Con(A)| for $$(wc -l < $(BUILD)/uacalc-table.txt) algebras, in $(BUILD)/uacalc-table.txt"
+
+# The fast group-theoretic checks: PJ17.gap in seconds, PJ11.gap in under a
+# minute.  scripts/gap/verify-fast.g reads them from the pinned programs and
+# asserts what the article says; GAP exits 1 on any failed assertion.#
+# Three things make the GAP steps fail closed rather than hang or pass by
+# accident: the driver's first statement is GAP_EXIT_CODE(1), so a run that
+# never reaches its final QUIT_GAP(0) exits 1; --quitonbreak turns any error
+# into exit 1 instead of a break loop; and stdin comes from /dev/null, so
+# nothing can wait for a keyboard (a broken driver once held `make verify`
+# for eleven minutes at GAP's break prompt, and CI would have waited for its
+# timeout).
+
+verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
+	@command -v gap > /dev/null || { \
+	  echo "error: gap is not on PATH; run this inside 'nix develop'."; exit 2; }
+	@test -f "$(FINLATREPGAP_DIR)/PJ11.gap" || { \
+	  echo "error: no GAP programs at $(FINLATREPGAP_DIR)"; \
+	  echo "       inside 'nix develop' this is set for you; outside it, clone"; \
+	  echo "       UniversalAlgebra/fin-lat-rep-gap and set FINLATREPGAP_DIR."; \
+	  exit 2; }
+	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 4g scripts/gap/verify-fast.g < /dev/null
+
+# Every computational check that gates a change, in the order that fails
+# fastest: the unit suites, then the catalog check with UACalc as the second
+# engine, then GAP.  Sub-makes rather than prerequisites so the order holds
+# under -j too.
+#
+# CI runs this and `nix flake check`, which evaluates every flake output and
+# runs the UACalc smoke test.  That one is not folded in here because every
+# target in this file runs without Nix, and the two answer different
+# questions: `verify` asks whether the mathematics still holds, `nix flake
+# check` whether the environment still builds.  Run it yourself after
+# touching flake.nix or flake.lock.
+verify: ## Run the computational checks that gate a change (CI runs this and nix flake check)
+	@echo "== make test: the unit suites, one line per test =="
+	@$(MAKE) --no-print-directory test
+	@echo
+	@echo "== make uacalc-table: UACalc computes every algebra's congruence lattice =="
+	@$(MAKE) --no-print-directory uacalc-table
+	@echo
+	@echo "== make check-catalog: our reading against the article's diagrams, and against UACalc =="
+	@$(MAKE) --no-print-directory check-catalog UACALC_TABLE=$(BUILD)/uacalc-table.txt
+	@echo
+	@echo "== make verify-gap: the fast GAP computations against the article's numbers =="
+	@$(MAKE) --no-print-directory verify-gap
+	@echo
+	@echo "✅ make verify  every stage passed"
+
+# The slow half: Hexagon.g wants several gigabytes for the subgroup lattice of
+# A11, and pentagonSearch.g runs six to thirteen minutes.  A scheduled CI job
+# runs this weekly; a GAP upgrade is what it exists to catch.
+verify-slow: ## Re-run the slow GAP computations (minutes; CI runs this on a schedule)
+	@command -v gap > /dev/null || { \
+	  echo "error: gap is not on PATH; run this inside 'nix develop'."; exit 2; }
+	@test -f "$(FINLATREPGAP_DIR)/Hexagon.g" || { \
+	  echo "error: no GAP programs at $(FINLATREPGAP_DIR); see verify-gap."; exit 2; }
+	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 8g scripts/gap/verify-slow.g < /dev/null
+
 test: test-utils test-finlatrep ## Run every test suite
 
+# Through _utils/run_tests.py rather than unittest's own runner, so that
+# every test prints one line saying what it tested and which file tested it.
 test-utils: ## Run the shared functional primitives' tests
-	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s _utils -p "test_*.py"
+	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m _utils.run_tests _utils
 
 test-finlatrep: ## Run the catalog checker's tests
-	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s finlatrep -p "test_*.py"
+	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m _utils.run_tests finlatrep
 
 # All three scripts, not just one: the targets below run lint, populate and
 # update, so a GHPROJECT_DIR holding only some of them would pass a
@@ -137,3 +220,4 @@ project-update-check: _check-ghproject ## Fail if the plan and GitHub disagree
 clean: ## Remove build products
 	$(MAKE) -C article clean
 	find $(PYTHON_DIR) -name '__pycache__' -type d -exec rm -rf {} +
+	rm -rf $(BUILD)

@@ -38,7 +38,18 @@
     flake = false;
   };
 
-  outputs = { nixpkgs, github-project, algebrafiles, ... }:
+  # The GAP programs behind the article's group-theoretic claims.  They moved
+  # to their own repository in #23, and `make verify` re-runs the fast ones, so
+  # the shell hands them over at a pinned revision for the same reason it hands
+  # over the algebras: a floating clone would make the gate depend on
+  # unreviewed upstream changes, which is the opposite of what a gate is for.
+  # `nix flake update finlatrepgap` is how it moves.
+  inputs.finlatrepgap = {
+    url = "github:UniversalAlgebra/fin-lat-rep-gap";
+    flake = false;
+  };
+
+  outputs = { nixpkgs, github-project, algebrafiles, finlatrepgap, ... }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
@@ -103,9 +114,23 @@
           jars = [
             {
               name = "uacalc.jar";
+              # Two sources for the same bytes.  uacalc.org is the origin, and
+              # GitHub's runners could not connect to it in two of the first
+              # five CI fetches (issue #39; nine minutes of connection
+              # timeouts each).  The Internet Archive's capture of 2024-06-13
+              # is byte-identical to what uacalc.org serves today (measured:
+              # same sha256, 998189 bytes), and its `id_` URL serves the
+              # original file rather than a rewritten page, so it stands in
+              # under the same hash.  fetchurl tries the URLs in order, each
+              # with curl's own retries; the connect timeout is what makes a
+              # dead first host cost about a minute rather than nine.
               src = pkgs.fetchurl {
-                url = "https://uacalc.org/uacalc.jar";
+                urls = [
+                  "https://uacalc.org/uacalc.jar"
+                  "https://web.archive.org/web/20240613221112id_/https://uacalc.org/uacalc.jar"
+                ];
                 hash = "sha256-zy4y+xGQnLBKSjWQrBtEj4kbMnrkqACh6q95aDKMTu4=";
+                curlOptsList = [ "--connect-timeout" "20" ];
               };
             }
             {
@@ -294,7 +319,7 @@
             then " \\\n    xvfb-run   '${pkgs.xvfb-run.version}' 'X virtual framebuffer'"
             else "";
         in
-        {
+        rec {
           default = pkgs.mkShellNoCC {
             name = "fin-lat-rep";
 
@@ -343,6 +368,9 @@
             # still applies.
             ALGEBRAFILES_DIR = "${algebrafiles}";
 
+            # Likewise for the GAP programs; `make verify-gap` reads this.
+            FINLATREPGAP_DIR = "${finlatrepgap}";
+
             # The greeting.
             #
             # All of it goes to stderr, so that `nix develop --command ...`
@@ -376,13 +404,15 @@
                      make       '${pkgs.gnumake.version}' 'GNU Make' \
                      gh         '${pkgs.gh.version}'      'GitHub CLI'${xvfbRow}
                   echo
-                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files.'
+                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files,'
+                  echo '  and $FINLATREPGAP_DIR holds the GAP programs.  `make verify` runs both.'
                   echo
                   echo ' ----------------------------------------------'
                   echo '  # some commands you can run in this shell:'
                   echo '  make paper          # build article/SmallLatticeReps.pdf'
                   echo '  make check-catalog  # check every algebra against the lattice drawn beside it'
                   echo '  make uacalc-smoke   # check that the calculator comes up (Linux only)'
+                  echo '  make verify         # the computational checks CI runs on a pull request'
                   echo '  make help           # list every target'
                   echo ' ----------------------------------------------'
                   echo
@@ -391,6 +421,40 @@
               export -f finlatrep-tools
               case $- in *i*) finlatrep-tools ;; esac
             '';
+          };
+
+          # The same shell without TeX Live, for the pull-request workflow
+          # (`nix develop .#ci`).  Issue #30's `make verify` builds no PDF, and
+          # texlive-article is the largest closure in the shell by far, so CI
+          # has no reason to fetch it; the paper's own workflow does.  Derived
+          # from `default` rather than written out twice, so the two cannot
+          # drift (the `rec` above is what lets it name `default`):
+          # mkShellNoCC puts `packages` into nativeBuildInputs, and this
+          # removes the one entry.  The inherited banner would list pdflatex,
+          # which this shell does not have, so it is replaced with one line.
+          ci = default.overrideAttrs (old: {
+            name = "fin-lat-rep-ci";
+            nativeBuildInputs =
+              pkgs.lib.filter (p: p != texlive-article) old.nativeBuildInputs;
+            shellHook = ''
+              case $- in *i*)
+                echo "fin-lat-rep ci shell: the default shell without TeX Live." >&2
+                echo "  \$ALGEBRAFILES_DIR and \$FINLATREPGAP_DIR are set; \`make help\` lists the targets." >&2 ;;
+              esac
+            '';
+          });
+
+          # GAP alone, with the pinned programs, for the slow workflow
+          # (`nix develop .#gap --command make verify-slow`).  Hexagon.g and
+          # pentagonSearch.g need nothing else, and a shell that also
+          # realizes UACalc would let a uacalc.org outage (issue #39) fail the
+          # slow job and open its tracking issue about GAP checks that never
+          # ran.  Written out rather than derived, since it shares nothing
+          # but the pin.
+          gap = pkgs.mkShellNoCC {
+            name = "fin-lat-rep-gap";
+            packages = [ pkgs.gap pkgs.gnumake ];
+            FINLATREPGAP_DIR = "${finlatrepgap}";
           };
         });
     };

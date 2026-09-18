@@ -11,7 +11,14 @@ installed) you will be dropped into a [Nix][] devShell with all the tools you ne
 
 The devShell gives you GAP with its Small Groups Library, a JDK, the Universal
 Algebra Calculator, TeX Live, Jython, Python, `make` and `gh`, at the versions
-`flake.lock` pins.
+`flake.lock` pins.  It also pins the data the checks read: `$ALGEBRAFILES_DIR`
+is the algebras and `$FINLATREPGAP_DIR` the GAP programs, both as flake inputs.
+
+`nix develop .#ci` is the same shell without TeX Live, which is what the
+pull-request workflow uses; it saves it the largest download for something it
+never runs.  `nix develop .#gap` is GAP and `make` alone, for the slow
+workflow, which needs nothing else and should not fail on a UACalc download
+it never uses.
 
 Nothing in this repository asks you to install any of them yourself, and nothing
 you install yourself is used in preference to the Nix shell's copy.
@@ -66,12 +73,72 @@ jars, so there is nothing to arrange by hand.  The algebras are in
 [UACalc/AlgebraFiles][], which the flake pins too: the shell sets
 `$ALGEBRAFILES_DIR` to that pinned copy, which is what `make check-catalog`
 reads when you do not say otherwise, and `nix flake update algebrafiles` is how
-it moves.
+it moves.  The GAP programs in [UniversalAlgebra/fin-lat-rep-gap][] are pinned
+the same way, as `$FINLATREPGAP_DIR`, moved by `nix flake update finlatrepgap`.
 
 The [Scala REPL][scala-repl], `scala -classpath uacalc.jar`, is the exploratory
 path only: it is documented for interactive use, with no scripted invocation
 and no example of loading a `.ua` file, and the Scala it was written against is
 from 2013.  Anything that has to be re-run belongs in `uacalc-cli`.
+
+## Verifying a change
+
+    make verify
+
+runs every computational check that gates a change, and is one of the two jobs
+CI runs on a pull request (`.github/workflows/verify.yml`).  In order, it does
+the following:
+
++  `make test`, the unit suites under `scripts/python`;
++  `make uacalc-table`, which has UACalc itself compute |Con(A)| for every
+   algebra in the pinned `.ua` file, writing `build/uacalc-table.txt`;
++  `make check-catalog` against that table, so the Python checker and UACalc
+   must agree with each other and with the lattice the article draws beside
+   each algebra;
++  `make verify-gap`, which re-runs the fast GAP programs (`PJ17.gap`,
+   `PJ11.gap`) from the pinned fin-lat-rep-gap and asserts the numbers the
+   article states, through `scripts/gap/verify-fast.g`.
+
+About a minute all told, most of it GAP.  Each step runs on its own too, and
+`make help` lists them.
+
+Every check prints one line: a mark, the file that ran it, and what it tested,
+as follows:
+
+    ✅ finlatrep/test_ua.py  a short table is rejected
+    ✅ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 7   L28 has 7
+    ✅ verify-fast.g  [G:H] = 36
+
+A failing check prints ❌ instead, with its detail after the suite, and each
+stage ends with a marked summary; `make verify` ends with one of its own.  The
+unit tests get their line from `_utils/run_tests.py`, which prints the first
+sentence of the test's docstring, or its name in words when it has none, so a
+well-named test is a well-described one.
+
+The other CI job is
+
+    nix flake check
+
+which evaluates every flake output and runs the UACalc smoke test under a
+virtual framebuffer.  It is not folded into `make verify` because every Make
+target here runs without Nix, and the two answer different questions: `verify`
+asks whether the mathematics still holds, `nix flake check` whether the
+environment still builds.  Run it yourself after touching `flake.nix` or
+`flake.lock`.
+
+    make verify-slow
+
+is the rest: `Hexagon.g` and `pentagonSearch.g`, which take minutes and several
+gigabytes.  It does not gate pull requests; `.github/workflows/verify-slow.yml`
+runs it weekly, on demand, and whenever `flake.lock` changes, and on failure
+opens (or comments on) one issue titled "Scheduled verification failed".  A GAP
+upgrade is what it exists to catch; see Remark 3.7 of the article for the last
+time that happened.
+
+When a GAP assertion fails, the driver prints a ❌ line naming the assertion,
+then the value it got and the value it wanted, for each one, and exits 1.  A changed number
+is not necessarily a wrong number: first decide whether GAP or the article is
+right, then fix the one that is wrong, and only then the assertion.
 
 ## The git workflow
 
@@ -149,6 +216,7 @@ disagree, and `make project-update` is the fix.
 
 [plan]: docs/GITHUB_PROJECT.md
 [UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
+[UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [williamdemeo/github-project]: https://github.com/williamdemeo/github-project
 [uacalc-at-the-command-line]: https://universalalgebra.wordpress.com/documentation/uacalc/uacalc-at-the-command-line/
 [scala-repl]: https://universalalgebra.wordpress.com/documentation/scala/scala-repl-with-uacalc-objects/

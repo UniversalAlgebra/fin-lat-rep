@@ -1,0 +1,84 @@
+# The slow half of the verification: Hexagon.g and pentagonSearch.g, which take
+# minutes and gigabytes and so do not gate pull requests.  Runs weekly, and on
+# demand.  A GAP upgrade is what this exists to catch, so it also runs when
+# flake.lock changes.
+#
+# Failure opens one tracking issue, or comments on it if it is already open,
+# rather than emailing on every run; a later success comments on that issue
+# too, and a person closes it.  The push trigger is limited to master so
+# that a branch experimenting with the driver cannot open that issue.
+name: Verify (slow)
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  push:
+    branches: [master]
+    paths:
+      - 'flake.lock'
+      - 'scripts/gap/verify-slow.g'
+      - '.github/workflows/verify-slow.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  TRACKING_TITLE: 'Scheduled verification failed'
+
+jobs:
+  verify-slow:
+    name: make verify-slow
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Verify (slow)
+        id: verify
+        # The GAP-only shell: this job needs nothing else, and must not fail
+        # on a UACalc download it never uses (issue #39).
+        run: nix develop .#gap --command make verify-slow
+
+      # One issue, not one per run.  `gh issue list` finds an open one by
+      # exact title; if there is none, create it.
+      - name: Report the failure on the tracking issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+                     --search "\"$TRACKING_TITLE\" in:title" --json number,title \
+                     --jq ".[] | select(.title == \"$TRACKING_TITLE\") | .number" | head -1)
+          body="The slow verification failed on $(date -u +%Y-%m-%d): $RUN_URL
+
+          \`make verify-slow\` re-runs Hexagon.g and pentagonSearch.g from the pinned fin-lat-rep-gap and asserts the numbers the article states.  The likeliest cause after a \`flake.lock\` change is the GAP index drift recorded in Remark 3.7 of the article."
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TRACKING_TITLE" --body "$body"
+          fi
+
+      - name: Note a recovery on the tracking issue, if one is open
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+                     --search "\"$TRACKING_TITLE\" in:title" --json number,title \
+                     --jq ".[] | select(.title == \"$TRACKING_TITLE\") | .number" | head -1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" \
+              --body "The slow verification passed again on $(date -u +%Y-%m-%d): $RUN_URL.  Close this if the cause is understood."
+          fi
