@@ -74,6 +74,15 @@ class ParsingTests(unittest.TestCase):
         self.assertTrue(outcome.is_err)
         self.assertEqual(outcome.unwrap_err().error_type, ErrorType.VALIDATION_ERROR)
 
+    def test_an_empty_carrier_is_rejected(self) -> None:
+        """`0` is a digit string and a unary table of length 0 has the right
+        shape, so nothing downstream would have noticed: covering_relation(0)
+        reports a one-element congruence lattice on an empty carrier."""
+        outcome = parse_algebras(_with_table("", cardinality="0"))
+        self.assertTrue(outcome.is_err)
+        self.assertEqual(outcome.unwrap_err().error_type, ErrorType.VALIDATION_ERROR)
+        self.assertIn("cannot be empty", outcome.unwrap_err().message)
+
     def test_a_file_with_no_algebras_is_rejected(self) -> None:
         """Otherwise the caller compares nothing and reports that all of it agreed."""
         outcome = parse_algebras("<algebraList></algebraList>")

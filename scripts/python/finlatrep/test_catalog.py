@@ -156,6 +156,19 @@ $\bL_9$&
         self.assertTrue(outcome.is_err)
         self.assertIn("same height", outcome.unwrap_err().message)
 
+    def test_a_node_placed_at_a_non_numeric_coordinate_is_an_error(self) -> None:
+        """`[-\\d.]+` matches tokens like `.`, and float() would raise past
+        the Result the rest of the module returns."""
+        broken = CATALOG_HEADING + "\n" + r"""
+$\bL_9$&
+\node(0) at (0,.)[e]{};
+\node(1) at (0,1)[e]{};
+\draw(0)--(1);
+"""
+        outcome = parse_catalog(broken)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("not a number", outcome.unwrap_err().message)
+
     def test_an_edge_naming_an_unplaced_node_is_an_error(self) -> None:
         dangling = CATALOG_HEADING + "\n" + r"""
 $\bL_9$&

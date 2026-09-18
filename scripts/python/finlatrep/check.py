@@ -166,6 +166,17 @@ def parse_uacalc_table(text: str) -> Result[Dict[str, UACalcRow], PipelineError]
                     f"line {number} of the UACalc table is not '<name> <card> <con>': {line!r}",
                 )
             )
+        if fields[0] in rows:
+            # con_table.py emits one line per algebra, so a repeat means the
+            # table is not what it claims.  Keeping the last would let two
+            # contradictory readings of the same algebra pass as agreement
+            # with whichever came second.
+            return Result.err(
+                PipelineError(
+                    ErrorType.PARSING_ERROR,
+                    f"line {number}: {fields[0]} appears more than once in the UACalc table",
+                )
+            )
         rows[fields[0]] = UACalcRow(cardinality=int(fields[1]), congruences=int(fields[2]))
     return Result.ok(rows)
 

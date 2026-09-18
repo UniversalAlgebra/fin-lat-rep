@@ -98,7 +98,20 @@ def _entry_from_chunk(index: int, chunk: str) -> Result[CatalogEntry, PipelineEr
     are drawn at, so that reversing how an edge is written cannot change the
     lattice it denotes.
     """
-    heights = {int(v): float(y) for v, _x, y in _NODE.findall(chunk)}
+    heights = {}
+    for v, _x, y in _NODE.findall(chunk):
+        # `[-\d.]+` will happily match `.` or `-.-`, and float() would then
+        # raise straight past the Result the rest of this module returns.  A
+        # malformed coordinate is malformed input, so report it.
+        try:
+            heights[int(v)] = float(y)
+        except ValueError:
+            return Result.err(
+                PipelineError(
+                    ErrorType.PARSING_ERROR,
+                    f"L{index}: node {v} is placed at y={y!r}, which is not a number",
+                )
+            )
     vertices = sorted(heights)
     position = {vertex: i for i, vertex in enumerate(vertices)}
 

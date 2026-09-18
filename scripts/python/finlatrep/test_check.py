@@ -30,8 +30,12 @@ REPO = HERE.parents[2]
 ARTICLE = REPO / "article" / "SmallLatticeReps.tex"
 PRE_FIX_B28 = HERE.parent / "fixtures" / "B28-pre-fix.ua"
 CORRECT_B1_B28 = HERE.parent / "fixtures" / "B1-B28-correct.ua"
-# Recorded here rather than inside the fixture, which cannot contain its own
-# checksum.  Taken from AlgebraFiles commit 9e1ef390.
+# Recorded here rather than inside the fixtures, which cannot contain their own
+# checksums.  Each is cut from a different revision of AlgebraFiles, and the
+# pairing is the point: the same algebra, B28, before and after its correction.
+#
+#   B1-B28-correct.ua  from 28432e1d, "Correct B28 in SmallLatticeReps.ua"
+#   B28-pre-fix.ua     from 9e1ef390, the last revision before that fix
 CORRECT_SHA256 = "294f8ab03c4f66d2bc7b97ca32a498d2f620887b8e283dbf3a5a6f4c5d2c417d"
 FIXTURE_SHA256 = "8369d4447d5b3403d9621aadb45c3864b1925cc567843db4e866b87efc53ade6"
 
@@ -128,6 +132,13 @@ class CrossCheckTests(unittest.TestCase):
 
     def test_a_non_numeric_cardinality_is_an_error(self) -> None:
         self.assertTrue(parse_uacalc_table("B1 four 5\n").is_err)
+
+    def test_a_repeated_algebra_name_is_an_error(self) -> None:
+        """Two contradictory readings of one algebra must not collapse to the
+        second, which would then read as agreement."""
+        outcome = parse_uacalc_table("B28 16 7\nB28 16 8\n")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("appears more than once", outcome.unwrap_err().message)
 
     def test_agreement_passes(self) -> None:
         """Our own reading of the pre-fix B28 is |A| = 16 with 8 congruences."""

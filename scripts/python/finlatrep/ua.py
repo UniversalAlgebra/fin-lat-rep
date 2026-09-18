@@ -104,6 +104,17 @@ def _parse_algebra(element: ElementTree.Element) -> Result[Algebra, PipelineErro
         return Result.err(
             PipelineError(ErrorType.PARSING_ERROR, f"algebra {name} has no readable cardinality")
         )
+    if int(cardinality_text) < 1:
+        # `0` is a digit string, and a unary table of length zero then passes
+        # the shape check, so an empty carrier would reach the congruence code
+        # and be reported as having a one-element congruence lattice.  An
+        # algebra has a nonempty carrier.
+        return Result.err(
+            PipelineError(
+                ErrorType.VALIDATION_ERROR,
+                f"algebra {name} has cardinality {cardinality_text}; a carrier cannot be empty",
+            )
+        )
     operations = sequence_results([_parse_operation(op) for op in element.findall(".//op")])
     return operations.and_then(
         lambda ops: _validate(
