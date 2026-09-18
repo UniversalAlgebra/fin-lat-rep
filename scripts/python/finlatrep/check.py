@@ -202,9 +202,19 @@ def cross_check(
         if c.algebra in uacalc_rows
         for message in _row_disagreements(c, uacalc_rows[c.algebra])
     ]
-    missing = [c.algebra for c in comparisons if c.algebra not in uacalc_rows]
-    if disagreements or missing:
-        detail = "; ".join(disagreements + [f"{m}: absent from the UACalc table" for m in missing])
+    checked = {c.algebra for c in comparisons}
+    missing = sorted(name for name in checked if name not in uacalc_rows)
+    # Rows we never asked about mean the table was produced from some other
+    # file.  Ignoring them lets "UACalc agrees" be printed about a run where
+    # the two engines read different algebras, which is the opposite of what
+    # the cross-check is for.
+    extra = sorted(name for name in uacalc_rows if name not in checked)
+    if disagreements or missing or extra:
+        detail = "; ".join(
+            disagreements
+            + [f"{m}: absent from the UACalc table" for m in missing]
+            + [f"{e}: in the UACalc table but not in this run" for e in extra]
+        )
         return Result.err(PipelineError(ErrorType.VALIDATION_ERROR, detail))
     return Result.ok(None)
 

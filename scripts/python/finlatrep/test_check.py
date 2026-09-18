@@ -163,6 +163,25 @@ class CrossCheckTests(unittest.TestCase):
         self.assertIn("we read |A| = 16", outcome.unwrap_err().message)
         self.assertIn("different algebra file", outcome.unwrap_err().message)
 
+    def test_a_row_this_run_never_asked_about_is_reported(self) -> None:
+        """A table with extra rows came from a different file.
+
+        Without this, checking two algebras against a twenty-nine row table
+        printed "UACalc agrees" while the two engines had read different files.
+        """
+        rows = {"B28": UACalcRow(16, 8), "B99": UACalcRow(4, 5)}
+        outcome = cross_check(self._b28(), rows)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("B99: in the UACalc table but not in this run",
+                      outcome.unwrap_err().message)
+
+    def test_both_directions_are_reported_together(self) -> None:
+        outcome = cross_check(self._b28(), {"B99": UACalcRow(4, 5)})
+        self.assertTrue(outcome.is_err)
+        message = outcome.unwrap_err().message
+        self.assertIn("B28: absent from the UACalc table", message)
+        self.assertIn("B99: in the UACalc table but not in this run", message)
+
     def test_an_algebra_absent_from_the_table_is_reported(self) -> None:
         outcome = cross_check(self._b28(), {})
         self.assertTrue(outcome.is_err)

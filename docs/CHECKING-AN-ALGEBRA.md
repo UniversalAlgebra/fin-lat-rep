@@ -133,6 +133,31 @@ file of its own, the way
 and point either engine at that.  The checker compares each algebra `B`*i*
 against the lattice `L`*i* the article draws, whatever else is in the file.
 
+Worked, on that one-algebra fixture.  Engine one:
+
+    cd scripts/python
+    PYTHONPATH=. python3 -m finlatrep.check \
+        fixtures/B28-pre-fix.ua ../../article/SmallLatticeReps.tex
+
+    B28        |A| = 16   |Con(A)| = 8   L28 has 7   MISMATCH
+
+Engine two, on the same file:
+
+    UACALC_JARS=$JARS/uacalc.jar:$JARS/LatDraw.jar:$JARS/groovy-all-1.0.jar:\
+    $JARS/groovy-engine.jar:$JARS/miglayout-3.7-swing.jar \
+        jython scripts/jython/con_table.py \
+            scripts/python/fixtures/B28-pre-fix.ua
+
+    B28 16 8
+
+Both say the same thing: sixteen elements, eight congruences.  L28 has seven,
+so this algebra does not represent it.  The corrected counterpart gives
+
+    B1 4 5
+    B28 16 7
+
+which is the agreement the catalog should show.
+
 ## Why this page exists
 
 B28 was wrong for nine years, from August 2017 until September 2026: six
