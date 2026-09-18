@@ -1,5 +1,17 @@
 # fin-lat-rep
 
+<!-- The version badges say what flake.lock pins, the same table `nix develop`
+     prints on entry.  Move them when the lock moves.  The license badge names
+     the code only, on purpose: LICENSE covers the article and misc/ separately. -->
+[![code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
+[![paper](https://github.com/UniversalAlgebra/fin-lat-rep/actions/workflows/build-paper.yml/badge.svg)](https://github.com/UniversalAlgebra/fin-lat-rep/actions/workflows/build-paper.yml)
+[![Nix flake](https://img.shields.io/badge/Nix-flake-5277C3?logo=nixos&logoColor=white)](flake.nix)
+[![GAP 4.15.1](https://img.shields.io/badge/GAP-4.15.1-4b8bbe)](https://www.gap-system.org/)
+[![OpenJDK 21](https://img.shields.io/badge/OpenJDK-21-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
+[![Jython 2.7.4](https://img.shields.io/badge/Jython-2.7.4-3776AB)](https://www.jython.org/)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![TeX Live 2025](https://img.shields.io/badge/TeX%20Live-2025-008080?logo=latex&logoColor=white)](https://tug.org/texlive/)
+
 Source and supporting material for *Representing Finite Lattices as Congruence
 Lattices of Finite Algebras*, by William DeMeo, Ralph Freese and Peter Jipsen.
 The LaTeX source of the article is in [`article/`][article].
