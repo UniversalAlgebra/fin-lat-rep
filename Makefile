@@ -1,13 +1,12 @@
 # File: Makefile
 #
-# Front door for the repository.  Issue #27 adds the project targets that
-# drive the github-project engine; this file currently carries the paper, the
-# catalog check from issue #29, and the Universal Algebra Calculator's smoke
-# test from issue #26.
+# Front door for the repository.  It carries the paper, the catalog check from
+# issue #29, the Universal Algebra Calculator's smoke test from issue #26, and
+# the project targets from issue #27, which drive the github-project engine.
 #
 # Every target expects the development shell.  Run `nix develop` first: that
 # is where pdflatex, uacalc and xvfb-run are, and nothing here asks you to
-# install them yourself.
+# install them yourself.  See CONTRIBUTING.md.
 
 PYTHON ?= python3
 PYTHON_DIR := scripts/python
@@ -30,11 +29,43 @@ else
 CHECK_FLAGS :=
 endif
 
-.PHONY: help paper check-catalog uacalc-smoke test test-finlatrep test-utils clean
+PLAN := docs/GITHUB_PROJECT.md
 
+# The github-project engine, which keeps $(PLAN) and GitHub in step, is
+# referenced and never vendored: it arrives as a flake input, pinned in
+# flake.lock, and these targets run it through the ghproject-* apps that
+# flake.nix re-exports.  Upgrade it deliberately, with
+# `nix flake update github-project`.  project-lint is offline; the others talk
+# to GitHub through an authenticated `gh`.
+#
+# Escape hatch, for working on the engine itself or on a machine without Nix:
+# set GHPROJECT_DIR to a github-project checkout and the targets call its
+# scripts with plain python3, which is all the engine needs.
+GHPROJECT_DIR ?=
+
+ifneq (,$(GHPROJECT_DIR))
+GHPROJECT_LINT         := $(PYTHON) "$(GHPROJECT_DIR)/scripts/gh_project_lint.py"
+GHPROJECT_POPULATE     := $(PYTHON) "$(GHPROJECT_DIR)/scripts/gh_project_populate.py"
+GHPROJECT_UPDATE       := $(PYTHON) "$(GHPROJECT_DIR)/scripts/gh_project_update.py"
+GHPROJECT_UPDATE_CHECK := $(PYTHON) "$(GHPROJECT_DIR)/scripts/gh_project_update.py" --check
+else
+# The backslash is not optional: an unescaped # starts a comment even inside
+# a make assignment, so `nix run .#ghproject-lint` would assign `nix run .`.
+GHPROJECT_LINT         := nix run .\#ghproject-lint --
+GHPROJECT_POPULATE     := nix run .\#ghproject-populate --
+GHPROJECT_UPDATE       := nix run .\#ghproject-update --
+GHPROJECT_UPDATE_CHECK := nix run .\#ghproject-update-check --
+endif
+
+.PHONY: help paper check-catalog uacalc-smoke test test-finlatrep test-utils \
+        clean project-lint project-populate-dry project-populate \
+        project-update project-update-check _check-ghproject
+
+# The column is 20 rather than 16, because project-update-check and
+# project-populate-dry are twenty characters and ran into their descriptions.
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
-	  | awk -F':.*?## ' '{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
+	  | awk -F':.*?## ' '{printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 paper: ## Build article/SmallLatticeReps.pdf
 	$(MAKE) -C article
@@ -63,6 +94,28 @@ test-utils: ## Run the shared functional primitives' tests
 
 test-finlatrep: ## Run the catalog checker's tests
 	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s finlatrep -p "test_*.py"
+
+_check-ghproject:
+	@test -z "$(GHPROJECT_DIR)" || test -f "$(GHPROJECT_DIR)/scripts/gh_project_update.py" || { \
+	  echo "error: github-project engine not found at $(GHPROJECT_DIR)"; \
+	  echo "       clone williamdemeo/github-project there, or unset"; \
+	  echo "       GHPROJECT_DIR to use the flake input"; \
+	  exit 2; }
+
+project-lint: _check-ghproject ## Check the plan file for structural defects
+	$(GHPROJECT_LINT) $(PLAN)
+
+project-populate-dry: _check-ghproject ## Preview what populate would create on GitHub
+	$(GHPROJECT_POPULATE) --dry-run $(PLAN)
+
+project-populate: _check-ghproject ## Create the plan's labels, milestones and issues on GitHub
+	$(GHPROJECT_POPULATE) $(PLAN)
+
+project-update: _check-ghproject ## Rewrite the plan's generated regions from GitHub
+	$(GHPROJECT_UPDATE) $(PLAN)
+
+project-update-check: _check-ghproject ## Fail if the plan and GitHub disagree
+	$(GHPROJECT_UPDATE_CHECK) $(PLAN)
 
 clean: ## Remove build products
 	$(MAKE) -C article clean

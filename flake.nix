@@ -18,7 +18,15 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-  outputs = { nixpkgs, ... }:
+  # The github-project roadmap engine, which keeps docs/GITHUB_PROJECT.md in
+  # step with GitHub.  It is referenced, never vendored (issue #27): a copy of
+  # its scripts in this repository is exactly the drift the plan exists to
+  # stop.  `flake.lock` pins it, the apps below re-export it, the Makefile's
+  # project-* targets call those, and `nix flake update github-project` is how
+  # it moves.
+  inputs.github-project.url = "github:williamdemeo/github-project";
+
+  outputs = { nixpkgs, github-project, ... }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
@@ -149,6 +157,16 @@
       # CI and anyone diagnosing a hash mismatch wants; the devShell below
       # puts the same derivation on PATH.
       packages = forAllSystems (pkgs: { uacalc = mkUacalc pkgs; });
+
+      # The roadmap engine's apps, re-exported under a ghproject- prefix, so
+      # that `nix run .#ghproject-update -- docs/GITHUB_PROJECT.md` runs the
+      # engine at the version THIS repository's flake.lock pins rather than
+      # whatever is on the machine.  The Makefile's project-* targets call
+      # these.
+      apps = nixpkgs.lib.genAttrs systems (system:
+        nixpkgs.lib.mapAttrs'
+          (name: app: nixpkgs.lib.nameValuePair "ghproject-${name}" app)
+          github-project.apps.${system});
 
       checks = forAllSystems (pkgs:
         # X is a Linux concern here, so the smoke test is too; on Darwin the
