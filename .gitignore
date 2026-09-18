@@ -8,6 +8,11 @@
 *.bbl
 *.blg
 
+# Nix build results and direnv's cache.
+result
+result-*
+.direnv/
+
 # Build products of article/Makefile. refs.bib is generated from the
 # filecontents block at the top of SmallLatticeReps.tex, so it should never be
 # edited or committed directly.
