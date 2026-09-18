@@ -121,7 +121,14 @@ uacalc-table: ## Compute |Con(A)| for every algebra with UACalc itself
 
 # The fast group-theoretic checks: PJ17.gap in seconds, PJ11.gap in under a
 # minute.  scripts/gap/verify-fast.g reads them from the pinned programs and
-# asserts what the article says; GAP exits 1 on any failed assertion.
+# asserts what the article says; GAP exits 1 on any failed assertion.#
+# Three things make the GAP steps fail closed rather than hang or pass by
+# accident: the driver's first statement is GAP_EXIT_CODE(1), so a run that
+# never reaches its final QUIT_GAP(0) exits 1; --quitonbreak turns any error
+# into exit 1 instead of a break loop; and stdin comes from /dev/null, so
+# nothing can wait for a keyboard (a broken driver once held `make verify`
+# for eleven minutes at GAP's break prompt, and CI would have waited for its
+# timeout).
 
 verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 	@command -v gap > /dev/null || { \
@@ -131,7 +138,7 @@ verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 	  echo "       inside 'nix develop' this is set for you; outside it, clone"; \
 	  echo "       UniversalAlgebra/fin-lat-rep-gap and set FINLATREPGAP_DIR."; \
 	  exit 2; }
-	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A -o 4g scripts/gap/verify-fast.g
+	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 4g scripts/gap/verify-fast.g < /dev/null
 
 # Every computational check that gates a change, in the order that fails
 # fastest: the unit suites, then the catalog check with UACalc as the second
@@ -167,7 +174,7 @@ verify-slow: ## Re-run the slow GAP computations (minutes; CI runs this on a sch
 	  echo "error: gap is not on PATH; run this inside 'nix develop'."; exit 2; }
 	@test -f "$(FINLATREPGAP_DIR)/Hexagon.g" || { \
 	  echo "error: no GAP programs at $(FINLATREPGAP_DIR); see verify-gap."; exit 2; }
-	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A -o 8g scripts/gap/verify-slow.g
+	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 8g scripts/gap/verify-slow.g < /dev/null
 
 test: test-utils test-finlatrep ## Run every test suite
 

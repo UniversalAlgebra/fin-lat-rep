@@ -23,6 +23,14 @@
 # it allows.
 SizeScreen([ 4096 ]);
 
+# Fail closed.  Until QUIT_GAP(0) at the very end says otherwise, this run
+# has failed: if a Read below stops parsing, or an error breaks the flow so
+# that the end is never reached, GAP exits with this status rather than 0.
+# The Makefile adds --quitonbreak and stdin from /dev/null, so an error
+# cannot wait in the break loop either (measured: a syntax error in this
+# file once held `make verify` for eleven minutes, waiting on stdin).
+GAP_EXIT_CODE(1);
+
 dir := GAPInfo.SystemEnvironment.FINLATREPGAP_DIR;
 me := "verify-fast.g";
 passes := 0;
