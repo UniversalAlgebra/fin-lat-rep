@@ -45,7 +45,9 @@ jobs:
 
       - name: Verify (slow)
         id: verify
-        run: nix develop .#ci --command make verify-slow
+        # The GAP-only shell: this job needs nothing else, and must not fail
+        # on a UACalc download it never uses (issue #39).
+        run: nix develop .#gap --command make verify-slow
 
       # One issue, not one per run.  `gh issue list` finds an open one by
       # exact title; if there is none, create it.

@@ -22,8 +22,9 @@ Description: Reading the lattices the article draws, out of its LaTeX source.
   The files under `article/inputs/tikz/` DO use the chained form, but they are
   illustrations in the body of the paper, several of lattices with no catalog
   algebra at all, and are deliberately out of scope.  To stop that going
-  quietly out of date, the caller is expected to check the diagram count
-  against the algebra count; see `check.py`.
+  quietly out of date, the caller is expected to check that every algebra's
+  lattice has a diagram (the catalog draws more lattices than there are
+  algebras, by design); see `check_diagram_count` in `check.py`.
 """
 
 from __future__ import annotations

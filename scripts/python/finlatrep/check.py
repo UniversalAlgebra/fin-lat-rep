@@ -288,14 +288,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     outcome = run(args.algebra_file, args.article)
     if outcome.is_err:
-        print(f"error: {outcome.unwrap_err()}", file=sys.stderr)
+        print(f"{FAIL} {ME}  {outcome.unwrap_err()}", file=sys.stderr)
         return 2
     comparisons = outcome.unwrap()
 
     if args.uacalc_table is not None:
         table = read_text(args.uacalc_table).and_then(parse_uacalc_table)
         if table.is_err:
-            print(f"error: {table.unwrap_err()}", file=sys.stderr)
+            print(f"{FAIL} {ME}  the UACalc table could not be read: {table.unwrap_err()}", file=sys.stderr)
             return 2
         rows = table.unwrap()
         agreed = cross_check(comparisons, rows)

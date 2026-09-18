@@ -423,20 +423,39 @@
             '';
           };
 
-          # The same shell without TeX Live, for the verification workflows
+          # The same shell without TeX Live, for the pull-request workflow
           # (`nix develop .#ci`).  Issue #30's `make verify` builds no PDF, and
           # texlive-article is the largest closure in the shell by far, so CI
           # has no reason to fetch it; the paper's own workflow does.  Derived
           # from `default` rather than written out twice, so the two cannot
           # drift (the `rec` above is what lets it name `default`):
           # mkShellNoCC puts `packages` into nativeBuildInputs, and this
-          # removes the one entry.  The banner still names pdflatex, but
-          # it prints only in an interactive shell, which this is not.
+          # removes the one entry.  The inherited banner would list pdflatex,
+          # which this shell does not have, so it is replaced with one line.
           ci = default.overrideAttrs (old: {
             name = "fin-lat-rep-ci";
             nativeBuildInputs =
               pkgs.lib.filter (p: p != texlive-article) old.nativeBuildInputs;
+            shellHook = ''
+              case $- in *i*)
+                echo "fin-lat-rep ci shell: the default shell without TeX Live." >&2
+                echo "  \$ALGEBRAFILES_DIR and \$FINLATREPGAP_DIR are set; \`make help\` lists the targets." >&2 ;;
+              esac
+            '';
           });
+
+          # GAP alone, with the pinned programs, for the slow workflow
+          # (`nix develop .#gap --command make verify-slow`).  Hexagon.g and
+          # pentagonSearch.g need nothing else, and a shell that also
+          # realizes UACalc would let a uacalc.org outage (issue #39) fail the
+          # slow job and open its tracking issue about GAP checks that never
+          # ran.  Written out rather than derived, since it shares nothing
+          # but the pin.
+          gap = pkgs.mkShellNoCC {
+            name = "fin-lat-rep-gap";
+            packages = [ pkgs.gap pkgs.gnumake ];
+            FINLATREPGAP_DIR = "${finlatrepgap}";
+          };
         });
     };
 }

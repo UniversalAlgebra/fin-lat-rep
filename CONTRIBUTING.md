@@ -15,8 +15,10 @@ Algebra Calculator, TeX Live, Jython, Python, `make` and `gh`, at the versions
 is the algebras and `$FINLATREPGAP_DIR` the GAP programs, both as flake inputs.
 
 `nix develop .#ci` is the same shell without TeX Live, which is what the
-verification workflows use; it saves them the largest download for something
-they never run.
+pull-request workflow uses; it saves it the largest download for something it
+never runs.  `nix develop .#gap` is GAP and `make` alone, for the slow
+workflow, which needs nothing else and should not fail on a UACalc download
+it never uses.
 
 Nothing in this repository asks you to install any of them yourself, and nothing
 you install yourself is used in preference to the Nix shell's copy.
@@ -133,8 +135,8 @@ opens (or comments on) one issue titled "Scheduled verification failed".  A GAP
 upgrade is what it exists to catch; see Remark 3.7 of the article for the last
 time that happened.
 
-When a GAP assertion fails, the driver prints `FAIL <what>` with the value it
-got and the value it wanted, for each one, before exiting 1.  A changed number
+When a GAP assertion fails, the driver prints a ❌ line naming the assertion,
+then the value it got and the value it wanted, for each one, and exits 1.  A changed number
 is not necessarily a wrong number: first decide whether GAP or the article is
 right, then fix the one that is wrong, and only then the assertion.
 
