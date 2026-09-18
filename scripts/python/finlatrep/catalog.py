@@ -53,7 +53,7 @@ class CatalogEntry:
 
 
 def _strip_line_comment(line: str) -> str:
-    """Cut one line at its first unescaped `%`.
+    r"""Cut one line at its first unescaped `%`.
 
     Whether a `%` is escaped is decided by the PARITY of the backslash run in
     front of it, not by the single preceding character.  In `\%` the percent
@@ -78,7 +78,7 @@ def _strip_line_comment(line: str) -> str:
 
 
 def strip_latex_comments(text: str) -> str:
-    """Remove everything a LaTeX `%` comments out.
+    r"""Remove everything a LaTeX `%` comments out.
 
     Without this the parser reads commented-out diagrams as if they were
     drawn.  That matters most in exactly the situation `check_diagram_count`
