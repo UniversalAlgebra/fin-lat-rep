@@ -16,6 +16,12 @@ Provenance:
   types, which a LaTeX paper repository has no use for and which would rot.
   If this repository ever grows a second Python tool that needs more, take the
   additional pieces from upstream rather than inventing them here.
+
+  One deliberate divergence, from review on fin-lat-rep PR #32: upstream's
+  `unwrap_or` returns the default when the success value happens to be None,
+  which conflates a successful None with a failure.  Here the choice is made on
+  `_is_ok` alone.  Upstream has the same defect and should be fixed the same
+  way; until it is, this one method differs.
 """
 
 from __future__ import annotations
@@ -66,8 +72,14 @@ class Result(Generic[T, E]):
         raise ValueError(f"Called unwrap() on error result: {self._error}")
 
     def unwrap_or(self, default: T) -> T:
-        """Extract the success value, or return the default."""
-        return self._value if self._is_ok and self._value is not None else default
+        """Extract the success value, or return the default if this is an error.
+
+        The choice is made on `_is_ok` alone.  `Result.ok(None)` is a perfectly
+        good success, which this repository creates whenever a check has
+        nothing to report but succeeded, and returning the default for it would
+        conflate that with failure.
+        """
+        return self._value if self._is_ok else default  # type: ignore[return-value]
 
     def unwrap_err(self) -> E:
         """Extract the error value; raises if this is a success."""

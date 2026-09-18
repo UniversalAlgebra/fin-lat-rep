@@ -24,7 +24,7 @@ else
 CHECK_FLAGS :=
 endif
 
-.PHONY: help paper check-catalog test test-finlatrep clean
+.PHONY: help paper check-catalog test test-finlatrep test-utils clean
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -42,7 +42,10 @@ check-catalog: ## Check every algebra against the lattice the article draws
 	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m finlatrep.check $(CHECK_FLAGS) \
 	  "$(abspath $(ALGEBRA_FILE))" "$(abspath $(ARTICLE))"
 
-test: test-finlatrep ## Run every test suite
+test: test-utils test-finlatrep ## Run every test suite
+
+test-utils: ## Run the shared functional primitives' tests
+	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s _utils -p "test_*.py"
 
 test-finlatrep: ## Run the catalog checker's tests
 	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m unittest discover -s finlatrep -p "test_*.py"

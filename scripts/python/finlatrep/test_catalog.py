@@ -64,6 +64,13 @@ class ParsingTests(unittest.TestCase):
         self.assertTrue(outcome.is_err)
         self.assertEqual(outcome.unwrap_err().error_type, ErrorType.PARSING_ERROR)
 
+    def test_a_lattice_labelled_twice_is_an_error(self) -> None:
+        """Keeping the first drawing would leave the entry count intact at 35
+        while a second, different drawing went uncompared."""
+        outcome = parse_catalog(SYNTHETIC + SYNTHETIC[SYNTHETIC.index(r"$\bL_2$"):])
+        self.assertTrue(outcome.is_err)
+        self.assertIn("labelled more than once", outcome.unwrap_err().message)
+
     def test_a_catalog_naming_no_lattices_is_an_error(self) -> None:
         self.assertTrue(parse_catalog(CATALOG_HEADING + "\nempty\n").is_err)
 
@@ -88,6 +95,22 @@ class CommentTests(unittest.TestCase):
             SYNTHETIC.replace(r"\draw(0)--(1);", "%" + r"\draw(0)--(1);")
         ).unwrap()[2]
         self.assertEqual(len(live.relation.covers), 1)
+        self.assertEqual(len(commented.relation.covers), 0)
+
+    def test_a_percent_after_an_even_backslash_run_still_opens_a_comment(self) -> None:
+        r"""TeX escaping is by backslash parity, not by the preceding character.
+
+        In `\\%` the `\\` is its own control sequence, so the `%` still starts
+        a comment.  Reading only the character before would keep that line, and
+        a commented-out diagram would stay visible to the parser.
+        """
+        self.assertEqual(strip_latex_comments(r"a\\% dropped"), "a" + "\\" * 2)
+        self.assertEqual(strip_latex_comments(r"a\\\% kept"), r"a\\\% kept")
+
+    def test_a_commented_out_edge_behind_a_double_backslash_is_not_counted(self) -> None:
+        commented = parse_catalog(
+            SYNTHETIC.replace(r"\draw(0)--(1);", "\\\\%" + r"\draw(0)--(1);")
+        ).unwrap()[2]
         self.assertEqual(len(commented.relation.covers), 0)
 
     def test_a_commented_out_lattice_label_is_not_a_lattice(self) -> None:

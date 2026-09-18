@@ -42,8 +42,6 @@ CATALOG_HEADING = r"\subsection{Lattices of size at most 7}"
 _LATTICE_LABEL = re.compile(r"\$\\bL_\{?(\d+)\}?\$")
 _NODE = re.compile(r"\\node\((\d+)\)\s*at\s*\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)")
 _EDGE = re.compile(r"\\draw\((\d+)\)--\((\d+)\)")
-# A `%` that is not escaped starts a LaTeX comment and runs to end of line.
-_COMMENT = re.compile(r"(?<!\\)%.*$", re.MULTILINE)
 
 
 @dataclass(frozen=True)
@@ -52,6 +50,31 @@ class CatalogEntry:
 
     index: int
     relation: CoveringRelation
+
+
+def _strip_line_comment(line: str) -> str:
+    """Cut one line at its first unescaped `%`.
+
+    Whether a `%` is escaped is decided by the PARITY of the backslash run in
+    front of it, not by the single preceding character.  In `\%` the percent
+    is escaped and is a literal.  In `\\%` the `\\` is its own control
+    sequence, a line break, and the `%` still opens a comment.  Reading only
+    the character before would keep such a line, which is precisely how a
+    commented-out diagram would stay visible to this parser.
+    """
+    index = 0
+    while True:
+        found = line.find("%", index)
+        if found < 0:
+            return line
+        backslashes = 0
+        probe = found - 1
+        while probe >= 0 and line[probe] == "\\":
+            backslashes += 1
+            probe -= 1
+        if backslashes % 2 == 0:
+            return line[:found]
+        index = found + 1
 
 
 def strip_latex_comments(text: str) -> str:
@@ -63,7 +86,7 @@ def strip_latex_comments(text: str) -> str:
     `\input` would leave the stale relation visible here, and the check would
     pass while the article no longer draws what it compared against.
     """
-    return _COMMENT.sub("", text)
+    return "\n".join(_strip_line_comment(line) for line in text.split("\n"))
 
 
 def _entry_from_chunk(index: int, chunk: str) -> Result[CatalogEntry, PipelineError]:
@@ -131,11 +154,20 @@ def parse_catalog(text: str) -> Result[Dict[int, CatalogEntry], PipelineError]:
         (index, body[position : labels[i + 1][0] if i + 1 < len(labels) else len(body)])
         for i, (position, index) in enumerate(labels)
     ]
-    # A lattice labelled twice would silently lose one reading; keep the first.
     entries: Dict[int, CatalogEntry] = {}
     for index, chunk in bounds:
         if index in entries:
-            continue
+            # Keeping the first reading and dropping the rest would leave the
+            # unique-entry count at 35 while a second, different drawing of the
+            # same lattice went uncompared, which is the failure
+            # check_diagram_count exists to make loud.
+            return Result.err(
+                PipelineError(
+                    ErrorType.PARSING_ERROR,
+                    f"L{index} is labelled more than once in the catalog; "
+                    "which drawing the algebra should be checked against is ambiguous",
+                )
+            )
         parsed = _entry_from_chunk(index, chunk)
         if parsed.is_err:
             return Result.err(parsed.unwrap_err())
