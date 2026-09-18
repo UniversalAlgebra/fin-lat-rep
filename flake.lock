@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "finlatrepgap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789346664,
+        "narHash": "sha256-SV5JHX4YZEGsqQTbjBB0nLEZJvugVhBBTRs0BmV5Wh4=",
+        "owner": "UniversalAlgebra",
+        "repo": "fin-lat-rep-gap",
+        "rev": "db06758f1305637c3cce29f26507b93b8d9d8b0c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "UniversalAlgebra",
+        "repo": "fin-lat-rep-gap",
+        "type": "github"
+      }
+    },
     "github-project": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -69,6 +85,7 @@
     "root": {
       "inputs": {
         "algebrafiles": "algebrafiles",
+        "finlatrepgap": "finlatrepgap",
         "github-project": "github-project",
         "nixpkgs": "nixpkgs_2"
       }

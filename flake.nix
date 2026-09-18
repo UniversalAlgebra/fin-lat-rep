@@ -38,7 +38,18 @@
     flake = false;
   };
 
-  outputs = { nixpkgs, github-project, algebrafiles, ... }:
+  # The GAP programs behind the article's group-theoretic claims.  They moved
+  # to their own repository in #23, and `make verify` re-runs the fast ones, so
+  # the shell hands them over at a pinned revision for the same reason it hands
+  # over the algebras: a floating clone would make the gate depend on
+  # unreviewed upstream changes, which is the opposite of what a gate is for.
+  # `nix flake update finlatrepgap` is how it moves.
+  inputs.finlatrepgap = {
+    url = "github:UniversalAlgebra/fin-lat-rep-gap";
+    flake = false;
+  };
+
+  outputs = { nixpkgs, github-project, algebrafiles, finlatrepgap, ... }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
@@ -294,7 +305,7 @@
             then " \\\n    xvfb-run   '${pkgs.xvfb-run.version}' 'X virtual framebuffer'"
             else "";
         in
-        {
+        rec {
           default = pkgs.mkShellNoCC {
             name = "fin-lat-rep";
 
@@ -343,6 +354,9 @@
             # still applies.
             ALGEBRAFILES_DIR = "${algebrafiles}";
 
+            # Likewise for the GAP programs; `make verify-gap` reads this.
+            FINLATREPGAP_DIR = "${finlatrepgap}";
+
             # The greeting.
             #
             # All of it goes to stderr, so that `nix develop --command ...`
@@ -376,13 +390,15 @@
                      make       '${pkgs.gnumake.version}' 'GNU Make' \
                      gh         '${pkgs.gh.version}'      'GitHub CLI'${xvfbRow}
                   echo
-                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files.'
+                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files,'
+                  echo '  and $FINLATREPGAP_DIR holds the GAP programs.  `make verify` runs both.'
                   echo
                   echo ' ----------------------------------------------'
                   echo '  # some commands you can run in this shell:'
                   echo '  make paper          # build article/SmallLatticeReps.pdf'
                   echo '  make check-catalog  # check every algebra against the lattice drawn beside it'
                   echo '  make uacalc-smoke   # check that the calculator comes up (Linux only)'
+                  echo '  make verify         # every check that gates a change; what CI runs'
                   echo '  make help           # list every target'
                   echo ' ----------------------------------------------'
                   echo
@@ -392,6 +408,21 @@
               case $- in *i*) finlatrep-tools ;; esac
             '';
           };
+
+          # The same shell without TeX Live, for the verification workflows
+          # (`nix develop .#ci`).  Issue #30's `make verify` builds no PDF, and
+          # texlive-article is the largest closure in the shell by far, so CI
+          # has no reason to fetch it; the paper's own workflow does.  Derived
+          # from `default` rather than written out twice, so the two cannot
+          # drift (the `rec` above is what lets it name `default`):
+          # mkShellNoCC puts `packages` into nativeBuildInputs, and this
+          # removes the one entry.  The banner still names pdflatex, but
+          # it prints only in an interactive shell, which this is not.
+          ci = default.overrideAttrs (old: {
+            name = "fin-lat-rep-ci";
+            nativeBuildInputs =
+              pkgs.lib.filter (p: p != texlive-article) old.nativeBuildInputs;
+          });
         });
     };
 }
