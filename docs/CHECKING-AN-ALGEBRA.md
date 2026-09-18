@@ -79,25 +79,22 @@ implementation agreeing with it is evidence that neither is wrong.
 
 UACalc has a command line: a Jython layer over its Java API, written by DeMeo
 and Freese, in [UACalc/UACalc_CLI] and documented at
-[uacalc-at-the-command-line].  You need five jars:
+[uacalc-at-the-command-line].  The development shell packages it, so from
+`nix develop` the recipe is one command with nothing to arrange first:
 
-| Jar | Where from |
-| --- | --- |
-| `uacalc.jar` | <https://uacalc.org/uacalc.jar> |
-| `LatDraw.jar` | [`UACalc/uacalcsrc`]`/jars/` |
-| `groovy-all-1.0.jar` | [`UACalc/uacalcsrc`]`/jars/` |
-| `groovy-engine.jar` | [`UACalc/uacalcsrc`]`/jars/` |
-| `miglayout-3.7-swing.jar` | [`UACalc/uacalcsrc`]`/jars/` |
+    uacalc-cli scripts/jython/con_table.py \
+        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua
 
-Any Jython will do; `nix shell nixpkgs#jython nixpkgs#jdk` gives you 2.7.4 on
-OpenJDK 21, which is what the output below was produced with.  UACalc's own
+`uacalc-cli` is Jython with UACalc's five jars already importable, and it
+exports `UACALC_JARS`, which is what `con_table.py` reads.  UACalc's own
 `Main-Class` is the Swing application, so the jar alone only gives you the GUI;
 the command line is how you reach the same API without a display.
 
-    UACALC_JARS=$JARS/uacalc.jar:$JARS/LatDraw.jar:$JARS/groovy-all-1.0.jar:\
-    $JARS/groovy-engine.jar:$JARS/miglayout-3.7-swing.jar \
-        jython scripts/jython/con_table.py \
-            ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua
+Where those jars come from, since nothing else in the toolchain fetches them:
+`flake.nix` pins all five by sha256, `uacalc.jar` from
+<https://uacalc.org/uacalc.jar> and `LatDraw.jar`, `groovy-all-1.0.jar`,
+`groovy-engine.jar` and `miglayout-3.7-swing.jar` from
+[`UACalc/uacalcsrc`]`/jars/` at a pinned commit.
 
 Real output, trimmed, as `<name> <cardinality> <|Con(A)|>`:
 
@@ -107,20 +104,27 @@ Real output, trimmed, as `<name> <cardinality> <|Con(A)|>`:
     ...
     B28 16 7
 
-Pass that table back to engine one and the two are compared outright, on both
-the cardinality and the number of congruences, so that a table generated from a
-stale or different algebra file is caught rather than read as agreement:
+Save that table and pass it back to engine one, and the two are compared
+outright, on both the cardinality and the number of congruences, so that a
+table generated from a stale or different algebra file is caught rather than
+read as agreement:
+
+    uacalc-cli scripts/jython/con_table.py \
+        ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
+        > /tmp/uacalc-table.txt
+    make check-catalog UACALC_TABLE=/tmp/uacalc-table.txt
+
+    UACalc agrees on |A| and |Con(A)| for all 29 algebras.
+      B1         |A| =  4   |Con(A)| = 5   L1 has 5   ok
+      ...
+    All 29 algebras agree with the lattices the article draws.
+
+or the same thing from `scripts/python`, if you want the checker directly:
 
     cd scripts/python
     PYTHONPATH=. python3 -m finlatrep.check --uacalc-table /tmp/uacalc-table.txt \
         ~/git/UACalc/AlgebraFiles/master/CongruenceLatReps/SmallLatticeReps.ua \
         ../../article/SmallLatticeReps.tex
-
-    UACalc agrees on |A| and |Con(A)| for all 29 algebras.
-
-or, from the top of the repository:
-
-    make check-catalog UACALC_TABLE=/tmp/uacalc-table.txt
 
 Jython is Python 2, which is why `scripts/jython/` shares no code with
 `scripts/python/`.  The table above is the whole interface between them.

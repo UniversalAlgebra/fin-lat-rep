@@ -288,7 +288,7 @@ Acceptance criteria:
 
 <!-- BEGIN GENERATED: milestone-2 -->
 
-### Issue M2-1: Bring the congruence-lattice check into the repository (#29)
+### Issue M2-1: Bring the congruence-lattice check into the repository (#29, closed)
 
 **Labels:** `enhancement`, `milestone-2-verification`
 
