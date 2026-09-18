@@ -1,8 +1,13 @@
 # File: Makefile
 #
 # Front door for the repository.  Issue #27 adds the project targets that
-# drive the github-project engine; this file currently carries the paper and
-# the catalog check from issue #29.
+# drive the github-project engine; this file currently carries the paper, the
+# catalog check from issue #29, and the Universal Algebra Calculator's smoke
+# test from issue #26.
+#
+# Every target expects the development shell.  Run `nix develop` first: that
+# is where pdflatex, uacalc and xvfb-run are, and nothing here asks you to
+# install them yourself.
 
 PYTHON ?= python3
 PYTHON_DIR := scripts/python
@@ -25,7 +30,7 @@ else
 CHECK_FLAGS :=
 endif
 
-.PHONY: help paper check-catalog test test-finlatrep test-utils clean
+.PHONY: help paper check-catalog uacalc-smoke test test-finlatrep test-utils clean
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -42,6 +47,14 @@ check-catalog: ## Check every algebra against the lattice the article draws
 	  exit 2; }
 	cd $(PYTHON_DIR) && PYTHONPATH=. $(PYTHON) -m finlatrep.check $(CHECK_FLAGS) \
 	  "$(abspath $(ALGEBRA_FILE))" "$(abspath $(ARTICLE))"
+
+# Milestone 1's exit criterion for UACalc.  A GUI does not exit, so the test
+# is that it is still alive when the timeout fires, which `timeout` reports as
+# status 124; given no display it exits 0 instead, and given no uacalc.jar it
+# exits 1.  Linux only, because xvfb-run is.  `nix flake check` runs the same
+# test in the sandbox.
+uacalc-smoke: ## Launch the UACalc GUI under a framebuffer and require it to survive
+	timeout 30 xvfb-run -a uacalc; test $$? -eq 124
 
 test: test-utils test-finlatrep ## Run every test suite
 

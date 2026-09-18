@@ -3,9 +3,9 @@
 # The development environment for this repository.  `nix develop` is meant to
 # be the whole setup story: a shell holding the programs the article and its
 # computations need, at the versions `flake.lock` pins, so that two people
-# building the paper are running the same software.  The Universal Algebra
-# Calculator itself is added by issue #26; what is here is the JDK and the
-# Jython it runs on.
+# building the paper are running the same software.  What is here is GAP, a
+# JDK, Jython, TeX Live, and the Universal Algebra Calculator, which the flake
+# packages itself because it is in no package repository at all.
 #
 # The reason for pinning is recorded in docs/GITHUB_PROJECT.md: the article
 # cites GAP 4.8.3 from 2016, and on a current GAP two of the programs that
@@ -23,8 +23,171 @@
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
         nixpkgs.lib.genAttrs systems (system: f (import nixpkgs { inherit system; }));
+
+      # The Universal Algebra Calculator.
+      #
+      # UACalc is in no package repository, so the flake assembles it out of
+      # the artifacts its authors publish: a prebuilt `uacalc.jar` from the
+      # project's web site, and the four supporting jars vendored in
+      # UACalc/uacalcsrc.  Issue #26 records why the jar is taken rather than
+      # built from source: that Ant build declares six dependency jars and
+      # vendors four, targets Java 8, and carries Groovy 1.0 from 2007, and the
+      # prebuilt jar is what uacalc.org serves everyone else anyway.
+      #
+      # THE FRAGILITY, WRITTEN DOWN.  `https://uacalc.org/uacalc.jar` carries
+      # no version in its URL and is served from a personal web server, so the
+      # bytes behind that name can change at any time and nothing about the
+      # name would say so.  The sha256 below is a mitigation rather than a fix:
+      # when the file changes, this build fails with a hash mismatch instead of
+      # quietly handing everybody a different calculator.  What to do then is a
+      # decision and not a chore.  Fetch the new jar, satisfy yourself that it
+      # still computes what the article says it computes (`make uacalc-smoke`,
+      # and the catalog check in docs/CHECKING-AN-ALGEBRA.md), then record the
+      # new hash and date here and put the old hash in the commit message, so
+      # the change is a fact in the history rather than a surprise.  The four
+      # jars from uacalcsrc are pinned twice over, by commit and by content, so
+      # they cannot move at all.
+      #
+      # Two commands reach the devShell's PATH from this, as follows:
+      #
+      #   uacalc      the Swing GUI, `org.uacalc.nbui.UACalculator2`, which is
+      #               the jar's only Main-Class.
+      #   uacalc-cli  Jython with the same five jars importable, which is how
+      #               UACalc is driven without a display.  Given a script it
+      #               runs it; given nothing it is the interactive command line
+      #               documented at uacalc-at-the-command-line.
+      mkUacalc = pkgs:
+        let
+          # Neither the jar nor its URL carries a version, so the version here
+          # is the date the hashes below were measured.
+          version = "unstable-2026-09-13";
+
+          uacalcsrcRev = "538ec6a0adaaee2c81ff1a481238d944d63ce4c7";
+
+          # One fetchurl per jar at that commit downloads 2.5 MB rather than
+          # the whole repository, and pins each jar by content as well.
+          fromUacalcsrc = name: hash: pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/UACalc/uacalcsrc/${uacalcsrcRev}/jars/${name}";
+            inherit hash;
+          };
+
+          # List rather than attribute set, because the order is the classpath
+          # order.  The manifest's Class-Path entry also names
+          # designgridlayout-1.1p1.jar and swing-layout-1.0.2.jar, which exist
+          # in neither repository and are not needed: designgridlayout is
+          # imported only by UACalculatorUI.java, which the UACalculator2 entry
+          # point does not reach.
+          jars = [
+            {
+              name = "uacalc.jar";
+              src = pkgs.fetchurl {
+                url = "https://uacalc.org/uacalc.jar";
+                hash = "sha256-zy4y+xGQnLBKSjWQrBtEj4kbMnrkqACh6q95aDKMTu4=";
+              };
+            }
+            {
+              name = "LatDraw.jar";
+              src = fromUacalcsrc "LatDraw.jar"
+                "sha256-Q86wG7nEDE5tvTN+WFHxDrvq0aKt5uWYlGz2MJoXqhw=";
+            }
+            {
+              name = "miglayout-3.7-swing.jar";
+              src = fromUacalcsrc "miglayout-3.7-swing.jar"
+                "sha256-2cq2nZwm9L/AzCGE3cSBSmDGVC58/UTcLUJzDzn93ko=";
+            }
+            {
+              name = "groovy-all-1.0.jar";
+              src = fromUacalcsrc "groovy-all-1.0.jar"
+                "sha256-vtsJrABQ3aOSBJxm5K2SkYBQ3iLEQxfjxDvz700XyQc=";
+            }
+            {
+              name = "groovy-engine.jar";
+              src = fromUacalcsrc "groovy-engine.jar"
+                "sha256-TEEpGMo5jR2gLviwnasFClirKzch7CPwi+uRtvxAd6M=";
+            }
+          ];
+
+          inherit (pkgs.lib) concatMapStringsSep;
+        in
+        pkgs.runCommand "uacalc-${version}"
+          {
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            meta = {
+              description =
+                "Universal Algebra Calculator: the GUI and its Jython command line";
+              homepage = "https://uacalc.org";
+              mainProgram = "uacalc";
+              platforms = pkgs.lib.platforms.unix;
+            };
+          }
+          ''
+            mkdir -p $out/share/uacalc $out/bin
+            ${concatMapStringsSep "\n            "
+                (j: "install -m444 ${j.src} $out/share/uacalc/${j.name}") jars}
+
+            jars="${concatMapStringsSep ":" (j: "$out/share/uacalc/${j.name}") jars}"
+
+            makeWrapper ${pkgs.jdk21}/bin/java $out/bin/uacalc \
+              --add-flags "-cp $jars org.uacalc.nbui.UACalculator2"
+
+            # JYTHONPATH, not CLASSPATH, is what puts these jars on Jython's
+            # sys.path.  nixpkgs runs Jython as `java -jar jython.jar`, and
+            # `java -jar` ignores both -cp and CLASSPATH, so a CLASSPATH on its
+            # own gives "ImportError: No module named uacalc" (measured).
+            # CLASSPATH is set regardless, for any JVM a session starts for
+            # itself, and UACALC_JARS is the variable the scripts under
+            # scripts/jython/ read to put the same five jars on sys.path
+            # without having to know where they came from.
+            makeWrapper ${pkgs.jython}/bin/jython $out/bin/uacalc-cli \
+              --set JYTHONPATH "$jars" \
+              --set CLASSPATH "$jars" \
+              --set UACALC_JARS "$jars"
+          '';
     in
     {
+      # `nix build .#uacalc` builds the calculator on its own, which is what
+      # CI and anyone diagnosing a hash mismatch wants; the devShell below
+      # puts the same derivation on PATH.
+      packages = forAllSystems (pkgs: { uacalc = mkUacalc pkgs; });
+
+      checks = forAllSystems (pkgs:
+        # X is a Linux concern here, so the smoke test is too; on Darwin the
+        # flake has no checks.
+        nixpkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          # Milestone 1's exit criterion for UACalc, as `nix flake check` as
+          # well as `make uacalc-smoke`.  A GUI does not exit, so the test is
+          # that it is still alive when a timeout fires, which `timeout`
+          # reports as status 124.
+          #
+          # What that does and does not establish, measured rather than
+          # assumed.  Given no framebuffer the same command exits 0, after
+          # printing a HeadlessException; given an unreadable uacalc.jar it
+          # exits 1.  So a 124 really does say that the application started
+          # and put a window up, and a JDK bump that broke Swing would be
+          # caught here.  It says nothing about the four supporting jars,
+          # which are loaded lazily, when a lattice is drawn: the GUI comes up
+          # just as silently without them.  What guards those is the content
+          # hash on each one, not this test.
+          uacalc-smoke = pkgs.runCommand "uacalc-smoke"
+            {
+              nativeBuildInputs = [ pkgs.coreutils pkgs.xvfb-run (mkUacalc pkgs) ];
+            }
+            ''
+              # Swing wants somewhere to put its preferences; the sandbox has
+              # no home directory.
+              export HOME="$TMPDIR"
+
+              status=0
+              timeout 30 xvfb-run -a uacalc || status=$?
+              test "$status" -eq 124 || {
+                echo "uacalc exited with status $status; expected 124," >&2
+                echo "which is the timeout firing on a window still up." >&2
+                exit 1
+              }
+              touch "$out"
+            '';
+        });
+
       devShells = forAllSystems (pkgs:
         let
           # TeX Live, restricted to what article/Makefile actually needs.
@@ -104,6 +267,11 @@
               # which is a 2014 beta in a repository carrying no license.
               pkgs.jython
 
+              # The calculator itself: `uacalc` for the GUI, `uacalc-cli` for
+              # the Jython command line, both with the five jars already on
+              # the classpath.  Packaged at the top of this file.
+              (mkUacalc pkgs)
+
               texlive-article
 
               pkgs.python3
@@ -122,7 +290,7 @@
             # One line, and on stderr, so that `nix develop --command ...`
             # leaves stdout to whatever it was asked to run.
             shellHook = ''
-              echo "fin-lat-rep: gap, java, jython, pdflatex, python3, make, gh${
+              echo "fin-lat-rep: gap, java, jython, uacalc, pdflatex, python3, make, gh${
                 pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ", xvfb-run"
               } on PATH" >&2
             '';
