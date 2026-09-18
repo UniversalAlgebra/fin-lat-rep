@@ -3,9 +3,9 @@
 # The development environment for this repository.  `nix develop` is meant to
 # be the whole setup story: a shell holding the programs the article and its
 # computations need, at the versions `flake.lock` pins, so that two people
-# building the paper are running the same software.  The Universal Algebra
-# Calculator itself is added by issue #26; what is here is the JDK and the
-# Jython it runs on.
+# building the paper are running the same software.  What is here is GAP, a
+# JDK, Jython, TeX Live, and the Universal Algebra Calculator, which the flake
+# packages itself because it is in no package repository at all.
 #
 # The reason for pinning is recorded in docs/GITHUB_PROJECT.md: the article
 # cites GAP 4.8.3 from 2016, and on a current GAP two of the programs that
@@ -18,13 +18,209 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-  outputs = { nixpkgs, ... }:
+  # The github-project roadmap engine, which keeps docs/GITHUB_PROJECT.md in
+  # step with GitHub.  It is referenced, never vendored (issue #27): a copy of
+  # its scripts in this repository is exactly the drift the plan exists to
+  # stop.  `flake.lock` pins it, the apps below re-export it, the Makefile's
+  # project-* targets call those, and `nix flake update github-project` is how
+  # it moves.
+  inputs.github-project.url = "github:williamdemeo/github-project";
+
+  # The algebras themselves.  They live in UACalc/AlgebraFiles rather than in
+  # this repository (see uacalc-files/README.md), and `make check-catalog`
+  # needs them, so the shell hands them over rather than asking a contributor
+  # to have a checkout in the right place.  Pinned, which the plan's M2-1
+  # prefers over fetching at check time: a pinned copy is something the check
+  # can be stale AGAINST, and `nix flake update algebrafiles` is how it moves.
+  # Not a flake, so `flake = false` and the store path is the directory.
+  inputs.algebrafiles = {
+    url = "github:UACalc/AlgebraFiles";
+    flake = false;
+  };
+
+  outputs = { nixpkgs, github-project, algebrafiles, ... }:
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f:
         nixpkgs.lib.genAttrs systems (system: f (import nixpkgs { inherit system; }));
+
+      # The Universal Algebra Calculator.
+      #
+      # UACalc is in no package repository, so the flake assembles it out of
+      # the artifacts its authors publish: a prebuilt `uacalc.jar` from the
+      # project's web site, and the four supporting jars vendored in
+      # UACalc/uacalcsrc.  Issue #26 records why the jar is taken rather than
+      # built from source: that Ant build declares six dependency jars and
+      # vendors four, targets Java 8, and carries Groovy 1.0 from 2007, and the
+      # prebuilt jar is what uacalc.org serves everyone else anyway.
+      #
+      # THE FRAGILITY, WRITTEN DOWN.  `https://uacalc.org/uacalc.jar` carries
+      # no version in its URL and is served from a personal web server, so the
+      # bytes behind that name can change at any time and nothing about the
+      # name would say so.  The sha256 below is a mitigation rather than a fix:
+      # when the file changes, this build fails with a hash mismatch instead of
+      # quietly handing everybody a different calculator.  What to do then is a
+      # decision and not a chore.  Fetch the new jar, satisfy yourself that it
+      # still computes what the article says it computes (`make uacalc-smoke`,
+      # and the catalog check in docs/CHECKING-AN-ALGEBRA.md), then record the
+      # new hash and date here and put the old hash in the commit message, so
+      # the change is a fact in the history rather than a surprise.  The four
+      # jars from uacalcsrc are pinned twice over, by commit and by content, so
+      # they cannot move at all.
+      #
+      # Two commands reach the devShell's PATH from this, as follows:
+      #
+      #   uacalc      the Swing GUI, `org.uacalc.nbui.UACalculator2`, which is
+      #               the jar's only Main-Class.
+      #   uacalc-cli  Jython with the same five jars importable, which is how
+      #               UACalc is driven without a display.  Given a script it
+      #               runs it; given nothing it is the interactive command line
+      #               documented at uacalc-at-the-command-line.
+      # Neither the jar nor its URL carries a version, so the version here is
+      # the date the hashes were measured.  Out here rather than inside
+      # mkUacalc because the devShell's banner names it too.
+      uacalcVersion = "unstable-2026-09-13";
+
+      mkUacalc = pkgs:
+        let
+          version = uacalcVersion;
+
+          uacalcsrcRev = "538ec6a0adaaee2c81ff1a481238d944d63ce4c7";
+
+          # One fetchurl per jar at that commit downloads 2.5 MB rather than
+          # the whole repository, and pins each jar by content as well.
+          fromUacalcsrc = name: hash: pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/UACalc/uacalcsrc/${uacalcsrcRev}/jars/${name}";
+            inherit hash;
+          };
+
+          # List rather than attribute set, because the order is the classpath
+          # order.  The manifest's Class-Path entry also names
+          # designgridlayout-1.1p1.jar and swing-layout-1.0.2.jar, which exist
+          # in neither repository and are not needed: designgridlayout is
+          # imported only by UACalculatorUI.java, which the UACalculator2 entry
+          # point does not reach.
+          jars = [
+            {
+              name = "uacalc.jar";
+              src = pkgs.fetchurl {
+                url = "https://uacalc.org/uacalc.jar";
+                hash = "sha256-zy4y+xGQnLBKSjWQrBtEj4kbMnrkqACh6q95aDKMTu4=";
+              };
+            }
+            {
+              name = "LatDraw.jar";
+              src = fromUacalcsrc "LatDraw.jar"
+                "sha256-Q86wG7nEDE5tvTN+WFHxDrvq0aKt5uWYlGz2MJoXqhw=";
+            }
+            {
+              name = "miglayout-3.7-swing.jar";
+              src = fromUacalcsrc "miglayout-3.7-swing.jar"
+                "sha256-2cq2nZwm9L/AzCGE3cSBSmDGVC58/UTcLUJzDzn93ko=";
+            }
+            {
+              name = "groovy-all-1.0.jar";
+              src = fromUacalcsrc "groovy-all-1.0.jar"
+                "sha256-vtsJrABQ3aOSBJxm5K2SkYBQ3iLEQxfjxDvz700XyQc=";
+            }
+            {
+              name = "groovy-engine.jar";
+              src = fromUacalcsrc "groovy-engine.jar"
+                "sha256-TEEpGMo5jR2gLviwnasFClirKzch7CPwi+uRtvxAd6M=";
+            }
+          ];
+
+          inherit (pkgs.lib) concatMapStringsSep;
+        in
+        pkgs.runCommand "uacalc-${version}"
+          {
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            meta = {
+              description =
+                "Universal Algebra Calculator: the GUI and its Jython command line";
+              homepage = "https://uacalc.org";
+              mainProgram = "uacalc";
+              platforms = pkgs.lib.platforms.unix;
+            };
+          }
+          ''
+            mkdir -p $out/share/uacalc $out/bin
+            ${concatMapStringsSep "\n            "
+                (j: "install -m444 ${j.src} $out/share/uacalc/${j.name}") jars}
+
+            jars="${concatMapStringsSep ":" (j: "$out/share/uacalc/${j.name}") jars}"
+
+            makeWrapper ${pkgs.jdk21}/bin/java $out/bin/uacalc \
+              --add-flags "-cp $jars org.uacalc.nbui.UACalculator2"
+
+            # JYTHONPATH, not CLASSPATH, is what puts these jars on Jython's
+            # sys.path.  nixpkgs runs Jython as `java -jar jython.jar`, and
+            # `java -jar` ignores both -cp and CLASSPATH, so a CLASSPATH on its
+            # own gives "ImportError: No module named uacalc" (measured).
+            # CLASSPATH is set regardless, for any JVM a session starts for
+            # itself, and UACALC_JARS is the variable the scripts under
+            # scripts/jython/ read to put the same five jars on sys.path
+            # without having to know where they came from.
+            makeWrapper ${pkgs.jython}/bin/jython $out/bin/uacalc-cli \
+              --set JYTHONPATH "$jars" \
+              --set CLASSPATH "$jars" \
+              --set UACALC_JARS "$jars"
+          '';
     in
     {
+      # `nix build .#uacalc` builds the calculator on its own, which is what
+      # CI and anyone diagnosing a hash mismatch wants; the devShell below
+      # puts the same derivation on PATH.
+      packages = forAllSystems (pkgs: { uacalc = mkUacalc pkgs; });
+
+      # The roadmap engine's apps, re-exported under a ghproject- prefix, so
+      # that `nix run .#ghproject-update -- docs/GITHUB_PROJECT.md` runs the
+      # engine at the version THIS repository's flake.lock pins rather than
+      # whatever is on the machine.  The Makefile's project-* targets call
+      # these.
+      apps = nixpkgs.lib.genAttrs systems (system:
+        nixpkgs.lib.mapAttrs'
+          (name: app: nixpkgs.lib.nameValuePair "ghproject-${name}" app)
+          github-project.apps.${system});
+
+      checks = forAllSystems (pkgs:
+        # X is a Linux concern here, so the smoke test is too; on Darwin the
+        # flake has no checks.
+        nixpkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          # Milestone 1's exit criterion for UACalc, as `nix flake check` as
+          # well as `make uacalc-smoke`.  A GUI does not exit, so the test is
+          # that it is still alive when a timeout fires, which `timeout`
+          # reports as status 124.
+          #
+          # What that does and does not establish, measured rather than
+          # assumed.  Given no framebuffer the same command exits 0, after
+          # printing a HeadlessException; given an unreadable uacalc.jar it
+          # exits 1.  So a 124 really does say that the application started
+          # and put a window up, and a JDK bump that broke Swing would be
+          # caught here.  It says nothing about the four supporting jars,
+          # which are loaded lazily, when a lattice is drawn: the GUI comes up
+          # just as silently without them.  What guards those is the content
+          # hash on each one, not this test.
+          uacalc-smoke = pkgs.runCommand "uacalc-smoke"
+            {
+              nativeBuildInputs = [ pkgs.coreutils pkgs.xvfb-run (mkUacalc pkgs) ];
+            }
+            ''
+              # Swing wants somewhere to put its preferences; the sandbox has
+              # no home directory.
+              export HOME="$TMPDIR"
+
+              status=0
+              timeout 30 xvfb-run -a uacalc || status=$?
+              test "$status" -eq 124 || {
+                echo "uacalc exited with status $status; expected 124," >&2
+                echo "which is the timeout firing on a window still up." >&2
+                exit 1
+              }
+              touch "$out"
+            '';
+        });
+
       devShells = forAllSystems (pkgs:
         let
           # TeX Live, restricted to what article/Makefile actually needs.
@@ -81,6 +277,22 @@
             crop
             geometry
           ]);
+
+          # texlive.withPackages yields a derivation named
+          # texlive-<year>-r<rev>-final-env and carries no .version, so the
+          # banner takes the year and revision out of that name.  Both removals
+          # are no-ops if nixpkgs ever changes the shape, which leaves the
+          # banner showing the raw name rather than failing to evaluate.
+          texliveVersion = with pkgs.lib;
+            removeSuffix "-final-env" (removePrefix "texlive-" texlive-article.name);
+
+          # One more row for the banner's printf, on the platforms that have
+          # xvfb-run.  Built here rather than inside the shellHook, because a
+          # nested indented string inside an interpolation does not parse.
+          xvfbRow =
+            if pkgs.stdenv.hostPlatform.isLinux
+            then " \\\n    xvfb-run   '${pkgs.xvfb-run.version}' 'X virtual framebuffer'"
+            else "";
         in
         {
           default = pkgs.mkShellNoCC {
@@ -104,6 +316,11 @@
               # which is a 2014 beta in a repository carrying no license.
               pkgs.jython
 
+              # The calculator itself: `uacalc` for the GUI, `uacalc-cli` for
+              # the Jython command line, both with the five jars already on
+              # the classpath.  Packaged at the top of this file.
+              (mkUacalc pkgs)
+
               texlive-article
 
               pkgs.python3
@@ -119,12 +336,60 @@
             # is a Linux concern here; on Darwin the shell does without it.
             ++ pkgs.lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.xvfb-run;
 
-            # One line, and on stderr, so that `nix develop --command ...`
-            # leaves stdout to whatever it was asked to run.
+            # `make check-catalog` reads $(ALGEBRAFILES_DIR), whose default in
+            # the Makefile is a personal checkout path; `?=` yields to this, so
+            # inside the shell the check runs against the pinned algebras with
+            # no argument and no checkout, and outside it the Makefile default
+            # still applies.
+            ALGEBRAFILES_DIR = "${algebrafiles}";
+
+            # The greeting.
+            #
+            # All of it goes to stderr, so that `nix develop --command ...`
+            # leaves stdout to whatever it was asked to run, and it prints only
+            # for an interactive shell, because issue #25 asked that the hook
+            # not put a banner in front of every invocation and a `make paper`
+            # in CI should stay quiet.  `case $- in *i*)` is that test.
+            #
+            # It is a function, and exported, so that somebody who has scrolled
+            # past it can type `finlatrep-tools` to see it again, and so that
+            # the rendering can be checked from a non-interactive shell.
+            #
+            # The versions are read from the pinned nixpkgs when the flake is
+            # evaluated, not by running each program when the shell opens: the
+            # banner therefore costs nothing to print, and it reports what
+            # flake.lock pins rather than whatever answers first on PATH.  Keep
+            # the command list in step with the Makefile's own `## ` help text.
             shellHook = ''
-              echo "fin-lat-rep: gap, java, jython, pdflatex, python3, make, gh${
-                pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ", xvfb-run"
-              } on PATH" >&2
+              finlatrep-tools () {
+                {
+                  echo "✅ fin-lat-rep dev shell"
+                  echo " The following tools are provided (versions pinned by flake.lock):"
+                  printf '  %-11s %-19s %s\n' \
+                     gap        '${pkgs.gap.version}'     'GAP, with the Small Groups Library' \
+                     java       '${pkgs.jdk21.version}'   'OpenJDK' \
+                     jython     '${pkgs.jython.version}'  'Jython, which is Python 2 on the JVM' \
+                     uacalc     '${uacalcVersion}'        'Universal Algebra Calculator, the GUI' \
+                     uacalc-cli '${uacalcVersion}'        'the calculator, driven from Jython' \
+                     pdflatex   '${texliveVersion}'       'TeX Live' \
+                     python3    '${pkgs.python3.version}' 'Python' \
+                     make       '${pkgs.gnumake.version}' 'GNU Make' \
+                     gh         '${pkgs.gh.version}'      'GitHub CLI'${xvfbRow}
+                  echo
+                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files.'
+                  echo
+                  echo ' ----------------------------------------------'
+                  echo '  # some commands you can run in this shell:'
+                  echo '  make paper          # build article/SmallLatticeReps.pdf'
+                  echo '  make check-catalog  # check every algebra against the lattice drawn beside it'
+                  echo '  make uacalc-smoke   # check that the calculator comes up (Linux only)'
+                  echo '  make help           # list every target'
+                  echo ' ----------------------------------------------'
+                  echo
+                } >&2
+              }
+              export -f finlatrep-tools
+              case $- in *i*) finlatrep-tools ;; esac
             '';
           };
         });

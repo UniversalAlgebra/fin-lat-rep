@@ -1,6 +1,56 @@
 {
   "nodes": {
+    "algebrafiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789687758,
+        "narHash": "sha256-qYt1Zu3lxNJK2/YJCZE8MXXM2bis8+dAyigs0DyVHII=",
+        "owner": "UACalc",
+        "repo": "AlgebraFiles",
+        "rev": "aece7be88a7490ef3b882176744ca47c9af4f824",
+        "type": "github"
+      },
+      "original": {
+        "owner": "UACalc",
+        "repo": "AlgebraFiles",
+        "type": "github"
+      }
+    },
+    "github-project": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1787123927,
+        "narHash": "sha256-CExdyybxOJN9gG3E7W0GCrR7qIRrlXXWRhMVNbT1tnM=",
+        "owner": "williamdemeo",
+        "repo": "github-project",
+        "rev": "20a191ac9e89f049eff4f9461737b679a622d269",
+        "type": "github"
+      },
+      "original": {
+        "owner": "williamdemeo",
+        "repo": "github-project",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1782847189,
+        "narHash": "sha256-twXPFqFsrrY5r28Zh7Homgcp2gUMBgQ6WDS98Q/3xFI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b6018f87da91d19d0ab4cf979885689b469cdd41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1789542786,
         "narHash": "sha256-ajQuqcxnj6RYnwCjA/9FTCnrdR2+BDzstE8UembXf60=",
@@ -18,7 +68,9 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "algebrafiles": "algebrafiles",
+        "github-project": "github-project",
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },
