@@ -26,6 +26,7 @@ everyone builds the paper with the same software.
 Once you're in the devShell,
 
     make paper          build article/SmallLatticeReps.pdf
+    make verify         run every check that gates a change; CI runs this on pull requests
     make check-catalog  check every algebra against the lattice drawn beside it
     make uacalc-smoke   check that the calculator comes up (Linux only)
     make help           list every target

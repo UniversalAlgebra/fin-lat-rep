@@ -11,7 +11,12 @@ installed) you will be dropped into a [Nix][] devShell with all the tools you ne
 
 The devShell gives you GAP with its Small Groups Library, a JDK, the Universal
 Algebra Calculator, TeX Live, Jython, Python, `make` and `gh`, at the versions
-`flake.lock` pins.
+`flake.lock` pins.  It also pins the data the checks read: `$ALGEBRAFILES_DIR`
+is the algebras and `$FINLATREPGAP_DIR` the GAP programs, both as flake inputs.
+
+`nix develop .#ci` is the same shell without TeX Live, which is what the
+verification workflows use; it saves them the largest download for something
+they never run.
 
 Nothing in this repository asks you to install any of them yourself, and nothing
 you install yourself is used in preference to the Nix shell's copy.
@@ -66,12 +71,47 @@ jars, so there is nothing to arrange by hand.  The algebras are in
 [UACalc/AlgebraFiles][], which the flake pins too: the shell sets
 `$ALGEBRAFILES_DIR` to that pinned copy, which is what `make check-catalog`
 reads when you do not say otherwise, and `nix flake update algebrafiles` is how
-it moves.
+it moves.  The GAP programs in [UniversalAlgebra/fin-lat-rep-gap][] are pinned
+the same way, as `$FINLATREPGAP_DIR`, moved by `nix flake update finlatrepgap`.
 
 The [Scala REPL][scala-repl], `scala -classpath uacalc.jar`, is the exploratory
 path only: it is documented for interactive use, with no scripted invocation
 and no example of loading a `.ua` file, and the Scala it was written against is
 from 2013.  Anything that has to be re-run belongs in `uacalc-cli`.
+
+## Verifying a change
+
+    make verify
+
+runs everything that gates a change, and is exactly what CI runs on a pull
+request (`.github/workflows/verify.yml`).  In order, it does the following:
+
++  `make test`, the unit suites under `scripts/python`;
++  `make uacalc-table`, which has UACalc itself compute |Con(A)| for every
+   algebra in the pinned `.ua` file, writing `build/uacalc-table.txt`;
++  `make check-catalog` against that table, so the Python checker and UACalc
+   must agree with each other and with the lattice the article draws beside
+   each algebra;
++  `make verify-gap`, which re-runs the fast GAP programs (`PJ17.gap`,
+   `PJ11.gap`) from the pinned fin-lat-rep-gap and asserts the numbers the
+   article states, through `scripts/gap/verify-fast.g`.
+
+About a minute all told, most of it GAP.  Each step runs on its own too, and
+`make help` lists them.
+
+    make verify-slow
+
+is the rest: `Hexagon.g` and `pentagonSearch.g`, which take minutes and several
+gigabytes.  It does not gate pull requests; `.github/workflows/verify-slow.yml`
+runs it weekly, on demand, and whenever `flake.lock` changes, and on failure
+opens (or comments on) one issue titled "Scheduled verification failed".  A GAP
+upgrade is what it exists to catch; see Remark 3.7 of the article for the last
+time that happened.
+
+When a GAP assertion fails, the driver prints `FAIL <what>` with the value it
+got and the value it wanted, for each one, before exiting 1.  A changed number
+is not necessarily a wrong number: first decide whether GAP or the article is
+right, then fix the one that is wrong, and only then the assertion.
 
 ## The git workflow
 
@@ -149,6 +189,7 @@ disagree, and `make project-update` is the fix.
 
 [plan]: docs/GITHUB_PROJECT.md
 [UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
+[UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [williamdemeo/github-project]: https://github.com/williamdemeo/github-project
 [uacalc-at-the-command-line]: https://universalalgebra.wordpress.com/documentation/uacalc/uacalc-at-the-command-line/
 [scala-repl]: https://universalalgebra.wordpress.com/documentation/scala/scala-repl-with-uacalc-objects/

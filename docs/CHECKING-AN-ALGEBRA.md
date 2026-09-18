@@ -119,6 +119,9 @@ read as agreement:
         > /tmp/uacalc-table.txt
     make check-catalog UACALC_TABLE=/tmp/uacalc-table.txt
 
+(`make verify` does exactly this, with the table at `build/uacalc-table.txt`,
+and then runs the GAP checks; that is the gate, and this page is the recipe.)
+
     UACalc agrees on |A| and |Con(A)| for all 29 algebras.
       B1         |A| =  4   |Con(A)| = 5   L1 has 5   ok
       ...
