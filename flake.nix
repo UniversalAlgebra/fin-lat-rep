@@ -76,11 +76,14 @@
       #               UACalc is driven without a display.  Given a script it
       #               runs it; given nothing it is the interactive command line
       #               documented at uacalc-at-the-command-line.
+      # Neither the jar nor its URL carries a version, so the version here is
+      # the date the hashes were measured.  Out here rather than inside
+      # mkUacalc because the devShell's banner names it too.
+      uacalcVersion = "unstable-2026-09-13";
+
       mkUacalc = pkgs:
         let
-          # Neither the jar nor its URL carries a version, so the version here
-          # is the date the hashes below were measured.
-          version = "unstable-2026-09-13";
+          version = uacalcVersion;
 
           uacalcsrcRev = "538ec6a0adaaee2c81ff1a481238d944d63ce4c7";
 
@@ -274,6 +277,22 @@
             crop
             geometry
           ]);
+
+          # texlive.withPackages yields a derivation named
+          # texlive-<year>-r<rev>-final-env and carries no .version, so the
+          # banner takes the year and revision out of that name.  Both removals
+          # are no-ops if nixpkgs ever changes the shape, which leaves the
+          # banner showing the raw name rather than failing to evaluate.
+          texliveVersion = with pkgs.lib;
+            removeSuffix "-final-env" (removePrefix "texlive-" texlive-article.name);
+
+          # One more row for the banner's printf, on the platforms that have
+          # xvfb-run.  Built here rather than inside the shellHook, because a
+          # nested indented string inside an interpolation does not parse.
+          xvfbRow =
+            if pkgs.stdenv.hostPlatform.isLinux
+            then " \\\n    xvfb-run   '${pkgs.xvfb-run.version}' 'X virtual framebuffer'"
+            else "";
         in
         {
           default = pkgs.mkShellNoCC {
@@ -324,12 +343,53 @@
             # still applies.
             ALGEBRAFILES_DIR = "${algebrafiles}";
 
-            # One line, and on stderr, so that `nix develop --command ...`
-            # leaves stdout to whatever it was asked to run.
+            # The greeting.
+            #
+            # All of it goes to stderr, so that `nix develop --command ...`
+            # leaves stdout to whatever it was asked to run, and it prints only
+            # for an interactive shell, because issue #25 asked that the hook
+            # not put a banner in front of every invocation and a `make paper`
+            # in CI should stay quiet.  `case $- in *i*)` is that test.
+            #
+            # It is a function, and exported, so that somebody who has scrolled
+            # past it can type `finlatrep-tools` to see it again, and so that
+            # the rendering can be checked from a non-interactive shell.
+            #
+            # The versions are read from the pinned nixpkgs when the flake is
+            # evaluated, not by running each program when the shell opens: the
+            # banner therefore costs nothing to print, and it reports what
+            # flake.lock pins rather than whatever answers first on PATH.  Keep
+            # the command list in step with the Makefile's own `## ` help text.
             shellHook = ''
-              echo "fin-lat-rep: gap, java, jython, uacalc, pdflatex, python3, make, gh${
-                pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ", xvfb-run"
-              } on PATH" >&2
+              finlatrep-tools () {
+                {
+                  echo "✅ fin-lat-rep dev shell"
+                  echo " The following tools are provided (versions pinned by flake.lock):"
+                  printf '  %-11s %-19s %s\n' \
+                     gap        '${pkgs.gap.version}'     'GAP, with the Small Groups Library' \
+                     java       '${pkgs.jdk21.version}'   'OpenJDK' \
+                     jython     '${pkgs.jython.version}'  'Jython, which is Python 2 on the JVM' \
+                     uacalc     '${uacalcVersion}'        'Universal Algebra Calculator, the GUI' \
+                     uacalc-cli '${uacalcVersion}'        'the calculator, driven from Jython' \
+                     pdflatex   '${texliveVersion}'       'TeX Live' \
+                     python3    '${pkgs.python3.version}' 'Python' \
+                     make       '${pkgs.gnumake.version}' 'GNU Make' \
+                     gh         '${pkgs.gh.version}'      'GitHub CLI'${xvfbRow}
+                  echo
+                  echo '  The algebras are pinned too: $ALGEBRAFILES_DIR holds the .ua files.'
+                  echo
+                  echo ' ----------------------------------------------'
+                  echo '  # some commands you can run in this shell:'
+                  echo '  make paper          # build article/SmallLatticeReps.pdf'
+                  echo '  make check-catalog  # check every algebra against the lattice drawn beside it'
+                  echo '  make uacalc-smoke   # check that the calculator comes up (Linux only)'
+                  echo '  make help           # list every target'
+                  echo ' ----------------------------------------------'
+                  echo
+                } >&2
+              }
+              export -f finlatrep-tools
+              case $- in *i*) finlatrep-tools ;; esac
             '';
           };
         });
