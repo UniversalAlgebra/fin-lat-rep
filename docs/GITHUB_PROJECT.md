@@ -152,7 +152,7 @@ new issue number is written back into the heading as a `(#N)` suffix.
 
 <!-- BEGIN GENERATED: milestone-1 -->
 
-### Issue M1-1: Add a flake.nix whose default devShell carries the paper's toolchain (#25)
+### Issue M1-1: Add a flake.nix whose default devShell carries the paper's toolchain (#25, closed)
 
 **Labels:** `enhancement`, `milestone-1-environment`
 
@@ -292,31 +292,41 @@ Acceptance criteria:
 
 **Labels:** `enhancement`, `milestone-2-verification`
 
-The check that found [#20][] exists only as a script written during that investigation and thrown away.  It should be maintained code.
+## Description
 
-What it does: read `CongruenceLatReps/SmallLatticeReps.ua` from [AlgebraFiles][], compute the congruence lattice of each algebra `B`*i* by closing each pair under the unary operations and join-closing the principal congruences, parse the covering relations of the lattice `L`*i* drawn beside it in the catalog subsection of `article/SmallLatticeReps.tex`, and test the two for isomorphism.
+The check that found #20 exists only as a script written during that investigation and thrown away.  It should be maintained code.
 
-The catalog's diagrams are written inline, as `\node(k) at ...` and `\draw(a)--(b);`, and nothing else: measured today it holds 235 `\node` lines and 278 `\draw(a)--(b)` edges, with no `\input` and no chained `\draw ... to ...` paths anywhere in the subsection.  Parsing those two forms is therefore enough, and was enough to check all 29 algebras.  The `article/inputs/tikz/` files *do* use the chained `to` form, but they are illustrations in the body of the paper, several of lattices with no catalog algebra at all, so they are out of scope here.  To keep that from silently becoming untrue, **the checker must assert that it found exactly as many diagrams as there are algebras** and fail otherwise; if a catalog diagram is ever moved into an `\input`, the check then stops loudly rather than quietly skipping it.  Run over the current file it reports agreement for all 29 algebras; run over the copy that was published before [#22][] it reports an 8-element lattice for B28, which is the bug.
+### What it does
+
+Read `CongruenceLatReps/SmallLatticeReps.ua` from [AlgebraFiles][], compute the congruence lattice of each algebra `B`*i* by closing each pair under the unary operations and join-closing the principal congruences, parse the covering relations of the lattice `L`*i* drawn beside it in the catalog subsection of `article/SmallLatticeReps.tex`, and test the two for isomorphism.
+
+The catalog's diagrams are written inline, as `\node(k) at ...` and `\draw(a)--(b);`, and nothing else: measured today it holds 235 `\node` lines and 278 `\draw(a)--(b)` edges, with no `\input` and no chained `\draw ... to ...` paths anywhere in the subsection.  Parsing those two forms is therefore enough, and was enough to check all 29 algebras.  The `article/inputs/tikz/` files *do* use the chained `to` form, but they are illustrations in the body of the paper, several of lattices with no catalog algebra at all, so they are out of scope here.  To keep that from silently becoming untrue, **the checker must assert that it found exactly as many diagrams as there are algebras** and fail otherwise; if a catalog diagram is ever moved into an `\input`, the check then stops loudly rather than quietly skipping it.  Run over the current file it reports agreement for all 29 algebras; run over the copy that was published before #22 it reports an 8-element lattice for B28, which is the bug.
+
+### Decisions needed
 
 Two things worth deciding while implementing:
 
-- **Which engine computes Con.** A short independent implementation is a genuine second opinion and has no dependencies; driving UACalc through the Jython command line from M1-2 checks the file against the program the article actually used.  Doing both, and comparing, is strictly better than either, and both were run by hand during scoping: they agree on all 29 algebras.
+- **Which engine computes Con**. A short independent implementation is a genuine second opinion and has no dependencies; driving UACalc through the Jython command line from M1-2 checks the file against the program the article actually used.  Doing both, and comparing, is strictly better than either, and both were run by hand during scoping: they agree on all 29 algebras.
 
-  Note the language split this creates.  Jython is Python 2, so the UACalc side cannot share code with a Python 3 checker under `scripts/python/`.  Keep the Jython script small and let it emit a simple table that the Python 3 side reads and compares, rather than trying to make one program serve both.
-- **Where the `.ua` file comes from.** It now lives in [AlgebraFiles][], not here.  Either fetch it at check time, which tests the published artifact and needs the network, or pin it as a flake input, which is reproducible and can go stale.  Prefer the flake input, so the check has something to be stale *against*.
+Note the language split this creates.  Jython is Python 2, so the UACalc side cannot share code with a Python 3 checker under `scripts/python/`.  Keep the Jython script small and let it emit a simple table that the Python 3 side reads and compares, rather than trying to make one program serve both.
+
+- **Where the `.ua` file comes from**. It now lives in [AlgebraFiles][], not here.  Either fetch it at check time, which tests the published artifact and needs the network, or pin it as a flake input, which is reproducible and can go stale.  Prefer the flake input, so the check has something to be stale *against*.
 
 This repository has no Python in it yet, so the checker establishes the convention rather than following one already here.  Use the one these projects use elsewhere: everything under `scripts/python/`, total functions that return a result rather than raising for control flow, type annotations throughout, a file-header comment saying what the file is for, and a Makefile target per test suite.
 
-Acceptance criteria:
+### Acceptance criteria
 
-- The check runs from a Makefile target and exits non-zero on disagreement.
-- It has a test that fails against the pre-[#22][] algebra file, so the check is shown to have teeth rather than merely to pass.  That input needs to be pinned, since the published copy is now corrected and the old one exists only in history.  Check in a small fixture holding just the defective B28, under `scripts/python/fixtures/`, with its sha256 recorded; the source is `CongruenceLatReps/SmallLatticeReps.ua` at AlgebraFiles commit `9e1ef390ef7a1288cdabdfb449d23c9095c02173`.  A fixture is preferable to fetching that revision at test time, because the test then needs no network and cannot be broken by anything upstream.
-- Its output names the algebra and prints both covering relations when they disagree.
-- **`docs/CHECKING-AN-ALGEBRA.md` shows how to check a single algebra by hand**, in both engines, with a worked example and its real output.  This is the recipe a collaborator reaches for when they want to satisfy themselves about one entry rather than run the whole gate, and without it the knowledge lives only in whoever wrote the checker.  It should be short enough to follow in a couple of minutes, and it should say what the answer means: that the catalog holds lattices of size *at most* seven, 2 of size 5, 6 of size 6 and 27 of size 7, so a five-element congruence lattice is the right answer for B1, whose L1 is the pentagon, and not a sign of trouble.  Worked example:
+- [ ] The check runs from a Makefile target and exits non-zero on disagreement.
+- [ ] It has a test that fails against the pre-[#22][] algebra file, so the check is shown to have teeth rather than merely to pass.  That input needs to be pinned, since the published copy is now corrected and the old one exists only in history.  Check in a small fixture holding just the defective B28, under `scripts/python/fixtures/`, with its sha256 recorded; the source is `CongruenceLatReps/SmallLatticeReps.ua` at AlgebraFiles commit `9e1ef390ef7a1288cdabdfb449d23c9095c02173`.  A fixture is preferable to fetching that revision at test time, because the test then needs no network and cannot be broken by anything upstream.
+- [ ] Its output names the algebra and prints both covering relations when they disagree.
+- [ ] **`docs/CHECKING-AN-ALGEBRA.md` shows how to check a single algebra by hand**, in both engines, with a worked example and its real output.  This is the recipe a collaborator reaches for when they want to satisfy themselves about one entry rather than run the whole gate, and without it the knowledge lives only in whoever wrote the checker.  It should be short enough to follow in a couple of minutes, and it should say what the answer means: that the catalog holds lattices of size *at most* seven, 2 of size 5, 6 of size 6 and 27 of size 7, so a five-element congruence lattice is the right answer for B1, whose L1 is the pentagon, and not a sign of trouble.  Worked example:
 
       $ CLASSPATH=... jython check.py CongruenceLatReps/SmallLatticeReps.ua
       B1        |A| =  4   |Con(A)| = 5
       B28       |A| = 16   |Con(A)| = 7
+
+[AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
+[#22]: https://github.com/UniversalAlgebra/fin-lat-rep/pull/22
 
 ---
 
