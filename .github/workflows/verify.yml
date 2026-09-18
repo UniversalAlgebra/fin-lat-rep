@@ -11,7 +11,10 @@
 name: Verify
 
 on:
+  # Pull requests cover branches; the push trigger is for master, so a
+  # merge is verified once more and a branch is not verified twice.
   push:
+    branches: [master]
     paths:
       - 'scripts/**'
       - 'uacalc-files/**'

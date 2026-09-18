@@ -5,7 +5,8 @@
 #
 # Failure opens one tracking issue, or comments on it if it is already open,
 # rather than emailing on every run; a later success comments on that issue
-# too, and a person closes it.
+# too, and a person closes it.  The push trigger is limited to master so
+# that a branch experimenting with the driver cannot open that issue.
 name: Verify (slow)
 
 on:
