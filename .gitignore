@@ -23,3 +23,6 @@ article/inputs/refs.bib
 # Python
 __pycache__/
 *.pyc
+
+# make verify writes the UACalc table here
+build/
