@@ -530,7 +530,10 @@ MRREVIEWER = {Andrzej Walendziak},
 %% To make frequently used acronyms easier to type:
 \newcommand{\flrp}{\ac{flrp}\xspace}
 \newcommand{\gap}{\acs{gap}\xspace}
-\newcommand{\gaps}{\acsp{gap}\xspace}
+%% \gaps is the possessive, "GAP's".  It was \acsp{gap}, the acronym
+%% package's PLURAL, which typeset "A search of GAPs Small Groups
+%% Library" (issue #28).
+\newcommand{\gaps}{\acs{gap}'s\xspace}
 \newcommand{\xgap}{\acs{xgap}\xspace}
 
 
