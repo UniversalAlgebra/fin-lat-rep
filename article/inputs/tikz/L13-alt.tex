@@ -1,0 +1,23 @@
+% id: L13-alt
+% aliases: 2015-file: L13
+% elements: 7
+% covers: 0<1 0<3 0<2 1<4 3<6 4<5 2<6 5<6
+% represented-by: B13 (SmallLatticeReps.ua)
+% tags: nonmodular, self-dual, alternative layout of L13
+\tikzset{L13-alt/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (1) at (0,1) {};
+  \node[lat] (3) at (-1,2) {};
+  \node[lat] (4) at (0,2) {};
+  \node[lat] (2) at (1,2) {};
+  \node[lat] (5) at (0,3) {};
+  \node[lat] (6) at (0,4) {};
+  \draw (0) -- (1);
+  \draw (0) -- (3);
+  \draw (0) -- (2);
+  \draw (1) -- (4);
+  \draw (3) -- (6);
+  \draw (4) -- (5);
+  \draw (2) -- (6);
+  \draw (5) -- (6);
+}}

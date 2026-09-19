@@ -1,0 +1,23 @@
+% id: L20-alt
+% aliases: 2015-file: L20
+% elements: 7
+% covers: 00<01 00<152 01<02 01<n125 02<03 152<04 n125<04 03<04
+% represented-by: filter-ideal in Sub(SmallGroup(216,153))
+% tags: nonmodular, dual-of-L21, alternative layout of L20
+\tikzset{L20-alt/.pic={
+  \node[lat] (00) at (0,0) {};
+  \node[lat] (01) at (0,1) {};
+  \node[lat] (02) at (0,2) {};
+  \node[lat] (152) at (1.5,2) {};
+  \node[lat] (n125) at (-1,2.5) {};
+  \node[lat] (03) at (0,3) {};
+  \node[lat] (04) at (0,4) {};
+  \draw (00) -- (01);
+  \draw (00) -- (152);
+  \draw (01) -- (02);
+  \draw (01) -- (n125);
+  \draw (02) -- (03);
+  \draw (152) -- (04);
+  \draw (n125) -- (04);
+  \draw (03) -- (04);
+}}

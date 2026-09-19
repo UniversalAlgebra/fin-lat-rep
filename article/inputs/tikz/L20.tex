@@ -1,8 +1,23 @@
-%% L20.tex
-\foreach \j in {0,...,4}
-    {
-      \node[lat] (0\j) at (0,\j) {};
-    }
-\node[lat] (152) at (1.5,2) {};
-\node[lat] (n125) at (-1,2.5) {};
-\draw[semithick] (01) to (02) to (03) to (04) to (n125) to (01) to (00) to (152) to (04);
+% id: L20
+% aliases:
+% elements: 7
+% covers: 0<1 0<3 1<2 1<4 3<6 2<5 4<6 5<6
+% represented-by: filter-ideal in Sub(SmallGroup(216,153))
+% tags: nonmodular, dual-of-L21
+\tikzset{L20/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (1) at (0,1) {};
+  \node[lat] (3) at (-1,1.5) {};
+  \node[lat] (2) at (0.66,1.5) {};
+  \node[lat] (4) at (0,2) {};
+  \node[lat] (5) at (0.66,2.5) {};
+  \node[lat] (6) at (0,3) {};
+  \draw (0) -- (1);
+  \draw (0) -- (3);
+  \draw (1) -- (2);
+  \draw (1) -- (4);
+  \draw (3) -- (6);
+  \draw (2) -- (5);
+  \draw (4) -- (6);
+  \draw (5) -- (6);
+}}

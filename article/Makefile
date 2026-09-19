@@ -11,12 +11,23 @@ AUX3=inputs/au.cls
 PDFLATEX ?= pdflatex
 BIBTEX ?= bibtex
 
+GALLERY=inputs/tikz/gallery
+
 all: $(FILE).pdf
 
-.PHONY: clean
+.PHONY: clean gallery
 
 clean:
 	rm -f *.aux *.out *.blg *.log $(FILE).bbl $(REFS).bib 
+	rm -f $(GALLERY).pdf $(GALLERY).aux $(GALLERY).log $(GALLERY).out
+
+# Every Hasse diagram side by side, one pic per entry, for the eye.  Run
+# from this directory so that inputs/tikz/all.tex and the files it inputs
+# resolve; -output-directory keeps the build products beside the source.
+gallery: $(GALLERY).pdf
+
+$(GALLERY).pdf: $(GALLERY).tex inputs/tikz/all.tex $(wildcard inputs/tikz/*.tex) $(AUX2)
+	$(PDFLATEX) -output-directory=inputs/tikz $(GALLERY).tex
 
 $(FILE).pdf: $(FILE).tex $(AUX2)
 	rm -f $(REFS).bib

@@ -42,6 +42,14 @@ runs `article/Makefile`, which is pdflatex, bibtex, pdflatex, pdflatex.  The
 result, `article/SmallLatticeReps.pdf`, is a build product and is not
 committed.  CI builds the same file on every push that touches `article/`.
 
+    make gallery
+
+draws every Hasse diagram side by side, one per file under
+`article/inputs/tikz/`, into `article/inputs/tikz/gallery.pdf`, also a build
+product.  The diagrams are TikZ pics, one per lattice, under a header the
+catalog check reads; [`article/inputs/tikz/README.md`][tikz] says how to add
+one.
+
 ## Adding a reference
 
 References live in the `filecontents*` block at the top of
@@ -215,6 +223,7 @@ often `gh` not being authenticated; check with `gh auth status`.  Status 1 from
 disagree, and `make project-update` is the fix.
 
 [plan]: docs/GITHUB_PROJECT.md
+[tikz]: article/inputs/tikz/README.md
 [UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [williamdemeo/github-project]: https://github.com/williamdemeo/github-project

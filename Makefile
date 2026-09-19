@@ -67,7 +67,7 @@ GHPROJECT_UPDATE       := nix run .\#ghproject-update --
 GHPROJECT_UPDATE_CHECK := nix run .\#ghproject-update-check --
 endif
 
-.PHONY: help paper check-catalog uacalc-smoke uacalc-table verify verify-gap \
+.PHONY: help paper gallery check-catalog uacalc-smoke uacalc-table verify verify-gap \
         verify-slow test test-finlatrep test-utils clean \
         project-lint project-populate-dry project-populate \
         project-update project-update-check _check-ghproject
@@ -80,6 +80,9 @@ help: ## Show this help
 
 paper: ## Build article/SmallLatticeReps.pdf
 	$(MAKE) -C article
+
+gallery: ## Build article/inputs/tikz/gallery.pdf, every Hasse diagram side by side
+	$(MAKE) -C article gallery
 
 check-catalog: ## Check every algebra against the lattice the article draws
 	@test -f "$(ALGEBRA_FILE)" || { \

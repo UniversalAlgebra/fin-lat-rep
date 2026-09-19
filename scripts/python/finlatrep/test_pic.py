@@ -7,14 +7,21 @@ Description: Tests for reading a Hasse diagram and its header out of a TikZ
 
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
 
 from _utils.pipeline_types import ErrorType
+from finlatrep.latex import strip_latex_comments
 from finlatrep.lattice import CoveringRelation, are_isomorphic
-from finlatrep.pic import parse_header, parse_pic, read_pic
+from finlatrep.pic import HEADER_KEYS, parse_header, parse_pic, read_pic
 
-FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "tikz"
+HERE = Path(__file__).resolve().parent
+FIXTURES = HERE.parent / "fixtures" / "tikz"
+ARTICLE = HERE.parents[2] / "article" / "SmallLatticeReps.tex"
+TIKZ = ARTICLE.parent / "inputs" / "tikz"
+# The two files there that are not pics: the list of inputs, and the gallery.
+NOT_PICS = {"all.tex", "gallery.tex"}
 
 PENTAGON = CoveringRelation(5, frozenset({(0, 1), (0, 2), (1, 3), (2, 4), (3, 4)}))
 
@@ -201,6 +208,74 @@ class BodyTests(unittest.TestCase):
         ])
         result = parse_pic(pic("% id: L1", body)).unwrap()
         self.assertEqual(result.vertices, ("2", "10", "top"))
+
+
+class TikzDirectoryTests(unittest.TestCase):
+    """The real files under article/inputs/tikz/, held to the convention.
+
+    These are what make a new lattice that is not listed fail `make test`
+    rather than compile to nothing.
+    """
+
+    def pics(self) -> list[Path]:
+        return sorted(p for p in TIKZ.glob("*.tex") if p.name not in NOT_PICS)
+
+    def test_the_directory_is_where_it_is_expected(self) -> None:
+        self.assertTrue((TIKZ / "all.tex").is_file(), f"not found: {TIKZ / 'all.tex'}")
+
+    def test_every_file_is_a_pic_named_after_itself(self) -> None:
+        for path in self.pics():
+            with self.subTest(file=path.name):
+                outcome = read_pic(path)
+                self.assertTrue(outcome.is_ok, str(outcome.unwrap_err()) if outcome.is_err else "")
+                self.assertEqual(outcome.unwrap().header.get("id"), path.stem)
+
+    def test_every_lattice_file_draws_the_covers_its_header_declares(self) -> None:
+        for path in self.pics():
+            pic = read_pic(path).unwrap()
+            if pic.declared is not None:
+                with self.subTest(file=path.name):
+                    self.assertEqual(pic.named(pic.drawn), pic.named(pic.declared))
+
+    def test_every_lattice_file_carries_the_full_header(self) -> None:
+        """A file that declares covers is a lattice file, and carries every key."""
+        for path in self.pics():
+            pic = read_pic(path).unwrap()
+            if pic.declared is not None:
+                with self.subTest(file=path.name):
+                    self.assertEqual(sorted(pic.header), sorted(HEADER_KEYS))
+
+    def test_a_file_without_covers_says_it_is_schematic(self) -> None:
+        for path in self.pics():
+            pic = read_pic(path).unwrap()
+            if pic.declared is None:
+                with self.subTest(file=path.name):
+                    self.assertIn("schematic", pic.header.get("tags", ""))
+
+    def test_all_tex_inputs_every_file_once_and_nothing_else(self) -> None:
+        listed = re.findall(r"^\\input\{inputs/tikz/([\w-]+)\.tex\}$", (TIKZ / "all.tex").read_text("utf-8"), re.M)
+        self.assertEqual(len(listed), len(set(listed)), "a file is input twice")
+        self.assertEqual(sorted(listed), sorted(p.stem for p in self.pics()))
+
+    def test_the_gallery_shows_every_pic(self) -> None:
+        gallery = strip_latex_comments((TIKZ / "gallery.tex").read_text("utf-8"))
+        shown = re.findall(r"^\\entry(?:\[[^\]]*\])?\{([\w-]+)\}$", gallery, re.M)
+        self.assertEqual(sorted(shown), sorted(p.stem for p in self.pics()))
+
+    def test_every_catalog_lattice_has_its_file(self) -> None:
+        missing = [f"L{i}" for i in range(1, 36) if not (TIKZ / f"L{i}.tex").is_file()]
+        self.assertEqual(missing, [])
+
+    def test_the_article_inputs_the_list_once_from_its_preamble(self) -> None:
+        text = ARTICLE.read_text("utf-8")
+        self.assertEqual(text.count(r"\input{inputs/tikz/all.tex}"), 1)
+        self.assertLess(text.index(r"\input{inputs/tikz/all.tex}"), text.index(r"\begin{document}"))
+
+    def test_the_article_inputs_no_pic_file_directly(self) -> None:
+        r"""A pic is defined once, from all.tex; a second \input would redefine it."""
+        text = ARTICLE.read_text("utf-8")
+        inputs = re.findall(r"\\input\{inputs/tikz/([\w-]+)\.tex\}", text)
+        self.assertEqual(inputs, ["all"])
 
 
 if __name__ == "__main__":

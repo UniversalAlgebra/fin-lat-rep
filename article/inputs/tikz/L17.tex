@@ -1,14 +1,24 @@
-\node[lat] (bottom) at (0,0) {};
-\node[lat] (top) at (0,5)  {};
-\node[lat] (n115) at (-1,1.5)  {};
-\node[lat] (015) at (0,1.5) {};
-\node[lat] (115) at (1,1.5) {};
-\node[lat] (n252) at (-2.5,2) {};
-\node[lat] (03) at (0,3) {};
-\draw[semithick] 
-(bottom) to (n252) to (top)
-(bottom) to (n115) to (03) to (115) to
-(bottom) to (015) to (03) to (top);
-%\draw (-4.5,2.2) node {$L \cong$};
-
-
+% id: L17
+% aliases:
+% elements: 7
+% covers: 0<2 0<3 0<1 0<4 2<5 3<5 1<5 4<6 5<6
+% represented-by: B17 (SmallLatticeReps.ua)
+% tags: nonmodular, dual-of-L16
+\tikzset{L17/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (2) at (-0.15,1) {};
+  \node[lat] (3) at (0.3,1) {};
+  \node[lat] (1) at (0.75,1) {};
+  \node[lat] (4) at (-1,1.5) {};
+  \node[lat] (5) at (0.375,2) {};
+  \node[lat] (6) at (0,3) {};
+  \draw (0) -- (2);
+  \draw (0) -- (3);
+  \draw (0) -- (1);
+  \draw (0) -- (4);
+  \draw (2) -- (5);
+  \draw (3) -- (5);
+  \draw (1) -- (5);
+  \draw (4) -- (6);
+  \draw (5) -- (6);
+}}

@@ -1,0 +1,22 @@
+% id: L8-alt
+% aliases: M4, 2015-file: M4
+% elements: 6
+% covers: bot<a bot<b bot<c bot<d a<top b<top c<top d<top
+% represented-by: B8 (SmallLatticeReps.ua)
+% tags: modular, self-dual, alternative layout of L8
+\tikzset{L8-alt/.pic={
+  \node[lat] (bot) at (0,0) {};
+  \node[lat] (a) at (-1,1) {};
+  \node[lat] (b) at (-0.5,1) {};
+  \node[lat] (c) at (0.5,1) {};
+  \node[lat] (d) at (1,1) {};
+  \node[lat] (top) at (0,2) {};
+  \draw (bot) -- (a);
+  \draw (bot) -- (b);
+  \draw (bot) -- (c);
+  \draw (bot) -- (d);
+  \draw (a) -- (top);
+  \draw (b) -- (top);
+  \draw (c) -- (top);
+  \draw (d) -- (top);
+}}

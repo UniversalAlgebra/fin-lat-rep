@@ -152,6 +152,12 @@ class ArticleTests(unittest.TestCase):
         catalog = read_catalog(ARTICLE).unwrap()
         self.assertEqual(len(catalog), 35)
 
+    def test_every_catalog_lattice_is_read_from_its_own_file(self) -> None:
+        catalog = read_catalog(ARTICLE).unwrap()
+        for index, entry in sorted(catalog.items()):
+            self.assertEqual(entry.source, f"inputs/tikz/L{index}.tex")
+            self.assertIsNotNone(entry.declared)
+
     def test_every_drawn_lattice_has_between_five_and_seven_elements(self) -> None:
         """The catalog is "lattices of size at most 7"; 2 have 5, 6 have 6, 27 have 7."""
         catalog = read_catalog(ARTICLE).unwrap()

@@ -471,19 +471,12 @@ MRREVIEWER = {Andrzej Walendziak},
 \usepackage{inputs/macros}
 \usepackage[mathcal]{euscript} 
 %%///////////////////////////////////////////////////////////////////////////////////
-%% tikz notes:
-%% For Hasse diagrams, instead of hard-coding the size of the circle representing
-%% points in a lattice, please use \dotsize.  For example,
-%%     \node (bottom) at (0,0) [draw, circle,inner sep=\dotsize] {};
-%% or
-%%     \node[lat] (bottom) at (0,0) {};  (see comment on the "lat" style below)
-\newcommand{\dotsize}{1.4pt}
-%%
-%% To create nodes of lattices in a uniform and consistent way, we define
-\tikzstyle{lat} = [circle,draw,inner sep=\dotsize]
-%% To put a lattice node named "mynode" at the point (x,y)=(1,2) in the figure,
-%% put the following inside your tikzpicture block:
-%%     \node[lat] (mynode) at (1,2) {};
+%% Hasse diagrams: every lattice the article draws is a TikZ pic defined in a
+%% file under inputs/tikz/ and drawn with \hasse[scale]{name}, or placed with
+%% \pic inside a tikzpicture that adds labels.  The macro, the `lat' node
+%% style and \dotsize are in inputs/macros.sty; the convention, the header
+%% every file carries, and how to add a lattice are in inputs/tikz/README.md.
+\input{inputs/tikz/all.tex}
 
 
 %%///////////////////////////////////////////////////////////////////////////////////
@@ -971,30 +964,14 @@ $[C_{10}:\<e\>] = 10$ and $[C_3 \times S_3:C_2]=9$.
 \label{fig:10}
 \begin{center}
 \begin{tikzpicture}[scale=.8]
-\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
-\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\pic[scale=.8]{two-by-two};
 \draw[font=\scriptsize] (0,-.5) node {$\lb C_2, C_3 \times S_3\rb$};
 \draw[font=\scriptsize] (0,-1) node {TransitiveGroup(9,4) };
-\draw[semithick]
-(0) to (1)
-(0) to (2)
-(1) to (3)
-(2) to (3);
 \end{tikzpicture}
 \begin{tikzpicture}[scale=.8]
-\node (0) at (0,0) [draw, circle,inner sep=1.5pt] {};
-\node (1) at (0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (2) at (-0.75,1) [draw, circle, inner sep=1.5pt] {};
-\node (3) at (-0,2) [draw, circle, inner sep=1.5pt] {};
+\pic[scale=.8]{two-by-two};
 \draw[font=\scriptsize] (0,-.5) node {$\lb \<e\>, C_{10}\rb$};
 \draw[font=\scriptsize] (0,-1) node {TransitiveGroup(10,1) };
-\draw[semithick]
-(0) to (1)
-(0) to (2)
-(1) to (3)
-(2) to (3);
 \end{tikzpicture}
 \end{center}
 \end{figure}
@@ -1064,21 +1041,21 @@ and Raimund Netter~\cite{Netter:1986}, 1986),
   \begin{figure}[h!]
     \centering
     \begin{tikzpicture}[scale=0.4]
-      \input{inputs/tikz/ordinal-sum.tex}
+      \pic[scale=0.4]{ordinal-sum};
       \draw (0,-2) node {$L_1$};
       \draw (0,2) node {$L_2$};
     \end{tikzpicture}
     \hskip5mm
     \begin{tikzpicture}[scale=0.4]
-      \input{inputs/tikz/parallel-sum.tex}
+      \pic[scale=0.4]{parallel-sum};
       \draw (-2,0) node {$L_1$};
       \draw (2,0) node {$L_2$};
     \end{tikzpicture}
     \hskip5mm
     \begin{tikzpicture}[scale=0.3]
-      \input{inputs/tikz/filter-ideal.tex}
-      \draw (alpha) node [left] {$\alpha$};
-      \draw (beta) node [right] {$\beta$};
+      \pic[scale=0.3] (f-) {filter-ideal};
+      \draw (f-alpha) node [left] {$\alpha$};
+      \draw (f-beta) node [right] {$\beta$};
     \end{tikzpicture}
     \caption{The adjoined ordinal sum (left) and parallel sum (middle) 
       of the lattices $L_1$ and $L_2$; a union of an order filter
@@ -1385,12 +1362,10 @@ which is the set of all unary maps on $X$ which respect all relations in $L$.
 \begin{figure}[htp]
 \begin{center}
   \begin{tikzpicture}[scale=.35]
-    \input{inputs/tikz/filter-ideal.tex}
-    %\draw (0,-1.5) node {$L_0 \leq  L$};
-    \draw (alpha) node [left]{$\alpha$};
-    \draw (beta) node [right]{$\beta$};
-    \node (theta) at (1.6,5)  [draw,circle,inner sep=\dotsize] {};
-    %\draw (-.3,3.5) node {$\theta$};
+    \pic[scale=.35] (f-) {filter-ideal};
+    \draw (f-alpha) node [left]{$\alpha$};
+    \draw (f-beta) node [right]{$\beta$};
+    \node[lat] (theta) at (1.6,5) {};
     \draw (theta) node [left]{$\theta$};
   \end{tikzpicture}
 \end{center}
@@ -1471,14 +1446,14 @@ obviously representable.
     \centering
         {\scalefont{.8}
           \begin{tikzpicture}[scale=0.4]
-            \input{inputs/tikz/general-ordinal-sum.tex}
+            \pic[scale=0.4]{general-ordinal-sum};
             \draw (0,-4) node {$L_1$};
             \draw (0,9) node {$L_n$};
             \draw (0,1) node {$L_2$};
           \end{tikzpicture}
           \hskip1cm
           \begin{tikzpicture}[scale=0.4]
-            \input{inputs/tikz/adjoined-ordinal-sum.tex}
+            \pic[scale=0.4]{adjoined-ordinal-sum};
             \draw (0,-2) node {$L_1$};
             \draw (0,8) node {$L_n$};
             \draw (0,2) node {$L_2$};
@@ -2233,17 +2208,10 @@ see Aschbacher~\cite{Aschbacher2008}, and the sizes of the known group
 representations of $\bL_6$ recorded in Section~\ref{sec:intro}.
 
 \begin{figure}[htb]
-%\renewcommand{\dotsize}{1.5pt}
 \begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L6.tex}
-    %    \draw (bottom) node [right]{$\bL_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L6}
   \hskip15mm
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L7.tex}
-    %    \draw (bottom) node [right]{$\bL_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L7}
 \end{center}
 \caption{$\bL_{6}$ and $\bL_7$}\label{fig:L6and7}
 \end{figure}
@@ -2411,17 +2379,10 @@ only candidates for $\tau$ are the coatoms. When $\tau$ is a coatom, $k = 2$
 by~\eqref{item2} and $\gamma_0 = \gamma_1 = \tau$
 
 \begin{figure}[htb]
-%\renewcommand{\dotsize}{1.5pt}
 \begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L14.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L14}
   \hskip15mm
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L15.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L15}
 \end{center}
 \caption{$\bL_{14}$ (on the left) and $\bL_{15}$}\label{fig:L14and15}
 \end{figure}
@@ -2458,12 +2419,8 @@ is representable with only one possible exception: $\bL_{10}$ diagrammed
 in Figure~\ref{fig:L10}.
 
 \begin{figure}[htb]
-%\renewcommand{\dotsize}{1.5pt}
 \begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L10.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L10}
 \end{center}
 \caption{$\bL_{10}$}\label{fig:L10}
 \end{figure}
@@ -2495,12 +2452,8 @@ The one difficult case is $\bL_{19}$ of Figure~\ref{fig:L19}.
 Lemma~\ref{lemma:complements} below covers this case.
 
 \begin{figure}[htb]
-%\renewcommand{\dotsize}{1.5pt}
 \begin{center}
-  \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L19.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-  \end{tikzpicture}
+  \hasse[1]{L19}
 \end{center}
 \caption{$\bL_{19}$}\label{fig:L19}
 \end{figure}
@@ -2557,9 +2510,7 @@ in Figure~\ref{fig:shareshian}.
 
 \begin{figure}[htb]
 \begin{center}
-  \begin{tikzpicture}[scale=.8]
-    \input{inputs/tikz/Shareshian.tex}
-  \end{tikzpicture}
+  \hasse[0.8]{shareshian}
 \end{center}
 \caption{A possibly non-representable lattice.}\label{fig:shareshian}
 \end{figure}
@@ -2598,25 +2549,23 @@ smallest representation.
 \begin{figure}[htb]
 \begin{center}
   \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/L3.tex}
-    %    \draw (bottom) node [right]{$L_{11}$};
-    \draw (mp) node [left]{$\alpha$};
-    \draw (02) node [left]{$\beta$};
-    \draw (22) node [right]{$\gamma$};
-    \draw (11) node [right]{$H$};
-    \draw (n11) node [left]{$K$};
-    \draw (top) node [above]{$G$};
-    \draw (bottom) node [below]{$1_G$};
+    \pic (l-) {L11};
+    \draw (l-mp) node [left]{$\alpha$};
+    \draw (l-02) node [left]{$\beta$};
+    \draw (l-22) node [right]{$\gamma$};
+    \draw (l-11) node [right]{$H$};
+    \draw (l-n11) node [left]{$K$};
+    \draw (l-top) node [above]{$G$};
+    \draw (l-bottom) node [below]{$1_G$};
   \end{tikzpicture}
   \hskip1cm
   \begin{tikzpicture}[scale=1]
-    \input{inputs/tikz/PentagonForL11.tex}
-    \draw[semithick] (11) to (22) to (top) to (02) to (mp) to (11);
-    \draw (mp) node [left]{$\alpha$};
-    \draw (02) node [left]{$\beta$};
-    \draw (22) node [right]{$\gamma$};
-    \draw (11) node [below]{$H$};
-    \draw (top) node [above]{$G$};
+    \pic (p-) {L11-upper-interval};
+    \draw (p-mp) node [left]{$\alpha$};
+    \draw (p-02) node [left]{$\beta$};
+    \draw (p-22) node [right]{$\gamma$};
+    \draw (p-11) node [below]{$H$};
+    \draw (p-top) node [above]{$G$};
   \end{tikzpicture}
 \end{center}
 \caption{$\bL_{11}$ (left) and an upper interval (right)}\label{fig:L11}
@@ -3156,22 +3105,7 @@ so it really would be the smallest rep.}
 \setlength{\tabcolsep}{2pt}
 \begin{tabular}{ccc}
 $\bL_1$&
-\begin{minipage}{0.06\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(4) at (0,1)[e]{};
-\node(3) at (0.33,0.33)[e]{};%[$1\ 2|3\ 4$]
-\node(2) at (-0.5,0.0)[e]{};%$1\ 3|2\ 4$};
-\node(1) at (0.33,-0.33)[e]{};%$1|2|3\ 4$};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(3)--(4);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L1}
 &
 $\setlength{\arraycolsep}{1pt}
 \begin{array}{c|cccc}
@@ -3184,23 +3118,7 @@ $\setlength{\arraycolsep}{1pt}
 
 \begin{tabular}{ccc}
 $\bL_2$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(4) at (-0.0,1.0)[e]{};
-\node(3) at (0.5,0.0)[e]{};
-\node(2) at (0.0,0.0)[e]{};
-\node(1) at (-0.5,0.0)[e]{};
-\node(0) at (-0.0,-1.0)[e]{};
-\node at (0,1.3){};
-\draw(3)--(4);
-\draw(2)--(4);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L2}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
     \bB_2& 0& 1& 2\\\hline
@@ -3215,25 +3133,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
 
 \begin{tabular}{ccc}
 $\bL_3$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (0.5,0.33)[e]{};
-\node(3) at (-0.5,0.0)[e]{};
-\node(2) at (0,0)[e]{};
-\node(1) at (0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L3}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccc}
            \bB_3& 0& 1& 2& 3& 4& 5& 6\\\hline
@@ -3245,25 +3145,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccc}
 
 \begin{tabular}{ccc}
 $\bL_4$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (0.2,0.33)[e]{};
-\node(3) at (-0.5,0)[e]{};
-\node(2) at (0.4,-0.33)[e]{};
-\node(1) at (0,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L4}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
     \bB_4& 0& 1& 2& 3\\\hline
@@ -3273,25 +3155,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
 
 \begin{tabular}{ccc}
 $\bL_5$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (0,0.33)[e]{};
-\node(3) at (0.4,0.33)[e]{};
-\node(2) at (-0.5,0)[e]{};
-\node(1) at (0.2,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L5}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
            \bB_5& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11\\\hline
@@ -3302,24 +3166,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
 
 \begin{tabular}{ccc}
 $\bL_6$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (-0.5,0.33)[e]{};
-\node(3) at (0.5,0.33)[e]{};
-\node(2) at (-0.5,-0.33)[e]{};
-\node(1) at (0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L6}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
     \bB_6& 0& 1& 2& 3& 4& 5\\\hline
@@ -3330,24 +3177,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
 
 \begin{tabular}{ccc}
 $\bL_7$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (0.5,0.5)[e]{};
-\node(3) at (-0.5,0)[e]{};
-\node(2) at (0.5,0)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(2);
-\draw(0)--(1);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L7}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
     \bB_7& 0& 1& 2& 3& 4& 5\\\hline
@@ -3358,26 +3188,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
 
 \begin{tabular}{ccc}
 $\bL_8$&
-\begin{minipage}{0.1\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(5) at (0,1)[e]{};
-\node(4) at (-.75,0.0)[e]{};
-\node(3) at (-.25,0)[e]{};
-\node(2) at (0.25,0)[e]{};
-\node(1) at (.75,0)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(4)--(5);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\draw(0)--(4);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L8}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
     \bB_8& 0& 1& 2& 3& 4& 5\\\hline
@@ -3387,28 +3198,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
 
 \begin{tabular}{ccc}
 $\bL_9$&
-\begin{minipage}{0.08\textwidth}
-\begin{tikzpicture}
-    [scale=0.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.33)[e]{};
-\node(4) at (-0.33,0)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0,0)[e]{};
-\node(1) at (0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(6);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\draw(0)--(4);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L9}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
         \bB_9& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
@@ -3421,28 +3211,7 @@ Method: overalgebra of $\bB_8$
 
 \begin{tabular}{ccc}
 $\bL_{10}$&
-\begin{minipage}{0.1\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0.33,1)[e]{};
-\node(5) at (0,0.33)[e]{};
-\node(4) at (0.66,0.33)[e]{};
-\node(3) at (-1,0)[e]{};
-\node(2) at (-0.33,-0.33)[e]{};
-\node(1) at (0.33,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(4);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L10}
 &
 \begin{tabular}{l}
 \textbf{No finite algebra known with this congruence lattice}
@@ -3451,27 +3220,7 @@ $\bL_{10}$&
 
 \begin{tabular}{ccc}
 $\bL_{11}$&
-\begin{minipage}{0.08\textwidth}
-\begin{tikzpicture}
-    [xscale=.4, yscale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0.33,1)[e]{};
-\node(5) at (-0.33,0.33)[e]{};
-\node(4) at (1,0.33)[e]{};
-\node(3) at (0,0)[e]{};
-\node(2) at (-1,-0.33)[e]{};
-\node(1) at (0.33,-0.33)[e]{};
-\node(0) at (-0.33,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L11}
 &
 \begin{tabular}{l}
 A finite algebra with 108 elements known.\\
@@ -3481,27 +3230,7 @@ A finite algebra with 108 elements known.\\
 
 \begin{tabular}{ccc}
 $\bL_{12}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.33)[e]{};
-\node(4) at (-0.5,0.33)[e]{};
-\node(3) at (0.0,0.0)[e]{};
-\node(2) at (0.5,-0.33)[e]{};
-\node(1) at (-0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L12}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccccc}
    \bB_{12}& 0& 1& 2& 3& 4& 5& 6& 7& 8\\\hline
@@ -3516,27 +3245,7 @@ l(x)& 5& 5& 7& 7& 7& 6& 6& 6& 5\end{array}$
 
 \begin{tabular}{ccc}
 $\bL_{13}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (0,0)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0.5,0)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(2);
-\draw(0)--(1);
-\draw(0)--(3);
-\draw(0)--(4);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L13}
 &
 $\setlength{\arraycolsep}{1pt}
 \begin{array}{c|ccccccccccccccccccc}
@@ -3554,28 +3263,7 @@ l(x)&13&14&15&16&17& 5&18&13&16&17&17&16&13&5&5&5& 5&  5& 5
 
 \begin{tabular}{ccc}
 $\bL_{14}$&
-\begin{minipage}{0.08\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.4,0.33)[e]{};
-\node(4) at (0,0.33)[e]{};
-\node(3) at (-0.8,0)[e]{};
-\node(2) at (-0.4,0)[e]{};
-\node(1) at (0.2,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(6);
-\draw(1)--(4);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L14}
 &
 \begin{tabular}{l}
 Upper interval in Sub$(A_6)$,\\
@@ -3584,28 +3272,7 @@ algebra of size 90\end{tabular}
 
 \begin{tabular}{ccc}
 $\bL_{15}$&
-\begin{minipage}{0.08\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.2,0.33)[e]{};
-\node(4) at (-0.4,0)[e]{};
-\node(3) at (-0.8,0)[e]{};
-\node(2) at (0,-0.33)[e]{};
-\node(1) at (0.4,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(5);
-\draw(0)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L15}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
     \bB_{15}& 0& 1& 2& 3\\\hline
@@ -3614,28 +3281,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
 
 \begin{tabular}{ccc}
 $\bL_{16}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (-0.1,0.33)[e]{};
-\node(4) at (0.5,0.33)[e]{};
-\node(3) at (0.2,0.33)[e]{};
-\node(2) at (-0.66,0)[e]{};
-\node(1) at (0.25,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(6);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L16}
 &
 \begin{tabular}{l}
 Upper interval in Sub$(C_2.A_6)$\\
@@ -3644,28 +3290,7 @@ algebra of size 180\end{tabular}
 
 \begin{tabular}{ccc}
 $\bL_{17}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1.0)[e]{};
-\node(5) at (0.25,0.33)[e]{};
-\node(4) at (-0.66,0)[e]{};
-\node(3) at (0.2,-0.33)[e]{};
-\node(2) at (-0.1,-0.33)[e]{};
-\node(1) at (0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(5);
-\draw(0)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L17}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccc}
        \bB_{17}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9& 10& 11\\\hline
@@ -3679,27 +3304,7 @@ Method: filter-ideal in Sub$(A_4)$
 
 \begin{tabular}{ccc}
 $\bL_{18}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.33)[e]{};
-\node(4) at (-0.5,0.33)[e]{};
-\node(3) at (0,0.33)[e]{};
-\node(2) at (0.5,-0.33)[e]{};
-\node(1) at (-0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L18}
 &
 \begin{tabular}{l}
 Dual of 19, no explicit\\
@@ -3708,27 +3313,7 @@ small representation known\end{tabular}
 
 \begin{tabular}{ccc}
 $\bL_{19}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (-0.5,0.33)[e]{};
-\node(4) at (0.5,0.33)[e]{};
-\node(3) at (-0.5,-0.33)[e]{};
-\node(2) at (0,-0.33)[e]{};
-\node(1) at (0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L19}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccc}
    \bB_{19}& 0& 1& 2& 3& 4& 5& 6& 7\\\hline
@@ -3739,27 +3324,7 @@ h(x)& 7& 6& 6& 7& 3& 2& 2& 3\end{array}$
 
 \begin{tabular}{ccc}
 $\bL_{20}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.44,0.66)[e]{};
-\node(4) at (0,0.33)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0.44,0)[e]{};
-\node(1) at (0,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(2);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L20}
 &
 \begin{tabular}{l}
 Method: filter-ideal in SmallGroup(216,153) in GAP\\
@@ -3768,27 +3333,7 @@ Method: filter-ideal in SmallGroup(216,153) in GAP\\
 
 \begin{tabular}{ccc}
 $\bL_{21}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0,0.33)[e]{};
-\node(4) at (0.44,0)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0,-0.33)[e]{};
-\node(1) at (0.44,-0.66)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(5);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L21}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccccccc}
    \bB_{21}& 0& 1& 2& 3& 4& 5& 6& 7& 8\\\hline
@@ -3799,27 +3344,7 @@ h(x)& 4& 5& 5& 7& 8& 8& 7& 4& 4\end{array}$
 
 \begin{tabular}{ccc}
 $\bL_{22}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (0,0.5)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0.5,0)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(4);
-\draw(2)--(5);
-\draw(1)--(2);
-\draw(0)--(1);
-\draw(0)--(3);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L22}
 &
 \begin{tabular}{l}
 Dual of 23, no explicit small\\
@@ -3828,27 +3353,7 @@ representation known\end{tabular}
 
 \begin{tabular}{ccc}
 $\bL_{23}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (0.5,0)[e]{};
-\node(3) at (-0.66,0)[e]{};
-\node(2) at (0.5,-0.5)[e]{};
-\node(1) at (0,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(5);
-\draw(3)--(6);
-\draw(2)--(4);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L23}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
       \bB_{23}& 0& 1& 2& 3& 4& 5\\\hline
@@ -3860,28 +3365,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
 
 \begin{tabular}{ccc}
 $\bL_{24}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0,0.33)[e]{};
-\node(4) at (0.5,0.33)[e]{};
-\node(3) at (-0.5,0.33)[e]{};
-\node(2) at (0.5,-0.33)[e]{};
-\node(1) at (-0.5,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(4);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L24}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
       \bB_{24}& 0& 1& 2& 3\\\hline
@@ -3891,28 +3375,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
 
 \begin{tabular}{ccc}
 $\bL_{25}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (-0.5,0.33)[e]{};
-\node(4) at (0.5,0.33)[e]{};
-\node(3) at (-0.5,-0.33)[e]{};
-\node(2) at (0.5,-0.33)[e]{};
-\node(1) at (0,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(5);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L25}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
       \bB_{25}& 0& 1& 2& 3& 4\\\hline
@@ -3924,27 +3387,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
 
 \begin{tabular}{ccc}
 $\bL_{26}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.25,0.5)[e]{};
-\node(4) at (-0.66,0)[e]{};
-\node(3) at (0,0)[e]{};
-\node(2) at (0.5,0)[e]{};
-\node(1) at (0.25,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(2);
-\draw(1)--(3);
-\draw(0)--(1);
-\draw(0)--(4);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L26}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
       \bB_{26}& 0& 1& 2& 3& 4& 5\\\hline
@@ -3956,26 +3399,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccc}
 
 \begin{tabular}{ccc}
 $\bL_{27}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (-0.5,0.33)[e]{};
-\node(3) at (0.5,0.0)[e]{};
-\node(2) at (-0.5,-0.33)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L27}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
         \bB_{27}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
@@ -3993,26 +3417,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
 
 \begin{tabular}{ccc}
 $\bL_{28}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.6)[e]{};
-\node(4) at (-0.5,0)[e]{};
-\node(3) at (0.5,0.2)[e]{};
-\node(2) at (0.5,-0.2)[e]{};
-\node(1) at (0.5,-0.6)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(3);
-\draw(1)--(2);
-\draw(0)--(1);
-\draw(0)--(4);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L28}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
         \bB_{28}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\rule{0em}{1.6ex}\\\hline
@@ -4032,27 +3437,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
 
 \begin{tabular}{ccc}
 $\bL_{29}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0.,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (-0.66,0.25)[e]{};
-\node(3) at (0.5,0)[e]{};
-\node(2) at (-0.66,-0.25)[e]{};
-\node(1) at (0,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L29}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
       \bB_{29}& 0& 1& 2& 3& 4\\\hline
@@ -4062,27 +3447,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
 
 \begin{tabular}{ccc}
 $\bL_{30}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0,0.5)[e]{};
-\node(4) at (-0.66,0.25)[e]{};
-\node(3) at (0.5,0)[e]{};
-\node(2) at (-0.66,-0.25)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L30}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
       \bB_{30}& 0& 1& 2& 3& 4\\\hline
@@ -4092,27 +3457,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
 
 \begin{tabular}{ccc}
 $\bL_{31}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0.5,0.5)[e]{};
-\node(4) at (-0.66,0.25)[e]{};
-\node(3) at (0.5,0)[e]{};
-\node(2) at (0.5,-0.5)[e]{};
-\node(1) at (0,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(3);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L31}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
    \bB_{31}& 0& 1& 2& 3& 4\\\hline
@@ -4123,27 +3468,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
 
 \begin{tabular}{ccc}
 $\bL_{32}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (0,0.5)[e]{};
-\node(4) at (0.5,0.5)[e]{};
-\node(3) at (0.5,0)[e]{};
-\node(2) at (-0.66,-0.25)[e]{};
-\node(1) at (0.5,-0.5)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(3)--(4);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L32}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
       \bB_{32}& 0& 1& 2& 3& 4\\\hline
@@ -4154,29 +3479,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|ccccc}
 
 \begin{tabular}{ccc}
 $\bL_{33}$&
-\begin{minipage}{0.12\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (1,0)[e]{};
-\node(4) at (0.5,0)[e]{};
-\node(3) at (0,0)[e]{};
-\node(2) at (-0.5,0)[e]{};
-\node(1) at (-1,0)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(6);
-\draw(1)--(6);
-\draw(0)--(1);
-\draw(0)--(2);
-\draw(0)--(3);
-\draw(0)--(4);
-\draw(0)--(5);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L33}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
         \bB_{33}& 0& 1& 2& 3& 4& 5& 6& 7& 8& 9 & 10& 11& 12& 13& 14& 15\\\hline
@@ -4187,28 +3490,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccccccccccccccc}
 
 \begin{tabular}{ccc}
 $\bL_{34}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (0,1)[e]{};
-\node(5) at (-0.33,0.33)[e]{};
-\node(4) at (0.33,0.33)[e]{};
-\node(3) at (0,0.33)[e]{};
-\node(2) at (-0.66,-0.33)[e]{};
-\node(1) at (0,-0.33)[e]{};
-\node(0) at (-0.33,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(6);
-\draw(2)--(5);
-\draw(1)--(3);
-\draw(1)--(4);
-\draw(1)--(5);
-\draw(0)--(1);
-\draw(0)--(2);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L34}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
       \bB_{34}& 0& 1& 2& 3\\\hline
@@ -4217,28 +3499,7 @@ $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
 
 \begin{tabular}{ccc}
 $\bL_{35}$&
-\begin{minipage}{0.07\textwidth}
-\begin{tikzpicture}
-    [scale=.6, e/.style={circle,draw,inner sep=0pt,minimum size=4pt}]
-\node(6) at (-0.33,1)[e]{};
-\node(5) at (0,0.33)[e]{};
-\node(4) at (-0.66,0.33)[e]{};
-\node(3) at (0.33,-0.33)[e]{};
-\node(2) at (0,-0.33)[e]{};
-\node(1) at (-0.33,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\node at (0,1.3){};
-\draw(5)--(6);
-\draw(4)--(6);
-\draw(3)--(5);
-\draw(2)--(5);
-\draw(1)--(5);
-\draw(1)--(4);
-\draw(0)--(3);
-\draw(0)--(2);
-\draw(0)--(1);
-\end{tikzpicture}
-\end{minipage}
+\hasse{L35}
 &
 $\setlength{\arraycolsep}{1pt}\begin{array}{c|cccc}
       \bB_{35}& 0& 1& 2& 3\\\hline
