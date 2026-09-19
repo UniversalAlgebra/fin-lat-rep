@@ -312,6 +312,46 @@ class DelimiterTests(unittest.TestCase):
         self.assertTrue(outcome.is_err)
         self.assertIn("never closed", outcome.unwrap_err().message)
 
+    def test_a_vertex_before_the_opener_is_an_error(self) -> None:
+        r"""The mirror of a vertex after the close, and just as fatal.
+
+        A `\node[lat]` line before `\tikzset` is read into neither the
+        drawing nor the header, so the cross-check passes; TeX meets it in
+        the article's preamble, where `make paper` ends with "Undefined
+        control sequence" and no PDF.
+        """
+        text = pic(GOOD_HEADER, GOOD_BODY).replace(
+            r"\tikzset{L1", r"\node[lat] (99) at (5,5) {};" + "\n" + r"\tikzset{L1"
+        )
+        outcome = parse_pic(text, "L1.tex")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("before the pic's", outcome.unwrap_err().message)
+
+    def test_an_edge_before_the_opener_is_an_error(self) -> None:
+        text = pic(GOOD_HEADER, GOOD_BODY).replace(
+            r"\tikzset{L1", r"\draw (0) -- (1);" + "\n" + r"\tikzset{L1"
+        )
+        self.assertTrue(parse_pic(text, "L1.tex").is_err)
+
+    def test_a_schematic_is_not_exempt_from_the_prefix_check(self) -> None:
+        body = "\n".join([
+            r"  \node[lat] (0) at (0,0) {};",
+            r"  \node[lat] (1) at (0,4) {};",
+            r"  \draw (0) to [out=50,in=-50] (1);",
+        ])
+        text = pic("% id: L1\n% tags: schematic", body)
+        self.assertTrue(parse_pic(text, "L1.tex").is_ok)
+        self.assertTrue(
+            parse_pic(text.replace(r"\tikzset{L1", r"\draw (0) -- (1);" + "\n" + r"\tikzset{L1"), "L1.tex").is_err
+        )
+
+    def test_comments_and_blank_lines_before_the_opener_are_fine(self) -> None:
+        """A guard against over-tightening: the header IS a comment block."""
+        text = pic(GOOD_HEADER, GOOD_BODY).replace(
+            r"\tikzset{L1", "%% a note about this drawing\n\n" + r"\tikzset{L1"
+        )
+        self.assertTrue(parse_pic(text, "L1.tex").is_ok)
+
     def test_braces_inside_the_body_do_not_end_the_pic(self) -> None:
         """A guard against over-tightening: `{$\vdots$}` is balanced text."""
         body = "\n".join([

@@ -129,11 +129,20 @@ def parse_header(text: str, where: str = "pic") -> Result[Dict[str, str], Pipeli
 def _pic_body(text: str, where: str) -> Result[str, PipelineError]:
     r"""The text inside `\tikzset{NAME/.pic={ ... }}`, found by matching braces.
 
-    Reading the body rather than the whole file is what makes an unterminated
-    pic an error here instead of a file that parses cleanly and then stops
-    `make paper` with "File ended while scanning use of \pgfkeys@@qset" and no
-    PDF.  Counting the opener alone cannot see that: every node and edge line
-    before the missing `}}` is still perfectly readable.
+    A file is a header and one pic, and this is where that is enforced on
+    both sides: nothing but whitespace before the opener, nothing after the
+    close.  Reading the body rather than the whole file is what makes an
+    unterminated pic an error here instead of a file that parses cleanly and
+    then stops `make paper` with "File ended while scanning use of
+    \pgfkeys@@qset" and no PDF.  Counting the opener alone cannot see that:
+    every node and edge line before the missing `}}` is still perfectly
+    readable.
+
+    The same is true of a line before the opener.  It is read by neither the
+    drawing nor the header, so the cross-check passes, and TeX meets it at
+    the point of `\input`, which is the article's preamble: measured, a
+    `\node[lat]` line there ends the build with "Undefined control sequence"
+    and no PDF.
 
     Braces are counted literally.  No file in this directory escapes one, and
     a file that did would be reported here as unbalanced rather than silently
@@ -142,6 +151,19 @@ def _pic_body(text: str, where: str) -> Result[str, PipelineError]:
     opener = _PIC_OPEN.search(text)
     if opener is None:
         return Result.err(_error(where, "no pic to read"))
+    # Comments are already stripped, so whatever is left here is TeX that
+    # sits outside the pic and is read where the file is \input.
+    before = text[: opener.start()].strip()
+    if before:
+        return Result.err(
+            _error(
+                where,
+                "there is text before the pic's `\\tikzset`: "
+                f"{before.splitlines()[0]!r}; a file is a header and one pic, and a "
+                "node or edge written outside the pic is drawn by neither the pic nor "
+                "anything else, but TeX still reads it where the file is \\input",
+            )
+        )
     # Two braces are already open at the end of the match: `	ikzset{` and
     # the `{` of `.pic={`.
     depth = 2

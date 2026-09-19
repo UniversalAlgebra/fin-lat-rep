@@ -38,8 +38,13 @@ header is not decoration.  It is what makes a diagram checkable.
 
 The rules, which the checker holds a file to, are as follows:
 
-+  **One pic per file, named after the file**.  `L6.tex` defines the pic `L6`
-   and the header says `id: L6`.
++  **One pic per file, named after the file, and nothing outside it**.
+   `L6.tex` defines the pic `L6` and the header says `id: L6`.  Apart from
+   the header's comment lines, the file is the `\tikzset{...}}` and nothing
+   else: TeX reads anything before or after the pic where the file is
+   `\input`, which is the article's preamble, and a stray node or edge there
+   ends the build (`Undefined control sequence`, no PDF) while the checker,
+   which would read it into neither the drawing nor the header, is happy.
 +  **Vertices are `\node[lat] (name) at (x,y) {};`, one per line**.  Names may
    be numbers or words (`bottom`, `n11`, `left-low`); the checker accepts
    `[\w-]+`.  `lat` is the one node style, defined in `../macros.sty` with the
