@@ -788,12 +788,27 @@ Not surprisingly many lattices with a group representation
 can also be represented as a congruence lattice of a much smaller
 algebra. For example, the hexagon lattice, denoted $\bL_6$ in
 Section~\ref{sec:small-unary-algebras} below, is the congruence lattice
-of an algebra with 6 elements. Palfy~\cite{Palfy1988} and
+of an algebra with 6 elements. \Palfy~\cite{Palfy1988} and
 Aschbacher~\cite{Aschbacher2008} have found groups
-$H < G$ such that the interval from $H$ to $G$ is $\bL_6$, but 
-the sizes of these representations, 
-$[G : H]$, are considerably larger. 
-Palfy's algebra has size $9! = 362880$.
+$H < G$ such that the interval from $H$ to $G$ is $\bL_6$, but
+the sizes of these representations, $[G : H]$, are considerably larger.
+\Palfy's example is the interval $\lb H, A_{11}\rb$ with $H \cong C_{11} : C_5$,
+so his algebra has size $[A_{11} : H] = 9! = 362880$.
+Aschbacher's example~\cite[Example~8.5]{Aschbacher2008} is a twisted wreath
+product $G = HU$, where $H = A_6 \times A_6$ and $U \cong A_5^{2160}$,
+the exponent being the index in $H$ of a diagonal subgroup $A \cong A_5$;
+so his algebra has size $[G : H] = |U| = 60^{2160}$, a number of 3841
+decimal digits.  (\Palfy's lectures~\cite{Palfy:2009} give a second twisted
+wreath product, with $H = S_5 \times A_5$ and size $60^{120}$.  Both are
+checked by \code{twistedWreathHexagon.g} in~\cite{finlatrepgap}, which
+identifies the interval from the extensions of the twisting map rather than
+from $G$, a group far too large to build.)
+In the other direction, no small group has $\bL_6$ as an upper interval:
+\code{hexagonSearch.g} in~\cite{finlatrepgap} examines every group of order
+at most 2000 (see Section~\ref{sec:algorithms}) and finds none, so
+$A_{11}$, of order $19958400$, is the smallest group we know of with such
+an interval.  Where between 2000 and $|A_{11}|$ the smallest one lies, we
+do not know.
 
 Another interesting example is the pentagon, which is typically denoted by
 $N_5$, but in our table in Section~\ref{sec:small-unary-algebras} we
@@ -2211,8 +2226,9 @@ in the form of~\eqref{question4}
 is more difficult. For example,
 the lattices $\bL_6$ and $\bL_7$ diagrammed in Figure~\ref{fig:L6and7}
 can be represented on algebras of size~6 (and no fewer)
-but representing them with permutation groups is much harder; 
-see Aschbacher~\cite{Aschbacher2008}.
+but representing them with permutation groups is much harder;
+see Aschbacher~\cite{Aschbacher2008}, and the sizes of the known group
+representations of $\bL_6$ recorded in Section~\ref{sec:intro}.
 
 \begin{figure}[htb]
 %\renewcommand{\dotsize}{1.5pt}
@@ -2991,7 +3007,7 @@ of \gap~\cite{GAP4}.  A detailed example of this is given after
 Figure~\ref{fig:L11}.
 
 The \gap programs we used for this are collected in~\cite{finlatrepgap}.
-There are five of them.
+There are seven of them.
 \begin{itemize}
 \item
 \code{findUpperIntervals.g} searches the Small Groups Library of \gap,
@@ -3027,6 +3043,33 @@ in Section~\ref{sec:lattices}.
 \code{Hexagon.g} verifies that \Palfy's example in $A_{11}$~\cite{Palfy1988}
 really is a hexagon: the interval $\lb H, A_{11}\rb$ is $\bL_6$, where
 $H \cong C_{11} : C_5$, and the index $[A_{11}:H]$ is $9! = 362880$.
+\item
+\code{twistedWreathHexagon.g} computes the sizes of the two twisted wreath
+product representations of $\bL_6$ quoted in Section~\ref{sec:intro},
+Aschbacher's with $H = A_6 \times A_6$ and \Palfy's with
+$H = S_5 \times A_5$, and checks that each interval is the hexagon.  The
+groups themselves, of orders $60^{2160} \cdot 129600$ and
+$60^{120} \cdot 7200$, are never built.  By a theorem of Aschbacher, in the
+form \Palfy states it in~\cite{Palfy:2009}, the interval $\lb H, HU\rb$ is
+dual to the poset of extensions of the twisting map $\alpha$ to subgroups
+between the diagonal $A_5$ and $H$, with a top added, and an extension is
+determined by its kernel; the program enumerates those extensions,
+constructing each as a homomorphism, and compares the poset with the
+hexagon's covering relation.
+\item
+\code{hexagonSearch.g} verifies the claim in Section~\ref{sec:intro} that
+no group of order at most 2000 has $\bL_6$ as an upper interval.  It is
+the pentagon search again: $H$ is core-free and the intersection of two
+maximal subgroups, since the hexagon's two coatoms meet at its bottom, and
+each candidate interval is compared with the hexagon's covering relation
+by isomorphism, not by counting.  Every group of order at most 255 is
+examined.  Above that only the non-solvable groups need be, 1010 of them
+up to order 2000, by Proposition~2 of Aschbacher~\cite{Aschbacher2008}:
+when $H$ is core-free and the only modular elements of $\lb H, G\rb$ are
+its ends, which is so for the hexagon, $G$ has a unique minimal normal
+subgroup and it is a direct product of nonabelian simple groups.  (The
+Small Groups Library omits order 1024, but a group of prime-power order is
+solvable.)
 \end{itemize}
 
 The algebras $\bB_i$ listed in Section~\ref{sec:lattices} are available
