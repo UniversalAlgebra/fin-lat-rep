@@ -5,9 +5,13 @@ Description: Check every algebra in a `.ua` file against the lattice the
   article draws beside it.
 
   For each algebra named `B`*i* in the algebra file, compute Con(B_i) and
-  compare it with the lattice `L`*i* drawn in the catalog subsection of
-  `article/SmallLatticeReps.tex`.  Disagreement is reported with both covering
-  relations and makes the run exit non-zero.
+  compare it with the lattice `L`*i* the catalog subsection of
+  `article/SmallLatticeReps.tex` draws, which since #6 lives in
+  `article/inputs/tikz/L<i>.tex` as a TikZ pic under a header that declares
+  the lattice's covering relation.  Three things are compared pairwise: the
+  computed congruence lattice, the drawing, and the header's declaration.
+  Disagreement anywhere is reported, naming which two disagree, with the
+  covering relations, and makes the run exit non-zero.
 
   Why this exists: B28 was wrong from 2017 until 2026, six operations instead
   of seven and an 8-element congruence lattice rather than L28's 7, and nobody
@@ -42,16 +46,43 @@ ME = "finlatrep/check.py"
 PASS = "✅"
 FAIL = "❌"
 
+
+def _covers(relation: CoveringRelation) -> str:
+    return f"{relation.size} elements, covers {list(relation.sorted_covers())}"
+
+
 @dataclass(frozen=True)
 class Comparison:
-    """The outcome of checking one algebra against one drawn lattice."""
+    """The outcome of checking one algebra against one catalog lattice.
+
+    Three relations: `computed` from the algebra, `drawn` from the file's
+    body, `declared` from the file's header.  Any two may disagree, and the
+    report names which.
+    """
 
     algebra: str
     lattice_index: int
     cardinality: int
     computed: CoveringRelation
     drawn: CoveringRelation
-    agrees: bool
+    declared: CoveringRelation
+    source: str
+
+    def disagreements(self) -> Tuple[str, ...]:
+        """Which pairs of the three relations fail to agree, by name."""
+        pairs: List[str] = []
+        if not are_isomorphic(self.computed, self.drawn):
+            pairs.append("the computed lattice and the drawing")
+        if not are_isomorphic(self.computed, self.declared):
+            pairs.append("the computed lattice and the header's covers")
+        # Same vertices, same names: equality, not isomorphism.
+        if self.drawn.covers != self.declared.covers:
+            pairs.append("the drawing and the header's covers")
+        return tuple(pairs)
+
+    @property
+    def agrees(self) -> bool:
+        return not self.disagreements()
 
     def describe(self) -> str:
         """One line per algebra: the mark, this script, and what was compared."""
@@ -63,16 +94,50 @@ class Comparison:
         )
 
     def describe_failure(self) -> str:
-        """The detail a reader needs when the two disagree."""
+        """The detail a reader needs when the relations disagree."""
         return "\n".join(
             [
-                f"  {self.algebra} does not represent L{self.lattice_index}:",
-                f"    Con({self.algebra}) has {self.computed.size} elements, "
-                f"covers {list(self.computed.sorted_covers())}",
-                f"    L{self.lattice_index} has {self.drawn.size} elements, "
-                f"covers {list(self.drawn.sorted_covers())}",
+                f"  {self.algebra} does not represent L{self.lattice_index}: "
+                + "; ".join(self.disagreements()) + " disagree",
+                f"    Con({self.algebra}) has {_covers(self.computed)}",
+                f"    L{self.lattice_index} as drawn in {self.source} has {_covers(self.drawn)}",
+                f"    L{self.lattice_index} as declared by the header of {self.source} "
+                f"has {_covers(self.declared)}",
             ]
         )
+
+
+@dataclass(frozen=True)
+class FileCheck:
+    """Whether one catalog file's drawing is the relation its header declares.
+
+    This check needs no algebra, so it covers the catalog lattices that have
+    none as well: every file is held to its own header.
+    """
+
+    index: int
+    source: str
+    drawn: CoveringRelation
+    declared: CoveringRelation
+
+    @property
+    def agrees(self) -> bool:
+        return self.drawn.covers == self.declared.covers
+
+    def describe_failure(self) -> str:
+        return (
+            f"{FAIL} {ME}  L{self.index:<4} {self.source}: the drawing and the header's covers disagree\n"
+            f"    drawn: {_covers(self.drawn)}\n"
+            f"    declared: {_covers(self.declared)}"
+        )
+
+
+@dataclass(frozen=True)
+class Verdict:
+    """Everything `run` established: the file checks and the algebra checks."""
+
+    files: Tuple[FileCheck, ...]
+    comparisons: Tuple[Comparison, ...]
 
 
 def lattice_index_of(algebra_name: str) -> Optional[int]:
@@ -89,8 +154,9 @@ def compare(algebra: Algebra, entry: CatalogEntry) -> Comparison:
         lattice_index=entry.index,
         cardinality=algebra.cardinality,
         computed=computed,
-        drawn=entry.relation,
-        agrees=are_isomorphic(computed, entry.relation),
+        drawn=entry.drawn,
+        declared=entry.declared,
+        source=entry.source,
     )
 
 
@@ -120,15 +186,23 @@ def compare_all(
     return Result.ok(tuple(comparisons))
 
 
+def check_files(catalog: Dict[int, CatalogEntry]) -> Tuple[FileCheck, ...]:
+    """Hold every catalog file to its own header, algebra or no algebra."""
+    return tuple(
+        FileCheck(index=entry.index, source=entry.source, drawn=entry.drawn, declared=entry.declared)
+        for entry in sorted(catalog.values(), key=lambda e: e.index)
+    )
+
+
 def check_diagram_count(
     catalog: Dict[int, CatalogEntry], algebras: Sequence[Algebra]
 ) -> Result[None, PipelineError]:
-    """Refuse to run if the article draws fewer lattices than there are algebras.
+    """Refuse to run if the catalog draws fewer lattices than there are algebras.
 
-    The catalog's diagrams are inline TikZ today.  Should one ever be moved
-    into an `\\input`, the parser would simply not see it, and a check that
-    quietly skipped an algebra would be worse than no check at all.  Fewer
-    diagrams than algebras is that situation, so stop loudly.
+    A lattice whose file or `\\hasse` call went missing would otherwise be
+    skipped, and a check that quietly skipped an algebra would be worse than
+    no check at all.  Fewer diagrams than algebras is that situation, so stop
+    loudly.
     """
     missing = sorted(
         {
@@ -144,7 +218,7 @@ def check_diagram_count(
                 ErrorType.VALIDATION_ERROR,
                 "the article draws no diagram for "
                 + ", ".join(f"L{i}" for i in missing)
-                + "; if a diagram moved into an \\input, catalog.py must learn to follow it",
+                + "; each catalog lattice must be drawn by \\hasse{L<i>} from inputs/tikz/L<i>.tex",
             )
         )
     return Result.ok(None)
@@ -241,33 +315,47 @@ def _row_disagreements(comparison: Comparison, row: UACalcRow) -> List[str]:
     return problems
 
 
-def run(algebra_file: Path, article: Path) -> Result[Tuple[Comparison, ...], PipelineError]:
+def run(algebra_file: Path, article: Path) -> Result[Verdict, PipelineError]:
     """Read both sources and compare them.  The pure core of the tool."""
     return read_algebras(algebra_file).and_then(
         lambda algebras: read_catalog(article).and_then(
             lambda catalog: check_diagram_count(catalog, algebras).and_then(
-                lambda _: compare_all(algebras, catalog)
+                lambda _: compare_all(algebras, catalog).map(
+                    lambda comparisons: Verdict(files=check_files(catalog), comparisons=comparisons)
+                )
             )
         )
     )
 
 
-def _report(comparisons: Sequence[Comparison]) -> int:
+def _report(verdict: Verdict) -> int:
     """Print the outcome, one marked line per check, and return the exit code."""
+    comparisons = verdict.comparisons
     # Reaching here means check_diagram_count passed inside run(); say so,
     # since it is a check of its own and would otherwise leave no line.
     print(
         f"{PASS} {ME}  the article draws a diagram for each of the "
         f"{len(comparisons)} lattices these algebras are named for"
     )
+    broken_files = [f for f in verdict.files if not f.agrees]
+    for broken in broken_files:
+        print(broken.describe_failure())
+    if not broken_files:
+        print(
+            f"{PASS} {ME}  all {len(verdict.files)} catalog files draw the covering "
+            "relation their header declares"
+        )
     for comparison in comparisons:
         print(comparison.describe())
     failures = [c for c in comparisons if not c.agrees]
     print()
-    if failures:
+    if failures or broken_files:
         for failure in failures:
             print(failure.describe_failure())
-        print(f"\n{FAIL} {ME}  {len(failures)} of {len(comparisons)} algebras disagree with the article.")
+        if failures:
+            print(f"\n{FAIL} {ME}  {len(failures)} of {len(comparisons)} algebras disagree with the article.")
+        if broken_files:
+            print(f"{FAIL} {ME}  {len(broken_files)} of {len(verdict.files)} catalog files disagree with their own header.")
         return 1
     print(f"{PASS} {ME}  all {len(comparisons)} algebras agree with the lattices the article draws.")
     return 0
@@ -290,7 +378,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if outcome.is_err:
         print(f"{FAIL} {ME}  {outcome.unwrap_err()}", file=sys.stderr)
         return 2
-    comparisons = outcome.unwrap()
+    verdict = outcome.unwrap()
+    comparisons = verdict.comparisons
 
     if args.uacalc_table is not None:
         table = read_text(args.uacalc_table).and_then(parse_uacalc_table)
@@ -311,7 +400,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             )
         print(f"{PASS} {ME}  UACalc agrees on |A| and |Con(A)| for all {len(comparisons)} algebras.\n")
 
-    return _report(comparisons)
+    return _report(verdict)
 
 
 if __name__ == "__main__":

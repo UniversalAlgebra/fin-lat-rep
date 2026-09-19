@@ -1,0 +1,68 @@
+%% Gallery: every Hasse diagram pic under inputs/tikz/, drawn at one scale
+%% with its name below it, for looking at the drawings side by side.  Build it
+%% from article/ with `make gallery` (or `make gallery` at the repository
+%% root); the PDF is a build product and is not committed.
+%%
+%% finlatrep/test_pic.py fails if a file in this directory is missing from
+%% the list below, so a new lattice is added here as well as to all.tex.
+\documentclass{amsart}
+\usepackage{amsmath,amssymb,stmaryrd,xspace,tikz}
+\usepackage{inputs/macros}
+\input{inputs/tikz/all.tex}
+%% \entry[scale]{name}: one pic, its name below.  Lattices at 0.7, which is
+%% between the catalog's 0.4 and a figure's 1; the schematics, whose
+%% coordinates span ten units and more, at 0.25.
+\newcommand{\entry}[2][0.7]{%
+  \begin{minipage}[b]{0.24\textwidth}\centering
+    \hasse[#1]{#2}\\[3pt]{\ttfamily\small #2}
+  \end{minipage}\hfill\allowbreak}
+\begin{document}
+\noindent Every pic listed in \texttt{inputs/tikz/all.tex}: the catalog's
+$\bL_1$ to $\bL_{35}$ by number, then the rest.
+\bigskip
+
+\noindent
+\entry{L1}
+\entry{L2}
+\entry{L3}
+\entry{L4}
+\entry{L5}
+\entry{L6}
+\entry{L7}
+\entry{L8}
+\entry{L9}
+\entry{L10}
+\entry{L11}
+\entry{L12}
+\entry{L13}
+\entry{L14}
+\entry{L15}
+\entry{L16}
+\entry{L17}
+\entry{L18}
+\entry{L19}
+\entry{L20}
+\entry{L21}
+\entry{L22}
+\entry{L23}
+\entry{L24}
+\entry{L25}
+\entry{L26}
+\entry{L27}
+\entry{L28}
+\entry{L29}
+\entry{L30}
+\entry{L31}
+\entry{L32}
+\entry{L33}
+\entry{L34}
+\entry{L35}
+\entry{L11-upper-interval}
+\entry[0.25]{adjoined-ordinal-sum}
+\entry[0.25]{filter-ideal}
+\entry[0.25]{general-ordinal-sum}
+\entry[0.25]{ordinal-sum}
+\entry[0.25]{parallel-sum}
+\entry[0.5]{shareshian}
+\entry{two-by-two}
+\end{document}

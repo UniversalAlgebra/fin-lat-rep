@@ -93,7 +93,28 @@
 \newcommand{\scs}{\scriptsize}
 
 
-\tikzstyle{lat} = [circle,draw,inner sep=.8pt]
+%% Hasse diagrams.  Every lattice the article draws is a TikZ pic defined in
+%% a file under inputs/tikz/ (see inputs/tikz/README.md).  One node style and
+%% one dot size for all of them: `scale=' scales positions, not dots or line
+%% widths, so the size lives here and not at a call site.
+\newcommand{\dotsize}{1pt}
+\tikzset{lat/.style={circle,draw,inner sep=\dotsize}}
+%% \hasse[scale]{name} draws one pic on its own, centered on the text line so
+%% that it sits level with a label or a table beside it.  The default is the
+%% catalog's scale; figures use 1 for a single lattice and 0.8 for a wide one.
+%% The scale goes on the pic, not the picture: TikZ places a pic like a node,
+%% so a picture's `scale=' moves it without scaling what it draws.  A figure
+%% that labels vertices or composes pics writes its own tikzpicture, places
+%% the pics with \pic[scale=...], and gives the picture the same scale so that
+%% coordinates written at the call site land where the pic's vertices are.
+%% The bare \path adds a millimetre above and below: it is what keeps the
+%% catalog's rows from touching, which the spacer node in each old inline
+%% diagram used to do.
+\newcommand{\hasse}[2][0.4]{%
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \pic[scale=#1]{#2};
+    \path ([yshift=-1mm]current bounding box.south) ([yshift=1mm]current bounding box.north);
+  \end{tikzpicture}}
 
 
 %% wjd: should we use bold for tuples?

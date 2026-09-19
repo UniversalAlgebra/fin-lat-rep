@@ -1,0 +1,18 @@
+% id: L11-upper-interval
+% aliases: 2015-file: PentagonForL11
+% elements: 5
+% covers: 11<mp 11<22 mp<02 02<top 22<top
+% represented-by: the upper interval [H, G] of Sub(SmallGroup(216,153)) (Figure 9)
+% tags: nonmodular, self-dual, N5, the pentagon laid out as it sits in L11
+\tikzset{L11-upper-interval/.pic={
+  \node[lat] (11) at (0,0) {};
+  \node[lat] (mp) at (-0.5,0.5) {};
+  \node[lat] (02) at (-1,1) {};
+  \node[lat] (22) at (1,1) {};
+  \node[lat] (top) at (0,2) {};
+  \draw (11) -- (mp);
+  \draw (11) -- (22);
+  \draw (mp) -- (02);
+  \draw (02) -- (top);
+  \draw (22) -- (top);
+}}

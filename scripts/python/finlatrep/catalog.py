@@ -1,30 +1,26 @@
 r"""
 File: scripts/python/finlatrep/catalog.py
 
-Description: Reading the lattices the article draws, out of its LaTeX source.
+Description: Reading the lattices the article's catalog draws.
 
   Section "Lattices of size at most 7" tabulates each lattice L_i beside the
-  algebra B_i said to represent it.  Each diagram is TikZ written inline, as
-  `\node(k) at (x,y)[e]{};` for vertices and `\draw(a)--(b);` for covering
-  edges.  Those two forms are all that appears there: measured at the time of
-  writing, the subsection held 235 node lines and 278 edges, with no `\input`
-  and no chained `\draw ... to ...` paths.
+  algebra B_i said to represent it.  Each L_i is drawn by a call
+  `\hasse{L<i>}`, which draws the TikZ pic defined in
+  `article/inputs/tikz/L<i>.tex`; this module finds the call beside each
+  label, holds it to the naming convention (the catalog's L_i is drawn by
+  L<i>.tex and by nothing else), and reads the file through `pic.py`, which
+  yields both the drawing and the covering relation the file's header
+  declares.
 
-  Which end of an edge is the lower one is decided by the y coordinate the
-  node is drawn at, NOT by the order the two endpoints happen to be written
-  in, and NOT by the vertex numbers.  TikZ's `--` is undirected, so
-  `\draw(0)--(1)` and `\draw(1)--(0)` produce the same picture and must
-  produce the same covering pair.  And the vertex numbers do not run bottom to
-  top: in L28 the article places node 4 at y=0.0 and node 3 at y=0.2, so
-  ordering an edge by its endpoint numbers would invert it.  (An earlier
-  version of this file claimed the numbering was bottom to top.  It is not.)
+  Until #6 the diagrams were TikZ written straight into the article, and this
+  module read them there.  The file form is read by pic.py, which orients each
+  edge by the height its endpoints are drawn at, never by the order they are
+  written in and never by their names: the catalog's own numbering was not
+  bottom to top (L28 placed node 4 at y=0.0 and node 3 at y=0.2).
 
-  The files under `article/inputs/tikz/` DO use the chained form, but they are
-  illustrations in the body of the paper, several of lattices with no catalog
-  algebra at all, and are deliberately out of scope.  To stop that going
-  quietly out of date, the caller is expected to check that every algebra's
-  lattice has a diagram (the catalog draws more lattices than there are
-  algebras, by design); see `check_diagram_count` in `check.py`.
+  The caller is expected to check that every algebra's lattice has an entry
+  here (the catalog draws more lattices than there are algebras, by design);
+  see `check_diagram_count` in `check.py`.
 """
 
 from __future__ import annotations
@@ -32,139 +28,101 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 
 from _utils.file_ops import read_text
 from _utils.pipeline_types import ErrorType, PipelineError, Result
+from finlatrep.latex import strip_latex_comments
 from finlatrep.lattice import CoveringRelation
+from finlatrep.pic import read_pic
 
 CATALOG_HEADING = r"\subsection{Lattices of size at most 7}"
+# The pic files, relative to the article's own directory.
+TIKZ_DIR = Path("inputs") / "tikz"
 
 _LATTICE_LABEL = re.compile(r"\$\\bL_\{?(\d+)\}?\$")
-_NODE = re.compile(r"\\node\((\d+)\)\s*at\s*\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)")
-_EDGE = re.compile(r"\\draw\((\d+)\)--\((\d+)\)")
+_HASSE_CALL = re.compile(r"\\hasse(?:\[[^\]]*\])?\{([\w-]+)\}")
 
 
 @dataclass(frozen=True)
 class CatalogEntry:
-    """One lattice as the article draws it, with the index it is labelled by."""
+    """One lattice as the catalog draws it, with the index it is labelled by.
+
+    `drawn` is what the picture shows; `declared` is what the file's header
+    says it shows, on the same vertices.  `source` is the file, for messages.
+    """
 
     index: int
-    relation: CoveringRelation
+    drawn: CoveringRelation
+    declared: CoveringRelation
+    source: str
 
 
-def _strip_line_comment(line: str) -> str:
-    r"""Cut one line at its first unescaped `%`.
+def _parse_error(message: str) -> PipelineError:
+    return PipelineError(ErrorType.PARSING_ERROR, message)
 
-    Whether a `%` is escaped is decided by the PARITY of the backslash run in
-    front of it, not by the single preceding character.  In `\%` the percent
-    is escaped and is a literal.  In `\\%` the `\\` is its own control
-    sequence, a line break, and the `%` still opens a comment.  Reading only
-    the character before would keep such a line, which is precisely how a
-    commented-out diagram would stay visible to this parser.
+
+def _entry_from_file(index: int, name: str, tikz_dir: Path) -> Result[CatalogEntry, PipelineError]:
+    r"""Read L_i from the file its `\hasse` call names.
+
+    The call must name `L<i>`: the convention that the catalog's L_i lives in
+    L<i>.tex is what lets anyone find a lattice's file from its number, and a
+    call drawing some other file beside the label would make the picture and
+    the algebra check disagree about which lattice L_i is.
     """
-    index = 0
-    while True:
-        found = line.find("%", index)
-        if found < 0:
-            return line
-        backslashes = 0
-        probe = found - 1
-        while probe >= 0 and line[probe] == "\\":
-            backslashes += 1
-            probe -= 1
-        if backslashes % 2 == 0:
-            return line[:found]
-        index = found + 1
-
-
-def strip_latex_comments(text: str) -> str:
-    r"""Remove everything a LaTeX `%` comments out.
-
-    Without this the parser reads commented-out diagrams as if they were
-    drawn.  That matters most in exactly the situation `check_diagram_count`
-    exists to catch: commenting an inline diagram out and replacing it with an
-    `\input` would leave the stale relation visible here, and the check would
-    pass while the article no longer draws what it compared against.
-    """
-    return "\n".join(_strip_line_comment(line) for line in text.split("\n"))
-
-
-def _entry_from_chunk(index: int, chunk: str) -> Result[CatalogEntry, PipelineError]:
-    """Read one lattice out of the LaTeX between two L_i labels.
-
-    Vertices are renumbered to 0 .. n-1 in the order the article names them,
-    so that the relation is comparable with a congruence lattice's, which is
-    indexed the same way.  Each edge is oriented by the height its endpoints
-    are drawn at, so that reversing how an edge is written cannot change the
-    lattice it denotes.
-    """
-    heights = {}
-    for v, _x, y in _NODE.findall(chunk):
-        # `[-\d.]+` will happily match `.` or `-.-`, and float() would then
-        # raise straight past the Result the rest of this module returns.  A
-        # malformed coordinate is malformed input, so report it.
-        try:
-            heights[int(v)] = float(y)
-        except ValueError:
-            return Result.err(
-                PipelineError(
-                    ErrorType.PARSING_ERROR,
-                    f"L{index}: node {v} is placed at y={y!r}, which is not a number",
-                )
+    if name != f"L{index}":
+        return Result.err(
+            _parse_error(
+                f"L{index} is drawn by \\hasse{{{name}}}, but the catalog's L{index} "
+                f"must be drawn by inputs/tikz/L{index}.tex"
             )
-    vertices = sorted(heights)
-    position = {vertex: i for i, vertex in enumerate(vertices)}
-
-    covers = set()
-    for raw_a, raw_b in _EDGE.findall(chunk):
-        a, b = int(raw_a), int(raw_b)
-        if a not in heights or b not in heights:
-            missing = a if a not in heights else b
-            return Result.err(
-                PipelineError(
-                    ErrorType.PARSING_ERROR,
-                    f"L{index}: edge ({a},{b}) names node {missing}, which is never placed",
-                )
-            )
-        if heights[a] == heights[b]:
-            return Result.err(
-                PipelineError(
-                    ErrorType.PARSING_ERROR,
-                    f"L{index}: edge ({a},{b}) joins two nodes drawn at the same height, "
-                    "so which one covers the other cannot be read off the diagram",
-                )
-            )
-        lower, upper = (a, b) if heights[a] < heights[b] else (b, a)
-        covers.add((position[lower], position[upper]))
-
-    return Result.ok(
-        CatalogEntry(
-            index=index,
-            relation=CoveringRelation(size=len(vertices), covers=frozenset(covers)),
         )
-    )
+    source = f"{TIKZ_DIR.as_posix()}/{name}.tex"
+    read = read_pic(tikz_dir / f"{name}.tex")
+    if read.is_err:
+        return Result.err(read.unwrap_err().with_context(lattice=f"L{index}"))
+    pic = read.unwrap()
+    if pic.declared is None:
+        return Result.err(
+            _parse_error(f"L{index}: {source} has no covers: line in its header; a catalog file must declare its covers")
+        )
+    return Result.ok(CatalogEntry(index=index, drawn=pic.drawn, declared=pic.declared, source=source))
 
 
-def parse_catalog(text: str) -> Result[Dict[int, CatalogEntry], PipelineError]:
-    """Read every lattice drawn in the article's catalog subsection."""
+def _entry_from_chunk(index: int, chunk: str, tikz_dir: Path) -> Result[CatalogEntry, PipelineError]:
+    r"""One catalog entry: the one `\hasse` call between this label and the next."""
+    calls = _HASSE_CALL.findall(chunk)
+    if len(calls) > 1:
+        return Result.err(
+            _parse_error(
+                f"L{index} is drawn by more than one \\hasse call ({', '.join(calls)}); "
+                "which drawing the algebra should be checked against is ambiguous"
+            )
+        )
+    if not calls:
+        return Result.err(
+            _parse_error(f"L{index} is labelled but not drawn: expected \\hasse{{L{index}}} beside the label")
+        )
+    return _entry_from_file(index, calls[0], tikz_dir)
+
+
+def parse_catalog(text: str, tikz_dir: Path) -> Result[Dict[int, CatalogEntry], PipelineError]:
+    """Read every lattice drawn in the article's catalog subsection.
+
+    `tikz_dir` is where the pic files are: the article's `inputs/tikz/`.
+    """
     start = text.find(CATALOG_HEADING)
     if start < 0:
         return Result.err(
-            PipelineError(
-                ErrorType.PARSING_ERROR,
-                f"could not find the catalog subsection, expected {CATALOG_HEADING!r}",
-            )
+            _parse_error(f"could not find the catalog subsection, expected {CATALOG_HEADING!r}")
         )
     body = strip_latex_comments(text[start:])
     labels: Tuple[Tuple[int, int], ...] = tuple(
         (match.start(), int(match.group(1))) for match in _LATTICE_LABEL.finditer(body)
     )
     if not labels:
-        return Result.err(
-            PipelineError(ErrorType.PARSING_ERROR, "the catalog subsection names no lattices")
-        )
-    bounds = [
+        return Result.err(_parse_error("the catalog subsection names no lattices"))
+    bounds: List[Tuple[int, str]] = [
         (index, body[position : labels[i + 1][0] if i + 1 < len(labels) else len(body)])
         for i, (position, index) in enumerate(labels)
     ]
@@ -176,13 +134,12 @@ def parse_catalog(text: str) -> Result[Dict[int, CatalogEntry], PipelineError]:
             # same lattice went uncompared, which is the failure
             # check_diagram_count exists to make loud.
             return Result.err(
-                PipelineError(
-                    ErrorType.PARSING_ERROR,
+                _parse_error(
                     f"L{index} is labelled more than once in the catalog; "
-                    "which drawing the algebra should be checked against is ambiguous",
+                    "which drawing the algebra should be checked against is ambiguous"
                 )
             )
-        parsed = _entry_from_chunk(index, chunk)
+        parsed = _entry_from_chunk(index, chunk, tikz_dir)
         if parsed.is_err:
             return Result.err(parsed.unwrap_err())
         entries[index] = parsed.unwrap()
@@ -190,5 +147,8 @@ def parse_catalog(text: str) -> Result[Dict[int, CatalogEntry], PipelineError]:
 
 
 def read_catalog(path: Path) -> Result[Dict[int, CatalogEntry], PipelineError]:
-    """Read every lattice drawn in the article's catalog subsection."""
-    return read_text(path).and_then(parse_catalog)
+    """Read every lattice the article at `path` draws in its catalog subsection.
+
+    The pic files are found relative to the article, at inputs/tikz/.
+    """
+    return read_text(path).and_then(lambda text: parse_catalog(text, path.parent / TIKZ_DIR))

@@ -1,0 +1,19 @@
+% id: L2
+% aliases: M3, diamond
+% elements: 5
+% covers: 0<1 0<2 0<3 1<4 2<4 3<4
+% represented-by: B2 (SmallLatticeReps.ua)
+% tags: modular, self-dual
+\tikzset{L2/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (1) at (-0.75,1.5) {};
+  \node[lat] (2) at (0,1.5) {};
+  \node[lat] (3) at (0.75,1.5) {};
+  \node[lat] (4) at (0,3) {};
+  \draw (0) -- (1);
+  \draw (0) -- (2);
+  \draw (0) -- (3);
+  \draw (1) -- (4);
+  \draw (2) -- (4);
+  \draw (3) -- (4);
+}}

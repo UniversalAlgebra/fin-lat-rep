@@ -1,14 +1,20 @@
-%\newcommand{\dotsize}{1};
-\node[lat] (0) at (0,0) {};
-\node[lat] (1) at (-1,1.5) {};
-\node[lat] (2) at (1,0.75) {};
-\node[lat] (3) at (1,1.5) {};
-\node[lat] (4) at (1,2.15) {};
-\node[lat] (5) at (0,3) {};
-%\draw[font=\scriptsize] (0,-.5) node {[A4, (C2 x C2 x C2 x C2) : A5]};
-%\draw[font=\scriptsize] (0,-1) node {SmallGroup(960,11358) Index 80};
-
-\draw[semithick]
-(0) to (1) to (5)
-(0) to (2) to (3) to (4) to (5);
-
+% id: L7
+% aliases: 2015-file: L7
+% elements: 6
+% covers: 0<2 0<1 2<3 1<5 3<4 4<5
+% represented-by: B7 (SmallLatticeReps.ua)
+% tags: nonmodular, self-dual
+\tikzset{L7/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (2) at (1,0.75) {};
+  \node[lat] (1) at (-1,1.5) {};
+  \node[lat] (3) at (1,1.5) {};
+  \node[lat] (4) at (1,2.15) {};
+  \node[lat] (5) at (0,3) {};
+  \draw (0) -- (2);
+  \draw (0) -- (1);
+  \draw (2) -- (3);
+  \draw (1) -- (5);
+  \draw (3) -- (4);
+  \draw (4) -- (5);
+}}

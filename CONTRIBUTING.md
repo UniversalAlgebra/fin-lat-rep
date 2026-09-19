@@ -10,8 +10,8 @@ Enter that command in the main project directory and (assuming you have Nix
 installed) you will be dropped into a [Nix][] devShell with all the tools you need.
 
 The devShell gives you GAP with its Small Groups Library, a JDK, the Universal
-Algebra Calculator, TeX Live, Jython, Python, `make` and `gh`, at the versions
-`flake.lock` pins.  It also pins the data the checks read: `$ALGEBRAFILES_DIR`
+Algebra Calculator, TeX Live, Jython, Python with mypy, `make` and `gh`, at the
+versions `flake.lock` pins.  It also pins the data the checks read: `$ALGEBRAFILES_DIR`
 is the algebras and `$FINLATREPGAP_DIR` the GAP programs, both as flake inputs.
 
 `nix develop .#ci` is the same shell without TeX Live, which is what the
@@ -41,6 +41,14 @@ versions by hand (but that is what Nix is for).
 runs `article/Makefile`, which is pdflatex, bibtex, pdflatex, pdflatex.  The
 result, `article/SmallLatticeReps.pdf`, is a build product and is not
 committed.  CI builds the same file on every push that touches `article/`.
+
+    make gallery
+
+draws every Hasse diagram side by side, one per file under
+`article/inputs/tikz/`, into `article/inputs/tikz/gallery.pdf`, also a build
+product.  The diagrams are TikZ pics, one per lattice, under a header the
+catalog check reads; [`article/inputs/tikz/README.md`][tikz] says how to add
+one.
 
 ## Adding a reference
 
@@ -89,6 +97,9 @@ runs every computational check that gates a change, and is one of the two jobs
 CI runs on a pull request (`.github/workflows/verify.yml`).  In order, it does
 the following:
 
++  `make typecheck`, `mypy --strict` over `scripts/python`, which runs nothing
+   and takes about a second, so a type error stops the run before anything
+   slower starts;
 +  `make test`, the unit suites under `scripts/python`;
 +  `make uacalc-table`, which has UACalc itself compute |Con(A)| for every
    algebra in the pinned `.ua` file, writing `build/uacalc-table.txt`;
@@ -105,6 +116,7 @@ About a minute all told, most of it GAP.  Each step runs on its own too, and
 Every check prints one line: a mark, the file that ran it, and what it tested,
 as follows:
 
+    ✅ mypy --strict  finlatrep and _utils annotate every function and value
     ✅ finlatrep/test_ua.py  a short table is rejected
     ✅ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 7   L28 has 7
     ✅ verify-fast.g  [G:H] = 36
@@ -215,6 +227,7 @@ often `gh` not being authenticated; check with `gh auth status`.  Status 1 from
 disagree, and `make project-update` is the fix.
 
 [plan]: docs/GITHUB_PROJECT.md
+[tikz]: article/inputs/tikz/README.md
 [UACalc/AlgebraFiles]: https://github.com/UACalc/AlgebraFiles
 [UniversalAlgebra/fin-lat-rep-gap]: https://github.com/UniversalAlgebra/fin-lat-rep-gap
 [williamdemeo/github-project]: https://github.com/williamdemeo/github-project

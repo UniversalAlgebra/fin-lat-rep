@@ -1,10 +1,23 @@
-% L19
-        \node (bottom) at (0,0)  [draw, circle, inner sep=\dotsize] {};
-        \node (top) at (0,3)  [draw, circle, inner sep=\dotsize] {};
-        \node (11) at (1,1)  [draw, circle, inner sep=\dotsize] {};
-        \node (n11) at (-1,1)  [draw, circle, inner sep=\dotsize] {};
-        \node (12) at (1,2)  [draw, circle, inner sep=\dotsize] {};
-        \node (n12) at (-1,2)  [draw, circle, inner sep=\dotsize] {};
-        \node (01) at (0,1)  [draw, circle, inner sep=\dotsize] {};
-
-        \draw[semithick] (bottom) to (11) to (12) to (top) to (n12) to (n11) to (bottom) to (01) to (12);
+% id: L19
+% aliases: 2015-file: L19
+% elements: 7
+% covers: bottom<n11 bottom<01 bottom<11 n11<n12 01<12 11<12 n12<top 12<top
+% represented-by: B19 (SmallLatticeReps.ua)
+% tags: nonmodular, dual-of-L18
+\tikzset{L19/.pic={
+  \node[lat] (bottom) at (0,0) {};
+  \node[lat] (n11) at (-1,1) {};
+  \node[lat] (01) at (0,1) {};
+  \node[lat] (11) at (1,1) {};
+  \node[lat] (n12) at (-1,2) {};
+  \node[lat] (12) at (1,2) {};
+  \node[lat] (top) at (0,3) {};
+  \draw (bottom) -- (n11);
+  \draw (bottom) -- (01);
+  \draw (bottom) -- (11);
+  \draw (n11) -- (n12);
+  \draw (01) -- (12);
+  \draw (11) -- (12);
+  \draw (n12) -- (top);
+  \draw (12) -- (top);
+}}

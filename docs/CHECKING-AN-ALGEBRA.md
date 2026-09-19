@@ -42,6 +42,7 @@ Real output, trimmed.  Every line is a mark, the script that made the check,
 and what it compared; a disagreement prints ❌ and its two covering relations:
 
     ✅ finlatrep/check.py  the article draws a diagram for each of the 29 lattices these algebras are named for
+    ✅ finlatrep/check.py  all 35 catalog files draw the covering relation their header declares
     ✅ finlatrep/check.py  B1         |A| =  4   |Con(A)| = 5   L1 has 5
     ✅ finlatrep/check.py  B2         |A| =  3   |Con(A)| = 5   L2 has 5
     ...
@@ -52,16 +53,24 @@ and what it compared; a disagreement prints ❌ and its two covering relations:
 It computes Con(A) by forming each principal congruence Cg(a, b), the least
 congruence identifying a and b, and then join-closing them, since every
 congruence of a finite algebra is a join of principal ones.  It reads
-L<sub>i</sub> straight out of the TikZ in the article's catalog subsection.
+L<sub>i</sub> from `article/inputs/tikz/L<i>.tex`, the TikZ pic the catalog
+draws beside B<sub>i</sub> with `\hasse{L<i>}`, and it reads two things
+there: the drawing, and the covering relation the file's header declares on
+its `covers:` line.  Three things are then compared pairwise, the computed
+lattice, the drawing, and the header, and the second line of the output says
+that every catalog file, algebra or no algebra, draws what its header
+declares.  [`article/inputs/tikz/README.md`](../article/inputs/tikz/README.md)
+is the convention.
 
-When the two disagree it says so with both covering relations, which is the
-form you can actually check against the picture:
+When they disagree it says which two, with the covering relations, which is
+the form you can actually check against the picture:
 
     ❌ finlatrep/check.py  B28        |A| = 16   |Con(A)| = 8   L28 has 7
 
-      B28 does not represent L28:
+      B28 does not represent L28: the computed lattice and the drawing; the computed lattice and the header's covers disagree
         Con(B28) has 8 elements, covers [(1, 0), (2, 1), (3, 2), (4, 3), (5, 4), (6, 0), (7, 5), (7, 6)]
-        L28 has 7 elements, covers [(0, 1), (0, 4), (1, 2), (2, 3), (3, 5), (4, 6), (5, 6)]
+        L28 as drawn in inputs/tikz/L28.tex has 7 elements, covers [(0, 1), (0, 4), (1, 2), (2, 3), (3, 5), (4, 6), (5, 6)]
+        L28 as declared by the header of inputs/tikz/L28.tex has 7 elements, covers [(0, 1), (0, 4), (1, 2), (2, 3), (3, 5), (4, 6), (5, 6)]
 
 That is a real run, against
 [`scripts/python/fixtures/B28-pre-fix.ua`](../scripts/python/fixtures/B28-pre-fix.ua),
@@ -129,6 +138,7 @@ and then runs the GAP checks; that is the gate, and this page is the recipe.)
     ✅ finlatrep/check.py  UACalc agrees on |A| and |Con(A)| for all 29 algebras.
 
     ✅ finlatrep/check.py  the article draws a diagram for each of the 29 lattices these algebras are named for
+    ✅ finlatrep/check.py  all 35 catalog files draw the covering relation their header declares
     ✅ finlatrep/check.py  B1         |A| =  4   |Con(A)| = 5   L1 has 5
     ...
     ✅ finlatrep/check.py  all 29 algebras agree with the lattices the article draws.

@@ -67,8 +67,8 @@ GHPROJECT_UPDATE       := nix run .\#ghproject-update --
 GHPROJECT_UPDATE_CHECK := nix run .\#ghproject-update-check --
 endif
 
-.PHONY: help paper check-catalog uacalc-smoke uacalc-table verify verify-gap \
-        verify-slow test test-finlatrep test-utils clean \
+.PHONY: help paper gallery check-catalog uacalc-smoke uacalc-table verify verify-gap \
+        verify-slow typecheck test test-finlatrep test-utils clean \
         project-lint project-populate-dry project-populate \
         project-update project-update-check _check-ghproject
 
@@ -80,6 +80,9 @@ help: ## Show this help
 
 paper: ## Build article/SmallLatticeReps.pdf
 	$(MAKE) -C article
+
+gallery: ## Build article/inputs/tikz/gallery.pdf, every Hasse diagram side by side
+	$(MAKE) -C article gallery
 
 check-catalog: ## Check every algebra against the lattice the article draws
 	@test -f "$(ALGEBRA_FILE)" || { \
@@ -141,8 +144,8 @@ verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 4g scripts/gap/verify-fast.g < /dev/null
 
 # Every computational check that gates a change, in the order that fails
-# fastest: the unit suites, then the catalog check with UACalc as the second
-# engine, then GAP.  Sub-makes rather than prerequisites so the order holds
+# fastest: the type check, the unit suites, then the catalog check with UACalc
+# as the second engine, then GAP.  Sub-makes rather than prerequisites so the order holds
 # under -j too.
 #
 # CI runs this and `nix flake check`, which evaluates every flake output and
@@ -152,6 +155,9 @@ verify-gap: ## Re-run the fast GAP computations and assert the article's numbers
 # check` whether the environment still builds.  Run it yourself after
 # touching flake.nix or flake.lock.
 verify: ## Run the computational checks that gate a change (CI runs this and nix flake check)
+	@echo "== make typecheck: the Python annotations, which cost a second =="
+	@$(MAKE) --no-print-directory typecheck
+	@echo
 	@echo "== make test: the unit suites, one line per test =="
 	@$(MAKE) --no-print-directory test
 	@echo
@@ -175,6 +181,23 @@ verify-slow: ## Re-run the slow GAP computations (minutes; CI runs this on a sch
 	@test -f "$(FINLATREPGAP_DIR)/Hexagon.g" || { \
 	  echo "error: no GAP programs at $(FINLATREPGAP_DIR); see verify-gap."; exit 2; }
 	FINLATREPGAP_DIR="$(abspath $(FINLATREPGAP_DIR))" gap -q -b -A --quitonbreak -o 8g scripts/gap/verify-slow.g < /dev/null
+
+# The house style annotates every function, parameter and module constant,
+# and returns a Result where another codebase would raise; mypy --strict is
+# what holds the code to that, rather than leaving it to review.  It reads the
+# annotations and runs nothing, so it is the fastest check here (about a
+# second) and `verify` puts it first.
+#
+# `--strict` and not a laxer setting because the convention is already the
+# strict one: an unannotated def or a value typed Any by accident is a defect
+# the day it is written, and cheaper to fix then.
+typecheck: ## Check the Python type annotations (mypy --strict)
+	@command -v mypy > /dev/null || { \
+	  echo "error: mypy is not on PATH; run this inside 'nix develop'."; \
+	  exit 2; }
+	@cd $(PYTHON_DIR) && mypy --strict finlatrep _utils \
+	  && echo "✅ mypy --strict  finlatrep and _utils annotate every function and value" \
+	  || { echo "❌ mypy --strict  the annotations do not check out"; exit 1; }
 
 test: test-utils test-finlatrep ## Run every test suite
 

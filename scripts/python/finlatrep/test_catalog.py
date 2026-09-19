@@ -1,192 +1,112 @@
 r"""
 File: scripts/python/finlatrep/test_catalog.py
 
-Description: Tests for reading the article's drawn lattices out of its LaTeX.
+Description: Tests for reading the article's catalog: which lattice each label
+  is drawn with, and where the drawing comes from.
 """
 
 from __future__ import annotations
 
-import re
 import unittest
 from pathlib import Path
 
 from _utils.pipeline_types import ErrorType
-from finlatrep.catalog import (
-    CATALOG_HEADING,
-    parse_catalog,
-    read_catalog,
-    strip_latex_comments,
-)
+from finlatrep.catalog import CATALOG_HEADING, parse_catalog, read_catalog
+from finlatrep.lattice import CoveringRelation
 
-ARTICLE = Path(__file__).resolve().parents[3] / "article" / "SmallLatticeReps.tex"
+HERE = Path(__file__).resolve().parent
+ARTICLE = HERE.parents[2] / "article" / "SmallLatticeReps.tex"
+FIXTURES = HERE.parent / "fixtures" / "tikz"
 
-# Two entries in the shape the article uses: a pentagon and a 2-chain.
+PENTAGON = CoveringRelation(5, frozenset({(0, 1), (0, 2), (1, 3), (2, 4), (3, 4)}))
+
+# Two entries in the shape the catalog uses: each label followed by the call
+# that draws it, whose file is found under FIXTURES.
 SYNTHETIC = CATALOG_HEADING + r"""
 \begin{tabular}{ccc}
-$\bL_1$&
-\node(4) at (0,1)[e]{};
-\node(3) at (0.33,0.33)[e]{};
-\node(2) at (-0.5,0.0)[e]{};
-\node(1) at (0.33,-0.33)[e]{};
-\node(0) at (0,-1)[e]{};
-\draw(3)--(4);
-\draw(2)--(4);
-\draw(1)--(3);
-\draw(0)--(1);
-\draw(0)--(2);
+$\bL_1$& \hasse{L1} & $B_1$
 \end{tabular}
 \begin{tabular}{ccc}
-$\bL_2$&
-\node(1) at (0,1)[e]{};
-\node(0) at (0,-1)[e]{};
-\draw(0)--(1);
+$\bL_6$& \hasse{L6} & $B_6$
 \end{tabular}
 """
 
+class FileEntryTests(unittest.TestCase):
+    def test_each_label_is_read_from_the_file_its_call_names(self) -> None:
+        catalog = parse_catalog(SYNTHETIC, FIXTURES).unwrap()
+        self.assertEqual(sorted(catalog), [1, 6])
+        self.assertEqual(catalog[1].drawn, PENTAGON)
+        self.assertEqual(catalog[1].declared, PENTAGON)
+        self.assertEqual(catalog[1].source, "inputs/tikz/L1.tex")
+        self.assertEqual(catalog[6].drawn.size, 6)
 
-class ParsingTests(unittest.TestCase):
-    def test_reads_each_drawn_lattice(self) -> None:
-        catalog = parse_catalog(SYNTHETIC).unwrap()
-        self.assertEqual(sorted(catalog), [1, 2])
-        self.assertEqual(catalog[1].relation.size, 5)
-        self.assertEqual(len(catalog[1].relation.covers), 5)
-        self.assertEqual(catalog[2].relation.size, 2)
+    def test_a_scaled_call_is_the_same_call(self) -> None:
+        catalog = parse_catalog(SYNTHETIC.replace(r"\hasse{L1}", r"\hasse[0.8]{L1}"), FIXTURES).unwrap()
+        self.assertEqual(catalog[1].drawn, PENTAGON)
 
-    def test_vertices_are_renumbered_from_zero_in_article_order(self) -> None:
-        catalog = parse_catalog(SYNTHETIC).unwrap()
-        self.assertEqual(
-            catalog[1].relation.sorted_covers(),
-            ((0, 1), (0, 2), (1, 3), (2, 4), (3, 4)),
-        )
+    def test_a_call_drawing_the_wrong_file_beside_a_label_is_an_error(self) -> None:
+        """The catalog's L_i must be drawn by L<i>.tex, or the number and the
+        picture come apart."""
+        outcome = parse_catalog(SYNTHETIC.replace(r"\hasse{L6}", r"\hasse{L1}"), FIXTURES)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("L6.tex", outcome.unwrap_err().message)
 
+    def test_a_call_to_a_missing_file_is_an_error(self) -> None:
+        text = SYNTHETIC.replace(r"$\bL_6$", r"$\bL_7$").replace(r"\hasse{L6}", r"\hasse{L7}")
+        outcome = parse_catalog(text, FIXTURES)
+        self.assertTrue(outcome.is_err)
+        self.assertEqual(outcome.unwrap_err().error_type, ErrorType.FILE_NOT_FOUND)
+
+    def test_a_file_whose_header_disagrees_with_its_drawing_is_read_not_rejected(self) -> None:
+        """The disagreement is check.py's to report, with both relations."""
+        text = SYNTHETIC.replace(r"$\bL_6$", r"$\bL_9$").replace(r"\hasse{L6}", r"\hasse{L9}")
+        catalog = parse_catalog(text, FIXTURES).unwrap()
+        assert catalog[9].declared is not None
+        self.assertNotEqual(catalog[9].drawn.covers, catalog[9].declared.covers)
+
+    def test_two_calls_beside_one_label_are_an_error(self) -> None:
+        text = SYNTHETIC.replace(r"\hasse{L1}", r"\hasse{L1} \hasse{L1}")
+        outcome = parse_catalog(text, FIXTURES)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("more than one", outcome.unwrap_err().message)
+
+    def test_a_commented_out_call_is_not_a_call(self) -> None:
+        text = SYNTHETIC.replace(r"\hasse{L6}", "%" + r"\hasse{L6}")
+        outcome = parse_catalog(text, FIXTURES)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("L6", outcome.unwrap_err().message)
+
+
+class StructureTests(unittest.TestCase):
     def test_text_without_the_catalog_heading_is_an_error(self) -> None:
-        outcome = parse_catalog("nothing to see here")
+        outcome = parse_catalog("nothing to see here", FIXTURES)
         self.assertTrue(outcome.is_err)
         self.assertEqual(outcome.unwrap_err().error_type, ErrorType.PARSING_ERROR)
 
     def test_a_lattice_labelled_twice_is_an_error(self) -> None:
         """Keeping the first drawing would leave the entry count intact at 35
-        while a second, different drawing went uncompared."""
-        outcome = parse_catalog(SYNTHETIC + SYNTHETIC[SYNTHETIC.index(r"$\bL_2$"):])
+        while a second, different drawing of the same lattice went uncompared."""
+        outcome = parse_catalog(SYNTHETIC + SYNTHETIC[SYNTHETIC.index(r"$\bL_6$"):], FIXTURES)
         self.assertTrue(outcome.is_err)
         self.assertIn("labelled more than once", outcome.unwrap_err().message)
 
+    def test_a_label_without_a_hasse_call_is_an_error(self) -> None:
+        r"""A lattice the catalog names but does not draw would otherwise be
+        skipped, which is the failure check_diagram_count exists to make loud."""
+        outcome = parse_catalog(CATALOG_HEADING + "\n$\\bL_3$& nothing\n", FIXTURES)
+        self.assertTrue(outcome.is_err)
+        self.assertIn("\\hasse{L3}", outcome.unwrap_err().message)
+
     def test_a_catalog_naming_no_lattices_is_an_error(self) -> None:
-        self.assertTrue(parse_catalog(CATALOG_HEADING + "\nempty\n").is_err)
-
-
-class CommentTests(unittest.TestCase):
-    """A commented-out diagram must not be read as if it were drawn."""
-
-    def test_comments_are_stripped(self) -> None:
-        self.assertEqual(strip_latex_comments("keep % drop\nkeep2"), "keep \nkeep2")
-
-    def test_an_escaped_percent_is_not_a_comment(self) -> None:
-        self.assertEqual(strip_latex_comments(r"100\% sure"), r"100\% sure")
-
-    def test_a_commented_out_edge_is_not_counted(self) -> None:
-        """The case that matters: an inline diagram commented out and replaced.
-
-        Without stripping, the stale relation stays visible here and the check
-        compares against a picture the article no longer draws.
-        """
-        live = parse_catalog(SYNTHETIC).unwrap()[2]
-        commented = parse_catalog(
-            SYNTHETIC.replace(r"\draw(0)--(1);", "%" + r"\draw(0)--(1);")
-        ).unwrap()[2]
-        self.assertEqual(len(live.relation.covers), 1)
-        self.assertEqual(len(commented.relation.covers), 0)
-
-    def test_a_percent_after_an_even_backslash_run_still_opens_a_comment(self) -> None:
-        r"""TeX escaping is by backslash parity, not by the preceding character.
-
-        In `\\%` the `\\` is its own control sequence, so the `%` still starts
-        a comment.  Reading only the character before would keep that line, and
-        a commented-out diagram would stay visible to the parser.
-        """
-        self.assertEqual(strip_latex_comments(r"a\\% dropped"), "a" + "\\" * 2)
-        self.assertEqual(strip_latex_comments(r"a\\\% kept"), r"a\\\% kept")
-
-    def test_a_commented_out_edge_behind_a_double_backslash_is_not_counted(self) -> None:
-        commented = parse_catalog(
-            SYNTHETIC.replace(r"\draw(0)--(1);", "\\\\%" + r"\draw(0)--(1);")
-        ).unwrap()[2]
-        self.assertEqual(len(commented.relation.covers), 0)
+        self.assertTrue(parse_catalog(CATALOG_HEADING + "\nempty\n", FIXTURES).is_err)
 
     def test_a_commented_out_lattice_label_is_not_a_lattice(self) -> None:
-        commented = parse_catalog(SYNTHETIC.replace(r"$\bL_2$", "%" + r"$\bL_2$")).unwrap()
+        commented = parse_catalog(SYNTHETIC.replace(r"$\bL_6$", "%" + r"$\bL_6$"), FIXTURES).unwrap()
         self.assertEqual(sorted(commented), [1])
 
 
-class EdgeOrientationTests(unittest.TestCase):
-    r"""TikZ `--` is undirected, so how an edge is written must not matter."""
-
-    def test_reversing_how_an_edge_is_written_changes_nothing(self) -> None:
-        forward = parse_catalog(SYNTHETIC).unwrap()
-        reversed_ = parse_catalog(
-            SYNTHETIC.replace(r"\draw(3)--(4);", r"\draw(4)--(3);")
-        ).unwrap()
-        self.assertEqual(forward[1].relation.covers, reversed_[1].relation.covers)
-
-    def test_orientation_follows_height_not_vertex_number(self) -> None:
-        """The article's vertex numbers do NOT run bottom to top.
-
-        In L28 it places node 4 at y=0.0 and node 3 at y=0.2, so ordering an
-        edge by its endpoint numbers would invert it.  Height is the only
-        thing that says which element covers which.
-        """
-        upside_down = CATALOG_HEADING + "\n" + r"""
-$\bL_9$&
-\node(0) at (0,1)[e]{};
-\node(1) at (0,-1)[e]{};
-\draw(0)--(1);
-"""
-        entry = parse_catalog(upside_down).unwrap()[9]
-        # node 1 is the LOWER one, so the cover runs from it to node 0.
-        self.assertEqual(entry.relation.sorted_covers(), ((1, 0),))
-
-    def test_an_edge_between_two_nodes_at_the_same_height_is_an_error(self) -> None:
-        flat = CATALOG_HEADING + "\n" + r"""
-$\bL_9$&
-\node(0) at (-1,0)[e]{};
-\node(1) at (1,0)[e]{};
-\draw(0)--(1);
-"""
-        outcome = parse_catalog(flat)
-        self.assertTrue(outcome.is_err)
-        self.assertIn("same height", outcome.unwrap_err().message)
-
-    def test_a_node_placed_at_a_non_numeric_coordinate_is_an_error(self) -> None:
-        """`[-\\d.]+` matches tokens like `.`, and float() would raise past
-        the Result the rest of the module returns."""
-        broken = CATALOG_HEADING + "\n" + r"""
-$\bL_9$&
-\node(0) at (0,.)[e]{};
-\node(1) at (0,1)[e]{};
-\draw(0)--(1);
-"""
-        outcome = parse_catalog(broken)
-        self.assertTrue(outcome.is_err)
-        self.assertIn("not a number", outcome.unwrap_err().message)
-
-    def test_an_edge_naming_an_unplaced_node_is_an_error(self) -> None:
-        dangling = CATALOG_HEADING + "\n" + r"""
-$\bL_9$&
-\node(0) at (0,0)[e]{};
-\draw(0)--(7);
-"""
-        outcome = parse_catalog(dangling)
-        self.assertTrue(outcome.is_err)
-        self.assertIn("never placed", outcome.unwrap_err().message)
-
-
 class ArticleTests(unittest.TestCase):
-    r"""The shape the parser relies on, asserted against the real article.
-
-    If a catalog diagram is ever moved into an `\input`, or rewritten with
-    chained `\draw ... to ...` paths, these fail and say so, rather than the
-    checker quietly comparing fewer lattices.
-    """
+    """The shape the reader relies on, asserted against the real article."""
 
     def test_the_article_is_where_it_is_expected(self) -> None:
         self.assertTrue(ARTICLE.is_file(), f"not found: {ARTICLE}")
@@ -195,35 +115,18 @@ class ArticleTests(unittest.TestCase):
         catalog = read_catalog(ARTICLE).unwrap()
         self.assertEqual(len(catalog), 35)
 
+    def test_every_catalog_lattice_is_read_from_its_own_file(self) -> None:
+        catalog = read_catalog(ARTICLE).unwrap()
+        for index, entry in sorted(catalog.items()):
+            self.assertEqual(entry.source, f"inputs/tikz/L{index}.tex")
+
     def test_every_drawn_lattice_has_between_five_and_seven_elements(self) -> None:
         """The catalog is "lattices of size at most 7"; 2 have 5, 6 have 6, 27 have 7."""
         catalog = read_catalog(ARTICLE).unwrap()
-        sizes = sorted(entry.relation.size for entry in catalog.values())
+        sizes = sorted(entry.drawn.size for entry in catalog.values())
         self.assertEqual(sizes.count(5), 2)
         self.assertEqual(sizes.count(6), 6)
         self.assertEqual(sizes.count(7), 27)
-
-    def test_the_vertex_numbering_is_not_bottom_to_top(self) -> None:
-        """Guards the reason edges are oriented by height rather than number.
-
-        If this ever starts failing, the article has been renumbered and the
-        comment in catalog.py explaining why height is used needs revisiting.
-        """
-        text = ARTICLE.read_text("utf-8")
-        body = text[text.index(CATALOG_HEADING):]
-        chunk = body[body.index(r"$\bL_{28}$"):][:900]
-        heights = {
-            int(v): float(y)
-            for v, _x, y in re.findall(
-                r"\\node\((\d+)\)\s*at\s*\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)", chunk
-            )
-        }
-        self.assertLess(heights[4], heights[3])
-
-    def test_the_catalog_subsection_uses_no_input(self) -> None:
-        text = ARTICLE.read_text("utf-8")
-        body = text[text.index(CATALOG_HEADING):]
-        self.assertNotIn(r"\input{", body)
 
 
 if __name__ == "__main__":

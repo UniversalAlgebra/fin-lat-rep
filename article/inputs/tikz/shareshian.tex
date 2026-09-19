@@ -1,0 +1,46 @@
+% id: shareshian
+% aliases: 2015-file: Shareshian
+% elements: 14
+% covers: bottom<01 bottom<11 bottom<21 bottom<31 bottom<41 bottom<51 01<02 01<12 11<02 11<22 21<12 21<22 31<32 31<42 41<32 41<52 51<42 51<52 02<top 12<top 22<top 32<top 42<top 52<top
+% represented-by: none known; conjectured not representable (Figure 8)
+% tags: nonmodular, self-dual
+\tikzset{shareshian/.pic={
+  \node[lat] (bottom) at (0,0) {};
+  \node[lat] (01) at (-3,1) {};
+  \node[lat] (11) at (-2,1) {};
+  \node[lat] (21) at (-1,1) {};
+  \node[lat] (31) at (1,1) {};
+  \node[lat] (41) at (2,1) {};
+  \node[lat] (51) at (3,1) {};
+  \node[lat] (02) at (-3,2) {};
+  \node[lat] (12) at (-2,2) {};
+  \node[lat] (22) at (-1,2) {};
+  \node[lat] (32) at (1,2) {};
+  \node[lat] (42) at (2,2) {};
+  \node[lat] (52) at (3,2) {};
+  \node[lat] (top) at (0,3) {};
+  \draw (bottom) -- (01);
+  \draw (bottom) -- (11);
+  \draw (bottom) -- (21);
+  \draw (bottom) -- (31);
+  \draw (bottom) -- (41);
+  \draw (bottom) -- (51);
+  \draw (01) -- (02);
+  \draw (01) -- (12);
+  \draw (11) -- (02);
+  \draw (11) -- (22);
+  \draw (21) -- (12);
+  \draw (21) -- (22);
+  \draw (31) -- (32);
+  \draw (31) -- (42);
+  \draw (41) -- (32);
+  \draw (41) -- (52);
+  \draw (51) -- (42);
+  \draw (51) -- (52);
+  \draw (02) -- (top);
+  \draw (12) -- (top);
+  \draw (22) -- (top);
+  \draw (32) -- (top);
+  \draw (42) -- (top);
+  \draw (52) -- (top);
+}}

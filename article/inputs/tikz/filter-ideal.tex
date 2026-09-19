@@ -1,27 +1,19 @@
-%% file: filter-ideal.tex
-%% author: williamdemeo@gmail.com
-%% To insert this in a document, put it inside a tikzpicture block. 
-
-%% Disjoint union of a principal filter and a principle ideal.
-\node[lat] (bot) at (0,0) {};
-\node[lat] (top) at (2,10) {};
-\node[lat] (alpha) at (-2,4) {};
-\node[lat] (beta) at (4,6) {};
-\draw[semithick] 
-% filter:
-(alpha) to [out=20, in=-90] (top)
-(alpha) to [out=90, in=200] (top)
-% ideal: 
-(bot) to [out=20, in=-90] (beta)
-(bot) to [out=90, in=200] (beta);
-
-
-%% dotted lines suggest ordering of elements in distinct potatoes
-%% To remove the dotted lines, comment the next two lines:
-\draw[dotted] 
-(0.5,1) to (alpha)
-(1.5,2.5) to (-1,5.5)
-(3,4.5) to (0.5,7.5)
-(beta) to (1.5,9);
-
-
+% id: filter-ideal
+% aliases: a principal filter and a principal ideal; nodes alpha and beta for labels
+% tags: schematic
+\tikzset{filter-ideal/.pic={
+  \node[lat] (bot) at (0,0) {};
+  \node[lat] (top) at (2,10) {};
+  \node[lat] (alpha) at (-2,4) {};
+  \node[lat] (beta) at (4,6) {};
+  \draw[semithick]
+    (alpha) to [out=20, in=-90] (top)
+    (alpha) to [out=90, in=200] (top)
+    (bot) to [out=20, in=-90] (beta)
+    (bot) to [out=90, in=200] (beta);
+  \draw[dotted]
+    (0.5,1) to (alpha)
+    (1.5,2.5) to (-1,5.5)
+    (3,4.5) to (0.5,7.5)
+    (beta) to (1.5,9);
+}}

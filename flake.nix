@@ -349,6 +349,18 @@
               texlive-article
 
               pkgs.python3
+
+              # The static type checker, which `make typecheck` runs and
+              # `make verify` gates on.  The Python here annotates every
+              # function and returns a Result rather than raising, and
+              # mypy --strict is what holds it to that; without it in the
+              # shell the check is something each contributor has to install,
+              # which means it is something CI cannot rely on.  A later
+              # `nix flake update` moving mypy can fail the gate, which is
+              # the gate working: the annotations are then wrong, or the
+              # checker has learned something new about them.
+              pkgs.mypy
+
               pkgs.gnumake
 
               # The github-project engine shells out to gh, and issue #27's
@@ -401,6 +413,7 @@
                      uacalc-cli '${uacalcVersion}'        'the calculator, driven from Jython' \
                      pdflatex   '${texliveVersion}'       'TeX Live' \
                      python3    '${pkgs.python3.version}' 'Python' \
+                     mypy       '${pkgs.mypy.version}'    'static type checker (make typecheck)' \
                      make       '${pkgs.gnumake.version}' 'GNU Make' \
                      gh         '${pkgs.gh.version}'      'GitHub CLI'${xvfbRow}
                   echo

@@ -1,16 +1,13 @@
-%% file: ordinal-sum.tex
-%% author: williamdemeo@gmail.com
-%% To insert this in a document, put it inside a tikzpicture block. 
-%% 
-
-%% Two potatoes, one atop the other
-\node[lat] (botL1) at (0,-4) {};
-\node[lat] (m80) at (0,0) {};
-\node[lat] (topL2) at (0,4) {};
-
-\draw [semithick]  
-(botL1) to [out=50,in=-50] (m80)
-(botL1) to [out=130,in=-130] (m80)
-(m80) to [out=50,in=-50] (topL2)
-(m80) to [out=130,in=-130] (topL2);
-
+% id: ordinal-sum
+% aliases: two potatoes, one atop the other
+% tags: schematic
+\tikzset{ordinal-sum/.pic={
+  \node[lat] (botL1) at (0,-4) {};
+  \node[lat] (m80) at (0,0) {};
+  \node[lat] (topL2) at (0,4) {};
+  \draw[semithick]
+    (botL1) to [out=50,in=-50] (m80)
+    (botL1) to [out=130,in=-130] (m80)
+    (m80) to [out=50,in=-50] (topL2)
+    (m80) to [out=130,in=-130] (topL2);
+}}

@@ -1,0 +1,16 @@
+% id: two-by-two
+% aliases: 2x2, the four-element Boolean lattice
+% elements: 4
+% covers: 0<2 0<1 2<3 1<3
+% represented-by: transitive G-sets on 9 and on 10 points (Figure 1)
+% tags: distributive, modular, self-dual
+\tikzset{two-by-two/.pic={
+  \node[lat] (0) at (0,0) {};
+  \node[lat] (2) at (-0.75,1) {};
+  \node[lat] (1) at (0.75,1) {};
+  \node[lat] (3) at (0,2) {};
+  \draw (0) -- (2);
+  \draw (0) -- (1);
+  \draw (2) -- (3);
+  \draw (1) -- (3);
+}}

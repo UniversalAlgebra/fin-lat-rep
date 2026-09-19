@@ -8,6 +8,7 @@
 *.bbl
 *.blg
 article/.auctex-auto
+article/inputs/.auctex-auto
 
 # Nix build results and direnv's cache.
 result
@@ -19,10 +20,12 @@ result-*
 # edited or committed directly.
 article/SmallLatticeReps.pdf
 article/inputs/refs.bib
+article/inputs/tikz/gallery.pdf
 
 # Python
 __pycache__/
 *.pyc
+.mypy_cache/
 
 # make verify writes the UACalc table here
 build/
