@@ -299,9 +299,18 @@ class DelimiterTests(unittest.TestCase):
         The strict line check does not apply to a file with no `covers:`, so
         without this the exemption would widen the hole rather than narrow it.
         """
-        body = r"  \draw (0) to [out=50,in=-50] (1);"
+        body = "\n".join([
+            r"  \node[lat] (0) at (0,0) {};",
+            r"  \node[lat] (1) at (0,4) {};",
+            r"  \draw (0) to [out=50,in=-50] (1);",
+        ])
         text = pic("% id: L1\n% tags: schematic", body)
-        self.assertTrue(parse_pic(text.rstrip()[:-2], "L1.tex").is_err)
+        # The same file WITH its close must parse, or this would fail for
+        # some other reason and prove nothing about the delimiters.
+        self.assertTrue(parse_pic(text, "L1.tex").is_ok)
+        outcome = parse_pic(text.rstrip()[:-2], "L1.tex")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("never closed", outcome.unwrap_err().message)
 
     def test_braces_inside_the_body_do_not_end_the_pic(self) -> None:
         """A guard against over-tightening: `{$\vdots$}` is balanced text."""
