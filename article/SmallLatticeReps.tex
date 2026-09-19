@@ -804,8 +804,10 @@ checked by \code{twistedWreathHexagon.g} in~\cite{finlatrepgap}, which
 identifies the interval from the extensions of the twisting map rather than
 from $G$, a group far too large to build.)
 In the other direction, no small group has $\bL_6$ as an upper interval:
-\code{hexagonSearch.g} in~\cite{finlatrepgap} examines every group of order
-at most 2000 (see Section~\ref{sec:algorithms}) and finds none, so
+\code{hexagonSearch.g} in~\cite{finlatrepgap} rules out every group of
+order at most 2000, examining each group of order at most 255 and, above
+that, only the non-solvable groups, which a theorem of Aschbacher shows
+are the only candidates (see Section~\ref{sec:algorithms}); so
 $A_{11}$, of order $19958400$, is the smallest group we know of with such
 an interval.  Where between 2000 and $|A_{11}|$ the smallest one lies, we
 do not know.
