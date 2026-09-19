@@ -12,13 +12,11 @@ Description: Reading the lattices the article's catalog draws.
   yields both the drawing and the covering relation the file's header
   declares.
 
-  Transitional: until the last catalog diagram has moved into its file, an
-  entry with no `\hasse` call is read in the older inline form, `\node(k) at
-  (x,y)[e]{};` and `\draw(a)--(b);` written straight into the article.  That
-  form has no header, so such an entry has no declared relation.  Both forms
-  orient each edge by the height its endpoints are drawn at, never by the
-  order the endpoints are written and never by the vertex numbers: in L28 the
-  article placed node 4 at y=0.0 and node 3 at y=0.2.
+  Until #6 the diagrams were TikZ written straight into the article, and this
+  module read them there.  The file form is read by pic.py, which orients each
+  edge by the height its endpoints are drawn at, never by the order they are
+  written in and never by their names: the catalog's own numbering was not
+  bottom to top (L28 placed node 4 at y=0.0 and node 3 at y=0.2).
 
   The caller is expected to check that every algebra's lattice has an entry
   here (the catalog draws more lattices than there are algebras, by design);
@@ -30,7 +28,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 from _utils.file_ops import read_text
 from _utils.pipeline_types import ErrorType, PipelineError, Result
@@ -44,8 +42,6 @@ TIKZ_DIR = Path("inputs") / "tikz"
 
 _LATTICE_LABEL = re.compile(r"\$\\bL_\{?(\d+)\}?\$")
 _HASSE_CALL = re.compile(r"\\hasse(?:\[[^\]]*\])?\{([\w-]+)\}")
-_INLINE_NODE = re.compile(r"\\node\((\d+)\)\s*at\s*\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)")
-_INLINE_EDGE = re.compile(r"\\draw\((\d+)\)--\((\d+)\)")
 
 
 @dataclass(frozen=True)
@@ -53,19 +49,13 @@ class CatalogEntry:
     """One lattice as the catalog draws it, with the index it is labelled by.
 
     `drawn` is what the picture shows; `declared` is what the file's header
-    says it shows, on the same vertices, or None for an inline entry, which
-    has no header.  `source` names where the drawing came from, for messages.
+    says it shows, on the same vertices.  `source` is the file, for messages.
     """
 
     index: int
     drawn: CoveringRelation
-    declared: Optional[CoveringRelation]
+    declared: CoveringRelation
     source: str
-
-    @property
-    def relation(self) -> CoveringRelation:
-        """The drawing, which is what an algebra is compared against."""
-        return self.drawn
 
 
 def _parse_error(message: str) -> PipelineError:
@@ -88,69 +78,19 @@ def _entry_from_file(index: int, name: str, tikz_dir: Path) -> Result[CatalogEnt
             )
         )
     source = f"{TIKZ_DIR.as_posix()}/{name}.tex"
-    pic = read_pic(tikz_dir / f"{name}.tex")
-    if pic.is_err:
-        return Result.err(pic.unwrap_err().with_context(lattice=f"L{index}"))
-    if pic.unwrap().declared is None:
+    read = read_pic(tikz_dir / f"{name}.tex")
+    if read.is_err:
+        return Result.err(read.unwrap_err().with_context(lattice=f"L{index}"))
+    pic = read.unwrap()
+    if pic.declared is None:
         return Result.err(
             _parse_error(f"L{index}: {source} has no covers: line in its header; a catalog file must declare its covers")
         )
-    return Result.ok(
-        CatalogEntry(index=index, drawn=pic.unwrap().drawn, declared=pic.unwrap().declared, source=source)
-    )
-
-
-def _entry_from_inline(index: int, chunk: str) -> Result[CatalogEntry, PipelineError]:
-    """Transitional: read one lattice written inline between two L_i labels.
-
-    Vertices are renumbered to 0 .. n-1 in the order the article names them.
-    Each edge is oriented by the height its endpoints are drawn at.
-    """
-    heights = {}
-    for v, _x, y in _INLINE_NODE.findall(chunk):
-        try:
-            heights[int(v)] = float(y)
-        except ValueError:
-            return Result.err(
-                _parse_error(f"L{index}: node {v} is placed at y={y!r}, which is not a number")
-            )
-    if not heights:
-        return Result.err(
-            _parse_error(f"L{index} is labelled but neither drawn with \\hasse nor drawn inline")
-        )
-    vertices = sorted(heights)
-    position = {vertex: i for i, vertex in enumerate(vertices)}
-
-    covers = set()
-    for raw_a, raw_b in _INLINE_EDGE.findall(chunk):
-        a, b = int(raw_a), int(raw_b)
-        if a not in heights or b not in heights:
-            missing = a if a not in heights else b
-            return Result.err(
-                _parse_error(f"L{index}: edge ({a},{b}) names node {missing}, which is never placed")
-            )
-        if heights[a] == heights[b]:
-            return Result.err(
-                _parse_error(
-                    f"L{index}: edge ({a},{b}) joins two nodes drawn at the same height, "
-                    "so which one covers the other cannot be read off the diagram"
-                )
-            )
-        lower, upper = (a, b) if heights[a] < heights[b] else (b, a)
-        covers.add((position[lower], position[upper]))
-
-    return Result.ok(
-        CatalogEntry(
-            index=index,
-            drawn=CoveringRelation(size=len(vertices), covers=frozenset(covers)),
-            declared=None,
-            source="inline",
-        )
-    )
+    return Result.ok(CatalogEntry(index=index, drawn=pic.drawn, declared=pic.declared, source=source))
 
 
 def _entry_from_chunk(index: int, chunk: str, tikz_dir: Path) -> Result[CatalogEntry, PipelineError]:
-    r"""One catalog entry: a `\hasse` call to a file, else the inline form."""
+    r"""One catalog entry: the one `\hasse` call between this label and the next."""
     calls = _HASSE_CALL.findall(chunk)
     if len(calls) > 1:
         return Result.err(
@@ -159,9 +99,11 @@ def _entry_from_chunk(index: int, chunk: str, tikz_dir: Path) -> Result[CatalogE
                 "which drawing the algebra should be checked against is ambiguous"
             )
         )
-    if calls:
-        return _entry_from_file(index, calls[0], tikz_dir)
-    return _entry_from_inline(index, chunk)
+    if not calls:
+        return Result.err(
+            _parse_error(f"L{index} is labelled but not drawn: expected \\hasse{{L{index}}} beside the label")
+        )
+    return _entry_from_file(index, calls[0], tikz_dir)
 
 
 def parse_catalog(text: str, tikz_dir: Path) -> Result[Dict[int, CatalogEntry], PipelineError]:

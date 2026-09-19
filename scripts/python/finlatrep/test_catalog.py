@@ -31,15 +31,6 @@ $\bL_6$& \hasse{L6} & $B_6$
 \end{tabular}
 """
 
-# Transitional: an entry still drawn inline, with no header.
-INLINE = CATALOG_HEADING + r"""
-$\bL_2$&
-\node(1) at (0,1)[e]{};
-\node(0) at (0,-1)[e]{};
-\draw(0)--(1);
-"""
-
-
 class FileEntryTests(unittest.TestCase):
     def test_each_label_is_read_from_the_file_its_call_names(self) -> None:
         catalog = parse_catalog(SYNTHETIC, FIXTURES).unwrap()
@@ -86,36 +77,6 @@ class FileEntryTests(unittest.TestCase):
         self.assertIn("L6", outcome.unwrap_err().message)
 
 
-class InlineEntryTests(unittest.TestCase):
-    """Transitional: the older inline form, until the last diagram has moved."""
-
-    def test_an_inline_entry_has_no_declared_relation(self) -> None:
-        entry = parse_catalog(INLINE, FIXTURES).unwrap()[2]
-        self.assertEqual(entry.source, "inline")
-        self.assertIsNone(entry.declared)
-        self.assertEqual(entry.drawn.sorted_covers(), ((0, 1),))
-
-    def test_orientation_follows_height_not_vertex_number(self) -> None:
-        """In L28 the article placed node 4 at y=0.0 and node 3 at y=0.2."""
-        upside_down = INLINE.replace("(1) at (0,1)", "(1) at (0,-2)")
-        entry = parse_catalog(upside_down, FIXTURES).unwrap()[2]
-        self.assertEqual(entry.drawn.sorted_covers(), ((1, 0),))
-
-    def test_a_commented_out_edge_is_not_counted(self) -> None:
-        commented = parse_catalog(INLINE.replace(r"\draw(0)--(1);", "%" + r"\draw(0)--(1);"), FIXTURES)
-        self.assertEqual(len(commented.unwrap()[2].drawn.covers), 0)
-
-    def test_an_edge_between_two_nodes_at_the_same_height_is_an_error(self) -> None:
-        outcome = parse_catalog(INLINE.replace("(1) at (0,1)", "(1) at (1,-1)"), FIXTURES)
-        self.assertTrue(outcome.is_err)
-        self.assertIn("same height", outcome.unwrap_err().message)
-
-    def test_an_edge_naming_an_unplaced_node_is_an_error(self) -> None:
-        outcome = parse_catalog(INLINE.replace(r"\draw(0)--(1);", r"\draw(0)--(7);"), FIXTURES)
-        self.assertTrue(outcome.is_err)
-        self.assertIn("never placed", outcome.unwrap_err().message)
-
-
 class StructureTests(unittest.TestCase):
     def test_text_without_the_catalog_heading_is_an_error(self) -> None:
         outcome = parse_catalog("nothing to see here", FIXTURES)
@@ -129,10 +90,12 @@ class StructureTests(unittest.TestCase):
         self.assertTrue(outcome.is_err)
         self.assertIn("labelled more than once", outcome.unwrap_err().message)
 
-    def test_a_label_with_neither_call_nor_drawing_is_an_error(self) -> None:
+    def test_a_label_without_a_hasse_call_is_an_error(self) -> None:
+        r"""A lattice the catalog names but does not draw would otherwise be
+        skipped, which is the failure check_diagram_count exists to make loud."""
         outcome = parse_catalog(CATALOG_HEADING + "\n$\\bL_3$& nothing\n", FIXTURES)
         self.assertTrue(outcome.is_err)
-        self.assertIn("L3", outcome.unwrap_err().message)
+        self.assertIn("\\hasse{L3}", outcome.unwrap_err().message)
 
     def test_a_catalog_naming_no_lattices_is_an_error(self) -> None:
         self.assertTrue(parse_catalog(CATALOG_HEADING + "\nempty\n", FIXTURES).is_err)
@@ -156,7 +119,6 @@ class ArticleTests(unittest.TestCase):
         catalog = read_catalog(ARTICLE).unwrap()
         for index, entry in sorted(catalog.items()):
             self.assertEqual(entry.source, f"inputs/tikz/L{index}.tex")
-            self.assertIsNotNone(entry.declared)
 
     def test_every_drawn_lattice_has_between_five_and_seven_elements(self) -> None:
         """The catalog is "lattices of size at most 7"; 2 have 5, 6 have 6, 27 have 7."""

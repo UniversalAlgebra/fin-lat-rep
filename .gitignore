@@ -8,6 +8,7 @@
 *.bbl
 *.blg
 article/.auctex-auto
+article/inputs/.auctex-auto
 
 # Nix build results and direnv's cache.
 result

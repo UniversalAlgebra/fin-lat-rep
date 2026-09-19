@@ -55,9 +55,9 @@ def _covers(relation: CoveringRelation) -> str:
 class Comparison:
     """The outcome of checking one algebra against one catalog lattice.
 
-    `declared` is the covering relation the lattice's file header declares,
-    or None for a lattice still drawn inline in the article, which has no
-    header; then only the computed and drawn relations are compared.
+    Three relations: `computed` from the algebra, `drawn` from the file's
+    body, `declared` from the file's header.  Any two may disagree, and the
+    report names which.
     """
 
     algebra: str
@@ -65,7 +65,7 @@ class Comparison:
     cardinality: int
     computed: CoveringRelation
     drawn: CoveringRelation
-    declared: Optional[CoveringRelation]
+    declared: CoveringRelation
     source: str
 
     def disagreements(self) -> Tuple[str, ...]:
@@ -73,12 +73,11 @@ class Comparison:
         pairs: List[str] = []
         if not are_isomorphic(self.computed, self.drawn):
             pairs.append("the computed lattice and the drawing")
-        if self.declared is not None:
-            if not are_isomorphic(self.computed, self.declared):
-                pairs.append("the computed lattice and the header's covers")
-            # Same vertices, same names: equality, not isomorphism.
-            if self.drawn.covers != self.declared.covers:
-                pairs.append("the drawing and the header's covers")
+        if not are_isomorphic(self.computed, self.declared):
+            pairs.append("the computed lattice and the header's covers")
+        # Same vertices, same names: equality, not isomorphism.
+        if self.drawn.covers != self.declared.covers:
+            pairs.append("the drawing and the header's covers")
         return tuple(pairs)
 
     @property
@@ -96,18 +95,16 @@ class Comparison:
 
     def describe_failure(self) -> str:
         """The detail a reader needs when the relations disagree."""
-        lines = [
-            f"  {self.algebra} does not represent L{self.lattice_index}: "
-            + "; ".join(self.disagreements()) + " disagree",
-            f"    Con({self.algebra}) has {_covers(self.computed)}",
-            f"    L{self.lattice_index} as drawn in {self.source} has {_covers(self.drawn)}",
-        ]
-        if self.declared is not None:
-            lines.append(
+        return "\n".join(
+            [
+                f"  {self.algebra} does not represent L{self.lattice_index}: "
+                + "; ".join(self.disagreements()) + " disagree",
+                f"    Con({self.algebra}) has {_covers(self.computed)}",
+                f"    L{self.lattice_index} as drawn in {self.source} has {_covers(self.drawn)}",
                 f"    L{self.lattice_index} as declared by the header of {self.source} "
-                f"has {_covers(self.declared)}"
-            )
-        return "\n".join(lines)
+                f"has {_covers(self.declared)}",
+            ]
+        )
 
 
 @dataclass(frozen=True)
@@ -194,7 +191,6 @@ def check_files(catalog: Dict[int, CatalogEntry]) -> Tuple[FileCheck, ...]:
     return tuple(
         FileCheck(index=entry.index, source=entry.source, drawn=entry.drawn, declared=entry.declared)
         for entry in sorted(catalog.values(), key=lambda e: e.index)
-        if entry.declared is not None
     )
 
 
@@ -344,7 +340,7 @@ def _report(verdict: Verdict) -> int:
     broken_files = [f for f in verdict.files if not f.agrees]
     for broken in broken_files:
         print(broken.describe_failure())
-    if verdict.files and not broken_files:
+    if not broken_files:
         print(
             f"{PASS} {ME}  all {len(verdict.files)} catalog files draw the covering "
             "relation their header declares"
