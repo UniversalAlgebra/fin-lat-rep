@@ -8,21 +8,27 @@ Description: Tests for the catalog check, including the regression that shows
 from __future__ import annotations
 
 import hashlib
+import io
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
-from typing import Sequence
+from typing import Dict, Sequence
 
 from _utils.pipeline_types import ErrorType
-from finlatrep.catalog import read_catalog
+from finlatrep.catalog import CATALOG_HEADING, CatalogEntry, parse_catalog, read_catalog
 from finlatrep.check import (  # noqa: I001
     Comparison,
+    Verdict,
     check_diagram_count,
+    check_files,
     cross_check,
     lattice_index_of,
     UACalcRow,
     parse_uacalc_table,
     run,
+    _report,
 )
+from finlatrep.lattice import CoveringRelation
 from finlatrep.ua import Algebra, Operation
 
 HERE = Path(__file__).resolve().parent
@@ -228,6 +234,97 @@ class AgreementTests(unittest.TestCase):
     def test_a_passing_run_reports_no_failures(self) -> None:
         comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap().comparisons
         self.assertEqual([c for c in comparisons if not c.agrees], [])
+
+
+class FileGateTests(unittest.TestCase):
+    """The check that holds every catalog file to its own header.
+
+    This gate is the only thing covering the six catalog lattices that have
+    no algebra: nothing else compares their drawing with their `covers:`
+    line.  Measured before these tests were written, with the whole suite
+    green both times: `check_files` returning `()`, and `_report` ignoring
+    the files that disagree, each passed all 136 tests.  So the gate could
+    have been dropped in a refactor and shipped.
+
+    `_report` is private and is reached into deliberately.  It is where the
+    exit code is decided, and an exit code that stopped depending on the
+    file gate is precisely the regression these tests exist to catch.
+    """
+
+    # The fixture pics, one of which (L9) draws a lattice its header does not
+    # declare.  See scripts/python/fixtures/tikz/.
+    FIXTURES = HERE.parent / "fixtures" / "tikz"
+    PENTAGON = CoveringRelation(5, frozenset({(0, 1), (0, 2), (1, 3), (2, 4), (3, 4)}))
+
+    def catalog_of(self, *labels: int) -> Dict[int, CatalogEntry]:
+        """A catalog drawing the named fixture lattices, parsed for real."""
+        text = CATALOG_HEADING + "\n" + "\n".join(
+            rf"$\bL_{{{i}}}$& \hasse{{L{i}}}" for i in labels
+        )
+        return parse_catalog(text, self.FIXTURES).unwrap()
+
+    def agreeing_comparison(self) -> Comparison:
+        """An algebra that agrees with its lattice on all three relations."""
+        return Comparison(
+            algebra="B1",
+            lattice_index=1,
+            cardinality=4,
+            computed=self.PENTAGON,
+            drawn=self.PENTAGON,
+            declared=self.PENTAGON,
+            source="inputs/tikz/L1.tex",
+        )
+
+    def test_a_file_whose_drawing_and_header_disagree_does_not_agree(self) -> None:
+        checks = check_files(self.catalog_of(9))
+        self.assertEqual(len(checks), 1)
+        self.assertFalse(checks[0].agrees)
+
+    def test_files_that_draw_what_they_declare_agree(self) -> None:
+        checks = check_files(self.catalog_of(1, 6))
+        self.assertEqual([c.index for c in checks], [1, 6])
+        self.assertTrue(all(c.agrees for c in checks))
+
+    def test_the_failure_names_the_file_and_both_relations(self) -> None:
+        message = check_files(self.catalog_of(9))[0].describe_failure()
+        self.assertIn("inputs/tikz/L9.tex", message)
+        self.assertIn("drawn:", message)
+        self.assertIn("declared:", message)
+        self.assertIn("the drawing and the header's covers disagree", message)
+
+    def test_a_run_fails_when_a_file_disagrees_though_every_algebra_agrees(self) -> None:
+        """The case the gate exists for: a lattice with no algebra to check it.
+
+        Six catalog lattices have no algebra, so only the file gate can
+        notice that one of them draws something its header does not declare.
+        """
+        verdict = Verdict(
+            files=check_files(self.catalog_of(9)),
+            comparisons=(self.agreeing_comparison(),),
+        )
+        printed = io.StringIO()
+        with redirect_stdout(printed):
+            status = _report(verdict)
+        self.assertEqual(status, 1)
+        self.assertIn("catalog files disagree with their own header", printed.getvalue())
+        self.assertIn("inputs/tikz/L9.tex", printed.getvalue())
+
+    def test_a_run_succeeds_when_the_files_and_the_algebras_agree(self) -> None:
+        verdict = Verdict(
+            files=check_files(self.catalog_of(1, 6)),
+            comparisons=(self.agreeing_comparison(),),
+        )
+        printed = io.StringIO()
+        with redirect_stdout(printed):
+            status = _report(verdict)
+        self.assertEqual(status, 0)
+        self.assertIn("draw the covering relation their header declares", printed.getvalue())
+
+    def test_the_real_article_passes_the_file_gate(self) -> None:
+        """All 35 catalog files draw what their headers declare."""
+        checks = check_files(read_catalog(ARTICLE).unwrap())
+        self.assertEqual(len(checks), 35)
+        self.assertEqual([c.index for c in checks if not c.agrees], [])
 
 
 class ErrorPathTests(unittest.TestCase):
