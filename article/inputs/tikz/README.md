@@ -88,8 +88,8 @@ of that form is free text and is ignored.
    representation is known from otherwise, or `none known`.
 +  **`tags`**.  Comma separated.  Today: `modular` or `nonmodular`,
    `distributive` where it holds, `self-dual` or `dual-of-L<k>` for the
-   catalog's dual pairs, and a few words where a file needs them (`labelled`,
-   `alternative layout of L13`).
+   catalog's dual pairs, `schematic` for a file that is not a lattice, and a
+   note where a file needs one (`L11-upper-interval` says what it is).
 
 A file that draws something that is not a lattice, the potato diagrams of the
 closure-properties figures, carries only `id`, `aliases` and `tags`, with the
@@ -167,15 +167,16 @@ places three schematics; both are in `SmallLatticeReps.tex`.
 
 ## What is here besides the catalog
 
-+  `L8-alt`, `L13-alt`, `L17-alt`, `L20-alt`: the 2015 hand drawings of L8
-   (as M4), L13, L17 and L20, in layouts that differ from the catalog's, kept
-   until it is decided whether the paper wants them.
 +  `L11-upper-interval`: the pentagon laid out as it sits in L11, for the
    right-hand picture of Figure 9.  It is the lattice L1 in another layout,
    the one place a lattice has two files.
 +  `two-by-two`: the four-element Boolean lattice of Figure 1.
 +  `shareshian`: the fourteen-element lattice of Figure 8.
-+  `N54W`, `wheatstone-bridge`: 2015 files the article does not use, kept
-   with their labels inside (tagged `labelled`) until decided.
 +  `ordinal-sum`, `parallel-sum`, `filter-ideal`, `general-ordinal-sum`,
    `adjoined-ordinal-sum`: the schematics of Figures 2 and 4.
+
+Everything else the 2015 directory held is gone: `L3-big`, the old `L11` and
+`M4-big` were scaled copies of `L3`, `L3` and `M4`; `L7-old` drew L10 with
+subgroup labels; `L13`, `L17`, `L20` and `M4` drew L13, L17, L20 and L8 in
+other layouts; `N54W` and `wheatstone_bridge` were never used.  All are in
+the history before the merge of #6 if one is ever wanted back.
