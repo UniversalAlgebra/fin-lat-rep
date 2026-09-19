@@ -91,30 +91,31 @@ class RegressionTests(unittest.TestCase):
         self.assertEqual(digest, FIXTURE_SHA256)
 
     def test_the_pre_fix_b28_is_reported_as_a_mismatch(self) -> None:
-        comparisons = run(PRE_FIX_B28, ARTICLE).unwrap()
+        comparisons = run(PRE_FIX_B28, ARTICLE).unwrap().comparisons
         self.assertEqual(len(comparisons), 1)
         self.assertEqual(comparisons[0].algebra, "B28")
         self.assertFalse(comparisons[0].agrees)
 
     def test_the_pre_fix_b28_has_an_eight_element_congruence_lattice(self) -> None:
         """Eight, where L28 has seven: that is exactly the defect #20 reported."""
-        comparison = run(PRE_FIX_B28, ARTICLE).unwrap()[0]
+        comparison = run(PRE_FIX_B28, ARTICLE).unwrap().comparisons[0]
         self.assertEqual(comparison.computed.size, 8)
         self.assertEqual(comparison.drawn.size, 7)
 
     def test_the_failure_message_names_the_algebra_and_both_relations(self) -> None:
-        message = run(PRE_FIX_B28, ARTICLE).unwrap()[0].describe_failure()
+        message = run(PRE_FIX_B28, ARTICLE).unwrap().comparisons[0].describe_failure()
         self.assertIn("B28", message)
         self.assertIn("L28", message)
         self.assertIn("8 elements", message)
         self.assertIn("7 elements", message)
+        self.assertIn("the computed lattice and the drawing", message)
 
 
 class CrossCheckTests(unittest.TestCase):
     """The UACalc table is the second engine's half of the comparison."""
 
     def _b28(self) -> Sequence[Comparison]:
-        return run(PRE_FIX_B28, ARTICLE).unwrap()
+        return run(PRE_FIX_B28, ARTICLE).unwrap().comparisons
 
     def test_reads_a_well_formed_table(self) -> None:
         rows = parse_uacalc_table("B1 4 5\nB28 16 7\n").unwrap()
@@ -202,7 +203,7 @@ class AgreementTests(unittest.TestCase):
         self.assertEqual(digest, CORRECT_SHA256)
 
     def test_the_corrected_algebras_agree_with_the_article(self) -> None:
-        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap()
+        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap().comparisons
         self.assertEqual([c.algebra for c in comparisons], ["B1", "B28"])
         for comparison in comparisons:
             self.assertTrue(
@@ -213,19 +214,19 @@ class AgreementTests(unittest.TestCase):
     def test_b1_is_the_five_element_pentagon(self) -> None:
         """The answer that looks alarming and is not: the catalog holds
         lattices of size AT MOST seven, and L1 is the pentagon."""
-        b1 = run(CORRECT_B1_B28, ARTICLE).unwrap()[0]
+        b1 = run(CORRECT_B1_B28, ARTICLE).unwrap().comparisons[0]
         self.assertEqual(b1.cardinality, 4)
         self.assertEqual(b1.computed.size, 5)
         self.assertEqual(b1.drawn.size, 5)
 
     def test_the_corrected_b28_has_a_seven_element_congruence_lattice(self) -> None:
         """The same algebra the pre-fix fixture gets wrong with eight."""
-        b28 = run(CORRECT_B1_B28, ARTICLE).unwrap()[1]
+        b28 = run(CORRECT_B1_B28, ARTICLE).unwrap().comparisons[1]
         self.assertEqual(b28.computed.size, 7)
         self.assertTrue(b28.agrees)
 
     def test_a_passing_run_reports_no_failures(self) -> None:
-        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap()
+        comparisons = run(CORRECT_B1_B28, ARTICLE).unwrap().comparisons
         self.assertEqual([c for c in comparisons if not c.agrees], [])
 
 

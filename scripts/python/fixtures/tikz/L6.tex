@@ -1,0 +1,20 @@
+% id: L6
+% aliases: hexagon
+% elements: 6
+% covers: bottom<left-low bottom<right-low left-low<left-high right-low<right-high left-high<top right-high<top
+% represented-by: B6 (SmallLatticeReps.ua)
+% tags: nonmodular, self-dual
+\tikzset{L6/.pic={
+  \node[lat] (bottom) at (0,0) {};
+  \node[lat] (left-low) at (-1,1) {};
+  \node[lat] (left-high) at (-1,2) {};
+  \node[lat] (right-low) at (1,1) {};
+  \node[lat] (right-high) at (1,2) {};
+  \node[lat] (top) at (0,3) {};
+  \draw (bottom) -- (left-low);
+  \draw (left-low) -- (left-high);
+  \draw (left-high) -- (top);
+  \draw (bottom) -- (right-low);
+  \draw (right-low) -- (right-high);
+  \draw (right-high) -- (top);
+}}
