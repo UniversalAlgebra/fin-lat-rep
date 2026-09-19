@@ -10,6 +10,12 @@ Description: Reading a Hasse diagram out of one TikZ pic file under
   `\node[lat] (name) at (x,y) {};` and draws covering edges as
   `\draw (a) -- (b);`, one per line.
 
+  The pic's body is found by matching the braces of `\tikzset{NAME/.pic={`,
+  and a file whose pic is never closed, or that carries anything after the
+  close, is rejected: TeX would otherwise read on into the next `\input` and
+  the build would die with "File ended while scanning", with every node and
+  edge line in the file perfectly readable here.
+
   In a lattice file, one that declares `covers:`, those two forms are the ONLY
   ones allowed, and a line that is neither is rejected.  Ignoring such a line
   instead would be unsound in one direction: a line this module cannot read is
@@ -118,6 +124,56 @@ def parse_header(text: str, where: str = "pic") -> Result[Dict[str, str], Pipeli
             return Result.err(_error(where, f"header key {key!r} appears twice"))
         header[key] = value
     return Result.ok(header)
+
+
+def _pic_body(text: str, where: str) -> Result[str, PipelineError]:
+    r"""The text inside `\tikzset{NAME/.pic={ ... }}`, found by matching braces.
+
+    Reading the body rather than the whole file is what makes an unterminated
+    pic an error here instead of a file that parses cleanly and then stops
+    `make paper` with "File ended while scanning use of \pgfkeys@@qset" and no
+    PDF.  Counting the opener alone cannot see that: every node and edge line
+    before the missing `}}` is still perfectly readable.
+
+    Braces are counted literally.  No file in this directory escapes one, and
+    a file that did would be reported here as unbalanced rather than silently
+    miscounted, which is the safe direction for a gate.
+    """
+    opener = _PIC_OPEN.search(text)
+    if opener is None:
+        return Result.err(_error(where, "no pic to read"))
+    # Two braces are already open at the end of the match: `	ikzset{` and
+    # the `{` of `.pic={`.
+    depth = 2
+    body_ends = None
+    for index in range(opener.end(), len(text)):
+        character = text[index]
+        if character == "{":
+            depth += 1
+        elif character == "}":
+            depth -= 1
+            if depth == 1 and body_ends is None:
+                body_ends = index
+            if depth == 0:
+                trailing = text[index + 1 :].strip()
+                if trailing:
+                    return Result.err(
+                        _error(
+                            where,
+                            "there is text after the pic's closing `}}`: "
+                            f"{trailing.splitlines()[0]!r}; a file defines one pic and "
+                            "nothing else (an extra `}}` looks like this too)",
+                        )
+                    )
+                return Result.ok(text[opener.end() : body_ends])
+    return Result.err(
+        _error(
+            where,
+            "the pic is never closed: the file ends inside "
+            "`\\tikzset{...}}`.  TeX would go on reading the next \\input, and the "
+            "build would fail with `File ended while scanning`",
+        )
+    )
 
 
 def _recognized(line: str) -> bool:
@@ -286,7 +342,14 @@ def parse_pic(text: str, where: str = "pic") -> Result[Pic, PipelineError]:
         if strict.is_err:
             return Result.err(strict.unwrap_err())
 
-    heights_result = _heights(body, where)
+    enclosed = _pic_body(body, where)
+    if enclosed.is_err:
+        return Result.err(enclosed.unwrap_err())
+    # Vertices and edges are read from inside the pic, so that anything
+    # outside it cannot contribute to the drawing this file claims to be.
+    drawing = enclosed.unwrap()
+
+    heights_result = _heights(drawing, where)
     if heights_result.is_err:
         return Result.err(heights_result.unwrap_err())
     heights = heights_result.unwrap()
@@ -296,7 +359,7 @@ def parse_pic(text: str, where: str = "pic") -> Result[Pic, PipelineError]:
     counted = _check_elements(header, len(vertices), where)
     if counted.is_err:
         return Result.err(counted.unwrap_err())
-    drawn = _drawn(body, heights, position, where)
+    drawn = _drawn(drawing, heights, position, where)
     if drawn.is_err:
         return Result.err(drawn.unwrap_err())
     declared = _declared(header, position, where)

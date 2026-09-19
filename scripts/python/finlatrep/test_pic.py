@@ -257,6 +257,64 @@ class BodyTests(unittest.TestCase):
         self.assertEqual(result.vertices, ("2", "10", "top"))
 
 
+class DelimiterTests(unittest.TestCase):
+    r"""The pic's braces, which every node and edge line can look fine without.
+
+    An unterminated pic parsed cleanly before this was checked, passed
+    `make check-catalog` with all 29 algebras agreeing, and then stopped
+    `make paper` dead:
+
+        ! File ended while scanning use of \pgfkeys@@qset.
+        !  ==> Fatal error occurred, no output PDF file produced!
+
+    A gate that is green while the paper cannot be built is worse than no
+    gate, so the delimiters are checked here.
+    """
+
+    def test_a_pic_that_is_never_closed_is_an_error(self) -> None:
+        text = pic(GOOD_HEADER, GOOD_BODY)
+        outcome = parse_pic(text.rstrip()[:-2], "L1.tex")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("never closed", outcome.unwrap_err().message)
+
+    def test_an_extra_closing_brace_pair_is_an_error(self) -> None:
+        outcome = parse_pic(pic(GOOD_HEADER, GOOD_BODY) + "}}\n", "L1.tex")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("after the pic's closing", outcome.unwrap_err().message)
+
+    def test_a_vertex_after_the_close_is_an_error(self) -> None:
+        """Not merely a wrong `elements:` count: the file shape is wrong.
+
+        Before the body was isolated, a vertex written after the close was
+        read as part of the drawing, and only the element count noticed.
+        """
+        text = pic(GOOD_HEADER, GOOD_BODY) + r"\node[lat] (9) at (0,9) {};" + "\n"
+        outcome = parse_pic(text, "L1.tex")
+        self.assertTrue(outcome.is_err)
+        self.assertIn("after the pic's closing", outcome.unwrap_err().message)
+
+    def test_a_schematic_is_not_exempt_from_the_delimiter_check(self) -> None:
+        """The body of a schematic is free; its braces are not.
+
+        The strict line check does not apply to a file with no `covers:`, so
+        without this the exemption would widen the hole rather than narrow it.
+        """
+        body = r"  \draw (0) to [out=50,in=-50] (1);"
+        text = pic("% id: L1\n% tags: schematic", body)
+        self.assertTrue(parse_pic(text.rstrip()[:-2], "L1.tex").is_err)
+
+    def test_braces_inside_the_body_do_not_end_the_pic(self) -> None:
+        """A guard against over-tightening: `{$\vdots$}` is balanced text."""
+        body = "\n".join([
+            r"  \node[lat] (0) at (0,0) {};",
+            r"  \node[lat] (1) at (0,4) {};",
+            r"  \draw (0,2) node {$\vdots$};",
+            r"  \draw (0) to [out=50,in=-50] (1);",
+        ])
+        result = parse_pic(pic("% id: L1\n% tags: schematic", body), "L1.tex").unwrap()
+        self.assertEqual(result.drawn.size, 2)
+
+
 class TikzDirectoryTests(unittest.TestCase):
     """The real files under article/inputs/tikz/, held to the convention.
 
