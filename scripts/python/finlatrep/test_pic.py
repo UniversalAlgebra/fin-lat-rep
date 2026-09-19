@@ -129,17 +129,56 @@ class BodyTests(unittest.TestCase):
         assert result.declared is not None
         self.assertNotEqual(result.drawn.covers, result.declared.covers)
 
-    def test_a_chained_edge_is_not_read_and_the_header_catches_it(self) -> None:
-        r"""The reader knows only `\draw (a) -- (b);`.
+    def test_an_edge_written_with_to_is_rejected(self) -> None:
+        r"""The case a lax reader gets wrong in the unsafe direction.
 
-        A chain such as `\draw (0) -- (1) -- (3);` is quietly not an edge, which
-        is safe precisely because the header then disagrees with the drawing.
+        TeX draws `\draw (0) to (4);`, so skipping it would leave an edge in
+        the picture that is in neither the parsed drawing nor the header, and
+        the cross-check would agree with itself about a lattice nobody sees.
         """
-        body = GOOD_BODY.replace(r"  \draw (0) -- (1);" + "\n" + r"  \draw (0) -- (2);",
-                                 r"  \draw (0) -- (1) -- (3);")
-        result = parse_pic(pic(GOOD_HEADER, body)).unwrap()
-        assert result.declared is not None
-        self.assertLess(len(result.drawn.covers), len(result.declared.covers))
+        body = GOOD_BODY + "\n" + r"  \draw (0) to (4);"
+        outcome = parse_pic(pic(GOOD_HEADER, body))
+        self.assertTrue(outcome.is_err)
+        self.assertIn("not a form the checker reads", outcome.unwrap_err().message)
+        self.assertIn(r"\draw (0) to (4);", outcome.unwrap_err().message)
+
+    def test_an_edge_with_options_is_rejected(self) -> None:
+        body = GOOD_BODY.replace(r"  \draw (0) -- (1);", r"  \draw[semithick] (0) -- (1);")
+        outcome = parse_pic(pic(GOOD_HEADER, body))
+        self.assertTrue(outcome.is_err)
+        self.assertIn("not a form the checker reads", outcome.unwrap_err().message)
+
+    def test_a_chained_edge_is_rejected(self) -> None:
+        r"""`\draw (0) -- (1) -- (3);` draws two edges and is read as none."""
+        body = GOOD_BODY.replace(r"  \draw (0) -- (1);", r"  \draw (0) -- (1) -- (3);")
+        self.assertTrue(parse_pic(pic(GOOD_HEADER, body)).is_err)
+
+    def test_two_edges_on_one_line_are_rejected(self) -> None:
+        body = GOOD_BODY.replace(
+            r"  \draw (0) -- (1);", r"  \draw (0) -- (1); \draw (0) -- (4);"
+        )
+        self.assertTrue(parse_pic(pic(GOOD_HEADER, body)).is_err)
+
+    def test_a_stray_label_is_rejected(self) -> None:
+        """Labels belong at the call site, and the reader now says so."""
+        body = GOOD_BODY + "\n" + r"  \draw (4) node[above] {$1$};"
+        self.assertTrue(parse_pic(pic(GOOD_HEADER, body)).is_err)
+
+    def test_a_schematic_file_may_draw_what_it_likes(self) -> None:
+        """No `covers:` means nothing to cross-check, so the body is free.
+
+        The potato diagrams of Figures 2 and 4 are curves and ellipses; there
+        is no covering relation to disagree with.
+        """
+        body = "\n".join([
+            r"  \node[lat] (bot) at (0,0) {};",
+            r"  \node[lat] (top) at (0,4) {};",
+            r"  \draw (bot) to [out=50,in=-50] (top);",
+            r"  \draw (0,2) node {$\vdots$};",
+        ])
+        result = parse_pic(pic("% id: L1\n% tags: schematic", body)).unwrap()
+        self.assertIsNone(result.declared)
+        self.assertEqual(result.drawn.size, 2)
 
     def test_a_pic_named_differently_from_its_id_is_an_error(self) -> None:
         outcome = parse_pic(pic(GOOD_HEADER, GOOD_BODY, name="L2"))
@@ -187,10 +226,18 @@ class BodyTests(unittest.TestCase):
         self.assertTrue(outcome.is_err)
         self.assertIn("twice", outcome.unwrap_err().message)
 
-    def test_a_non_numeric_coordinate_is_an_error(self) -> None:
+    def test_a_non_numeric_y_coordinate_is_an_error(self) -> None:
         outcome = parse_pic(pic(GOOD_HEADER, GOOD_BODY.replace("(0) at (0,0)", "(0) at (0,.)")))
         self.assertTrue(outcome.is_err)
+        self.assertIn("y='.'", outcome.unwrap_err().message)
         self.assertIn("not a number", outcome.unwrap_err().message)
+
+    def test_a_non_numeric_x_coordinate_is_an_error(self) -> None:
+        """The x never reaches the covering relation, but the file is still
+        malformed and TeX will not draw it."""
+        outcome = parse_pic(pic(GOOD_HEADER, GOOD_BODY.replace("(0) at (0,0)", "(0) at (.,0)")))
+        self.assertTrue(outcome.is_err)
+        self.assertIn("x='.'", outcome.unwrap_err().message)
 
     def test_a_file_without_a_covers_line_has_no_declared_relation(self) -> None:
         header = "% id: L1\n% tags: schematic"
@@ -244,6 +291,23 @@ class TikzDirectoryTests(unittest.TestCase):
             if pic.declared is not None:
                 with self.subTest(file=path.name):
                     self.assertEqual(sorted(pic.header), sorted(HEADER_KEYS))
+
+    def test_every_lattice_file_puts_its_bottom_element_at_the_origin(self) -> None:
+        """The coordinate convention, so that one scale gives one height."""
+        for path in self.pics():
+            pic_read = read_pic(path).unwrap()
+            if pic_read.declared is None:
+                continue
+            placed = {
+                name: (float(x), float(y))
+                for name, x, y in re.findall(
+                    r"\\node\[lat\]\s*\(([\w-]+)\)\s*at\s*\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)",
+                    path.read_text("utf-8"),
+                )
+            }
+            lowest = min(placed, key=lambda name: (placed[name][1], placed[name][0]))
+            with self.subTest(file=path.name):
+                self.assertEqual(placed[lowest], (0.0, 0.0))
 
     def test_a_file_without_covers_says_it_is_schematic(self) -> None:
         for path in self.pics():

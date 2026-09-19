@@ -48,11 +48,11 @@ The rules, which the checker holds a file to, are as follows:
    lower one is read off the y coordinates, never off the order the ends are
    written in, so two vertices joined by an edge must not sit at the same
    height.  No chains (`(a) -- (b) -- (c)`), no `to`, no options.
-+  **Nodes and edges only**.  No labels, no text, no `\draw` of anything but
-   an edge.  Labels belong at the call site, which knows what the picture is
-   for; see below.
-+  **The bottom element is at the origin**, and the picture is three units
-   tall.  When the longest chain has three covers, which is most of the
++  **Nodes and edges only, and nothing else at all**.  No labels, no text, no
+   `\draw` of anything but an edge.  Labels belong at the call site, which
+   knows what the picture is for; see below.
++  **The bottom element is at `(0,0)`**, which a test checks, and the picture
+   is three units tall.  When the longest chain has three covers, which is most of the
    catalog, that is unit spacing between levels; a lattice with a longer or
    shorter chain is drawn to the same height, so that one scale gives one
    height across the catalog.  This is the convention the hand-drawn 2015
@@ -63,10 +63,15 @@ The rules, which the checker holds a file to, are as follows:
    parity before reading, so a commented-out edge is not drawn, but a diagram
    is easier to trust when there is nothing to strip.
 
-The reader knows only the two forms above and ignores every other line.  That
-is safe precisely because of the header: a vertex or edge written any other
-way is lost, the drawing then disagrees with `covers:`, and `make verify`
-says so.
+In a lattice file those two forms are the only ones allowed, and the checker
+rejects a line that is neither, naming it.  The rule is not fussiness: TeX
+draws what the checker cannot read, so `\draw (0) to (4);` would put an edge
+on the page that is in neither the parsed drawing nor the header, and the
+cross-check would agree with itself about a lattice nobody sees.  (A line
+that LOSES a vertex or an edge needs no such rule; the header catches it.)
+
+A schematic file, one with no `covers:`, draws curves and ellipses that no
+covering relation describes, so its body is not restricted.
 
 ## The header
 

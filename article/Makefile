@@ -12,6 +12,9 @@ PDFLATEX ?= pdflatex
 BIBTEX ?= bibtex
 
 GALLERY=inputs/tikz/gallery
+# Every file under inputs/tikz: the pics, all.tex which inputs them, and the
+# gallery's own source.  Both documents depend on the lot.
+PICS := $(wildcard inputs/tikz/*.tex)
 
 all: $(FILE).pdf
 
@@ -26,10 +29,13 @@ clean:
 # resolve; -output-directory keeps the build products beside the source.
 gallery: $(GALLERY).pdf
 
-$(GALLERY).pdf: $(GALLERY).tex inputs/tikz/all.tex $(wildcard inputs/tikz/*.tex) $(AUX2)
+$(GALLERY).pdf: $(PICS) $(AUX2)
 	$(PDFLATEX) -output-directory=inputs/tikz $(GALLERY).tex
 
-$(FILE).pdf: $(FILE).tex $(AUX2)
+# Every Hasse diagram is a pic file that all.tex inputs, so the PDF depends on
+# all of them; without this, editing a lattice and running make leaves the old
+# PDF in place and says "Nothing to be done".
+$(FILE).pdf: $(FILE).tex $(AUX2) $(PICS)
 	rm -f $(REFS).bib
 	$(PDFLATEX) $(FILE).tex
 	$(BIBTEX) $(AUX1).aux

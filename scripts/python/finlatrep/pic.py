@@ -8,11 +8,17 @@ Description: Reading a Hasse diagram out of one TikZ pic file under
   article/inputs/tikz/README.md: a header of `% key: value` lines, then one
   `\tikzset{NAME/.pic={ ... }}` whose body places vertices as
   `\node[lat] (name) at (x,y) {};` and draws covering edges as
-  `\draw (a) -- (b);`, one per line.  This module reads exactly those forms
-  and nothing else.  A line that does not match is ignored, and that is safe
-  only because of the header: a lost vertex or edge makes the drawing disagree
-  with the `covers:` line, and check.py reports that.  So a lattice file's
-  header is not decoration; it is what makes a lax reader of the body safe.
+  `\draw (a) -- (b);`, one per line.
+
+  In a lattice file, one that declares `covers:`, those two forms are the ONLY
+  ones allowed, and a line that is neither is rejected.  Ignoring such a line
+  instead would be unsound in one direction: a line this module cannot read is
+  still drawn by TeX, so `\draw (0) to (4);` would put an edge in the picture
+  that is in neither the parsed drawing nor the header, and the cross-check
+  would agree with itself about a lattice the reader never sees.  (A line that
+  LOSES a vertex or an edge is caught by the header either way.)  A schematic
+  file, one with no `covers:`, draws things this module has no opinion about,
+  so its body is not restricted.
 
   Which end of an edge is the lower one is decided by the y coordinate the two
   vertices are placed at.  TikZ's `--` is undirected, so `\draw (0) -- (1);`
@@ -55,6 +61,10 @@ _NODE = re.compile(
 )
 _EDGE = re.compile(r"\\draw\s*\(([\w-]+)\)\s*--\s*\(([\w-]+)\)\s*;")
 _COVER = re.compile(r"^([\w-]+)<([\w-]+)$")
+# The two lines that open and close the pic, which a body otherwise consists
+# entirely of vertices and edges.
+_PIC_OPEN_LINE = re.compile(r"\s*\\tikzset\{[\w-]+/\.pic=\{\s*")
+_PIC_CLOSE_LINE = re.compile(r"\s*\}\}\s*")
 
 
 @dataclass(frozen=True)
@@ -110,20 +120,76 @@ def parse_header(text: str, where: str = "pic") -> Result[Dict[str, str], Pipeli
     return Result.ok(header)
 
 
+def _recognized(line: str) -> bool:
+    """Whether one line of a pic body is a form this module reads."""
+    stripped = line.strip()
+    if not stripped:
+        return True
+    return bool(
+        _NODE.fullmatch(stripped)
+        or _EDGE.fullmatch(stripped)
+        or _PIC_OPEN_LINE.fullmatch(line)
+        or _PIC_CLOSE_LINE.fullmatch(line)
+    )
+
+
+def _check_every_line_is_read(body: str, where: str) -> Result[None, PipelineError]:
+    r"""Refuse a lattice file that draws anything this module cannot read.
+
+    TeX draws what this module skips.  An edge written `\draw (0) to (4);`, or
+    with options, is therefore in the picture but in neither the parsed drawing
+    nor the header, and the drawing would agree with `covers:` about a lattice
+    that is not the one on the page.
+    """
+    offending = [
+        (number, line.strip())
+        for number, line in enumerate(body.split("\n"), start=1)
+        if not _recognized(line)
+    ]
+    if offending:
+        number, text = offending[0]
+        return Result.err(
+            _error(
+                where,
+                f"line {number} is not a form the checker reads: {text!r}; a lattice file's "
+                "pic body holds only `\\node[lat] (name) at (x,y) {};` and `\\draw (a) -- (b);` "
+                "lines, one per line (a file with no covers: line is a schematic and is exempt)",
+            )
+        )
+    return Result.ok(None)
+
+
+def _coordinate(
+    where: str, name: str, axis: str, value: str
+) -> Result[float, PipelineError]:
+    r"""One coordinate as a number.
+
+    `[-\d.]+` will happily match `.` or `-.-`, and float() would then raise
+    straight past the Result the rest of this module returns.  Both
+    coordinates are checked: an unreadable x never reaches the covering
+    relation, but it is still a malformed file and TeX will not draw it.
+    """
+    try:
+        return Result.ok(float(value))
+    except ValueError:
+        return Result.err(
+            _error(where, f"vertex {name} is placed at {axis}={value!r}, which is not a number")
+        )
+
+
 def _heights(body: str, where: str) -> Result[Dict[str, float], PipelineError]:
     """Every placed vertex and the height it is placed at."""
     heights: Dict[str, float] = {}
-    for name, _x, y in _NODE.findall(body):
+    for name, x, y in _NODE.findall(body):
         if name in heights:
             return Result.err(_error(where, f"vertex {name} is placed twice"))
-        # `[-\d.]+` will happily match `.` or `-.-`, and float() would then
-        # raise straight past the Result the rest of this module returns.
-        try:
-            heights[name] = float(y)
-        except ValueError:
-            return Result.err(
-                _error(where, f"vertex {name} is placed at y={y!r}, which is not a number")
-            )
+        across = _coordinate(where, name, "x", x)
+        if across.is_err:
+            return Result.err(across.unwrap_err())
+        height = _coordinate(where, name, "y", y)
+        if height.is_err:
+            return Result.err(height.unwrap_err())
+        heights[name] = height.unwrap()
     if not heights:
         return Result.err(_error(where, r"places no vertex; expected `\node[lat] (name) at (x,y) {};` lines"))
     return Result.ok(heights)
@@ -214,6 +280,11 @@ def parse_pic(text: str, where: str = "pic") -> Result[Pic, PipelineError]:
         return Result.err(
             _error(where, f"the header says id: {header['id']} but the pic is named {name}")
         )
+
+    if "covers" in header:
+        strict = _check_every_line_is_read(body, where)
+        if strict.is_err:
+            return Result.err(strict.unwrap_err())
 
     heights_result = _heights(body, where)
     if heights_result.is_err:
