@@ -25,6 +25,7 @@ article/inputs/tikz/gallery.pdf
 # Python
 __pycache__/
 *.pyc
+.mypy_cache/
 
 # make verify writes the UACalc table here
 build/

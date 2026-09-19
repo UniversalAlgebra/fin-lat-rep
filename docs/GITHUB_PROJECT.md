@@ -312,7 +312,7 @@ Note the language split this creates.  Jython is Python 2, so the UACalc side ca
 
 - **Where the `.ua` file comes from**. It now lives in [AlgebraFiles][], not here.  Either fetch it at check time, which tests the published artifact and needs the network, or pin it as a flake input, which is reproducible and can go stale.  Prefer the flake input, so the check has something to be stale *against*.
 
-This repository has no Python in it yet, so the checker establishes the convention rather than following one already here.  Use the one these projects use elsewhere: everything under `scripts/python/`, total functions that return a result rather than raising for control flow, type annotations throughout, a file-header comment saying what the file is for, and a Makefile target per test suite.
+This repository has no Python in it yet, so the checker establishes the convention rather than following one already here.  Use the one these projects use elsewhere: everything under `scripts/python/`, total functions that return a result rather than raising for control flow, type annotations throughout, a file-header comment saying what the file is for, and a Makefile target per test suite.  The annotations are gated rather than left to review: `mypy --strict` is in the dev shell, `make typecheck` runs it, and `make verify` runs that first, since it reads the annotations and executes nothing.
 
 ### Acceptance criteria
 
